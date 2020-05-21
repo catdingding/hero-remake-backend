@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'item.apps.ItemConfig',
     'town.apps.TownConfig',
     'user.apps.UserConfig',
-    'world.apps.WorldConfig'
+    'world.apps.WorldConfig',
+    'job.apps.JobConfig'
 ]
 
 MIDDLEWARE = [
