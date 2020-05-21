@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'town.apps.TownConfig',
     'user.apps.UserConfig',
     'world.apps.WorldConfig',
-    'job.apps.JobConfig'
+    'job.apps.JobConfig',
+    'ability.apps.AbilityConfig'
 ]
 
 MIDDLEWARE = [
