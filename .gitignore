@@ -3,6 +3,9 @@
 # Edit at https://www.gitignore.io/?templates=git,django,python
 */migrations/*
 !*/migrations/__init__.py
+
+.vscode
+.dist
 ### Django ###
 *.log
 *.pot
