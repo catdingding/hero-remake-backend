@@ -5,7 +5,7 @@ from base.serializers import BaseSerializer, BaseModelSerializer
 
 from world.models import AttributeType, Location, SlotType
 from user.models import User
-from chara.models import Chara, CharaAttribute, CharaSlot
+from chara.models import Chara, CharaAttribute, CharaSlot, CharaIntroduction
 
 
 class RegistrationCharaSerializer(BaseModelSerializer):
@@ -40,6 +40,7 @@ class RegistrationSerializer(BaseSerializer):
             for attr_type in AttributeType.objects.all()
         ])
         CharaSlot.objects.bulk_create([CharaSlot(chara=chara, type=slot_type) for slot_type in SlotType.objects.all()])
+        CharaIntroduction.objects.create(chara=chara)
 
         return user
 
@@ -55,10 +56,6 @@ class ChangePasswordSerializer(BaseSerializer):
     old_password = serializers.CharField()
     new_password1 = serializers.CharField()
     new_password2 = serializers.CharField()
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.user = self.context['request'].user
 
     def validate_old_password(self, value):
         if not self.user.check_password(value):
