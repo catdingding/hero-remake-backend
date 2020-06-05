@@ -1,0 +1,693 @@
+[{
+        "model": "battle.monster",
+        "pk": 1,
+        "fields": {
+            "name": "草原鼠",
+            "element_type": "none",
+            "hp": 6,
+            "mp": 0,
+            "abilities": []
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 2,
+        "fields": {
+            "name": "爪貓",
+            "element_type": "none",
+            "hp": 7,
+            "mp": 0,
+            "abilities": []
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 3,
+        "fields": {
+            "name": "犀牛",
+            "element_type": "fire",
+            "hp": 68,
+            "mp": 10,
+            "abilities": []
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 4,
+        "fields": {
+            "name": "蜂群",
+            "element_type": "thunder",
+            "hp": 58,
+            "mp": 70,
+            "abilities": []
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 5,
+        "fields": {
+            "name": "魔狼",
+            "element_type": "dark",
+            "hp": 260,
+            "mp": 70,
+            "abilities": [
+                25
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 6,
+        "fields": {
+            "name": "夜狐",
+            "element_type": "fire",
+            "hp": 275,
+            "mp": 90,
+            "abilities": []
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 7,
+        "fields": {
+            "name": "七彩鳥",
+            "element_type": "light",
+            "hp": 540,
+            "mp": 800,
+            "abilities": [
+                5
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 8,
+        "fields": {
+            "name": "惡龍",
+            "element_type": "dark",
+            "hp": 705,
+            "mp": 280,
+            "abilities": []
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 9,
+        "fields": {
+            "name": "七個小矮人(火)",
+            "element_type": "fire",
+            "hp": 3333,
+            "mp": 700,
+            "abilities": [
+                8
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 10,
+        "fields": {
+            "name": "七個小矮人(水)",
+            "element_type": "water",
+            "hp": 4444,
+            "mp": 600,
+            "abilities": [
+                4
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 11,
+        "fields": {
+            "name": "七個小矮人(風)",
+            "element_type": "wind",
+            "hp": 5555,
+            "mp": 700,
+            "abilities": [
+                52
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 12,
+        "fields": {
+            "name": "七個小矮人(星)",
+            "element_type": "star",
+            "hp": 9999,
+            "mp": 700,
+            "abilities": [
+                44
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 13,
+        "fields": {
+            "name": "七個小矮人(雷)",
+            "element_type": "thunder",
+            "hp": 6666,
+            "mp": 700,
+            "abilities": [
+                50
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 14,
+        "fields": {
+            "name": "七個小矮人(光)",
+            "element_type": "light",
+            "hp": 7777,
+            "mp": 700,
+            "abilities": [
+                26
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 15,
+        "fields": {
+            "name": "七個小矮人(暗)",
+            "element_type": "dark",
+            "hp": 8888,
+            "mp": 700,
+            "abilities": [
+                12
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 16,
+        "fields": {
+            "name": "禁地守護者",
+            "element_type": "none",
+            "hp": 10000,
+            "mp": 700,
+            "abilities": [
+                6,
+                15
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 17,
+        "fields": {
+            "name": "白羊座",
+            "element_type": "none",
+            "hp": 10000,
+            "mp": 700,
+            "abilities": [
+                11,
+                81
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 18,
+        "fields": {
+            "name": "金牛座",
+            "element_type": "none",
+            "hp": 11000,
+            "mp": 750,
+            "abilities": [
+                15,
+                19
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 19,
+        "fields": {
+            "name": "雙子座",
+            "element_type": "none",
+            "hp": 12000,
+            "mp": 1800,
+            "abilities": [
+                26,
+                38
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 20,
+        "fields": {
+            "name": "巨蟹座",
+            "element_type": "none",
+            "hp": 13000,
+            "mp": 850,
+            "abilities": [
+                73,
+                77
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 21,
+        "fields": {
+            "name": "獅子座",
+            "element_type": "none",
+            "hp": 14000,
+            "mp": 1000,
+            "abilities": [
+                31,
+                39
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 22,
+        "fields": {
+            "name": "處女座",
+            "element_type": "none",
+            "hp": 15000,
+            "mp": 1600,
+            "abilities": [
+                30,
+                51
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 23,
+        "fields": {
+            "name": "天秤座",
+            "element_type": "none",
+            "hp": 16000,
+            "mp": 850,
+            "abilities": [
+                17,
+                77
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 24,
+        "fields": {
+            "name": "天蠍座",
+            "element_type": "none",
+            "hp": 17000,
+            "mp": 800,
+            "abilities": [
+                51,
+                69
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 25,
+        "fields": {
+            "name": "射手座",
+            "element_type": "none",
+            "hp": 18000,
+            "mp": 820,
+            "abilities": [
+                51,
+                77
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 26,
+        "fields": {
+            "name": "山羊座",
+            "element_type": "none",
+            "hp": 19000,
+            "mp": 830,
+            "abilities": [
+                71,
+                73
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 27,
+        "fields": {
+            "name": "水瓶座",
+            "element_type": "none",
+            "hp": 20000,
+            "mp": 840,
+            "abilities": [
+                81,
+                82
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 28,
+        "fields": {
+            "name": "雙魚座",
+            "element_type": "none",
+            "hp": 15000,
+            "mp": 800,
+            "abilities": [
+                3,
+                14
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 29,
+        "fields": {
+            "name": "鼠神",
+            "element_type": "none",
+            "hp": 20000,
+            "mp": 700,
+            "abilities": [
+                13,
+                14
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 30,
+        "fields": {
+            "name": "牛神",
+            "element_type": "none",
+            "hp": 20000,
+            "mp": 800,
+            "abilities": [
+                42,
+                77
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 31,
+        "fields": {
+            "name": "虎神",
+            "element_type": "none",
+            "hp": 20000,
+            "mp": 900,
+            "abilities": [
+                26,
+                38
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 32,
+        "fields": {
+            "name": "兔神",
+            "element_type": "none",
+            "hp": 20000,
+            "mp": 1000,
+            "abilities": [
+                73,
+                77
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 33,
+        "fields": {
+            "name": "龍神",
+            "element_type": "none",
+            "hp": 20000,
+            "mp": 1100,
+            "abilities": [
+                31,
+                39
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 34,
+        "fields": {
+            "name": "蛇神",
+            "element_type": "none",
+            "hp": 20000,
+            "mp": 1200,
+            "abilities": [
+                30,
+                51
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 35,
+        "fields": {
+            "name": "馬神",
+            "element_type": "none",
+            "hp": 20000,
+            "mp": 1300,
+            "abilities": [
+                69,
+                77
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 36,
+        "fields": {
+            "name": "羊神",
+            "element_type": "none",
+            "hp": 10000,
+            "mp": 2400,
+            "abilities": [
+                51,
+                69
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 37,
+        "fields": {
+            "name": "猴神",
+            "element_type": "none",
+            "hp": 10000,
+            "mp": 2500,
+            "abilities": [
+                81,
+                90
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 38,
+        "fields": {
+            "name": "雞神",
+            "element_type": "none",
+            "hp": 15000,
+            "mp": 2600,
+            "abilities": [
+                42,
+                77
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 39,
+        "fields": {
+            "name": "狗神",
+            "element_type": "none",
+            "hp": 16000,
+            "mp": 2700,
+            "abilities": [
+                81,
+                82
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 40,
+        "fields": {
+            "name": "豬神",
+            "element_type": "none",
+            "hp": 17000,
+            "mp": 2800,
+            "abilities": [
+                14,
+                90
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 41,
+        "fields": {
+            "name": "魔王",
+            "element_type": "none",
+            "hp": 200000,
+            "mp": 2800,
+            "abilities": [
+                14,
+                81,
+                90,
+                98
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 42,
+        "fields": {
+            "name": "無極",
+            "element_type": "none",
+            "hp": 100000,
+            "mp": 50000,
+            "abilities": [
+                3,
+                38
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 43,
+        "fields": {
+            "name": "炎帝",
+            "element_type": "fire",
+            "hp": 100000,
+            "mp": 1000,
+            "abilities": [
+                18,
+                68
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 44,
+        "fields": {
+            "name": "雨靈",
+            "element_type": "water",
+            "hp": 140000,
+            "mp": 1000,
+            "abilities": [
+                4,
+                30
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 45,
+        "fields": {
+            "name": "風暴",
+            "element_type": "wind",
+            "hp": 100000,
+            "mp": 2000,
+            "abilities": [
+                51,
+                75
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 46,
+        "fields": {
+            "name": "極星",
+            "element_type": "star",
+            "hp": 100000,
+            "mp": 1000,
+            "abilities": [
+                26,
+                54
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 47,
+        "fields": {
+            "name": "雷鳴",
+            "element_type": "thunder",
+            "hp": 100000,
+            "mp": 1000,
+            "abilities": [
+                25,
+                70
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 48,
+        "fields": {
+            "name": "光明",
+            "element_type": "light",
+            "hp": 100000,
+            "mp": 10000,
+            "abilities": [
+                31,
+                71
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 49,
+        "fields": {
+            "name": "黑洞",
+            "element_type": "dark",
+            "hp": 100000,
+            "mp": 10000,
+            "abilities": [
+                50,
+                81
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 50,
+        "fields": {
+            "name": "賓拉登",
+            "element_type": "none",
+            "hp": 100000,
+            "mp": 20000,
+            "abilities": [
+                9,
+                13,
+                27,
+                108
+            ]
+        }
+    },
+    {
+        "model": "battle.monster",
+        "pk": 51,
+        "fields": {
+            "name": "基拉大和",
+            "element_type": "none",
+            "hp": 100000,
+            "mp": 20000,
+            "abilities": [
+                19,
+                45,
+                108
+            ]
+        }
+    }
+]

@@ -1,0 +1,57 @@
+[{
+        "model": "world.ElementType",
+        "pk": "none",
+        "fields": {
+            "name": "無"
+        }
+    },
+    {
+        "model": "world.ElementType",
+        "pk": "fire",
+        "fields": {
+            "name": "火"
+        }
+    },
+    {
+        "model": "world.ElementType",
+        "pk": "water",
+        "fields": {
+            "name": "水"
+        }
+    },
+    {
+        "model": "world.ElementType",
+        "pk": "wind",
+        "fields": {
+            "name": "風"
+        }
+    },
+    {
+        "model": "world.ElementType",
+        "pk": "star",
+        "fields": {
+            "name": "星"
+        }
+    },
+    {
+        "model": "world.ElementType",
+        "pk": "thunder",
+        "fields": {
+            "name": "雷"
+        }
+    },
+    {
+        "model": "world.ElementType",
+        "pk": "light",
+        "fields": {
+            "name": "光"
+        }
+    },
+    {
+        "model": "world.ElementType",
+        "pk": "dark",
+        "fields": {
+            "name": "暗"
+        }
+    }
+]

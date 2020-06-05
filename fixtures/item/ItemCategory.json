@@ -1,0 +1,22 @@
+[{
+        "model": "item.ItemCategory",
+        "pk": 1,
+        "fields": {
+            "name": "裝備"
+        }
+    },
+    {
+        "model": "item.ItemCategory",
+        "pk": 2,
+        "fields": {
+            "name": "道具"
+        }
+    },
+    {
+        "model": "item.ItemCategory",
+        "pk": 3,
+        "fields": {
+            "name": "奧義石"
+        }
+    }
+]

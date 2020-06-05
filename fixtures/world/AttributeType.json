@@ -1,0 +1,49 @@
+[{
+        "model": "world.AttributeType",
+        "pk": "str",
+        "fields": {
+            "name": "力量",
+            "class_name": "劍系"
+        }
+    },
+    {
+        "model": "world.AttributeType",
+        "pk": "vit",
+        "fields": {
+            "name": "耐力",
+            "class_name": "體系"
+        }
+    },
+    {
+        "model": "world.AttributeType",
+        "pk": "int",
+        "fields": {
+            "name": "智力",
+            "class_name": "法系"
+        }
+    },
+    {
+        "model": "world.AttributeType",
+        "pk": "men",
+        "fields": {
+            "name": "精神",
+            "class_name": "神系"
+        }
+    },
+    {
+        "model": "world.AttributeType",
+        "pk": "dex",
+        "fields": {
+            "name": "敏捷",
+            "class_name": "弓系"
+        }
+    },
+    {
+        "model": "world.AttributeType",
+        "pk": "agi",
+        "fields": {
+            "name": "速度",
+            "class_name": "忍系"
+        }
+    }
+]

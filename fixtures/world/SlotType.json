@@ -1,0 +1,29 @@
+[{
+        "model": "world.SlotType",
+        "pk": "weapon",
+        "fields": {
+            "name": "武器"
+        }
+    },
+    {
+        "model": "world.SlotType",
+        "pk": "armor",
+        "fields": {
+            "name": "防具"
+        }
+    },
+    {
+        "model": "world.SlotType",
+        "pk": "jewelry",
+        "fields": {
+            "name": "飾品"
+        }
+    },
+    {
+        "model": "world.SlotType",
+        "pk": "pet",
+        "fields": {
+            "name": "寵物"
+        }
+    }
+]

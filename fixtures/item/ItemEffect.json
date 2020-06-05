@@ -1,0 +1,1 @@
+[{"model": "item.itemeffect", "pk": 1, "fields": {"name": "獲得熟練"}}, {"model": "item.itemeffect", "pk": 2, "fields": {"name": "獲得職業熟練"}}, {"model": "item.itemeffect", "pk": 3, "fields": {"name": "提升屬性上限"}}, {"model": "item.itemeffect", "pk": 4, "fields": {"name": "更改角色屬性"}}]
