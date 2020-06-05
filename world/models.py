@@ -1,3 +1,42 @@
 from django.db import models
+from base.models import BaseModel, BaseBuffType
 
-# Create your models here.
+
+class ElementType(BaseModel):
+    id = models.CharField(primary_key=True, max_length=10)
+    name = models.CharField(max_length=10, unique=True)
+
+
+class AttributeType(BaseModel):
+    id = models.CharField(primary_key=True, max_length=3)
+    name = models.CharField(max_length=10, unique=True)
+    class_name = models.CharField(max_length=10, unique=True)
+
+
+class SlotType(BaseModel):
+    id = models.CharField(primary_key=True, max_length=10)
+    name = models.CharField(max_length=10, unique=True)
+
+
+class Location(BaseModel):
+    x = models.IntegerField()
+    y = models.IntegerField()
+    battle_map = models.ForeignKey("battle.BattleMap", on_delete=models.PROTECT)
+    chaos_score = models.PositiveIntegerField()
+
+    class Meta:
+        unique_together = ('x', 'y')
+
+
+class LocationBuffType(BaseBuffType):
+    pass
+
+
+class LocationBuff(BaseModel):
+    location = models.ForeignKey("world.Location", on_delete=models.CASCADE)
+    type = models.ForeignKey("world.LocationBuffType", on_delete=models.CASCADE)
+    value = models.IntegerField(null=True)
+    due_date = models.DateTimeField(null=True)
+
+    class Meta:
+        unique_together = ('location', 'type')
