@@ -1,5 +1,7 @@
+from django.contrib.auth.forms import SetPasswordForm
 from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
+
 
 from world.models import AttributeType, Location, SlotType
 from user.models import User
@@ -47,3 +49,28 @@ class RegistrationSerializer(BaseSerializer):
         if data['password1'] != data['password2']:
             raise serializers.ValidationError("兩次輸入的密碼不一致")
         return data
+
+
+class ChangePasswordSerializer(BaseSerializer):
+    old_password = serializers.CharField()
+    new_password1 = serializers.CharField()
+    new_password2 = serializers.CharField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = self.context['request'].user
+
+    def validate_old_password(self, value):
+        if not self.user.check_password(value):
+            raise serializers.ValidationError("舊密碼輸入錯誤")
+        return value
+
+    def validate(self, data):
+        if data['new_password1'] != data['new_password2']:
+            raise serializers.ValidationError("兩次輸入的新密碼不一致")
+
+        return data
+
+    def save(self):
+        self.user.set_password(self.validated_data['new_password1'])
+        self.user.save()
