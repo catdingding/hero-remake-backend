@@ -28,3 +28,24 @@ class MoveSerializer(BaseSerializer):
         if not can_move_to:
             raise serializers.ValidationError("無法前往該地點")
         return value
+
+
+class MapQuerySerializer(BaseSerializer):
+    x = serializers.IntegerField()
+    y = serializers.IntegerField()
+    radius = serializers.IntegerField()
+
+
+class LocationSerializer(BaseModelSerializer):
+    battle_map_name = serializers.CharField(source="battle_map.name")
+    town_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Location
+        fields = ['x', 'y', 'chaos_score', 'battle_map_name', 'town_name']
+
+    def get_town_name(self, obj):
+        if hasattr(obj, 'town'):
+            return obj.town.name
+        else:
+            return None

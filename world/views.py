@@ -1,7 +1,9 @@
 from base.views import BaseViewSet, BaseGenericAPIView, CharaViewMixin
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 
-from world.serializers import MoveSerializer
+from world.serializers import MoveSerializer, LocationSerializer, MapQuerySerializer
+from world.models import Location
 
 
 class MoveView(CharaViewMixin, BaseGenericAPIView):
@@ -14,3 +16,19 @@ class MoveView(CharaViewMixin, BaseGenericAPIView):
         serializer.save()
 
         return Response({'status': 'success'})
+
+
+class MapView(BaseGenericAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = LocationSerializer
+
+    def get(self, request):
+        param_serializer = MapQuerySerializer(data=request.query_params)
+        param_serializer.is_valid(raise_exception=True)
+
+        x, y, radius = (param_serializer.validated_data[x] for x in ['x', 'y', 'radius'])
+        locations = Location.objects.filter(x__gte=x - radius, x__lte=x + radius, y__gte=y - radius, y__lte=y + radius)
+        locations = locations.select_related('battle_map', 'town')
+
+        serializer = self.get_serializer(locations, many=True)
+        return Response(serializer.data)

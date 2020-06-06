@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from world.views import MoveView
+from world.views import MoveView, MapView
 from user.views import RegistrationView, ChangePasswordView
 from chara.views import CharaIntroductionView
 
@@ -13,4 +13,5 @@ urlpatterns = [
     path('user/change-password/', ChangePasswordView.as_view()),
     path('chara/<int:chara_id>/introduction/', CharaIntroductionView.as_view()),
     path('chara/<int:chara_id>/move/', MoveView.as_view()),
+    path('map/', MapView.as_view())
 ]
