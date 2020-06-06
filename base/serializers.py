@@ -10,14 +10,6 @@ class ContextMixin:
             self.user = self.request.user
 
 
-class CharaCheckMixin:
-    def validate_chara(self, value):
-        chara = self.user.charas.filter(id=value).first()
-        if chara is None:
-            raise serializers.ValidationError("角色錯誤")
-        return chara
-
-
 class BaseSerializer(ContextMixin, serializers.Serializer):
     pass
 

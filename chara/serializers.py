@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from base.serializers import BaseSerializer, BaseModelSerializer, CharaCheckMixin
+from base.serializers import BaseSerializer, BaseModelSerializer
 
 from chara.models import CharaIntroduction
 
