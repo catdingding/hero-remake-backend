@@ -10,8 +10,12 @@ class BaseGenericAPIView(generics.GenericAPIView):
 
 
 class CharaViewMixin:
-    def get_chara(self):
-        chara = self.request.user.charas.filter(id=self.kwargs.pop('chara_id')).first()
+    def get_chara(self, lock=False):
+        queryset = self.request.user.charas.filter(id=self.kwargs['chara_id'])
+        if lock:
+            queryset = queryset.select_for_update()
+
+        chara = queryset.first()
         if chara is None:
             raise exceptions.PermissionDenied("角色錯誤")
         return chara
