@@ -120,3 +120,8 @@ class CharaBuff(BaseModel):
 
     class Meta:
         unique_together = ('chara', 'type')
+
+
+class CharaIntroduction(BaseModel):
+    chara = models.OneToOneField("chara.Chara", on_delete=models.CASCADE, related_name="introduction")
+    content = models.TextField(blank=True)

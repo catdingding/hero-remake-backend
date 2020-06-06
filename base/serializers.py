@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from chara.models import Chara
 
 
 class ContextMixin:
@@ -11,9 +12,10 @@ class ContextMixin:
 
 class CharaCheckMixin:
     def validate_chara(self, value):
-        if not self.user.charas.filter(id=value).exists():
+        chara = self.user.charas.filter(id=value).first()
+        if chara is None:
             raise serializers.ValidationError("角色錯誤")
-        return value
+        return chara
 
 
 class BaseSerializer(ContextMixin, serializers.Serializer):
