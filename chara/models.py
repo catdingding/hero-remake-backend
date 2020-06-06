@@ -1,6 +1,8 @@
 from django.db import models
+from django.utils.timezone import localtime
 from base.models import BaseModel, BaseBuffType
 
+from datetime import timedelta
 import random
 import functools
 
@@ -8,6 +10,8 @@ import functools
 class Chara(BaseModel):
     user = models.ForeignKey("user.User", related_name="charas", on_delete=models.CASCADE)
     name = models.CharField(max_length=30, unique=True)
+
+    next_action_time = models.DateTimeField(default=localtime)
 
     location = models.ForeignKey("world.Location", on_delete=models.PROTECT)
 
@@ -47,6 +51,9 @@ class Chara(BaseModel):
 
     def mp_limit(self):
         return self.attrs['int'].value * 5 + self.attrs['men'] * 3 - 800
+
+    def set_next_action_time(self, n=1):
+        self.next_action_time = localtime() + timedelta(seconds=n * 15)
 
     def gain_exp(self, exp):
         orig_level = self.level
