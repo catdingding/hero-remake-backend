@@ -21,8 +21,7 @@ class Chara(BaseModel):
     exp = models.PositiveIntegerField(default=0)
     proficiency = models.PositiveIntegerField(default=0)
 
-    cash = models.PositiveIntegerField(default=0)
-    bank = models.PositiveIntegerField(default=0)
+    gold = models.PositiveIntegerField(default=0)
 
     main_ability = models.ForeignKey("ability.Ability", null=True,
                                      related_name="main_ability_charas", on_delete=models.PROTECT)
