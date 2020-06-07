@@ -4,6 +4,8 @@ from base.models import BaseModel
 
 class AbilityType(BaseModel):
     name = models.CharField(max_length=20, unique=True)
+    is_live = models.BooleanField()
+    need_equip = models.BooleanField()
 
 
 class Ability(BaseModel):

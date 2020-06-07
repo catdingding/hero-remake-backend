@@ -2,392 +2,504 @@
         "model": "ability.abilitytype",
         "pk": 1,
         "fields": {
-            "name": "1"
+            "name": "1",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 2,
         "fields": {
-            "name": "2"
+            "name": "2",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 3,
         "fields": {
-            "name": "3"
+            "name": "3",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 4,
         "fields": {
-            "name": "4"
+            "name": "4",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 5,
         "fields": {
-            "name": "5"
+            "name": "5",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 6,
         "fields": {
-            "name": "6"
+            "name": "6",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 7,
         "fields": {
-            "name": "7"
+            "name": "7",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 8,
         "fields": {
-            "name": "8"
+            "name": "8",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 9,
         "fields": {
-            "name": "9"
+            "name": "9",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 10,
         "fields": {
-            "name": "10"
+            "name": "10",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 11,
         "fields": {
-            "name": "11"
+            "name": "11",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 12,
         "fields": {
-            "name": "12"
+            "name": "12",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 13,
         "fields": {
-            "name": "13"
+            "name": "13",
+            "is_live": true,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 14,
         "fields": {
-            "name": "14"
+            "name": "14",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 15,
         "fields": {
-            "name": "15"
+            "name": "15",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 16,
         "fields": {
-            "name": "16"
+            "name": "16",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 17,
         "fields": {
-            "name": "17"
+            "name": "17",
+            "is_live": true,
+            "need_equip": false
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 18,
         "fields": {
-            "name": "18"
+            "name": "18",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 19,
         "fields": {
-            "name": "19"
+            "name": "19",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 20,
         "fields": {
-            "name": "20"
+            "name": "20",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 21,
         "fields": {
-            "name": "21"
+            "name": "21",
+            "is_live": true,
+            "need_equip": false
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 22,
         "fields": {
-            "name": "22"
+            "name": "22",
+            "is_live": true,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 23,
         "fields": {
-            "name": "23"
+            "name": "23",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 24,
         "fields": {
-            "name": "24"
+            "name": "24",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 25,
         "fields": {
-            "name": "25"
+            "name": "25",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 26,
         "fields": {
-            "name": "26"
+            "name": "26",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 27,
         "fields": {
-            "name": "27"
+            "name": "27",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 28,
         "fields": {
-            "name": "28"
+            "name": "28",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 29,
         "fields": {
-            "name": "29"
+            "name": "29",
+            "is_live": true,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 30,
         "fields": {
-            "name": "30"
+            "name": "30",
+            "is_live": true,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 31,
         "fields": {
-            "name": "31"
+            "name": "31",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 33,
         "fields": {
-            "name": "33"
+            "name": "33",
+            "is_live": true,
+            "need_equip": false
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 34,
         "fields": {
-            "name": "34"
+            "name": "34",
+            "is_live": true,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 35,
         "fields": {
-            "name": "35"
+            "name": "35",
+            "is_live": true,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 36,
         "fields": {
-            "name": "36"
+            "name": "36",
+            "is_live": true,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 37,
         "fields": {
-            "name": "37"
+            "name": "37",
+            "is_live": true,
+            "need_equip": false
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 38,
         "fields": {
-            "name": "38"
+            "name": "38",
+            "is_live": true,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 39,
         "fields": {
-            "name": "39"
+            "name": "39",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 40,
         "fields": {
-            "name": "40"
+            "name": "40",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 41,
         "fields": {
-            "name": "41"
+            "name": "41",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 42,
         "fields": {
-            "name": "42"
+            "name": "42",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 43,
         "fields": {
-            "name": "43"
+            "name": "43",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 44,
         "fields": {
-            "name": "44"
+            "name": "44",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 45,
         "fields": {
-            "name": "45"
+            "name": "45",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 46,
         "fields": {
-            "name": "46"
+            "name": "46",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 47,
         "fields": {
-            "name": "47"
+            "name": "47",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 48,
         "fields": {
-            "name": "48"
+            "name": "48",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 49,
         "fields": {
-            "name": "49"
+            "name": "49",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 50,
         "fields": {
-            "name": "50"
+            "name": "50",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 51,
         "fields": {
-            "name": "51"
+            "name": "51",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 52,
         "fields": {
-            "name": "52"
+            "name": "52",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 53,
         "fields": {
-            "name": "53"
+            "name": "53",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 54,
         "fields": {
-            "name": "54"
+            "name": "54",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 55,
         "fields": {
-            "name": "55"
+            "name": "55",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 56,
         "fields": {
-            "name": "56"
+            "name": "56",
+            "is_live": false,
+            "need_equip": true
         }
     },
     {
         "model": "ability.abilitytype",
         "pk": 57,
         "fields": {
-            "name": "57"
+            "name": "57",
+            "is_live": false,
+            "need_equip": true
         }
     }
 ]

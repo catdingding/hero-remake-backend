@@ -27,6 +27,8 @@ class Chara(BaseModel):
                                      related_name="main_ability_charas", on_delete=models.PROTECT)
     job_ability = models.ForeignKey("ability.Ability", null=True,
                                     related_name="job_ability_charas", on_delete=models.PROTECT)
+    live_ability = models.ForeignKey("ability.Ability", null=True,
+                                     related_name="live_ability_charas", on_delete=models.PROTECT)
 
     hp_max = models.PositiveIntegerField()
     hp = models.PositiveIntegerField()
