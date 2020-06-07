@@ -31,9 +31,11 @@ class LearnAbilitySerializer(BaseSerializer):
 
 
 class AbilitySerializer(BaseModelSerializer):
+    is_live = serializers.BooleanField(source='type.is_live')
+
     class Meta:
         model = Ability
-        fields = ['name', 'require_proficiency', 'description']
+        fields = ['id', 'name', 'require_proficiency', 'description', 'is_live']
 
 
 class SetAbilitySerializer(BaseModelSerializer):
