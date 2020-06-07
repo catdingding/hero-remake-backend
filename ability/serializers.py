@@ -2,6 +2,7 @@ from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
 from ability.models import Ability
+from chara.models import Chara
 
 
 class LearnAbilitySerializer(BaseSerializer):
@@ -33,3 +34,31 @@ class AbilitySerializer(BaseModelSerializer):
     class Meta:
         model = Ability
         fields = ['name', 'require_proficiency', 'description']
+
+
+class SetAbilitySerializer(BaseModelSerializer):
+    class Meta:
+        model = Chara
+        fields = ['main_ability', 'job_ability', 'live_ability']
+
+    def validate_main_ability(self, ability):
+        self.is_learned_ability(ability)
+        return ability
+
+    def validate_job_ability(self, ability):
+        chara = self.instance
+        self.is_learned_ability(ability)
+        if chara.job.attribute_type != ability.attribute_type:
+            raise serializers.ValidationError("無法將該奧義裝備為職業奧義")
+        return ability
+
+    def validate_live_ability(self, ability):
+        self.is_learned_ability(ability)
+        if not ability.type.is_live:
+            raise serializers.ValidationError("無法將該奧義裝備為生活奧義")
+        return ability
+
+    def is_learned_ability(self, ability):
+        chara = self.instance
+        if not chara.abilities.filter(pk=ability.pk).exists():
+            raise serializers.ValidationError("尚未習得此奧義")

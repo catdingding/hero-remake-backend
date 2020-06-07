@@ -3,7 +3,7 @@ from base.views import BaseViewSet, BaseGenericAPIView, CharaViewMixin
 from rest_framework.response import Response
 
 from ability.models import Ability
-from ability.serializers import LearnAbilitySerializer, AbilitySerializer
+from ability.serializers import LearnAbilitySerializer, AbilitySerializer, SetAbilitySerializer
 
 
 class LearnAbilityView(CharaViewMixin, BaseGenericAPIView):
@@ -30,3 +30,15 @@ class AvailableToLearnAbilityView(CharaViewMixin, BaseGenericAPIView):
 
         serializer = self.get_serializer(abilities, many=True)
         return Response(serializer.data)
+
+
+class SetAbilityView(CharaViewMixin, BaseGenericAPIView):
+    serializer_class = SetAbilitySerializer
+
+    def post(self, request, chara_id):
+        chara = self.get_chara(lock=True)
+        serializer = self.get_serializer(chara, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'status': 'success'})
