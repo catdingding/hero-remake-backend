@@ -1,7 +1,7 @@
 from base.views import BaseViewSet, BaseGenericAPIView, CharaViewMixin
 from rest_framework.response import Response
 
-from chara.serializers import CharaIntroductionSerializer
+from chara.serializers import CharaIntroductionSerializer, SendMoneySerializer
 
 
 class CharaIntroductionView(CharaViewMixin, BaseGenericAPIView):
@@ -20,3 +20,15 @@ class CharaIntroductionView(CharaViewMixin, BaseGenericAPIView):
         serializer = self.get_serializer(chara.introduction)
 
         return Response(serializer.data)
+
+
+class SendMoneyView(CharaViewMixin, BaseGenericAPIView):
+    serializer_class = SendMoneySerializer
+
+    def post(self, request, chara_id):
+        chara = self.get_chara(lock=True)
+        serializer = self.get_serializer(chara, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'status': 'success'})
