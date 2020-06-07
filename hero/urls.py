@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from world.views import MoveView, MapView
 from user.views import RegistrationView, ChangePasswordView
 from chara.views import CharaIntroductionView, SendMoneyView
-
+from ability.views import LearnAbilityView
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -14,5 +14,6 @@ urlpatterns = [
     path('chara/<int:chara_id>/introduction/', CharaIntroductionView.as_view()),
     path('chara/<int:chara_id>/move/', MoveView.as_view()),
     path('chara/<int:chara_id>/send-money/', SendMoneyView.as_view()),
+    path('chara/<int:chara_id>/ability/learn/', LearnAbilityView.as_view()),
     path('map/', MapView.as_view())
 ]
