@@ -27,3 +27,9 @@ class LearnAbilitySerializer(BaseSerializer):
             if not chara.abilities.filter(pk=ability.prerequisite.pk).exists():
                 raise serializers.ValidationError("需先學習前置奧義")
         return ability
+
+
+class AbilitySerializer(BaseModelSerializer):
+    class Meta:
+        model = Ability
+        fields = ['name', 'require_proficiency', 'description']
