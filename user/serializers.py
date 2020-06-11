@@ -41,6 +41,7 @@ class RegistrationSerializer(BaseSerializer):
         ])
         CharaSlot.objects.bulk_create([CharaSlot(chara=chara, type=slot_type) for slot_type in SlotType.objects.all()])
         CharaIntroduction.objects.create(chara=chara)
+        CharaRecord.objects.create(chara=chara)
 
         return user
 

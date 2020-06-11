@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.timezone import localtime
 from base.models import BaseModel, BaseBuffType
 
@@ -42,16 +43,17 @@ class Chara(BaseModel):
     def level(self):
         return self.exp // 100 + 1
 
-    @property
-    @functools.lru_cache()
+    @cached_property
     def attrs(self):
         return {x.type_id: x for x in self.attributes.all()}
 
+    @property
     def hp_limit(self):
         return self.attrs['str'].value * 5 + self.attrs['vit'].value * 10 + self.attrs['men'].value * 3 - 2000
 
+    @property
     def mp_limit(self):
-        return self.attrs['int'].value * 5 + self.attrs['men'] * 3 - 800
+        return self.attrs['int'].value * 5 + self.attrs['men'].value * 3 - 800
 
     def set_next_action_time(self, n=1):
         self.next_action_time = localtime() + timedelta(seconds=n * 15)
@@ -71,7 +73,7 @@ class Chara(BaseModel):
             self.hp_max += random.randint(0, int(attrs['vit'].value / 40 + attrs['men'].value / 80 + 8))
             self.mp_max += random.randint(0, int(attrs['int'].value / 40 + attrs['men'].value / 80 + 2))
             for attr in attrs.values():
-                if attr.value >= attr.limit and attr.attribute_id != self.job.attribute_id:
+                if attr.value >= attr.limit or (attr.value > 1200 and attr.type_id != self.job.attribute_id):
                     continue
 
                 attr.value += random.randint(0, 1)
@@ -87,6 +89,7 @@ class CharaAttribute(BaseModel):
     type = models.ForeignKey("world.AttributeType", on_delete=models.PROTECT)
     value = models.IntegerField()
     limit = models.IntegerField()
+    proficiency = models.IntegerField()
 
     class Meta:
         unique_together = ('chara', 'type')
@@ -113,7 +116,7 @@ class CharaSkillSetting(BaseModel):
     hp_percentage = models.PositiveSmallIntegerField()
     mp_percentage = models.PositiveSmallIntegerField()
 
-    priority = models.PositiveSmallIntegerField()
+    order = models.IntegerField()
 
 
 class CharaBuffType(BaseBuffType):
@@ -128,6 +131,13 @@ class CharaBuff(BaseModel):
 
     class Meta:
         unique_together = ('chara', 'type')
+
+
+class CharaRecord(BaseModel):
+    chara = models.OneToOneField("chara.Chara", on_delete=models.CASCADE, related_name="record")
+
+    total_battle = models.IntegerField(default=0)
+    monthly_level_up = models.IntegerField(default=0)
 
 
 class CharaIntroduction(BaseModel):

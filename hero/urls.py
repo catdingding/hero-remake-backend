@@ -5,6 +5,7 @@ from world.views import MoveView, MapView
 from user.views import RegistrationView, ChangePasswordView
 from chara.views import CharaIntroductionView, SendMoneyView
 from ability.views import LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView
+from job.views import SetSkillView, AvailableSkillView, AvailableJobView, ChangeJobView
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -18,5 +19,9 @@ urlpatterns = [
     path('chara/<int:chara_id>/ability/available-to-learn/', AvailableToLearnAbilityView.as_view()),
     path('chara/<int:chara_id>/ability/set/', SetAbilityView.as_view()),
     path('chara/<int:chara_id>/ability/available-to-set/', AvailableToSetAbilityView.as_view()),
+    path('chara/<int:chara_id>/skill/set/', SetSkillView.as_view()),
+    path('chara/<int:chara_id>/skill/available/', AvailableSkillView.as_view()),
+    path('chara/<int:chara_id>/job/change/', ChangeJobView.as_view()),
+    path('chara/<int:chara_id>/job/available/', AvailableJobView.as_view()),
     path('map/', MapView.as_view())
 ]
