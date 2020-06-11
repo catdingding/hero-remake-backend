@@ -36,7 +36,8 @@ class Chara(BaseModel):
     mp_max = models.PositiveIntegerField()
     mp = models.PositiveIntegerField()
 
-    items = models.ManyToManyField("item.Item", through="chara.CharaItem")
+    bag_items = models.ManyToManyField("item.Item", related_name="bag_item_chara")
+    storage_items = models.ManyToManyField("item.Item", related_name="storage_item_chara")
     abilities = models.ManyToManyField("ability.Ability")
 
     @property
@@ -102,11 +103,6 @@ class CharaSlot(BaseModel):
 
     class Meta:
         unique_together = ('chara', 'type')
-
-
-class CharaItem(BaseModel):
-    chara = models.ForeignKey("chara.Chara", on_delete=models.CASCADE)
-    item = models.ForeignKey("item.Item", unique=True, on_delete=models.CASCADE)
 
 
 class CharaSkillSetting(BaseModel):
