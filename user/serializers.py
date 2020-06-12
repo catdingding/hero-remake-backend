@@ -5,7 +5,7 @@ from base.serializers import BaseSerializer, BaseModelSerializer
 
 from world.models import AttributeType, Location, SlotType
 from user.models import User
-from chara.models import Chara, CharaAttribute, CharaSlot, CharaIntroduction
+from chara.models import Chara, CharaAttribute, CharaSlot, CharaIntroduction, CharaRecord
 
 
 class RegistrationCharaSerializer(BaseModelSerializer):

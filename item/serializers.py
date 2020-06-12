@@ -2,8 +2,21 @@ from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
 from item.models import Item
+from chara.models import Chara
 
 from item.use_effects import USE_EFFECT_CLASSES
+
+
+class ItemWithNumberSerializer(BaseSerializer):
+    id = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
+    number = serializers.IntegerField(min_value=1)
+
+    def validate(self, data):
+        item = data['id']
+        if data['number'] > item.number:
+            raise serializers.ValidationError("物品數量不足")
+        item.number = data['number']
+        return item
 
 
 class UseItemSerializer(BaseSerializer):
@@ -40,3 +53,18 @@ class UseItemSerializer(BaseSerializer):
             raise serializers.ValidationError("此物品無法使用")
 
         return item
+
+
+class SendItemSerializer(BaseSerializer):
+    items = ItemWithNumberSerializer(many=True)
+    receiver = serializers.PrimaryKeyRelatedField(queryset=Chara.objects.all())
+
+    def save(self):
+        sender = self.instance
+        receiver = self.validated_data['receiver']
+        items = self.validated_data['items']
+
+        list(Chara.objects.filter(id__in=[sender.id, receiver.id]).select_for_update())
+
+        sender.lose_items("bag", items)
+        receiver.get_items("bag", items)

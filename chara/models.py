@@ -3,6 +3,8 @@ from django.utils.functional import cached_property
 from django.utils.timezone import localtime
 from base.models import BaseModel, BaseBuffType
 
+from rest_framework.exceptions import APIException
+
 from datetime import timedelta
 import random
 import functools
@@ -84,13 +86,51 @@ class Chara(BaseModel):
 
         CharaAttribute.objects.bulk_update(attrs.values())
 
+    def get_items(self, kind, items):
+        assert kind in ['bag', 'storage']
+        field = getattr(self, kind + '_items')
+        exists_item_dict = {
+            item.type_id: item for item in
+            field.filter(type__in=[x.type for x in items if x.type.category_id != 1])
+        }
+
+        for item in items:
+            if item.type_id in exists_item_dict:
+                exists_item_dict[item.type_id].number += item.number
+                exists_item_dict[item.type_id].save()
+            else:
+                item.id = None
+                item.save()
+                field.add(item)
+
+    def lose_items(self, kind, items):
+        assert kind in ['bag', 'storage']
+        field = getattr(self, kind + '_items')
+        exists_item_dict = {
+            item.id: item for item in
+            field.filter(id__in=[x.id for x in items])
+        }
+
+        for item in items:
+            if item.id not in exists_item_dict:
+                raise APIException("物品不存在", 400)
+
+            exists_item_dict[item.id].number -= item.number
+
+            if exists_item_dict[item.id].number > 0:
+                exists_item_dict[item.id].save()
+            elif exists_item_dict[item.id].number == 0:
+                exists_item_dict[item.id].delete()
+            else:
+                raise APIException("物品數量不足", 400)
+
 
 class CharaAttribute(BaseModel):
     chara = models.ForeignKey("chara.Chara", on_delete=models.CASCADE, related_name="attributes")
     type = models.ForeignKey("world.AttributeType", on_delete=models.PROTECT)
     value = models.IntegerField()
     limit = models.IntegerField()
-    proficiency = models.IntegerField()
+    proficiency = models.IntegerField(default=0)
 
     class Meta:
         unique_together = ('chara', 'type')

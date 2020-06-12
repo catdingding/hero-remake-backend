@@ -43,9 +43,10 @@ class ItemType(BaseModel):
 class Item(BaseModel):
     type = models.ForeignKey("item.ItemType", on_delete=models.PROTECT)
     number = models.PositiveIntegerField()
+    equipment_profile = models.OneToOneField("item.EquipmentProfile", null=True, on_delete=models.PROTECT)
 
 
-class Equipment(Item):
+class EquipmentProfile(BaseModel):
     QUALITY_CHOICES = [(x, x) for x in ['S', 'A', 'B']]
 
     quality = models.CharField(max_length=1, choices=QUALITY_CHOICES)
