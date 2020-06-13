@@ -68,3 +68,25 @@ class SendItemSerializer(BaseSerializer):
 
         sender.lose_items("bag", items)
         receiver.get_items("bag", items)
+
+
+class StorageTakeSerializer(BaseSerializer):
+    items = ItemWithNumberSerializer(many=True)
+
+    def save(self):
+        chara = self.instance
+        items = self.validated_data['items']
+
+        chara.lose_items("storage", items)
+        chara.get_items("bag", items)
+
+
+class StoragePutSerializer(BaseSerializer):
+    items = ItemWithNumberSerializer(many=True)
+
+    def save(self):
+        chara = self.instance
+        items = self.validated_data['items']
+
+        chara.lose_items("bag", items)
+        chara.get_items("storage", items)
