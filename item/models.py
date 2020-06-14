@@ -41,6 +41,7 @@ class ItemType(BaseModel):
 
 
 class Item(BaseModel):
+    id = models.BigAutoField(primary_key=True)
     type = models.ForeignKey("item.ItemType", on_delete=models.PROTECT)
     number = models.PositiveIntegerField()
     equipment_profile = models.OneToOneField("item.EquipmentProfile", null=True, on_delete=models.PROTECT)

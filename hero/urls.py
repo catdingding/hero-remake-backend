@@ -7,6 +7,7 @@ from chara.views import CharaIntroductionView, SendMoneyView
 from ability.views import LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView
 from job.views import SetSkillView, AvailableSkillView, AvailableJobView, ChangeJobView
 from item.views import UseItemView, SendItemView, StorageTakeView, StoragePutView
+from country.views import FoundCountryView
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -28,5 +29,6 @@ urlpatterns = [
     path('chara/<int:chara_id>/item/send/', SendItemView.as_view()),
     path('chara/<int:chara_id>/storage/take/', StorageTakeView.as_view()),
     path('chara/<int:chara_id>/storage/put/', StoragePutView.as_view()),
+    path('chara/<int:chara_id>/country/found/', FoundCountryView.as_view()),
     path('map/', MapView.as_view())
 ]

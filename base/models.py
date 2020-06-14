@@ -8,6 +8,9 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
+    def lock(self):
+        return type(self).objects.select_for_update().get(pk=self.pk)
+
 
 class BaseBuffType(BaseModel):
     name = models.CharField(max_length=20, unique=True)

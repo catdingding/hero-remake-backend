@@ -17,14 +17,16 @@ class Chara(BaseModel):
     next_action_time = models.DateTimeField(default=localtime)
 
     location = models.ForeignKey("world.Location", on_delete=models.PROTECT)
+    country = models.ForeignKey("country.Country", null=True,
+                                related_name="citizens", on_delete=models.SET_NULL)
 
     element_type = models.ForeignKey("world.ElementType", on_delete=models.PROTECT)
     job = models.ForeignKey("job.Job", on_delete=models.PROTECT)
 
     exp = models.PositiveIntegerField(default=0)
-    proficiency = models.PositiveIntegerField(default=0)
+    proficiency = models.BigIntegerField(default=0)
 
-    gold = models.PositiveIntegerField(default=0)
+    gold = models.BigIntegerField(default=0)
 
     main_ability = models.ForeignKey("ability.Ability", null=True,
                                      related_name="main_ability_charas", on_delete=models.PROTECT)
@@ -89,15 +91,15 @@ class Chara(BaseModel):
     def get_items(self, kind, items):
         assert kind in ['bag', 'storage']
         field = getattr(self, kind + '_items')
-        exists_item_dict = {
+        exists_item_by_type = {
             item.type_id: item for item in
             field.filter(type__in=[x.type for x in items if x.type.category_id != 1])
         }
 
         for item in items:
-            if item.type_id in exists_item_dict:
-                exists_item_dict[item.type_id].number += item.number
-                exists_item_dict[item.type_id].save()
+            if item.type_id in exists_item_by_type:
+                exists_item_by_type[item.type_id].number += item.number
+                exists_item_by_type[item.type_id].save()
             else:
                 item.id = None
                 item.save()
@@ -106,23 +108,33 @@ class Chara(BaseModel):
     def lose_items(self, kind, items):
         assert kind in ['bag', 'storage']
         field = getattr(self, kind + '_items')
-        exists_item_dict = {
+        exists_item_by_id = {
             item.id: item for item in
-            field.filter(id__in=[x.id for x in items])
+            field.filter(id__in=[x.id for x in items if x.id is not None])
         }
+        exists_item_by_type = {
+            item.type_id: item for item in
+            field.filter(type__in=[x.type_id for x in items if x.type_id is not None])
+        }
+        for k, v in exists_item_by_type.items():
+            exists_item_by_type[k] = exists_item_by_id.get(v.id, v)
 
         for item in items:
-            if item.id not in exists_item_dict:
-                raise APIException("物品不存在", 400)
-
-            exists_item_dict[item.id].number -= item.number
-
-            if exists_item_dict[item.id].number > 0:
-                exists_item_dict[item.id].save()
-            elif exists_item_dict[item.id].number == 0:
-                exists_item_dict[item.id].delete()
+            if item.id in exists_item_by_id:
+                exists_item = exists_item_by_id[item.id]
+            elif item.type_id in exists_item_by_type:
+                exists_item = exists_item_by_type[item.type_id]
             else:
-                raise APIException("物品數量不足", 400)
+                raise APIException(f"未擁有{item.type.name}", 400)
+
+            exists_item.number -= item.number
+
+            if exists_item.number > 0:
+                exists_item.save()
+            elif exists_item.number == 0:
+                exists_item.delete()
+            else:
+                raise APIException(f"{item.type.name}數量不足", 400)
 
 
 class CharaAttribute(BaseModel):
