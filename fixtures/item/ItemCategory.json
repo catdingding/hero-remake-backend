@@ -18,5 +18,12 @@
         "fields": {
             "name": "奧義石"
         }
+    },
+    {
+        "model": "item.ItemCategory",
+        "pk": 4,
+        "fields": {
+            "name": "原料"
+        }
     }
 ]
