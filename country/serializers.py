@@ -25,13 +25,45 @@ class FoundCountrySerializer(BaseModelSerializer):
 
     def validate(self, data):
         chara = self.instance
-        chara.location.lock()
+        location = chara.location.lock()
         if chara.country is not None:
             raise serializers.ValidationError("僅無所屬角色可以建國")
-        if not hasattr(chara.location, 'town'):
+        if not hasattr(location, 'town'):
             raise serializers.ValidationError("需於有城鎮的地點建國")
-        if chara.location.town.country is not None:
+        if location.town.country is not None:
             raise serializers.ValidationError("僅可於無所屬城鎮建國")
         if chara.gold < 5000000000:
             raise serializers.ValidationError("你的資金不足 50 億")
+        return data
+
+
+class JoinCountrySerializer(BaseSerializer):
+    country = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all())
+
+    def save(self):
+        chara = self.instance
+
+        chara.country = self.validated_data['country']
+        chara.save()
+
+    def validate(self, data):
+        chara = self.instance
+        if chara.country is not None:
+            raise serializers.ValidationError("僅無所屬角色可以入國")
+        return data
+
+
+class LeaveCountrySerializer(BaseSerializer):
+    def save(self):
+        chara = self.instance
+
+        chara.country = None
+        chara.save()
+
+    def validate(self, data):
+        chara = self.instance
+        if chara.country is None:
+            raise serializers.ValidationError("無所屬角色無法離開國家")
+        if chara.country.king == chara:
+            raise serializers.ValidationError("國王無法離開國家")
         return data
