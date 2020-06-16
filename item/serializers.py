@@ -46,7 +46,7 @@ class UseItemSerializer(BaseSerializer):
         return data
 
     def validate_item(self, item_id):
-        item = self.instance.bag_items.filter(id=item_id).select_for_update().first()
+        item = self.instance.bag_items.filter(id=item_id).first()
         if item is None:
             raise serializers.ValidationError("背包中無此物品")
         if item.type.use_effect.id is None:
@@ -66,7 +66,7 @@ class SendItemSerializer(BaseSerializer):
 
         list(Chara.objects.filter(id__in=[sender.id, receiver.id]).select_for_update())
 
-        sender.lose_items("bag", items)
+        items = sender.lose_items("bag", items, mode='return')
         receiver.get_items("bag", items)
 
 
@@ -77,7 +77,7 @@ class StorageTakeSerializer(BaseSerializer):
         chara = self.instance
         items = self.validated_data['items']
 
-        chara.lose_items("storage", items)
+        items = chara.lose_items("storage", items, mode='return')
         chara.get_items("bag", items)
 
 
@@ -88,5 +88,5 @@ class StoragePutSerializer(BaseSerializer):
         chara = self.instance
         items = self.validated_data['items']
 
-        chara.lose_items("bag", items)
+        items = chara.lose_items("bag", items, mode='return')
         chara.get_items("storage", items)

@@ -1,13 +1,15 @@
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.timezone import localtime
-from base.models import BaseModel, BaseBuffType
 
 from rest_framework.exceptions import APIException
 
 from datetime import timedelta
 import random
 import functools
+
+from base.models import BaseModel, BaseBuffType
+from base.utils import get_items, lose_items
 
 
 class Chara(BaseModel):
@@ -88,53 +90,17 @@ class Chara(BaseModel):
 
         CharaAttribute.objects.bulk_update(attrs.values())
 
-    def get_items(self, kind, items):
+    def get_items(self, kind, *args, **kwargs):
         assert kind in ['bag', 'storage']
         field = getattr(self, kind + '_items')
-        exists_item_by_type = {
-            item.type_id: item for item in
-            field.filter(type__in=[x.type for x in items if x.type.category_id != 1])
-        }
 
-        for item in items:
-            if item.type_id in exists_item_by_type:
-                exists_item_by_type[item.type_id].number += item.number
-                exists_item_by_type[item.type_id].save()
-            else:
-                item.id = None
-                item.save()
-                field.add(item)
+        return get_items(field, *args, **kwargs)
 
-    def lose_items(self, kind, items):
+    def lose_items(self, kind, *args, **kwargs):
         assert kind in ['bag', 'storage']
         field = getattr(self, kind + '_items')
-        exists_item_by_id = {
-            item.id: item for item in
-            field.filter(id__in=[x.id for x in items if x.id is not None])
-        }
-        exists_item_by_type = {
-            item.type_id: item for item in
-            field.filter(type__in=[x.type_id for x in items if x.type_id is not None])
-        }
-        for k, v in exists_item_by_type.items():
-            exists_item_by_type[k] = exists_item_by_id.get(v.id, v)
 
-        for item in items:
-            if item.id in exists_item_by_id:
-                exists_item = exists_item_by_id[item.id]
-            elif item.type_id in exists_item_by_type:
-                exists_item = exists_item_by_type[item.type_id]
-            else:
-                raise APIException(f"未擁有{item.type.name}", 400)
-
-            exists_item.number -= item.number
-
-            if exists_item.number > 0:
-                exists_item.save()
-            elif exists_item.number == 0:
-                exists_item.delete()
-            else:
-                raise APIException(f"{item.type.name}數量不足", 400)
+        return lose_items(field, *args, **kwargs)
 
 
 class CharaAttribute(BaseModel):

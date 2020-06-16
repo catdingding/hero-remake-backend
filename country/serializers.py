@@ -150,7 +150,7 @@ class CountryItemTakeSerializer(BaseSerializer):
         country = chara.country
         items = self.validated_data['items']
 
-        country.lose_items(items)
+        items = country.lose_items(items, mode='return')
         chara.get_items("bag", items)
 
 
@@ -162,7 +162,7 @@ class CountryItemPutSerializer(BaseSerializer):
         country = chara.country
         items = self.validated_data['items']
 
-        chara.lose_items("bag", items)
+        items = chara.lose_items("bag", items, mode='return')
         country.get_items(items)
 
 

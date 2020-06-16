@@ -3,7 +3,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from world.views import MoveView, MapView
 from user.views import RegistrationView, ChangePasswordView
-from chara.views import CharaIntroductionView, SendMoneyView
+from chara.views import CharaIntroductionView, SendMoneyView, SlotEquipView, SlotDivestView
 from ability.views import LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView
 from job.views import SetSkillView, AvailableSkillView, AvailableJobView, ChangeJobView
 from item.views import UseItemView, SendItemView, StorageTakeView, StoragePutView
@@ -32,6 +32,8 @@ urlpatterns = [
     path('chara/<int:chara_id>/item/send/', SendItemView.as_view()),
     path('chara/<int:chara_id>/storage/take/', StorageTakeView.as_view()),
     path('chara/<int:chara_id>/storage/put/', StoragePutView.as_view()),
+    path('chara/<int:chara_id>/slot/equip/', SlotEquipView.as_view()),
+    path('chara/<int:chara_id>/slot/divest/', SlotDivestView.as_view()),
     path('chara/<int:chara_id>/country/found/', FoundCountryView.as_view()),
     path('chara/<int:chara_id>/country/join/', JoinCountryView.as_view()),
     path('chara/<int:chara_id>/country/leave/', LeaveCountryView.as_view()),
