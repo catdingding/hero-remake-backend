@@ -7,7 +7,9 @@ from chara.views import CharaIntroductionView, SendMoneyView
 from ability.views import LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView
 from job.views import SetSkillView, AvailableSkillView, AvailableJobView, ChangeJobView
 from item.views import UseItemView, SendItemView, StorageTakeView, StoragePutView
-from country.views import FoundCountryView, JoinCountryView, LeaveCountryView
+from country.views import (
+    FoundCountryView, JoinCountryView, LeaveCountryView, ChangeKingView, CountryDismissView, SetOfficialsView
+)
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -32,5 +34,8 @@ urlpatterns = [
     path('chara/<int:chara_id>/country/found/', FoundCountryView.as_view()),
     path('chara/<int:chara_id>/country/join/', JoinCountryView.as_view()),
     path('chara/<int:chara_id>/country/leave/', LeaveCountryView.as_view()),
+    path('country/<int:country_id>/change-king/', ChangeKingView.as_view()),
+    path('country/<int:country_id>/dismiss/', CountryDismissView.as_view()),
+    path('country/<int:country_id>/set-officials/', SetOfficialsView.as_view()),
     path('map/', MapView.as_view())
 ]
