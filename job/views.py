@@ -6,7 +6,7 @@ from job.models import Job, Skill
 from job.serializers import JobSerializer, ChangeJobSerializer, SetSkillSettingSerializer, SkillSerializer
 
 
-class AvailableJobView(CharaViewMixin, BaseGenericAPIView):
+class AvailableJobView(BaseGenericAPIView):
     serializer_class = JobSerializer
 
     def get(self, request, chara_id):
@@ -14,7 +14,7 @@ class AvailableJobView(CharaViewMixin, BaseGenericAPIView):
         jobs = Job.objects.raw("""
             SELECT job.* FROM job_job as job WHERE NOT EXISTS(
                 SELECT * FROM job_jobattribute as job_attr INNER JOIN chara_charaattribute as chara_attr
-                ON 
+                ON
                     chara_attr.chara_id=%s AND job_attr.type_id = chara_attr.type_id AND
                     (
                         job_attr.require_value > chara_attr.value OR
@@ -27,7 +27,7 @@ class AvailableJobView(CharaViewMixin, BaseGenericAPIView):
         return Response(serializer.data)
 
 
-class ChangeJobView(CharaViewMixin, BaseGenericAPIView):
+class ChangeJobView(BaseGenericAPIView):
     serializer_class = ChangeJobSerializer
 
     def post(self, request, chara_id):
@@ -39,7 +39,7 @@ class ChangeJobView(CharaViewMixin, BaseGenericAPIView):
         return Response({'status': 'success'})
 
 
-class SetSkillView(CharaViewMixin, BaseGenericAPIView):
+class SetSkillView(BaseGenericAPIView):
     serializer_class = SetSkillSettingSerializer
 
     def post(self, request, chara_id):
@@ -51,7 +51,7 @@ class SetSkillView(CharaViewMixin, BaseGenericAPIView):
         return Response({'status': 'success'})
 
 
-class AvailableSkillView(CharaViewMixin, BaseGenericAPIView):
+class AvailableSkillView(BaseGenericAPIView):
     serializer_class = SkillSerializer
 
     def get(self, request, chara_id):

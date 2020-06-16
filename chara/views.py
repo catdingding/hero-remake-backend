@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from chara.serializers import CharaIntroductionSerializer, SendMoneySerializer
 
 
-class CharaIntroductionView(CharaViewMixin, BaseGenericAPIView):
+class CharaIntroductionView(BaseGenericAPIView):
     serializer_class = CharaIntroductionSerializer
 
     def put(self, request, chara_id):
@@ -22,7 +22,7 @@ class CharaIntroductionView(CharaViewMixin, BaseGenericAPIView):
         return Response(serializer.data)
 
 
-class SendMoneyView(CharaViewMixin, BaseGenericAPIView):
+class SendMoneyView(BaseGenericAPIView):
     serializer_class = SendMoneySerializer
 
     def post(self, request, chara_id):

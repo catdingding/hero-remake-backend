@@ -5,6 +5,8 @@ from country.models import Country, CountryOfficial
 from item.models import Item
 from chara.models import Chara
 
+from item.serializers import ItemWithNumberSerializer
+
 
 class FoundCountrySerializer(BaseModelSerializer):
     class Meta:
@@ -138,3 +140,48 @@ class SetOfficialsSerializer(BaseSerializer):
             if official['chara'].country == country.king:
                 raise serializers.ValidationError("不可將官職任命給國王")
         return officials
+
+
+class CountryItemTakeSerializer(BaseSerializer):
+    items = ItemWithNumberSerializer(many=True)
+
+    def save(self):
+        chara = self.instance
+        country = chara.country
+        items = self.validated_data['items']
+
+        country.lose_items(items)
+        chara.get_items("bag", items)
+
+
+class CountryItemPutSerializer(BaseSerializer):
+    items = ItemWithNumberSerializer(many=True)
+
+    def save(self):
+        chara = self.instance
+        country = chara.country
+        items = self.validated_data['items']
+
+        chara.lose_items("bag", items)
+        country.get_items(items)
+
+
+class CountryDonateSerializer(BaseSerializer):
+    gold = serializers.IntegerField(min_value=1)
+
+    def save(self):
+        chara = self.instance
+        country = chara.country
+        gold = self.validated_data['gold']
+
+        chara.gold -= gold
+        country.gold += gold
+
+        chara.save()
+        country.save()
+
+    def validate_gold(self, gold):
+        chara = self.instance
+        if gold > chara.gold:
+            raise serializers.ValidationError("金錢不足")
+        return gold

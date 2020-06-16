@@ -6,7 +6,7 @@ from world.serializers import MoveSerializer, LocationSerializer, MapQuerySerial
 from world.models import Location
 
 
-class MoveView(CharaViewMixin, BaseGenericAPIView):
+class MoveView(BaseGenericAPIView):
     serializer_class = MoveSerializer
 
     def post(self, request, chara_id):

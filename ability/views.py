@@ -6,7 +6,7 @@ from ability.models import Ability
 from ability.serializers import LearnAbilitySerializer, AbilitySerializer, SetAbilitySerializer
 
 
-class LearnAbilityView(CharaViewMixin, BaseGenericAPIView):
+class LearnAbilityView(BaseGenericAPIView):
     serializer_class = LearnAbilitySerializer
 
     def post(self, request, chara_id):
@@ -18,7 +18,7 @@ class LearnAbilityView(CharaViewMixin, BaseGenericAPIView):
         return Response({'status': 'success'})
 
 
-class AvailableToLearnAbilityView(CharaViewMixin, BaseGenericAPIView):
+class AvailableToLearnAbilityView(BaseGenericAPIView):
     serializer_class = AbilitySerializer
 
     def get(self, request, chara_id):
@@ -33,7 +33,7 @@ class AvailableToLearnAbilityView(CharaViewMixin, BaseGenericAPIView):
         return Response(serializer.data)
 
 
-class SetAbilityView(CharaViewMixin, BaseGenericAPIView):
+class SetAbilityView(BaseGenericAPIView):
     serializer_class = SetAbilitySerializer
 
     def post(self, request, chara_id):
@@ -45,7 +45,7 @@ class SetAbilityView(CharaViewMixin, BaseGenericAPIView):
         return Response({'status': 'success'})
 
 
-class AvailableToSetAbilityView(CharaViewMixin, BaseGenericAPIView):
+class AvailableToSetAbilityView(BaseGenericAPIView):
     serializer_class = AbilitySerializer
 
     def get(self, request, chara_id):

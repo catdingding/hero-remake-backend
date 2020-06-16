@@ -6,15 +6,6 @@ from rest_framework import viewsets, views, generics, exceptions
 from chara.models import Chara
 from country.models import Country, CountryOfficial
 
-
-class BaseViewSet(viewsets.ViewSet):
-    pass
-
-
-class BaseGenericAPIView(generics.GenericAPIView):
-    pass
-
-
 class CharaViewMixin:
     def get_chara(self, lock=False, check_next_action_time=False):
         queryset = self.request.user.charas.filter(id=self.kwargs['chara_id'])
@@ -33,26 +24,34 @@ class CharaViewMixin:
 
 
 class CountryViewMixin:
-    def get_country(self, role=None, lock=False):
-        user = self.request.user
-        queryset = Country.objects.filter(id=self.kwargs['country_id'])
+    def get_country(self, role, lock=False):
+        chara = self.get_chara()
+        country = chara.country
 
-        is_king = Exists(Chara.objects.filter(user=user, id=OuterRef('king')))
-        is_official = Exists(CountryOfficial.objects.filter(chara__user=user, country=OuterRef('id')))
-        is_citizen = Exists(Chara.objects.filter(user=user, country=OuterRef('id')))
+        if country is None:
+            raise exceptions.APIException(f"未加入國家")
+
         if role == 'king':
-            queryset = queryset.filter(is_king)
+            pass_role_check = (country.king == chara)
         elif role == 'official':
-            queryset = queryset.filter(is_king | is_official)
+            pass_role_check = (country.king == chara) or (country.officials.filter(chara=chara).exists())
         elif role == 'citizen':
-            queryset = queryset.filter(is_citizen)
-        elif role is not None:
+            pass_role_check = True
+        else:
             raise Exception("ilegal role setting")
 
-        if lock:
-            queryset = queryset.select_for_update()
+        if not pass_role_check:
+            raise exceptions.APIException(f"沒有足夠的對國家權限")
 
-        country = queryset.first()
-        if country is None:
-            raise exceptions.PermissionDenied("國家錯誤")
+        if lock:
+            country = country.lock()
+
         return country
+
+
+class BaseViewSet(CountryViewMixin, CharaViewMixin, viewsets.ViewSet):
+    pass
+
+
+class BaseGenericAPIView(CountryViewMixin, CharaViewMixin, generics.GenericAPIView):
+    pass

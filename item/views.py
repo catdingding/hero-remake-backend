@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from item.serializers import UseItemSerializer, SendItemSerializer, StorageTakeSerializer, StoragePutSerializer
 
 
-class UseItemView(CharaViewMixin, BaseGenericAPIView):
+class UseItemView(BaseGenericAPIView):
     serializer_class = UseItemSerializer
 
     def post(self, request, chara_id):
@@ -17,7 +17,7 @@ class UseItemView(CharaViewMixin, BaseGenericAPIView):
         return Response({'detail': result})
 
 
-class SendItemView(CharaViewMixin, BaseGenericAPIView):
+class SendItemView(BaseGenericAPIView):
     serializer_class = SendItemSerializer
 
     def post(self, request, chara_id):
@@ -29,7 +29,7 @@ class SendItemView(CharaViewMixin, BaseGenericAPIView):
         return Response({'status': 'success'})
 
 
-class StorageTakeView(CharaViewMixin, BaseGenericAPIView):
+class StorageTakeView(BaseGenericAPIView):
     serializer_class = StorageTakeSerializer
 
     def post(self, request, chara_id):
@@ -41,7 +41,7 @@ class StorageTakeView(CharaViewMixin, BaseGenericAPIView):
         return Response({'status': 'success'})
 
 
-class StoragePutView(CharaViewMixin, BaseGenericAPIView):
+class StoragePutView(BaseGenericAPIView):
     serializer_class = StoragePutSerializer
 
     def post(self, request, chara_id):
