@@ -2,9 +2,11 @@ from django.db.models import Q, Exists, OuterRef
 from django.utils.timezone import localtime
 
 from rest_framework import viewsets, views, generics, exceptions
+from rest_framework.response import Response
 
 from chara.models import Chara
 from country.models import Country, CountryOfficial
+
 
 class CharaViewMixin:
     def get_chara(self, lock=False, check_next_action_time=False):
@@ -47,6 +49,18 @@ class CountryViewMixin:
             country = country.lock()
 
         return country
+
+
+class CharaPostViewMixin:
+    LOCK_CHARA = True
+
+    def post(self, request, chara_id):
+        chara = self.get_chara(lock=self.LOCK_CHARA)
+        serializer = self.get_serializer(chara, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        result = serializer.save()
+
+        return Response({'status': 'success'})
 
 
 class BaseViewSet(CountryViewMixin, CharaViewMixin, viewsets.ViewSet):

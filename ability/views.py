@@ -1,21 +1,13 @@
 from django.db.models import Q
-from base.views import BaseViewSet, BaseGenericAPIView, CharaViewMixin
+from base.views import BaseGenericAPIView, CharaPostViewMixin
 from rest_framework.response import Response
 
 from ability.models import Ability
 from ability.serializers import LearnAbilitySerializer, AbilitySerializer, SetAbilitySerializer
 
 
-class LearnAbilityView(BaseGenericAPIView):
+class LearnAbilityView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = LearnAbilitySerializer
-
-    def post(self, request, chara_id):
-        chara = self.get_chara(lock=True)
-        serializer = self.get_serializer(chara, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response({'status': 'success'})
 
 
 class AvailableToLearnAbilityView(BaseGenericAPIView):
@@ -33,16 +25,8 @@ class AvailableToLearnAbilityView(BaseGenericAPIView):
         return Response(serializer.data)
 
 
-class SetAbilityView(BaseGenericAPIView):
+class SetAbilityView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SetAbilitySerializer
-
-    def post(self, request, chara_id):
-        chara = self.get_chara(lock=True)
-        serializer = self.get_serializer(chara, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response({'status': 'success'})
 
 
 class AvailableToSetAbilityView(BaseGenericAPIView):

@@ -1,4 +1,4 @@
-from base.views import BaseViewSet, BaseGenericAPIView, CharaViewMixin
+from base.views import BaseGenericAPIView, CharaPostViewMixin
 from rest_framework.response import Response
 
 from chara.serializers import (
@@ -24,37 +24,13 @@ class CharaIntroductionView(BaseGenericAPIView):
         return Response(serializer.data)
 
 
-class SendMoneyView(BaseGenericAPIView):
+class SendMoneyView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SendMoneySerializer
 
-    def post(self, request, chara_id):
-        chara = self.get_chara(lock=True)
-        serializer = self.get_serializer(chara, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
 
-        return Response({'status': 'success'})
-
-
-class SlotEquipView(BaseGenericAPIView):
+class SlotEquipView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SlotEquipSerializer
 
-    def post(self, request, chara_id):
-        chara = self.get_chara(lock=True)
-        serializer = self.get_serializer(chara, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
 
-        return Response({'status': 'success'})
-
-
-class SlotDivestView(BaseGenericAPIView):
+class SlotDivestView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SlotDivestSerializer
-
-    def post(self, request, chara_id):
-        chara = self.get_chara(lock=True)
-        serializer = self.get_serializer(chara, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response({'status': 'success'})

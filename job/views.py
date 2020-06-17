@@ -1,5 +1,5 @@
 from django.db.models import Q, Exists, OuterRef
-from base.views import BaseViewSet, BaseGenericAPIView, CharaViewMixin
+from base.views import BaseGenericAPIView, CharaPostViewMixin
 from rest_framework.response import Response
 
 from job.models import Job, Skill
@@ -27,28 +27,12 @@ class AvailableJobView(BaseGenericAPIView):
         return Response(serializer.data)
 
 
-class ChangeJobView(BaseGenericAPIView):
+class ChangeJobView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = ChangeJobSerializer
 
-    def post(self, request, chara_id):
-        chara = self.get_chara(lock=True)
-        serializer = self.get_serializer(chara, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
 
-        return Response({'status': 'success'})
-
-
-class SetSkillView(BaseGenericAPIView):
+class SetSkillView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SetSkillSettingSerializer
-
-    def post(self, request, chara_id):
-        chara = self.get_chara()
-        serializer = self.get_serializer(chara, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response({'status': 'success'})
 
 
 class AvailableSkillView(BaseGenericAPIView):
