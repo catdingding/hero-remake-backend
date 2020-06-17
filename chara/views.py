@@ -9,7 +9,7 @@ from chara.serializers import (
 class CharaIntroductionView(BaseGenericAPIView):
     serializer_class = CharaIntroductionSerializer
 
-    def put(self, request, chara_id):
+    def put(self, request):
         chara = self.get_chara()
         serializer = self.get_serializer(chara.introduction, data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -17,7 +17,7 @@ class CharaIntroductionView(BaseGenericAPIView):
 
         return Response({'status': 'success'})
 
-    def get(self, request, chara_id):
+    def get(self, request):
         chara = self.get_chara()
         serializer = self.get_serializer(chara.introduction)
 

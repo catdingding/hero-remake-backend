@@ -23,7 +23,7 @@ class LeaveCountryView(CharaPostViewMixin, BaseGenericAPIView):
 class CountryDismissView(BaseGenericAPIView):
     serializer_class = CountryDismissSerializer
 
-    def post(self, request, chara_id):
+    def post(self, request):
         country = self.get_country(role='official', lock=True)
         serializer = self.get_serializer(country, data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -35,7 +35,7 @@ class CountryDismissView(BaseGenericAPIView):
 class ChangeKingView(BaseGenericAPIView):
     serializer_class = ChangeKingSerializer
 
-    def post(self, request, chara_id):
+    def post(self, request):
         country = self.get_country(role='king', lock=True)
         serializer = self.get_serializer(country, data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -47,7 +47,7 @@ class ChangeKingView(BaseGenericAPIView):
 class SetOfficialsView(BaseGenericAPIView):
     serializer_class = SetOfficialsSerializer
 
-    def post(self, request, chara_id):
+    def post(self, request):
         country = self.get_country(role='king', lock=True)
         serializer = self.get_serializer(country, data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -59,7 +59,7 @@ class SetOfficialsView(BaseGenericAPIView):
 class CountryItemTakeView(BaseGenericAPIView):
     serializer_class = CountryItemTakeSerializer
 
-    def post(self, request, chara_id):
+    def post(self, request):
         chara = self.get_chara(lock=True)
         country = self.get_country(role='official', lock=True)
         serializer = self.get_serializer(chara, data=request.data)
@@ -72,7 +72,7 @@ class CountryItemTakeView(BaseGenericAPIView):
 class CountryItemPutView(BaseGenericAPIView):
     serializer_class = CountryItemPutSerializer
 
-    def post(self, request, chara_id):
+    def post(self, request):
         chara = self.get_chara(lock=True)
         country = self.get_country(role='citizen', lock=True)
         serializer = self.get_serializer(chara, data=request.data)
@@ -85,7 +85,7 @@ class CountryItemPutView(BaseGenericAPIView):
 class CountryDonateView(BaseGenericAPIView):
     serializer_class = CountryDonateSerializer
 
-    def post(self, request, chara_id):
+    def post(self, request):
         chara = self.get_chara(lock=True)
         country = self.get_country(role='citizen', lock=True)
         serializer = self.get_serializer(chara, data=request.data)

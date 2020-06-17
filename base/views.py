@@ -10,7 +10,7 @@ from country.models import Country, CountryOfficial
 
 class CharaViewMixin:
     def get_chara(self, lock=False, check_next_action_time=False):
-        queryset = self.request.user.charas.filter(id=self.kwargs['chara_id'])
+        queryset = self.request.user.charas.filter(id=int(self.request.headers['Chara-ID']))
         if lock:
             queryset = queryset.select_for_update()
 
@@ -54,7 +54,7 @@ class CountryViewMixin:
 class CharaPostViewMixin:
     LOCK_CHARA = True
 
-    def post(self, request, chara_id):
+    def post(self, request):
         chara = self.get_chara(lock=self.LOCK_CHARA)
         serializer = self.get_serializer(chara, data=request.data)
         serializer.is_valid(raise_exception=True)

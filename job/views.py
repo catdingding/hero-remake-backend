@@ -9,7 +9,7 @@ from job.serializers import JobSerializer, ChangeJobSerializer, SetSkillSettingS
 class AvailableJobView(BaseGenericAPIView):
     serializer_class = JobSerializer
 
-    def get(self, request, chara_id):
+    def get(self, request):
         chara = self.get_chara()
         jobs = Job.objects.raw("""
             SELECT job.* FROM job_job as job WHERE NOT EXISTS(
@@ -38,7 +38,7 @@ class SetSkillView(CharaPostViewMixin, BaseGenericAPIView):
 class AvailableSkillView(BaseGenericAPIView):
     serializer_class = SkillSerializer
 
-    def get(self, request, chara_id):
+    def get(self, request):
         chara = self.get_chara()
         skills = Skill.objects.filter(attribute_type=chara.job.attribute_type, rank__lte=chara.job.rank)
         serializer = self.get_serializer(skills, many=True)

@@ -13,7 +13,7 @@ class LearnAbilityView(CharaPostViewMixin, BaseGenericAPIView):
 class AvailableToLearnAbilityView(BaseGenericAPIView):
     serializer_class = AbilitySerializer
 
-    def get(self, request, chara_id):
+    def get(self, request):
         chara = self.get_chara()
 
         abilities = Ability.objects.filter(Q(prerequisite__in=chara.abilities.all()) | Q(prerequisite__isnull=True),
@@ -32,7 +32,7 @@ class SetAbilityView(CharaPostViewMixin, BaseGenericAPIView):
 class AvailableToSetAbilityView(BaseGenericAPIView):
     serializer_class = AbilitySerializer
 
-    def get(self, request, chara_id):
+    def get(self, request):
         chara = self.get_chara()
 
         abilities = chara.abilities.filter(type__need_equip=True).select_related('type')

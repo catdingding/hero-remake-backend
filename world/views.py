@@ -9,7 +9,7 @@ from world.models import Location
 class MoveView(BaseGenericAPIView):
     serializer_class = MoveSerializer
 
-    def post(self, request, chara_id):
+    def post(self, request):
         chara = self.get_chara(lock=True, check_next_action_time=True)
         serializer = self.get_serializer(chara, data=request.data)
         serializer.is_valid(raise_exception=True)
