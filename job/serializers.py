@@ -17,7 +17,7 @@ class ChangeJobSerializer(BaseSerializer):
     job = serializers.PrimaryKeyRelatedField(queryset=Job.objects.all())
 
     def save(self):
-        chara = self.instance
+        chara = self.chara
         job = self.validated_data['job']
 
         # calculat bonus
@@ -54,16 +54,17 @@ class ChangeJobSerializer(BaseSerializer):
         chara.save()
 
     def validate_job(self, job):
-        chara = self.instance
         for job_attr in job.attributes.all():
             attr_type = job_attr.type_id
-            if job_attr.require_value > chara.attrs[attr_type].value or job_attr.require_proficiency > chara.attrs[attr_type].proficiency:
-                raise serializers.ValidationError("無法轉職為該職業")
+            if job_attr.require_value > self.chara.attrs[attr_type].value:
+                raise serializers.ValidationError("能力不足")
+            if job_attr.require_proficiency > self.chara.attrs[attr_type].proficiency:
+                raise serializers.ValidationError("職業熟練不足")
 
         return job
 
     def validate(self, data):
-        if self.instance.level < 100:
+        if self.chara.level < 100:
             raise serializers.ValidationError("等級不足 100")
         return data
 
@@ -85,19 +86,18 @@ class SetSkillSettingSerializer(BaseSerializer):
 
     def save(self):
         CharaSkillSetting.objects.bulk_create([
-            CharaSkillSetting(chara=self.instance, **setting)
+            CharaSkillSetting(chara=self.chara, **setting)
             for setting in self.validated_data['settings']
         ])
 
     def validate_settings(self, settings):
-        chara = self.instance
         if len(settings) > 10:
             raise serializers.ValidationError("不可設定超過10項")
 
         for setting in settings:
             skill = settings.skill
-            if skill.attribute_type != chara.job.attribute_type:
+            if skill.attribute_type != self.chara.job.attribute_type:
                 raise serializers.ValidationError("無法使用該類型技能")
-            if skill.rank > chara.job.rank:
+            if skill.rank > self.chara.job.rank:
                 raise serializers.ValidationError("無法使用該級別技能")
         return settings

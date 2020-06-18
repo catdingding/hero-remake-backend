@@ -10,7 +10,7 @@ class UseItemView(BaseGenericAPIView):
 
     def post(self, request):
         chara = self.get_chara(lock=True)
-        serializer = self.get_serializer(chara, data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = serializer.save()
 

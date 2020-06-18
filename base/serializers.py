@@ -9,6 +9,11 @@ class ContextMixin:
         if self.request:
             self.user = self.request.user
 
+            if hasattr(self.request, 'chara'):
+                self.chara = self.request.chara
+            if hasattr(self.request, 'country'):
+                self.country = self.request.country
+
 
 class BaseSerializer(ContextMixin, serializers.Serializer):
     pass

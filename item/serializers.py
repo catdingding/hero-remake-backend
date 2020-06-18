@@ -24,11 +24,10 @@ class UseItemSerializer(BaseSerializer):
     number = serializers.IntegerField(min_value=1)
 
     def save(self):
-        chara = self.instance
         item = self.validated_data['item']
         number = self.validated_data['number']
 
-        effect = USE_EFFECT_CLASSES[item.type.use_effect.id](item, number, chara)
+        effect = USE_EFFECT_CLASSES[item.type.use_effect.id](item, number, self.chara)
         result = effect.execute()
 
         if item.type.is_consumable:
@@ -46,7 +45,7 @@ class UseItemSerializer(BaseSerializer):
         return data
 
     def validate_item(self, item_id):
-        item = self.instance.bag_items.filter(id=item_id).first()
+        item = self.chara.bag_items.filter(id=item_id).first()
         if item is None:
             raise serializers.ValidationError("背包中無此物品")
         if item.type.use_effect.id is None:
@@ -60,7 +59,7 @@ class SendItemSerializer(BaseSerializer):
     receiver = serializers.PrimaryKeyRelatedField(queryset=Chara.objects.all())
 
     def save(self):
-        sender = self.instance
+        sender = self.chara
         receiver = self.validated_data['receiver']
         items = self.validated_data['items']
 
@@ -74,19 +73,17 @@ class StorageTakeSerializer(BaseSerializer):
     items = ItemWithNumberSerializer(many=True)
 
     def save(self):
-        chara = self.instance
         items = self.validated_data['items']
 
-        items = chara.lose_items("storage", items, mode='return')
-        chara.get_items("bag", items)
+        items = self.chara.lose_items("storage", items, mode='return')
+        self.chara.get_items("bag", items)
 
 
 class StoragePutSerializer(BaseSerializer):
     items = ItemWithNumberSerializer(many=True)
 
     def save(self):
-        chara = self.instance
         items = self.validated_data['items']
 
-        items = chara.lose_items("bag", items, mode='return')
-        chara.get_items("storage", items)
+        items = self.chara.lose_items("bag", items, mode='return')
+        self.chara.get_items("storage", items)

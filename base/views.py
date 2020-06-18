@@ -22,6 +22,7 @@ class CharaViewMixin:
             waiting_time = (chara.next_action_time - localtime()).total_seconds()
             if waiting_time > 0:
                 raise exceptions.APIException(f"尚需等待{waiting_time}秒才能行動")
+        self.request.chara = chara
         return chara
 
 
@@ -47,7 +48,7 @@ class CountryViewMixin:
 
         if lock:
             country = country.lock()
-
+        self.request.country = country
         return country
 
 
@@ -56,7 +57,7 @@ class CharaPostViewMixin:
 
     def post(self, request):
         chara = self.get_chara(lock=self.LOCK_CHARA)
-        serializer = self.get_serializer(chara, data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = serializer.save()
 

@@ -10,13 +10,12 @@ class MoveSerializer(BaseSerializer):
     location = serializers.PrimaryKeyRelatedField(queryset=Location.objects.all())
 
     def save(self):
-        chara = self.instance
         location = self.validated_data['location']
-        distance = calculate_distance(chara.location, location)
+        distance = calculate_distance(self.chara.location, location)
 
         chara.location = location
-        chara.set_next_action_time(distance)
-        chara.save()
+        self.chara.set_next_action_time(distance)
+        self.chara.save()
 
     def validate_location(self, value):
         x = value.x
