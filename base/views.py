@@ -52,6 +52,32 @@ class CountryViewMixin:
         return country
 
 
+class LockObjectMixin:
+    def get_object(self, lock=False):
+        """
+        copy from drf generic module
+        """
+        queryset = self.filter_queryset(self.get_queryset())
+        if lock:
+            queryset = queryset.select_for_update()
+
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+
+        assert lookup_url_kwarg in self.kwargs, (
+            'Expected view %s to be called with a URL keyword argument '
+            'named "%s". Fix your URL conf, or set the `.lookup_field` '
+            'attribute on the view correctly.' %
+            (self.__class__.__name__, lookup_url_kwarg)
+        )
+
+        filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+        obj = generics.get_object_or_404(queryset, **filter_kwargs)
+
+        self.check_object_permissions(self.request, obj)
+
+        return obj
+
+
 class CharaPostViewMixin:
     LOCK_CHARA = True
 
@@ -64,9 +90,13 @@ class CharaPostViewMixin:
         return Response({'status': 'success'})
 
 
-class BaseViewSet(CountryViewMixin, CharaViewMixin, viewsets.ViewSet):
-    pass
+class BaseGenericViewSet(LockObjectMixin, CountryViewMixin, CharaViewMixin, viewsets.GenericViewSet):
+    def get_serializer_class(self):
+        try:
+            return self.serializer_action_classes[self.action]
+        except (KeyError, AttributeError):
+            return super().get_serializer_class()
 
 
-class BaseGenericAPIView(CountryViewMixin, CharaViewMixin, generics.GenericAPIView):
+class BaseGenericAPIView(LockObjectMixin, CountryViewMixin, CharaViewMixin, generics.GenericAPIView):
     pass
