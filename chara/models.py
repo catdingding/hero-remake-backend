@@ -102,6 +102,11 @@ class Chara(BaseModel):
 
         return lose_items(field, *args, **kwargs)
 
+    def lose_gold(self, number):
+        if self.gold < number:
+            raise APIException("金錢不足")
+        self.gold -= number
+
 
 class CharaAttribute(BaseModel):
     chara = models.ForeignKey("chara.Chara", on_delete=models.CASCADE, related_name="attributes")
