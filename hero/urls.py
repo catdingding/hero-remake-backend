@@ -1,4 +1,5 @@
 from django.urls import path
+from rest_framework.routers import SimpleRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from world.views import MoveView, MapView
@@ -11,6 +12,13 @@ from country.views import (
     FoundCountryView, JoinCountryView, LeaveCountryView, ChangeKingView, CountryDismissView, SetOfficialsView,
     CountryItemPutView, CountryItemTakeView, CountryDonateView
 )
+from trade.views import AuctionViewSet, SaleViewSet, PurchaseViewSet
+
+router = SimpleRouter()
+
+router.register(r'trade/auctions', AuctionViewSet)
+router.register(r'trade/sales', SaleViewSet)
+router.register(r'trade/purchases', PurchaseViewSet)
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -44,4 +52,4 @@ urlpatterns = [
     path('country/item/put/', CountryItemPutView.as_view()),
     path('country/donate/', CountryDonateView.as_view()),
     path('map/', MapView.as_view())
-]
+] + router.urls
