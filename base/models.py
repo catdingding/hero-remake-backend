@@ -1,9 +1,18 @@
 from django.db import models
 
 
+class BaseManager(models.Manager):
+    def lock_by_pks(self, pks):
+        queryset = self.get_queryset().select_for_update().filter(pk__in=pks)
+        obj_dict = {obj.pk: obj for obj in queryset}
+        return [obj_dict.get(pk) for pk in pks]
+
+
 class BaseModel(models.Model):
     created_at = models.DateTimeField(null=True, auto_now_add=True)
     updated_at = models.DateTimeField(null=True, auto_now=True)
+
+    objects = BaseManager()
 
     class Meta:
         abstract = True
