@@ -24,7 +24,8 @@ def get_items(field, items):
             exists_item_by_type[item.type_id].number += item.number
             exists_item_by_type[item.type_id].save()
         else:
-            item.save()
+            if item.id is None:
+                item.save()
             field.add(item)
 
 
