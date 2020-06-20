@@ -1,4 +1,4 @@
-from base.views import BaseViewSet, BaseGenericAPIView, CharaViewMixin
+from base.views import BaseGenericAPIView, CharaViewMixin
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
