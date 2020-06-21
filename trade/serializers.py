@@ -6,7 +6,7 @@ from rest_framework import serializers
 
 from base.serializers import BaseSerializer, BaseModelSerializer
 from chara.models import Chara
-from trade.models import Auction, Sale, Purchase
+from trade.models import Auction, Sale, Purchase, ExchangeOption, ExchangeOptionRequirement
 from item.models import Item
 
 
@@ -278,3 +278,29 @@ class PurchaseReceiveGoldSerializer(BaseSerializer):
         if self.chara != self.instance.buyer:
             raise serializers.ValidationError("僅收購者可領取金錢")
         return data
+
+
+class ExchangeOptionRequirementSerializer(BaseModelSerializer):
+    class Meta:
+        model = ExchangeOptionRequirement
+        fields = ['item_type', 'number']
+
+
+class ExchangeOptionSerializer(BaseModelSerializer):
+    requirements = ExchangeOptionRequirementSerializer(many=True)
+
+    class Meta:
+        model = ExchangeOption
+        fields = ['item_type', 'requirements']
+
+
+class ExchangeSerializer(BaseSerializer):
+    number = serializers.IntegerField(min_value=1)
+
+    def save(self):
+        number = self.validated_data['number']
+
+        items_to_lose = [Item(type=r.item_type, number=r.number * number) for r in self.instance.requirements.all()]
+        self.chara.lose_items('bag', items_to_lose)
+
+        self.chara.get_items('bag', [Item(type=self.instance.item_type, number=number)])

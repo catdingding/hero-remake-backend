@@ -2,15 +2,17 @@ from django.db.models import Q
 from django.utils.timezone import localtime
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.mixins import ListModelMixin
 
 from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin
 
-from trade.models import Auction, Sale, Purchase
+from trade.models import Auction, Sale, Purchase, ExchangeOption
 from trade.serializers import (
     AuctionSerializer, AuctionCreateSerializer, AuctionBidSerializer,
     AuctionReceiveItemSerializer, AuctionReceiveGoldSerializer,
     SaleSerializer, SaleCreateSerializer, SaleBuySerializer, SaleReceiveItemSerializer,
-    PurchaseSerializer, PurchaseCreateSerializer, PurchaseSellSerializer, PurchaseReceiveGoldSerializer
+    PurchaseSerializer, PurchaseCreateSerializer, PurchaseSellSerializer, PurchaseReceiveGoldSerializer,
+    ExchangeOptionSerializer, ExchangeSerializer
 )
 
 
@@ -178,6 +180,23 @@ class PurchaseViewSet(BaseGenericViewSet):
     def receive_gold(self, request, pk):
         chara = self.get_chara(lock=True)
         serializer = self.get_serializer(self.get_object(lock=True), data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'status': 'success'})
+
+
+class ExchangeOptionViewSet(ListModelMixin, BaseGenericViewSet):
+    queryset = ExchangeOption.objects.all()
+    serializer_class = ExchangeOptionSerializer
+    serializer_action_classes = {
+        'exchange': ExchangeSerializer,
+    }
+
+    @action(methods=['post'], detail=True)
+    def exchange(self, request, pk):
+        chara = self.get_chara(lock=True)
+        serializer = self.get_serializer(self.get_object(), data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 

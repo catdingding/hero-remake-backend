@@ -12,13 +12,14 @@ from country.views import (
     FoundCountryView, JoinCountryView, LeaveCountryView, ChangeKingView, CountryDismissView, SetOfficialsView,
     CountryItemPutView, CountryItemTakeView, CountryDonateView
 )
-from trade.views import AuctionViewSet, SaleViewSet, PurchaseViewSet
+from trade.views import AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet
 
 router = SimpleRouter()
 
 router.register(r'trade/auctions', AuctionViewSet)
 router.register(r'trade/sales', SaleViewSet)
 router.register(r'trade/purchases', PurchaseViewSet)
+router.register(r'trade/exchange-options', ExchangeOptionViewSet)
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

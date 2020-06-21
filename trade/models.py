@@ -42,3 +42,13 @@ class Purchase(BaseModel):
     due_time = models.DateTimeField()
 
     gold_received = models.BooleanField(default=False)
+
+
+class ExchangeOption(BaseModel):
+    item_type = models.ForeignKey("item.ItemType", on_delete=models.PROTECT)
+
+
+class ExchangeOptionRequirement(BaseModel):
+    exchange_option = models.ForeignKey("trade.ExchangeOption", related_name="requirements", on_delete=models.CASCADE)
+    item_type = models.ForeignKey("item.ItemType", on_delete=models.PROTECT)
+    number = models.IntegerField()
