@@ -34,7 +34,9 @@ class Skill(BaseModel):
     attribute_type = models.ForeignKey("world.AttributeType", null=True, on_delete=models.PROTECT)
     rank = models.IntegerField(null=True)
     type = models.ForeignKey("SkillType", on_delete=models.PROTECT)
+    is_general = models.BooleanField(default=False)
 
     power = models.IntegerField()
     rate = models.IntegerField()
     mp_cost = models.IntegerField()
+    action_cost = models.IntegerField()

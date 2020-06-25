@@ -6,9 +6,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 1,
+            "is_general": true,
             "power": 40,
             "rate": 10,
-            "mp_cost": 5
+            "mp_cost": 5,
+            "action_cost": 1000
         }
     },
     {
@@ -19,9 +21,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": true,
             "power": 30,
             "rate": 25,
-            "mp_cost": 5
+            "mp_cost": 5,
+            "action_cost": 1000
         }
     },
     {
@@ -32,9 +36,11 @@
             "attribute_type": "str",
             "rank": 0,
             "type": 1,
+            "is_general": false,
             "power": 40,
             "rate": 30,
-            "mp_cost": 10
+            "mp_cost": 10,
+            "action_cost": 1000
         }
     },
     {
@@ -45,9 +51,11 @@
             "attribute_type": "str",
             "rank": 0,
             "type": 1,
+            "is_general": false,
             "power": 90,
             "rate": 25,
-            "mp_cost": 20
+            "mp_cost": 20,
+            "action_cost": 1000
         }
     },
     {
@@ -58,9 +66,11 @@
             "attribute_type": "str",
             "rank": 1,
             "type": 1,
+            "is_general": false,
             "power": 140,
             "rate": 35,
-            "mp_cost": 40
+            "mp_cost": 40,
+            "action_cost": 1000
         }
     },
     {
@@ -71,9 +81,11 @@
             "attribute_type": "str",
             "rank": 1,
             "type": 1,
+            "is_general": false,
             "power": 260,
             "rate": 26,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -84,9 +96,11 @@
             "attribute_type": "str",
             "rank": 1,
             "type": 1,
+            "is_general": false,
             "power": 240,
             "rate": 15,
-            "mp_cost": 70
+            "mp_cost": 70,
+            "action_cost": 1000
         }
     },
     {
@@ -97,9 +111,11 @@
             "attribute_type": "str",
             "rank": 1,
             "type": 1,
+            "is_general": false,
             "power": 380,
             "rate": 20,
-            "mp_cost": 125
+            "mp_cost": 125,
+            "action_cost": 1000
         }
     },
     {
@@ -110,9 +126,11 @@
             "attribute_type": "str",
             "rank": 2,
             "type": 1,
+            "is_general": false,
             "power": 290,
             "rate": 52,
-            "mp_cost": 120
+            "mp_cost": 120,
+            "action_cost": 1000
         }
     },
     {
@@ -123,9 +141,11 @@
             "attribute_type": "str",
             "rank": 2,
             "type": 1,
+            "is_general": false,
             "power": 180,
             "rate": 20,
-            "mp_cost": 30
+            "mp_cost": 30,
+            "action_cost": 1000
         }
     },
     {
@@ -136,9 +156,11 @@
             "attribute_type": "str",
             "rank": 2,
             "type": 1,
+            "is_general": false,
             "power": 350,
             "rate": 24,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -149,9 +171,11 @@
             "attribute_type": "str",
             "rank": 2,
             "type": 1,
+            "is_general": false,
             "power": 370,
             "rate": 46,
-            "mp_cost": 160
+            "mp_cost": 160,
+            "action_cost": 1000
         }
     },
     {
@@ -162,9 +186,11 @@
             "attribute_type": "str",
             "rank": 2,
             "type": 1,
+            "is_general": false,
             "power": 600,
             "rate": 14,
-            "mp_cost": 210
+            "mp_cost": 210,
+            "action_cost": 1000
         }
     },
     {
@@ -175,9 +201,11 @@
             "attribute_type": "str",
             "rank": 3,
             "type": 2,
+            "is_general": false,
             "power": 280,
             "rate": 32,
-            "mp_cost": 160
+            "mp_cost": 160,
+            "action_cost": 1000
         }
     },
     {
@@ -188,9 +216,11 @@
             "attribute_type": "str",
             "rank": 3,
             "type": 1,
+            "is_general": false,
             "power": 200,
             "rate": 45,
-            "mp_cost": 60
+            "mp_cost": 60,
+            "action_cost": 1000
         }
     },
     {
@@ -201,9 +231,11 @@
             "attribute_type": "str",
             "rank": 3,
             "type": 11,
+            "is_general": false,
             "power": 240,
             "rate": 45,
-            "mp_cost": 140
+            "mp_cost": 140,
+            "action_cost": 1000
         }
     },
     {
@@ -214,9 +246,11 @@
             "attribute_type": "str",
             "rank": 3,
             "type": 13,
+            "is_general": false,
             "power": 320,
             "rate": 34,
-            "mp_cost": 140
+            "mp_cost": 140,
+            "action_cost": 1000
         }
     },
     {
@@ -227,9 +261,11 @@
             "attribute_type": "str",
             "rank": 3,
             "type": 1,
+            "is_general": false,
             "power": 400,
             "rate": 50,
-            "mp_cost": 190
+            "mp_cost": 190,
+            "action_cost": 1000
         }
     },
     {
@@ -240,9 +276,11 @@
             "attribute_type": "str",
             "rank": 3,
             "type": 1,
+            "is_general": false,
             "power": 1000,
             "rate": 5,
-            "mp_cost": 300
+            "mp_cost": 300,
+            "action_cost": 1000
         }
     },
     {
@@ -253,9 +291,11 @@
             "attribute_type": "int",
             "rank": 1,
             "type": 17,
+            "is_general": false,
             "power": 160,
             "rate": 50,
-            "mp_cost": 70
+            "mp_cost": 70,
+            "action_cost": 1000
         }
     },
     {
@@ -266,9 +306,11 @@
             "attribute_type": "int",
             "rank": 1,
             "type": 17,
+            "is_general": false,
             "power": 260,
             "rate": 35,
-            "mp_cost": 130
+            "mp_cost": 130,
+            "action_cost": 1000
         }
     },
     {
@@ -279,9 +321,11 @@
             "attribute_type": "int",
             "rank": 1,
             "type": 17,
+            "is_general": false,
             "power": 380,
             "rate": 20,
-            "mp_cost": 200
+            "mp_cost": 200,
+            "action_cost": 1000
         }
     },
     {
@@ -292,9 +336,11 @@
             "attribute_type": "int",
             "rank": 2,
             "type": 7,
+            "is_general": false,
             "power": 160,
             "rate": 28,
-            "mp_cost": 120
+            "mp_cost": 120,
+            "action_cost": 1000
         }
     },
     {
@@ -305,9 +351,11 @@
             "attribute_type": "int",
             "rank": 2,
             "type": 6,
+            "is_general": false,
             "power": 5,
             "rate": 23,
-            "mp_cost": 80
+            "mp_cost": 80,
+            "action_cost": 1000
         }
     },
     {
@@ -318,9 +366,11 @@
             "attribute_type": "int",
             "rank": 2,
             "type": 4,
+            "is_general": false,
             "power": 10,
             "rate": 25,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -331,9 +381,11 @@
             "attribute_type": "int",
             "rank": 2,
             "type": 17,
+            "is_general": false,
             "power": 200,
             "rate": 65,
-            "mp_cost": 80
+            "mp_cost": 80,
+            "action_cost": 1000
         }
     },
     {
@@ -344,9 +396,11 @@
             "attribute_type": "int",
             "rank": 2,
             "type": 17,
+            "is_general": false,
             "power": 340,
             "rate": 48,
-            "mp_cost": 180
+            "mp_cost": 180,
+            "action_cost": 1000
         }
     },
     {
@@ -357,9 +411,11 @@
             "attribute_type": "int",
             "rank": 2,
             "type": 17,
+            "is_general": false,
             "power": 520,
             "rate": 46,
-            "mp_cost": 300
+            "mp_cost": 300,
+            "action_cost": 1000
         }
     },
     {
@@ -370,9 +426,11 @@
             "attribute_type": "int",
             "rank": 3,
             "type": 8,
+            "is_general": false,
             "power": 0,
             "rate": 25,
-            "mp_cost": 0
+            "mp_cost": 0,
+            "action_cost": 1000
         }
     },
     {
@@ -383,9 +441,11 @@
             "attribute_type": "int",
             "rank": 3,
             "type": 7,
+            "is_general": false,
             "power": 260,
             "rate": 33,
-            "mp_cost": 180
+            "mp_cost": 180,
+            "action_cost": 1000
         }
     },
     {
@@ -396,9 +456,11 @@
             "attribute_type": "int",
             "rank": 3,
             "type": 4,
+            "is_general": false,
             "power": 15,
             "rate": 25,
-            "mp_cost": 150
+            "mp_cost": 150,
+            "action_cost": 1000
         }
     },
     {
@@ -409,9 +471,11 @@
             "attribute_type": "int",
             "rank": 3,
             "type": 17,
+            "is_general": false,
             "power": 380,
             "rate": 60,
-            "mp_cost": 220
+            "mp_cost": 220,
+            "action_cost": 1000
         }
     },
     {
@@ -422,9 +486,11 @@
             "attribute_type": "int",
             "rank": 3,
             "type": 17,
+            "is_general": false,
             "power": 440,
             "rate": 56,
-            "mp_cost": 260
+            "mp_cost": 260,
+            "action_cost": 1000
         }
     },
     {
@@ -435,9 +501,11 @@
             "attribute_type": "int",
             "rank": 3,
             "type": 10,
+            "is_general": false,
             "power": 400,
             "rate": 44,
-            "mp_cost": 250
+            "mp_cost": 250,
+            "action_cost": 1000
         }
     },
     {
@@ -448,9 +516,11 @@
             "attribute_type": "int",
             "rank": 3,
             "type": 17,
+            "is_general": false,
             "power": 620,
             "rate": 42,
-            "mp_cost": 360
+            "mp_cost": 360,
+            "action_cost": 1000
         }
     },
     {
@@ -461,9 +531,11 @@
             "attribute_type": "int",
             "rank": 3,
             "type": 17,
+            "is_general": false,
             "power": 1200,
             "rate": 17,
-            "mp_cost": 720
+            "mp_cost": 720,
+            "action_cost": 1000
         }
     },
     {
@@ -474,9 +546,11 @@
             "attribute_type": "men",
             "rank": 1,
             "type": 2,
+            "is_general": false,
             "power": 50,
             "rate": 25,
-            "mp_cost": 15
+            "mp_cost": 15,
+            "action_cost": 1000
         }
     },
     {
@@ -487,9 +561,11 @@
             "attribute_type": "men",
             "rank": 1,
             "type": 2,
+            "is_general": false,
             "power": 100,
             "rate": 25,
-            "mp_cost": 40
+            "mp_cost": 40,
+            "action_cost": 1000
         }
     },
     {
@@ -500,9 +576,11 @@
             "attribute_type": "men",
             "rank": 1,
             "type": 13,
+            "is_general": false,
             "power": 170,
             "rate": 40,
-            "mp_cost": 80
+            "mp_cost": 80,
+            "action_cost": 1000
         }
     },
     {
@@ -513,9 +591,11 @@
             "attribute_type": "men",
             "rank": 1,
             "type": 2,
+            "is_general": false,
             "power": 300,
             "rate": 25,
-            "mp_cost": 160
+            "mp_cost": 160,
+            "action_cost": 1000
         }
     },
     {
@@ -526,9 +606,11 @@
             "attribute_type": "men",
             "rank": 1,
             "type": 5,
+            "is_general": false,
             "power": 10,
             "rate": 30,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -539,9 +621,11 @@
             "attribute_type": "men",
             "rank": 2,
             "type": 17,
+            "is_general": false,
             "power": 340,
             "rate": 50,
-            "mp_cost": 180
+            "mp_cost": 180,
+            "action_cost": 1000
         }
     },
     {
@@ -552,9 +636,11 @@
             "attribute_type": "men",
             "rank": 2,
             "type": 6,
+            "is_general": false,
             "power": 10,
             "rate": 30,
-            "mp_cost": 120
+            "mp_cost": 120,
+            "action_cost": 1000
         }
     },
     {
@@ -565,9 +651,11 @@
             "attribute_type": "men",
             "rank": 2,
             "type": 17,
+            "is_general": false,
             "power": 400,
             "rate": 46,
-            "mp_cost": 200
+            "mp_cost": 200,
+            "action_cost": 1000
         }
     },
     {
@@ -578,9 +666,11 @@
             "attribute_type": "men",
             "rank": 2,
             "type": 2,
+            "is_general": false,
             "power": 500,
             "rate": 30,
-            "mp_cost": 250
+            "mp_cost": 250,
+            "action_cost": 1000
         }
     },
     {
@@ -591,9 +681,11 @@
             "attribute_type": "men",
             "rank": 2,
             "type": 17,
+            "is_general": false,
             "power": 777,
             "rate": 12,
-            "mp_cost": 400
+            "mp_cost": 400,
+            "action_cost": 1000
         }
     },
     {
@@ -604,9 +696,11 @@
             "attribute_type": "men",
             "rank": 2,
             "type": 2,
+            "is_general": false,
             "power": 999,
             "rate": 15,
-            "mp_cost": 600
+            "mp_cost": 600,
+            "action_cost": 1000
         }
     },
     {
@@ -617,9 +711,11 @@
             "attribute_type": "men",
             "rank": 3,
             "type": 12,
+            "is_general": false,
             "power": 340,
             "rate": 50,
-            "mp_cost": 180
+            "mp_cost": 180,
+            "action_cost": 1000
         }
     },
     {
@@ -630,9 +726,11 @@
             "attribute_type": "men",
             "rank": 3,
             "type": 17,
+            "is_general": false,
             "power": 390,
             "rate": 52,
-            "mp_cost": 250
+            "mp_cost": 250,
+            "action_cost": 1000
         }
     },
     {
@@ -643,9 +741,11 @@
             "attribute_type": "men",
             "rank": 3,
             "type": 10,
+            "is_general": false,
             "power": 900,
             "rate": 18,
-            "mp_cost": 650
+            "mp_cost": 650,
+            "action_cost": 1000
         }
     },
     {
@@ -656,9 +756,11 @@
             "attribute_type": "men",
             "rank": 3,
             "type": 2,
+            "is_general": false,
             "power": 380,
             "rate": 40,
-            "mp_cost": 200
+            "mp_cost": 200,
+            "action_cost": 1000
         }
     },
     {
@@ -669,9 +771,11 @@
             "attribute_type": "men",
             "rank": 3,
             "type": 14,
+            "is_general": false,
             "power": 320,
             "rate": 45,
-            "mp_cost": 220
+            "mp_cost": 220,
+            "action_cost": 1000
         }
     },
     {
@@ -682,9 +786,11 @@
             "attribute_type": "men",
             "rank": 3,
             "type": 6,
+            "is_general": false,
             "power": 20,
             "rate": 25,
-            "mp_cost": 260
+            "mp_cost": 260,
+            "action_cost": 1000
         }
     },
     {
@@ -695,9 +801,11 @@
             "attribute_type": "men",
             "rank": 3,
             "type": 2,
+            "is_general": false,
             "power": 9999,
             "rate": 7,
-            "mp_cost": 1500
+            "mp_cost": 1500,
+            "action_cost": 1000
         }
     },
     {
@@ -708,9 +816,11 @@
             "attribute_type": "dex",
             "rank": 1,
             "type": 1,
+            "is_general": false,
             "power": 80,
             "rate": 10,
-            "mp_cost": 20
+            "mp_cost": 20,
+            "action_cost": 1000
         }
     },
     {
@@ -721,9 +831,11 @@
             "attribute_type": "dex",
             "rank": 1,
             "type": 1,
+            "is_general": false,
             "power": 100,
             "rate": 30,
-            "mp_cost": 40
+            "mp_cost": 40,
+            "action_cost": 1000
         }
     },
     {
@@ -734,9 +846,11 @@
             "attribute_type": "dex",
             "rank": 1,
             "type": 13,
+            "is_general": false,
             "power": 190,
             "rate": 35,
-            "mp_cost": 75
+            "mp_cost": 75,
+            "action_cost": 1000
         }
     },
     {
@@ -747,9 +861,11 @@
             "attribute_type": "dex",
             "rank": 1,
             "type": 12,
+            "is_general": false,
             "power": 150,
             "rate": 25,
-            "mp_cost": 80
+            "mp_cost": 80,
+            "action_cost": 1000
         }
     },
     {
@@ -760,9 +876,11 @@
             "attribute_type": "dex",
             "rank": 2,
             "type": 1,
+            "is_general": false,
             "power": 360,
             "rate": 30,
-            "mp_cost": 120
+            "mp_cost": 120,
+            "action_cost": 1000
         }
     },
     {
@@ -773,9 +891,11 @@
             "attribute_type": "dex",
             "rank": 2,
             "type": 10,
+            "is_general": false,
             "power": 240,
             "rate": 29,
-            "mp_cost": 90
+            "mp_cost": 90,
+            "action_cost": 1000
         }
     },
     {
@@ -786,9 +906,11 @@
             "attribute_type": "dex",
             "rank": 2,
             "type": 12,
+            "is_general": false,
             "power": 460,
             "rate": 35,
-            "mp_cost": 160
+            "mp_cost": 160,
+            "action_cost": 1000
         }
     },
     {
@@ -799,9 +921,11 @@
             "attribute_type": "dex",
             "rank": 2,
             "type": 13,
+            "is_general": false,
             "power": 290,
             "rate": 42,
-            "mp_cost": 140
+            "mp_cost": 140,
+            "action_cost": 1000
         }
     },
     {
@@ -812,9 +936,11 @@
             "attribute_type": "dex",
             "rank": 2,
             "type": 1,
+            "is_general": false,
             "power": 720,
             "rate": 23,
-            "mp_cost": 220
+            "mp_cost": 220,
+            "action_cost": 1000
         }
     },
     {
@@ -825,9 +951,11 @@
             "attribute_type": "dex",
             "rank": 2,
             "type": 10,
+            "is_general": false,
             "power": 999,
             "rate": 7,
-            "mp_cost": 250
+            "mp_cost": 250,
+            "action_cost": 1000
         }
     },
     {
@@ -838,9 +966,11 @@
             "attribute_type": "dex",
             "rank": 3,
             "type": 12,
+            "is_general": false,
             "power": 500,
             "rate": 38,
-            "mp_cost": 200
+            "mp_cost": 200,
+            "action_cost": 1000
         }
     },
     {
@@ -851,9 +981,11 @@
             "attribute_type": "dex",
             "rank": 3,
             "type": 10,
+            "is_general": false,
             "power": 600,
             "rate": 26,
-            "mp_cost": 220
+            "mp_cost": 220,
+            "action_cost": 1000
         }
     },
     {
@@ -864,9 +996,11 @@
             "attribute_type": "dex",
             "rank": 3,
             "type": 1,
+            "is_general": false,
             "power": 440,
             "rate": 45,
-            "mp_cost": 180
+            "mp_cost": 180,
+            "action_cost": 1000
         }
     },
     {
@@ -877,9 +1011,11 @@
             "attribute_type": "dex",
             "rank": 3,
             "type": 10,
+            "is_general": false,
             "power": 1400,
             "rate": 7,
-            "mp_cost": 400
+            "mp_cost": 400,
+            "action_cost": 1000
         }
     },
     {
@@ -890,9 +1026,11 @@
             "attribute_type": "vit",
             "rank": 1,
             "type": 1,
+            "is_general": false,
             "power": 60,
             "rate": 30,
-            "mp_cost": 15
+            "mp_cost": 15,
+            "action_cost": 1000
         }
     },
     {
@@ -903,9 +1041,11 @@
             "attribute_type": "vit",
             "rank": 1,
             "type": 1,
+            "is_general": false,
             "power": 100,
             "rate": 20,
-            "mp_cost": 24
+            "mp_cost": 24,
+            "action_cost": 1000
         }
     },
     {
@@ -916,9 +1056,11 @@
             "attribute_type": "vit",
             "rank": 1,
             "type": 5,
+            "is_general": false,
             "power": 10,
             "rate": 20,
-            "mp_cost": 30
+            "mp_cost": 30,
+            "action_cost": 1000
         }
     },
     {
@@ -929,9 +1071,11 @@
             "attribute_type": "vit",
             "rank": 1,
             "type": 1,
+            "is_general": false,
             "power": 160,
             "rate": 33,
-            "mp_cost": 60
+            "mp_cost": 60,
+            "action_cost": 1000
         }
     },
     {
@@ -942,9 +1086,11 @@
             "attribute_type": "vit",
             "rank": 1,
             "type": 3,
+            "is_general": false,
             "power": 0,
             "rate": 12,
-            "mp_cost": 0
+            "mp_cost": 0,
+            "action_cost": 1000
         }
     },
     {
@@ -955,9 +1101,11 @@
             "attribute_type": "vit",
             "rank": 2,
             "type": 1,
+            "is_general": false,
             "power": 260,
             "rate": 45,
-            "mp_cost": 90
+            "mp_cost": 90,
+            "action_cost": 1000
         }
     },
     {
@@ -968,9 +1116,11 @@
             "attribute_type": "vit",
             "rank": 2,
             "type": 1,
+            "is_general": false,
             "power": 290,
             "rate": 60,
-            "mp_cost": 130
+            "mp_cost": 130,
+            "action_cost": 1000
         }
     },
     {
@@ -981,9 +1131,11 @@
             "attribute_type": "vit",
             "rank": 2,
             "type": 1,
+            "is_general": false,
             "power": 410,
             "rate": 40,
-            "mp_cost": 180
+            "mp_cost": 180,
+            "action_cost": 1000
         }
     },
     {
@@ -994,9 +1146,11 @@
             "attribute_type": "vit",
             "rank": 2,
             "type": 4,
+            "is_general": false,
             "power": 25,
             "rate": 15,
-            "mp_cost": 300
+            "mp_cost": 300,
+            "action_cost": 1000
         }
     },
     {
@@ -1007,9 +1161,11 @@
             "attribute_type": "vit",
             "rank": 2,
             "type": 5,
+            "is_general": false,
             "power": 20,
             "rate": 15,
-            "mp_cost": 200
+            "mp_cost": 200,
+            "action_cost": 1000
         }
     },
     {
@@ -1020,9 +1176,11 @@
             "attribute_type": "agi",
             "rank": 1,
             "type": 1,
+            "is_general": false,
             "power": 40,
             "rate": 40,
-            "mp_cost": 15
+            "mp_cost": 15,
+            "action_cost": 1000
         }
     },
     {
@@ -1033,9 +1191,11 @@
             "attribute_type": "agi",
             "rank": 1,
             "type": 1,
+            "is_general": false,
             "power": 90,
             "rate": 30,
-            "mp_cost": 35
+            "mp_cost": 35,
+            "action_cost": 1000
         }
     },
     {
@@ -1046,9 +1206,11 @@
             "attribute_type": "agi",
             "rank": 1,
             "type": 12,
+            "is_general": false,
             "power": 120,
             "rate": 20,
-            "mp_cost": 60
+            "mp_cost": 60,
+            "action_cost": 1000
         }
     },
     {
@@ -1059,9 +1221,11 @@
             "attribute_type": "agi",
             "rank": 2,
             "type": 13,
+            "is_general": false,
             "power": 160,
             "rate": 20,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -1072,9 +1236,11 @@
             "attribute_type": "agi",
             "rank": 2,
             "type": 1,
+            "is_general": false,
             "power": 200,
             "rate": 40,
-            "mp_cost": 90
+            "mp_cost": 90,
+            "action_cost": 1000
         }
     },
     {
@@ -1085,9 +1251,11 @@
             "attribute_type": "agi",
             "rank": 2,
             "type": 1,
+            "is_general": false,
             "power": 320,
             "rate": 46,
-            "mp_cost": 180
+            "mp_cost": 180,
+            "action_cost": 1000
         }
     },
     {
@@ -1098,9 +1266,11 @@
             "attribute_type": "agi",
             "rank": 2,
             "type": 1,
+            "is_general": false,
             "power": 390,
             "rate": 52,
-            "mp_cost": 200
+            "mp_cost": 200,
+            "action_cost": 1000
         }
     },
     {
@@ -1111,9 +1281,11 @@
             "attribute_type": "agi",
             "rank": 3,
             "type": 12,
+            "is_general": false,
             "power": 280,
             "rate": 60,
-            "mp_cost": 140
+            "mp_cost": 140,
+            "action_cost": 1000
         }
     },
     {
@@ -1124,9 +1296,11 @@
             "attribute_type": "agi",
             "rank": 3,
             "type": 14,
+            "is_general": false,
             "power": 350,
             "rate": 40,
-            "mp_cost": 220
+            "mp_cost": 220,
+            "action_cost": 1000
         }
     },
     {
@@ -1137,9 +1311,11 @@
             "attribute_type": "agi",
             "rank": 3,
             "type": 10,
+            "is_general": false,
             "power": 200,
             "rate": 36,
-            "mp_cost": 160
+            "mp_cost": 160,
+            "action_cost": 1000
         }
     },
     {
@@ -1150,9 +1326,11 @@
             "attribute_type": "agi",
             "rank": 3,
             "type": 1,
+            "is_general": false,
             "power": 350,
             "rate": 57,
-            "mp_cost": 180
+            "mp_cost": 180,
+            "action_cost": 1000
         }
     },
     {
@@ -1163,9 +1341,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 17,
+            "is_general": false,
             "power": 200,
             "rate": 50,
-            "mp_cost": 70
+            "mp_cost": 70,
+            "action_cost": 1000
         }
     },
     {
@@ -1176,9 +1356,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 9,
+            "is_general": false,
             "power": 3,
             "rate": 20,
-            "mp_cost": 300
+            "mp_cost": 300,
+            "action_cost": 1000
         }
     },
     {
@@ -1189,9 +1371,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 17,
+            "is_general": false,
             "power": 380,
             "rate": 52,
-            "mp_cost": 190
+            "mp_cost": 190,
+            "action_cost": 1000
         }
     },
     {
@@ -1202,9 +1386,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 15,
+            "is_general": false,
             "power": 300,
             "rate": 33,
-            "mp_cost": 190
+            "mp_cost": 190,
+            "action_cost": 1000
         }
     },
     {
@@ -1215,9 +1401,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 17,
+            "is_general": false,
             "power": 1800,
             "rate": 8,
-            "mp_cost": 850
+            "mp_cost": 850,
+            "action_cost": 1000
         }
     },
     {
@@ -1228,9 +1416,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 17,
+            "is_general": false,
             "power": 260,
             "rate": 60,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -1241,9 +1431,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 17,
+            "is_general": false,
             "power": 400,
             "rate": 45,
-            "mp_cost": 200
+            "mp_cost": 200,
+            "action_cost": 1000
         }
     },
     {
@@ -1254,9 +1446,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 7,
+            "is_general": false,
             "power": 150,
             "rate": 33,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -1267,9 +1461,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 4,
+            "is_general": false,
             "power": 10,
             "rate": 25,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -1280,9 +1476,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 17,
+            "is_general": false,
             "power": 520,
             "rate": 41,
-            "mp_cost": 240
+            "mp_cost": 240,
+            "action_cost": 1000
         }
     },
     {
@@ -1293,9 +1491,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 11,
+            "is_general": false,
             "power": 200,
             "rate": 32,
-            "mp_cost": 90
+            "mp_cost": 90,
+            "action_cost": 1000
         }
     },
     {
@@ -1306,9 +1506,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 12,
+            "is_general": false,
             "power": 320,
             "rate": 40,
-            "mp_cost": 120
+            "mp_cost": 120,
+            "action_cost": 1000
         }
     },
     {
@@ -1319,9 +1521,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 17,
+            "is_general": false,
             "power": 380,
             "rate": 45,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -1332,9 +1536,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": false,
             "power": 200,
             "rate": 40,
-            "mp_cost": 70
+            "mp_cost": 70,
+            "action_cost": 1000
         }
     },
     {
@@ -1345,9 +1551,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 17,
+            "is_general": false,
             "power": 520,
             "rate": 32,
-            "mp_cost": 180
+            "mp_cost": 180,
+            "action_cost": 1000
         }
     },
     {
@@ -1358,9 +1566,11 @@
             "attribute_type": "vit",
             "rank": 3,
             "type": 3,
+            "is_general": false,
             "power": 0,
             "rate": 15,
-            "mp_cost": 0
+            "mp_cost": 0,
+            "action_cost": 1000
         }
     },
     {
@@ -1371,9 +1581,11 @@
             "attribute_type": "vit",
             "rank": 3,
             "type": 1,
+            "is_general": false,
             "power": 320,
             "rate": 52,
-            "mp_cost": 110
+            "mp_cost": 110,
+            "action_cost": 1000
         }
     },
     {
@@ -1384,9 +1596,11 @@
             "attribute_type": "vit",
             "rank": 3,
             "type": 13,
+            "is_general": false,
             "power": 370,
             "rate": 40,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -1397,9 +1611,11 @@
             "attribute_type": "vit",
             "rank": 3,
             "type": 1,
+            "is_general": false,
             "power": 420,
             "rate": 47,
-            "mp_cost": 180
+            "mp_cost": 180,
+            "action_cost": 1000
         }
     },
     {
@@ -1410,9 +1626,11 @@
             "attribute_type": "vit",
             "rank": 3,
             "type": 1,
+            "is_general": false,
             "power": 777,
             "rate": 30,
-            "mp_cost": 520
+            "mp_cost": 520,
+            "action_cost": 1000
         }
     },
     {
@@ -1423,9 +1641,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 12,
+            "is_general": false,
             "power": 20,
             "rate": 15,
-            "mp_cost": 10
+            "mp_cost": 10,
+            "action_cost": 1000
         }
     },
     {
@@ -1436,9 +1656,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 1,
+            "is_general": false,
             "power": 40,
             "rate": 20,
-            "mp_cost": 5
+            "mp_cost": 5,
+            "action_cost": 1000
         }
     },
     {
@@ -1449,9 +1671,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 10,
+            "is_general": false,
             "power": 20,
             "rate": 15,
-            "mp_cost": 0
+            "mp_cost": 0,
+            "action_cost": 1000
         }
     },
     {
@@ -1462,9 +1686,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 12,
+            "is_general": false,
             "power": 350,
             "rate": 35,
-            "mp_cost": 140
+            "mp_cost": 140,
+            "action_cost": 1000
         }
     },
     {
@@ -1475,9 +1701,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 1,
+            "is_general": false,
             "power": 150,
             "rate": 25,
-            "mp_cost": 40
+            "mp_cost": 40,
+            "action_cost": 1000
         }
     },
     {
@@ -1488,9 +1716,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 7,
+            "is_general": false,
             "power": 190,
             "rate": 55,
-            "mp_cost": 10
+            "mp_cost": 10,
+            "action_cost": 1000
         }
     },
     {
@@ -1501,9 +1731,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 10,
+            "is_general": false,
             "power": 1500,
             "rate": 15,
-            "mp_cost": 10
+            "mp_cost": 10,
+            "action_cost": 1000
         }
     },
     {
@@ -1514,9 +1746,11 @@
             "attribute_type": "str",
             "rank": 4,
             "type": 1,
+            "is_general": false,
             "power": 380,
             "rate": 62,
-            "mp_cost": 230
+            "mp_cost": 230,
+            "action_cost": 1000
         }
     },
     {
@@ -1527,9 +1761,11 @@
             "attribute_type": "str",
             "rank": 4,
             "type": 1,
+            "is_general": false,
             "power": 420,
             "rate": 52,
-            "mp_cost": 260
+            "mp_cost": 260,
+            "action_cost": 1000
         }
     },
     {
@@ -1540,9 +1776,11 @@
             "attribute_type": "str",
             "rank": 4,
             "type": 2,
+            "is_general": false,
             "power": 440,
             "rate": 27,
-            "mp_cost": 320
+            "mp_cost": 320,
+            "action_cost": 1000
         }
     },
     {
@@ -1553,9 +1791,11 @@
             "attribute_type": "str",
             "rank": 4,
             "type": 1,
+            "is_general": false,
             "power": 620,
             "rate": 29,
-            "mp_cost": 330
+            "mp_cost": 330,
+            "action_cost": 1000
         }
     },
     {
@@ -1566,9 +1806,11 @@
             "attribute_type": "str",
             "rank": 4,
             "type": 1,
+            "is_general": false,
             "power": 500,
             "rate": 42,
-            "mp_cost": 350
+            "mp_cost": 350,
+            "action_cost": 1000
         }
     },
     {
@@ -1579,9 +1821,11 @@
             "attribute_type": "str",
             "rank": 4,
             "type": 11,
+            "is_general": false,
             "power": 800,
             "rate": 17,
-            "mp_cost": 500
+            "mp_cost": 500,
+            "action_cost": 1000
         }
     },
     {
@@ -1592,9 +1836,11 @@
             "attribute_type": "int",
             "rank": 4,
             "type": 17,
+            "is_general": false,
             "power": 570,
             "rate": 46,
-            "mp_cost": 330
+            "mp_cost": 330,
+            "action_cost": 1000
         }
     },
     {
@@ -1605,9 +1851,11 @@
             "attribute_type": "int",
             "rank": 4,
             "type": 17,
+            "is_general": false,
             "power": 400,
             "rate": 64,
-            "mp_cost": 280
+            "mp_cost": 280,
+            "action_cost": 1000
         }
     },
     {
@@ -1618,9 +1866,11 @@
             "attribute_type": "int",
             "rank": 4,
             "type": 10,
+            "is_general": false,
             "power": 480,
             "rate": 40,
-            "mp_cost": 350
+            "mp_cost": 350,
+            "action_cost": 1000
         }
     },
     {
@@ -1631,9 +1881,11 @@
             "attribute_type": "int",
             "rank": 4,
             "type": 14,
+            "is_general": false,
             "power": 520,
             "rate": 36,
-            "mp_cost": 380
+            "mp_cost": 380,
+            "action_cost": 1000
         }
     },
     {
@@ -1644,9 +1896,11 @@
             "attribute_type": "int",
             "rank": 4,
             "type": 17,
+            "is_general": false,
             "power": 900,
             "rate": 21,
-            "mp_cost": 700
+            "mp_cost": 700,
+            "action_cost": 1000
         }
     },
     {
@@ -1657,9 +1911,11 @@
             "attribute_type": "int",
             "rank": 4,
             "type": 10,
+            "is_general": false,
             "power": 1200,
             "rate": 13,
-            "mp_cost": 900
+            "mp_cost": 900,
+            "action_cost": 1000
         }
     },
     {
@@ -1670,9 +1926,11 @@
             "attribute_type": "men",
             "rank": 4,
             "type": 5,
+            "is_general": false,
             "power": 20,
             "rate": 25,
-            "mp_cost": 260
+            "mp_cost": 260,
+            "action_cost": 1000
         }
     },
     {
@@ -1683,9 +1941,11 @@
             "attribute_type": "men",
             "rank": 4,
             "type": 17,
+            "is_general": false,
             "power": 440,
             "rate": 47,
-            "mp_cost": 240
+            "mp_cost": 240,
+            "action_cost": 1000
         }
     },
     {
@@ -1696,9 +1956,11 @@
             "attribute_type": "men",
             "rank": 4,
             "type": 2,
+            "is_general": false,
             "power": 650,
             "rate": 25,
-            "mp_cost": 350
+            "mp_cost": 350,
+            "action_cost": 1000
         }
     },
     {
@@ -1709,9 +1971,11 @@
             "attribute_type": "men",
             "rank": 4,
             "type": 2,
+            "is_general": false,
             "power": 777,
             "rate": 24,
-            "mp_cost": 500
+            "mp_cost": 500,
+            "action_cost": 1000
         }
     },
     {
@@ -1722,9 +1986,11 @@
             "attribute_type": "dex",
             "rank": 4,
             "type": 17,
+            "is_general": false,
             "power": 300,
             "rate": 65,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -1735,9 +2001,11 @@
             "attribute_type": "dex",
             "rank": 4,
             "type": 17,
+            "is_general": false,
             "power": 470,
             "rate": 48,
-            "mp_cost": 240
+            "mp_cost": 240,
+            "action_cost": 1000
         }
     },
     {
@@ -1748,9 +2016,11 @@
             "attribute_type": "dex",
             "rank": 4,
             "type": 13,
+            "is_general": false,
             "power": 650,
             "rate": 29,
-            "mp_cost": 240
+            "mp_cost": 240,
+            "action_cost": 1000
         }
     },
     {
@@ -1761,9 +2031,11 @@
             "attribute_type": "dex",
             "rank": 4,
             "type": 11,
+            "is_general": false,
             "power": 400,
             "rate": 42,
-            "mp_cost": 240
+            "mp_cost": 240,
+            "action_cost": 1000
         }
     },
     {
@@ -1774,9 +2046,11 @@
             "attribute_type": "dex",
             "rank": 4,
             "type": 17,
+            "is_general": false,
             "power": 800,
             "rate": 17,
-            "mp_cost": 300
+            "mp_cost": 300,
+            "action_cost": 1000
         }
     },
     {
@@ -1787,9 +2061,11 @@
             "attribute_type": "dex",
             "rank": 4,
             "type": 17,
+            "is_general": false,
             "power": 1700,
             "rate": 5,
-            "mp_cost": 700
+            "mp_cost": 700,
+            "action_cost": 1000
         }
     },
     {
@@ -1800,9 +2076,11 @@
             "attribute_type": "vit",
             "rank": 4,
             "type": 1,
+            "is_general": false,
             "power": 400,
             "rate": 56,
-            "mp_cost": 230
+            "mp_cost": 230,
+            "action_cost": 1000
         }
     },
     {
@@ -1813,9 +2091,11 @@
             "attribute_type": "vit",
             "rank": 4,
             "type": 2,
+            "is_general": false,
             "power": 400,
             "rate": 19,
-            "mp_cost": 210
+            "mp_cost": 210,
+            "action_cost": 1000
         }
     },
     {
@@ -1826,9 +2106,11 @@
             "attribute_type": "vit",
             "rank": 4,
             "type": 13,
+            "is_general": false,
             "power": 400,
             "rate": 47,
-            "mp_cost": 200
+            "mp_cost": 200,
+            "action_cost": 1000
         }
     },
     {
@@ -1839,9 +2121,11 @@
             "attribute_type": "vit",
             "rank": 4,
             "type": 11,
+            "is_general": false,
             "power": 599,
             "rate": 35,
-            "mp_cost": 320
+            "mp_cost": 320,
+            "action_cost": 1000
         }
     },
     {
@@ -1852,9 +2136,11 @@
             "attribute_type": "vit",
             "rank": 4,
             "type": 1,
+            "is_general": false,
             "power": 690,
             "rate": 43,
-            "mp_cost": 390
+            "mp_cost": 390,
+            "action_cost": 1000
         }
     },
     {
@@ -1865,9 +2151,11 @@
             "attribute_type": "vit",
             "rank": 4,
             "type": 1,
+            "is_general": false,
             "power": 540,
             "rate": 51,
-            "mp_cost": 500
+            "mp_cost": 500,
+            "action_cost": 1000
         }
     },
     {
@@ -1878,9 +2166,11 @@
             "attribute_type": "agi",
             "rank": 4,
             "type": 4,
+            "is_general": false,
             "power": 15,
             "rate": 32,
-            "mp_cost": 200
+            "mp_cost": 200,
+            "action_cost": 1000
         }
     },
     {
@@ -1891,9 +2181,11 @@
             "attribute_type": "agi",
             "rank": 4,
             "type": 10,
+            "is_general": false,
             "power": 300,
             "rate": 37,
-            "mp_cost": 200
+            "mp_cost": 200,
+            "action_cost": 1000
         }
     },
     {
@@ -1904,9 +2196,11 @@
             "attribute_type": "agi",
             "rank": 4,
             "type": 1,
+            "is_general": false,
             "power": 420,
             "rate": 42,
-            "mp_cost": 270
+            "mp_cost": 270,
+            "action_cost": 1000
         }
     },
     {
@@ -1917,9 +2211,11 @@
             "attribute_type": "agi",
             "rank": 4,
             "type": 14,
+            "is_general": false,
             "power": 380,
             "rate": 46,
-            "mp_cost": 300
+            "mp_cost": 300,
+            "action_cost": 1000
         }
     },
     {
@@ -1930,9 +2226,11 @@
             "attribute_type": "agi",
             "rank": 4,
             "type": 7,
+            "is_general": false,
             "power": 320,
             "rate": 32,
-            "mp_cost": 350
+            "mp_cost": 350,
+            "action_cost": 1000
         }
     },
     {
@@ -1943,9 +2241,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 1,
+            "is_general": false,
             "power": 220,
             "rate": 50,
-            "mp_cost": 50
+            "mp_cost": 50,
+            "action_cost": 1000
         }
     },
     {
@@ -1956,9 +2256,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 14,
+            "is_general": false,
             "power": 320,
             "rate": 42,
-            "mp_cost": 80
+            "mp_cost": 80,
+            "action_cost": 1000
         }
     },
     {
@@ -1969,9 +2271,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 7,
+            "is_general": false,
             "power": 320,
             "rate": 32,
-            "mp_cost": 150
+            "mp_cost": 150,
+            "action_cost": 1000
         }
     },
     {
@@ -1982,9 +2286,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 3,
+            "is_general": false,
             "power": 1500,
             "rate": 10,
-            "mp_cost": 500
+            "mp_cost": 500,
+            "action_cost": 1000
         }
     },
     {
@@ -1995,9 +2301,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": false,
             "power": 1000,
             "rate": 10,
-            "mp_cost": 200
+            "mp_cost": 200,
+            "action_cost": 1000
         }
     },
     {
@@ -2008,9 +2316,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 15,
+            "is_general": false,
             "power": 800,
             "rate": 10,
-            "mp_cost": 200
+            "mp_cost": 200,
+            "action_cost": 1000
         }
     },
     {
@@ -2021,9 +2331,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 15,
+            "is_general": false,
             "power": 900,
             "rate": 10,
-            "mp_cost": 400
+            "mp_cost": 400,
+            "action_cost": 1000
         }
     },
     {
@@ -2034,9 +2346,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 15,
+            "is_general": false,
             "power": 1200,
             "rate": 10,
-            "mp_cost": 800
+            "mp_cost": 800,
+            "action_cost": 1000
         }
     },
     {
@@ -2047,9 +2361,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 15,
+            "is_general": false,
             "power": 1000,
             "rate": 10,
-            "mp_cost": 400
+            "mp_cost": 400,
+            "action_cost": 1000
         }
     },
     {
@@ -2060,9 +2376,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 15,
+            "is_general": false,
             "power": 1300,
             "rate": 10,
-            "mp_cost": 800
+            "mp_cost": 800,
+            "action_cost": 1000
         }
     },
     {
@@ -2073,9 +2391,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": false,
             "power": 300,
             "rate": 40,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -2086,9 +2406,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 21,
+            "is_general": false,
             "power": 200,
             "rate": 60,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -2099,9 +2421,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": false,
             "power": 1000,
             "rate": 20,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -2112,9 +2436,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": false,
             "power": 1000,
             "rate": 20,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -2125,9 +2451,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": false,
             "power": 1000,
             "rate": 20,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -2138,9 +2466,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": false,
             "power": 1000,
             "rate": 20,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -2151,9 +2481,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": false,
             "power": 1000,
             "rate": 20,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -2164,9 +2496,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": false,
             "power": 1000,
             "rate": 20,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -2177,9 +2511,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": false,
             "power": 1000,
             "rate": 20,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -2190,9 +2526,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": false,
             "power": 1000,
             "rate": 20,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -2203,9 +2541,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": false,
             "power": 1000,
             "rate": 20,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -2216,9 +2556,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": false,
             "power": 1000,
             "rate": 20,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -2229,9 +2571,11 @@
             "attribute_type": null,
             "rank": null,
             "type": 2,
+            "is_general": false,
             "power": 1000,
             "rate": 20,
-            "mp_cost": 100
+            "mp_cost": 100,
+            "action_cost": 1000
         }
     },
     {
@@ -2242,9 +2586,11 @@
             "attribute_type": "str",
             "rank": 5,
             "type": 16,
+            "is_general": false,
             "power": 3,
             "rate": 15,
-            "mp_cost": 2000
+            "mp_cost": 2000,
+            "action_cost": 1000
         }
     },
     {
@@ -2255,9 +2601,11 @@
             "attribute_type": "str",
             "rank": 5,
             "type": 25,
+            "is_general": false,
             "power": 0,
             "rate": 15,
-            "mp_cost": 1500
+            "mp_cost": 1500,
+            "action_cost": 1000
         }
     },
     {
@@ -2268,9 +2616,11 @@
             "attribute_type": "int",
             "rank": 5,
             "type": 19,
+            "is_general": false,
             "power": 10,
             "rate": 25,
-            "mp_cost": 0
+            "mp_cost": 0,
+            "action_cost": 1000
         }
     },
     {
@@ -2281,9 +2631,11 @@
             "attribute_type": "int",
             "rank": 5,
             "type": 18,
+            "is_general": false,
             "power": 4,
             "rate": 20,
-            "mp_cost": 4000
+            "mp_cost": 4000,
+            "action_cost": 1000
         }
     },
     {
@@ -2294,9 +2646,11 @@
             "attribute_type": "men",
             "rank": 5,
             "type": 3,
+            "is_general": false,
             "power": 0,
             "rate": 20,
-            "mp_cost": 0
+            "mp_cost": 0,
+            "action_cost": 1000
         }
     },
     {
@@ -2307,9 +2661,11 @@
             "attribute_type": "men",
             "rank": 5,
             "type": 18,
+            "is_general": false,
             "power": 3,
             "rate": 20,
-            "mp_cost": 4000
+            "mp_cost": 4000,
+            "action_cost": 1000
         }
     },
     {
@@ -2320,9 +2676,11 @@
             "attribute_type": "dex",
             "rank": 5,
             "type": 20,
+            "is_general": false,
             "power": 2,
             "rate": 20,
-            "mp_cost": 1500
+            "mp_cost": 1500,
+            "action_cost": 1000
         }
     },
     {
@@ -2333,9 +2691,11 @@
             "attribute_type": "dex",
             "rank": 5,
             "type": 20,
+            "is_general": false,
             "power": 5,
             "rate": 15,
-            "mp_cost": 3000
+            "mp_cost": 3000,
+            "action_cost": 1000
         }
     },
     {
@@ -2346,9 +2706,11 @@
             "attribute_type": "vit",
             "rank": 5,
             "type": 21,
+            "is_general": false,
             "power": 1,
             "rate": 5,
-            "mp_cost": 4000
+            "mp_cost": 4000,
+            "action_cost": 1000
         }
     },
     {
@@ -2359,9 +2721,11 @@
             "attribute_type": "vit",
             "rank": 5,
             "type": 22,
+            "is_general": false,
             "power": 2,
             "rate": 15,
-            "mp_cost": 2000
+            "mp_cost": 2000,
+            "action_cost": 1000
         }
     },
     {
@@ -2372,9 +2736,11 @@
             "attribute_type": "agi",
             "rank": 5,
             "type": 23,
+            "is_general": false,
             "power": 1,
             "rate": 15,
-            "mp_cost": 2000
+            "mp_cost": 2000,
+            "action_cost": 1000
         }
     },
     {
@@ -2385,9 +2751,11 @@
             "attribute_type": "agi",
             "rank": 5,
             "type": 24,
+            "is_general": false,
             "power": 1,
             "rate": 15,
-            "mp_cost": 0
+            "mp_cost": 0,
+            "action_cost": 1000
         }
     },
     {
@@ -2398,9 +2766,11 @@
             "attribute_type": "str",
             "rank": 5,
             "type": 16,
+            "is_general": false,
             "power": 2,
             "rate": 15,
-            "mp_cost": 3000
+            "mp_cost": 3000,
+            "action_cost": 1000
         }
     },
     {
@@ -2411,9 +2781,11 @@
             "attribute_type": "int",
             "rank": 5,
             "type": 18,
+            "is_general": false,
             "power": 2,
             "rate": 20,
-            "mp_cost": 4000
+            "mp_cost": 4000,
+            "action_cost": 1000
         }
     },
     {
@@ -2424,9 +2796,11 @@
             "attribute_type": "str",
             "rank": 5,
             "type": 23,
+            "is_general": false,
             "power": 1,
             "rate": 20,
-            "mp_cost": 2000
+            "mp_cost": 2000,
+            "action_cost": 1000
         }
     },
     {
@@ -2437,9 +2811,11 @@
             "attribute_type": "str",
             "rank": 5,
             "type": 24,
+            "is_general": false,
             "power": 1,
             "rate": 20,
-            "mp_cost": 0
+            "mp_cost": 0,
+            "action_cost": 1000
         }
     },
     {
@@ -2450,9 +2826,11 @@
             "attribute_type": "dex",
             "rank": 5,
             "type": 20,
+            "is_general": false,
             "power": 2,
             "rate": 20,
-            "mp_cost": 1500
+            "mp_cost": 1500,
+            "action_cost": 1000
         }
     },
     {
@@ -2463,9 +2841,11 @@
             "attribute_type": "vit",
             "rank": 5,
             "type": 22,
+            "is_general": false,
             "power": 2,
             "rate": 15,
-            "mp_cost": 2000
+            "mp_cost": 2000,
+            "action_cost": 1000
         }
     },
     {
@@ -2476,9 +2856,11 @@
             "attribute_type": "vit",
             "rank": 5,
             "type": 21,
+            "is_general": false,
             "power": 1,
             "rate": 2,
-            "mp_cost": 4000
+            "mp_cost": 4000,
+            "action_cost": 1000
         }
     },
     {
@@ -2489,9 +2871,11 @@
             "attribute_type": "str",
             "rank": 5,
             "type": 16,
+            "is_general": false,
             "power": 3,
             "rate": 5,
-            "mp_cost": 2000
+            "mp_cost": 2000,
+            "action_cost": 1000
         }
     },
     {
@@ -2502,9 +2886,11 @@
             "attribute_type": "str",
             "rank": 5,
             "type": 23,
+            "is_general": false,
             "power": 1,
             "rate": 20,
-            "mp_cost": 2000
+            "mp_cost": 2000,
+            "action_cost": 1000
         }
     },
     {
@@ -2515,9 +2901,11 @@
             "attribute_type": "men",
             "rank": 5,
             "type": 18,
+            "is_general": false,
             "power": 3,
             "rate": 10,
-            "mp_cost": 4000
+            "mp_cost": 4000,
+            "action_cost": 1000
         }
     },
     {
@@ -2528,9 +2916,11 @@
             "attribute_type": "men",
             "rank": 5,
             "type": 18,
+            "is_general": false,
             "power": 3,
             "rate": 10,
-            "mp_cost": 4000
+            "mp_cost": 4000,
+            "action_cost": 1000
         }
     },
     {
@@ -2541,9 +2931,11 @@
             "attribute_type": "men",
             "rank": 5,
             "type": 18,
+            "is_general": false,
             "power": 3,
             "rate": 10,
-            "mp_cost": 4000
+            "mp_cost": 4000,
+            "action_cost": 1000
         }
     }
 ]

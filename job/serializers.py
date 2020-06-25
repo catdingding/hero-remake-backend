@@ -96,6 +96,8 @@ class SetSkillSettingSerializer(BaseSerializer):
 
         for setting in settings:
             skill = settings.skill
+            if skill.is_general:
+                continue
             if skill.attribute_type != self.chara.job.attribute_type:
                 raise serializers.ValidationError("無法使用該類型技能")
             if skill.rank > self.chara.job.rank:

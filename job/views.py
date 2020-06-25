@@ -40,6 +40,8 @@ class AvailableSkillView(BaseGenericAPIView):
 
     def get(self, request):
         chara = self.get_chara()
-        skills = Skill.objects.filter(attribute_type=chara.job.attribute_type, rank__lte=chara.job.rank)
+        skills = Skill.objects.filter(
+            Q(is_general=True) | Q(attribute_type=chara.job.attribute_type, rank__lte=chara.job.rank)
+        )
         serializer = self.get_serializer(skills, many=True)
         return Response(serializer.data)

@@ -608,7 +608,7 @@
             "attribute_type": "vit",
             "type": 12,
             "rank": 2,
-            "power": 1.0,
+            "power": 100.0,
             "require_proficiency": 5000,
             "prerequisite": null,
             "description": "反彈敵人的傷害"
@@ -622,7 +622,7 @@
             "attribute_type": "vit",
             "type": 12,
             "rank": 4,
-            "power": 1.5,
+            "power": 150.0,
             "require_proficiency": 12000,
             "prerequisite": 44,
             "description": "中幅反彈敵人的傷害"
@@ -930,7 +930,7 @@
             "attribute_type": "vit",
             "type": 23,
             "rank": 2,
-            "power": 1.2,
+            "power": 20.0,
             "require_proficiency": 2000,
             "prerequisite": null,
             "description": "增加爆擊時１．２倍的傷害"
@@ -944,7 +944,7 @@
             "attribute_type": "vit",
             "type": 23,
             "rank": 3,
-            "power": 1.4,
+            "power": 40.0,
             "require_proficiency": 5000,
             "prerequisite": 67,
             "description": "增加爆擊時１．４倍的傷害"
@@ -958,7 +958,7 @@
             "attribute_type": "vit",
             "type": 23,
             "rank": 4,
-            "power": 1.6,
+            "power": 60.0,
             "require_proficiency": 10000,
             "prerequisite": 68,
             "description": "增加爆擊時１．６倍的傷害"
@@ -986,7 +986,7 @@
             "attribute_type": "str",
             "type": 25,
             "rank": 5,
-            "power": 1.25,
+            "power": 0.0,
             "require_proficiency": 10000,
             "prerequisite": null,
             "description": "戰技發動率上昇"

@@ -32,7 +32,7 @@ class MonsterSkillSetting(BaseModel):
     hp_percentage = models.PositiveSmallIntegerField()
     mp_percentage = models.PositiveSmallIntegerField()
 
-    priority = models.PositiveSmallIntegerField()
+    order = models.IntegerField()
 
 
 class BattleMapMonster(BaseModel):

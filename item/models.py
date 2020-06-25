@@ -53,8 +53,9 @@ class Equipment(Item):
 
     custom_name = models.CharField(max_length=20)
 
-    addition_attack = models.IntegerField(default=0)
-    addition_weight = models.IntegerField(default=0)
+    attack = models.IntegerField(default=0)
+    defense = models.IntegerField(default=0)
+    weight = models.IntegerField(default=0)
 
     ability_1 = models.ForeignKey("ability.Ability", null=True,
                                   related_name="ability_1_items", on_delete=models.PROTECT)
