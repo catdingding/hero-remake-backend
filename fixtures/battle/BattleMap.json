@@ -2,84 +2,96 @@
         "model": "battle.battlemap",
         "pk": 1,
         "fields": {
-            "name": "草原"
+            "name": "草原",
+            "is_regular": true
         }
     },
     {
         "model": "battle.battlemap",
         "pk": 2,
         "fields": {
-            "name": "沼地"
+            "name": "沼地",
+            "is_regular": true
         }
     },
     {
         "model": "battle.battlemap",
         "pk": 3,
         "fields": {
-            "name": "森林"
+            "name": "森林",
+            "is_regular": true
         }
     },
     {
         "model": "battle.battlemap",
         "pk": 4,
         "fields": {
-            "name": "高塔"
+            "name": "高塔",
+            "is_regular": true
         }
     },
     {
         "model": "battle.battlemap",
         "pk": 5,
         "fields": {
-            "name": "廢城"
+            "name": "廢城",
+            "is_regular": true
         }
     },
     {
         "model": "battle.battlemap",
         "pk": 6,
         "fields": {
-            "name": "禁地"
+            "name": "禁地",
+            "is_regular": true
         }
     },
     {
         "model": "battle.battlemap",
         "pk": 7,
         "fields": {
-            "name": "魔王城"
+            "name": "魔王城",
+            "is_regular": true
         }
     },
     {
         "model": "battle.battlemap",
         "pk": 8,
         "fields": {
-            "name": "財寶洞窟"
+            "name": "財寶洞窟",
+            "is_regular": false
         }
     },
     {
         "model": "battle.battlemap",
         "pk": 9,
         "fields": {
-            "name": "黃金宮殿"
+            "name": "黃金宮殿",
+            "is_regular": false
         }
     },
     {
         "model": "battle.battlemap",
         "pk": 10,
         "fields": {
-            "name": "藍天之下"
+            "name": "藍天之下",
+            "is_regular": false
         }
     },
     {
         "model": "battle.battlemap",
         "pk": 11,
         "fields": {
-            "name": "星空下的夜"
+            "name": "星空下的夜",
+            "is_regular": false
         }
     },
     {
         "model": "battle.battlemap",
         "pk": 12,
         "fields": {
-            "name": "傳說密地"
+            "name": "傳說密地",
+            "is_regular": false
         }
     }
 ]

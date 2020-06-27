@@ -4,6 +4,7 @@ from base.models import BaseModel
 
 class BattleMap(BaseModel):
     name = models.CharField(max_length=20, unique=True)
+    is_regular = models.BooleanField()
 
 
 class Monster(BaseModel):
