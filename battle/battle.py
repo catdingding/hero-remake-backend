@@ -1,16 +1,9 @@
-from numba import jit, int32
-import random
 from random import choice
 
+from base.utils import randint
 from battle.models import Monster
 from chara.models import Chara
 from item.models import Equipment
-
-
-@jit(int32(int32, int32), nopython=True)
-def randint(low, high):
-    return random.randint(low, high)
-
 
 class Battle:
     def __init__(self, attackers, defenders):

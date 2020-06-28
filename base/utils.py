@@ -1,4 +1,12 @@
+from numba import jit, int32
+import random
+
 from rest_framework.exceptions import APIException
+
+
+@jit(int32(int32, int32), nopython=True)
+def randint(low, high):
+    return random.randint(low, high)
 
 
 def calculate_distance(d1, d2):
