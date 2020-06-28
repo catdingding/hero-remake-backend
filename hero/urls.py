@@ -6,7 +6,7 @@ from world.views import MoveView, MapView
 from user.views import RegistrationView, ChangePasswordView
 from chara.views import CharaIntroductionView, SendMoneyView, SlotEquipView, SlotDivestView
 from ability.views import LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView
-from job.views import SetSkillView, AvailableSkillView, AvailableJobView, ChangeJobView
+from job.views import SetSkillView, AvailableSkillView, AvailableJobView, ChangeJobView, ExerciseView
 from item.views import UseItemView, SendItemView, StorageTakeView, StoragePutView
 from country.views import (
     FoundCountryView, JoinCountryView, LeaveCountryView, ChangeKingView, CountryDismissView, SetOfficialsView,
@@ -37,6 +37,7 @@ urlpatterns = [
     path('chara/skill/available/', AvailableSkillView.as_view()),
     path('chara/job/change/', ChangeJobView.as_view()),
     path('chara/job/available/', AvailableJobView.as_view()),
+    path('chara/exercise/', ExerciseView.as_view()),
     path('chara/item/use/', UseItemView.as_view()),
     path('chara/item/send/', SendItemView.as_view()),
     path('chara/storage/take/', StorageTakeView.as_view()),

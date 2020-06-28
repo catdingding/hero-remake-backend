@@ -40,3 +40,10 @@ class Skill(BaseModel):
     rate = models.IntegerField()
     mp_cost = models.IntegerField()
     action_cost = models.IntegerField()
+
+
+class ExerciseReward(BaseModel):
+    job_attribute_type = models.ForeignKey(
+        "world.AttributeType", related_name='exercise_rewards', on_delete=models.PROTECT)
+    reward_attribute_type = models.ForeignKey("world.AttributeType", on_delete=models.PROTECT)
+    limit_growth = models.IntegerField()

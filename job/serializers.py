@@ -1,6 +1,8 @@
 import random
 
 from rest_framework import serializers
+
+from base.utils import randint
 from base.serializers import BaseSerializer, BaseModelSerializer
 
 from job.models import Job, Skill
@@ -103,3 +105,33 @@ class SetSkillSettingSerializer(BaseSerializer):
             if skill.rank > self.chara.job.rank:
                 raise serializers.ValidationError("無法使用該級別技能")
         return settings
+
+
+class ExerciseSerializer(BaseSerializer):
+    def save(self):
+        self.chara.proficiency -= self.validated_data['proficiency_cost']
+        self.chara.save()
+
+        if randint(1, 100) == 1:
+            rate = 15
+        elif randint(1, 15) == 1:
+            rate = 5
+        else:
+            rate = 1
+
+        for reward in self.chara.job.attribute_type.exercise_rewards.all():
+            attr = self.chara.attrs[reward.reward_attribute_type_id]
+            limit_growth = reward.limit_growth * rate
+
+            if attr.limit < 400:
+                attr.limit += limit_growth
+
+        CharaAttribute.objects.bulk_update(self.chara.attrs.values(), fields=['limit'])
+
+    def validate(self, data):
+        cost = (sum(attr.limit for attr in self.chara.attrs.values()) - 1000) // 20
+        cost = min(10000, cost ** 2)
+        if cost > self.chara.proficiency:
+            raise serializers.ValidationError("熟練度不足")
+        data['proficiency_cost'] = cost
+        return data

@@ -3,7 +3,9 @@ from base.views import BaseGenericAPIView, CharaPostViewMixin
 from rest_framework.response import Response
 
 from job.models import Job, Skill
-from job.serializers import JobSerializer, ChangeJobSerializer, SetSkillSettingSerializer, SkillSerializer
+from job.serializers import (
+    JobSerializer, ChangeJobSerializer, SetSkillSettingSerializer, SkillSerializer, ExerciseSerializer
+)
 
 
 class AvailableJobView(BaseGenericAPIView):
@@ -45,3 +47,7 @@ class AvailableSkillView(BaseGenericAPIView):
         )
         serializer = self.get_serializer(skills, many=True)
         return Response(serializer.data)
+
+
+class ExerciseView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = ExerciseSerializer
