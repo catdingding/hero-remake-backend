@@ -2,56 +2,64 @@
         "model": "world.ElementType",
         "pk": "none",
         "fields": {
-            "name": "無"
+            "name": "無",
+            "suppressed_by": null
         }
     },
     {
         "model": "world.ElementType",
         "pk": "fire",
         "fields": {
-            "name": "火"
+            "name": "火",
+            "suppressed_by": "water"
         }
     },
     {
         "model": "world.ElementType",
         "pk": "water",
         "fields": {
-            "name": "水"
+            "name": "水",
+            "suppressed_by": "thunder"
         }
     },
     {
         "model": "world.ElementType",
         "pk": "wind",
         "fields": {
-            "name": "風"
+            "name": "風",
+            "suppressed_by": "fire"
         }
     },
     {
         "model": "world.ElementType",
         "pk": "star",
         "fields": {
-            "name": "星"
+            "name": "星",
+            "suppressed_by": "dark"
         }
     },
     {
         "model": "world.ElementType",
         "pk": "thunder",
         "fields": {
-            "name": "雷"
+            "name": "雷",
+            "suppressed_by": "wind"
         }
     },
     {
         "model": "world.ElementType",
         "pk": "light",
         "fields": {
-            "name": "光"
+            "name": "光",
+            "suppressed_by": "star"
         }
     },
     {
         "model": "world.ElementType",
         "pk": "dark",
         "fields": {
-            "name": "暗"
+            "name": "暗",
+            "suppressed_by": "light"
         }
     }
 ]

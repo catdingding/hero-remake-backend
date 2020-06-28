@@ -5,8 +5,10 @@ from battle.models import Monster
 from chara.models import Chara
 from item.models import Equipment
 
+
 class Battle:
-    def __init__(self, attackers, defenders):
+    def __init__(self, attackers, defenders, element_type=None):
+        self.element_type = element_type
         self.charas = [BattleChara(x, battle=self, team='attacker') for x in attackers] + \
             [BattleChara(x, battle=self, team='defender') for x in defenders]
 
@@ -68,9 +70,17 @@ class BattleChara:
         self.team = team
 
         self.name = source.name
+        self.element_type = source.element_type
         self.action_points = 0
+        # attributes
         for attr in source.attributes.all():
-            setattr(self, attr.type_id, attr.value)
+            attr_value = attr.value
+            if self.element_type == self.battle.element_type and self.element_type.id != 'none':
+                attr_value = int(attr_value * 1.1)
+            elif self.element_type.suppressed_by == self.battle.element_type:
+                attr_value = int(attr_value * 0.9)
+            setattr(self, attr.type_id, attr_value)
+
         self.skill_settings = list(source.skill_settings.all().order_by('order').select_related('skill'))
 
         if isinstance(source, Chara):
@@ -389,6 +399,10 @@ class BattleChara:
             damage_add = randint(0, 200)
             damage += damage_add
             attacker.log(f"追加了{damage_add}點傷害")
+        # 屬性相剋
+        if attacker.element_type == self.element_type.suppressed_by:
+            damage = int(damage * 1.2)
+            attacker.log(f"{self.name}的屬性被剋制了")
 
         damage = max(1, damage)
         self.hp = max(0, self.hp - damage)

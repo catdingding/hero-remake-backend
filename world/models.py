@@ -5,6 +5,7 @@ from base.models import BaseModel, BaseBuffType
 class ElementType(BaseModel):
     id = models.CharField(primary_key=True, max_length=10)
     name = models.CharField(max_length=10, unique=True)
+    suppressed_by = models.ForeignKey("world.ElementType", null=True, on_delete=models.PROTECT)
 
 
 class AttributeType(BaseModel):
@@ -21,6 +22,7 @@ class SlotType(BaseModel):
 class Location(BaseModel):
     x = models.IntegerField()
     y = models.IntegerField()
+    element_type = models.ForeignKey("world.ElementType", on_delete=models.PROTECT)
     battle_map = models.ForeignKey("battle.BattleMap", on_delete=models.PROTECT)
     chaos_score = models.PositiveIntegerField()
 
