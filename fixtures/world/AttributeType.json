@@ -34,7 +34,7 @@
         "model": "world.AttributeType",
         "pk": "dex",
         "fields": {
-            "name": "敏捷",
+            "name": "靈巧",
             "class_name": "弓系"
         }
     },
@@ -42,7 +42,7 @@
         "model": "world.AttributeType",
         "pk": "agi",
         "fields": {
-            "name": "速度",
+            "name": "敏捷",
             "class_name": "忍系"
         }
     }
