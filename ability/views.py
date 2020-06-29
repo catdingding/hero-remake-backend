@@ -1,9 +1,13 @@
-from django.db.models import Q
-from base.views import BaseGenericAPIView, CharaPostViewMixin
+from django.db.models import Q, Max
+from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin
 from rest_framework.response import Response
+from rest_framework.mixins import ListModelMixin
+from rest_framework.decorators import action
 
-from ability.models import Ability
-from ability.serializers import LearnAbilitySerializer, AbilitySerializer, SetAbilitySerializer
+from ability.models import Ability, AlchemyOption
+from ability.serializers import (
+    LearnAbilitySerializer, AbilitySerializer, SetAbilitySerializer, AlchemyOptionSerializer, AlchemyMakeSerializer
+)
 
 
 class LearnAbilityView(CharaPostViewMixin, BaseGenericAPIView):
@@ -39,3 +43,28 @@ class AvailableToSetAbilityView(BaseGenericAPIView):
 
         serializer = self.get_serializer(abilities, many=True)
         return Response(serializer.data)
+
+
+class AlchemyOptionViewSet(ListModelMixin, BaseGenericViewSet):
+    queryset = AlchemyOption.objects.all()
+    serializer_class = AlchemyOptionSerializer
+    serializer_action_classes = {
+        'make': AlchemyMakeSerializer,
+    }
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        alchemy_power = self.get_chara().abilities.filter(type=21).aggregate(power=Max('power'))['power']
+        if alchemy_power is None:
+            return queryset.filter(pk__isnull=True)
+        else:
+            return queryset.filter(require_power__lte=alchemy_power)
+
+    @action(methods=['post'], detail=True)
+    def make(self, request, pk):
+        chara = self.get_chara(lock=True)
+        serializer = self.get_serializer(self.get_object(), data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'status': 'success'})

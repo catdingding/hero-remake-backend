@@ -19,3 +19,10 @@ class Ability(BaseModel):
     prerequisite = models.ForeignKey("ability.Ability", null=True, on_delete=models.PROTECT)
 
     description = models.CharField(max_length=100)
+
+
+class AlchemyOption(BaseModel):
+    require_power = models.IntegerField()
+
+    item_type = models.ForeignKey("item.ItemType", on_delete=models.PROTECT)
+    proficiency_cost = models.IntegerField()

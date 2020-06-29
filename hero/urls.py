@@ -5,7 +5,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from world.views import MoveView, MapView
 from user.views import RegistrationView, ChangePasswordView
 from chara.views import CharaIntroductionView, SendMoneyView, SlotEquipView, SlotDivestView
-from ability.views import LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView
+from ability.views import (
+    LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView, AlchemyOptionViewSet
+)
 from job.views import SetSkillView, AvailableSkillView, AvailableJobView, ChangeJobView, ExerciseView
 from item.views import UseItemView, SendItemView, StorageTakeView, StoragePutView
 from country.views import (
@@ -20,6 +22,7 @@ router.register(r'trade/auctions', AuctionViewSet)
 router.register(r'trade/sales', SaleViewSet)
 router.register(r'trade/purchases', PurchaseViewSet)
 router.register(r'trade/exchange-options', ExchangeOptionViewSet)
+router.register(r'chara/alchemy-options', AlchemyOptionViewSet)
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

@@ -107,6 +107,11 @@ class Chara(BaseModel):
             raise APIException("金錢不足")
         self.gold -= number
 
+    def lose_proficiency(self, number):
+        if self.proficiency < number:
+            raise APIException("熟練不足")
+        self.proficiency -= number
+
 
 class CharaAttribute(BaseModel):
     chara = models.ForeignKey("chara.Chara", on_delete=models.CASCADE, related_name="attributes")

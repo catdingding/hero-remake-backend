@@ -1,8 +1,9 @@
 from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
-from ability.models import Ability
+from ability.models import Ability, AlchemyOption
 from chara.models import Chara
+from item.models import Item
 
 
 class LearnAbilitySerializer(BaseSerializer):
@@ -60,3 +61,21 @@ class SetAbilitySerializer(BaseModelSerializer):
     def is_learned_ability(self, ability):
         if not self.chara.abilities.filter(pk=ability.pk).exists():
             raise serializers.ValidationError("尚未習得此奧義")
+
+
+class AlchemyOptionSerializer(BaseModelSerializer):
+    class Meta:
+        model = AlchemyOption
+        fields = ['id', 'item_type', 'proficiency_cost']
+
+
+class AlchemyMakeSerializer(BaseSerializer):
+    number = serializers.IntegerField(min_value=1)
+
+    def save(self):
+        number = self.validated_data['number']
+
+        self.chara.lose_proficiency(self.instance.proficiency_cost * number)
+        self.chara.save()
+
+        self.chara.get_items('bag', [Item(type=self.instance.item_type, number=number)])
