@@ -79,3 +79,11 @@ class SlotDivestSerializer(BaseSerializer):
 
         if current_slot_item is not None:
             self.chara.get_items('bag', [current_slot_item])
+
+
+class RestSerializer(BaseSerializer):
+    def save(self):
+        chara = self.chara
+        chara.hp = max(chara.hp, int(chara.hp_max * chara.health / 100))
+        chara.mp = max(chara.mp, int(chara.mp_max * chara.health / 100))
+        chara.save()

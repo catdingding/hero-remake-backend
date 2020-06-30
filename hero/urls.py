@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from world.views import MoveView, MapView
 from user.views import RegistrationView, ChangePasswordView
-from chara.views import CharaIntroductionView, SendMoneyView, SlotEquipView, SlotDivestView
+from chara.views import CharaIntroductionView, SendMoneyView, SlotEquipView, SlotDivestView, RestView
 from ability.views import (
     LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView, AlchemyOptionViewSet
 )
@@ -30,6 +30,7 @@ urlpatterns = [
     path('user/registration/', RegistrationView.as_view()),
     path('user/change-password/', ChangePasswordView.as_view()),
     path('chara/introduction/', CharaIntroductionView.as_view()),
+    path('chara/rest/', RestView.as_view()),
     path('chara/move/', MoveView.as_view()),
     path('chara/send-money/', SendMoneyView.as_view()),
     path('chara/ability/learn/', LearnAbilityView.as_view()),

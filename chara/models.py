@@ -37,6 +37,8 @@ class Chara(BaseModel):
     live_ability = models.ForeignKey("ability.Ability", null=True,
                                      related_name="live_ability_charas", on_delete=models.PROTECT)
 
+    health = models.IntegerField(default=100)
+
     hp_max = models.PositiveIntegerField()
     hp = models.PositiveIntegerField()
     mp_max = models.PositiveIntegerField()

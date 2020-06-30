@@ -2,7 +2,7 @@ from base.views import BaseGenericAPIView, CharaPostViewMixin
 from rest_framework.response import Response
 
 from chara.serializers import (
-    CharaIntroductionSerializer, SendMoneySerializer, SlotEquipSerializer, SlotDivestSerializer
+    CharaIntroductionSerializer, SendMoneySerializer, SlotEquipSerializer, SlotDivestSerializer, RestSerializer
 )
 
 
@@ -34,3 +34,7 @@ class SlotEquipView(CharaPostViewMixin, BaseGenericAPIView):
 
 class SlotDivestView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SlotDivestSerializer
+
+
+class RestView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = RestSerializer
