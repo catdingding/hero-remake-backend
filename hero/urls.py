@@ -14,7 +14,7 @@ from country.views import (
     FoundCountryView, JoinCountryView, LeaveCountryView, ChangeKingView, CountryDismissView, SetOfficialsView,
     CountryItemPutView, CountryItemTakeView, CountryDonateView
 )
-from trade.views import AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet
+from trade.views import AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet
 
 router = SimpleRouter()
 
@@ -23,6 +23,7 @@ router.register(r'trade/sales', SaleViewSet)
 router.register(r'trade/purchases', PurchaseViewSet)
 router.register(r'trade/exchange-options', ExchangeOptionViewSet)
 router.register(r'chara/alchemy-options', AlchemyOptionViewSet)
+router.register(r'trade/store-options', StoreOptionViewSet)
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

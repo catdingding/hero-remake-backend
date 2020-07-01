@@ -60,7 +60,7 @@ class SlotEquipSerializer(BaseSerializer):
         item = self.chara.bag_items.filter(id=item_id).first()
         if item is None:
             raise serializers.ValidationError("背包中無此物品")
-        if item.type.slot_type is None:
+        if item.type.category_id != 1:
             raise serializers.ValidationError("此物品無法裝備")
 
         return item

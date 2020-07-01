@@ -52,3 +52,13 @@ class ExchangeOptionRequirement(BaseModel):
     exchange_option = models.ForeignKey("trade.ExchangeOption", related_name="requirements", on_delete=models.CASCADE)
     item_type = models.ForeignKey("item.ItemType", on_delete=models.PROTECT)
     number = models.IntegerField()
+
+
+class StoreOption(BaseModel):
+    STORE_TYPE_CHOICES = [(x, x) for x in ['weapon', 'armor', 'jewelry', 'item']]
+
+    item_type = models.ForeignKey("item.ItemType", on_delete=models.PROTECT)
+    price = models.IntegerField()
+
+    store_type = models.CharField(choices=STORE_TYPE_CHOICES, max_length=10)
+    location_element_type = models.ForeignKey("world.ElementType", null=True, on_delete=models.PROTECT)

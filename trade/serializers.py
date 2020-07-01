@@ -6,7 +6,7 @@ from rest_framework import serializers
 
 from base.serializers import BaseSerializer, BaseModelSerializer
 from chara.models import Chara
-from trade.models import Auction, Sale, Purchase, ExchangeOption, ExchangeOptionRequirement
+from trade.models import Auction, Sale, Purchase, ExchangeOption, ExchangeOptionRequirement, StoreOption
 from item.models import Item
 
 
@@ -304,3 +304,19 @@ class ExchangeSerializer(BaseSerializer):
         self.chara.lose_items('bag', items_to_lose)
 
         self.chara.get_items('bag', [Item(type=self.instance.item_type, number=number)])
+
+
+class StoreOptionSerializer(BaseModelSerializer):
+    class Meta:
+        model = StoreOption
+        fields = ['id', 'item_type', 'price']
+
+
+class StoreBuySerializer(BaseSerializer):
+    number = serializers.IntegerField(min_value=1)
+
+    def save(self):
+        number = self.validated_data['number']
+
+        self.chara.lose_gold(self.instance.price * number)
+        self.chara.get_items('bag', self.instance.item_type.make(number))

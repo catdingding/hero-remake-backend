@@ -6,13 +6,14 @@ from rest_framework.mixins import ListModelMixin
 
 from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin
 
-from trade.models import Auction, Sale, Purchase, ExchangeOption
+from trade.models import Auction, Sale, Purchase, ExchangeOption, StoreOption
 from trade.serializers import (
     AuctionSerializer, AuctionCreateSerializer, AuctionBidSerializer,
     AuctionReceiveItemSerializer, AuctionReceiveGoldSerializer,
     SaleSerializer, SaleCreateSerializer, SaleBuySerializer, SaleReceiveItemSerializer,
     PurchaseSerializer, PurchaseCreateSerializer, PurchaseSellSerializer, PurchaseReceiveGoldSerializer,
-    ExchangeOptionSerializer, ExchangeSerializer
+    ExchangeOptionSerializer, ExchangeSerializer,
+    StoreOptionSerializer, StoreBuySerializer
 )
 
 
@@ -195,6 +196,32 @@ class ExchangeOptionViewSet(ListModelMixin, BaseGenericViewSet):
 
     @action(methods=['post'], detail=True)
     def exchange(self, request, pk):
+        chara = self.get_chara(lock=True)
+        serializer = self.get_serializer(self.get_object(), data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'status': 'success'})
+
+
+class StoreOptionViewSet(ListModelMixin, BaseGenericViewSet):
+    queryset = StoreOption.objects.all()
+    serializer_class = StoreOptionSerializer
+    serializer_action_classes = {
+        'buy': StoreBuySerializer,
+    }
+    filterset_fields = ['store_type']
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        location = self.get_chara().location
+        if location.town is None:
+            return queryset.filter(pk__isnull=True)
+        else:
+            return queryset.filter(location_element_type=location.element_type)
+
+    @action(methods=['post'], detail=True)
+    def buy(self, request, pk):
         chara = self.get_chara(lock=True)
         serializer = self.get_serializer(self.get_object(), data=request.data)
         serializer.is_valid(raise_exception=True)

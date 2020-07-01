@@ -39,6 +39,21 @@ class ItemType(BaseModel):
 
     description = models.CharField(max_length=100)
 
+    def make(self, number):
+        # equipment
+        if self.category_id == 1:
+            return [
+                Equipment.objects.create(
+                    type=self, number=1, custom_name=self.name, attack=self.attack, defense=self.defense,
+                    weight=self.weight, ability_1_id=self.ability_1_id, ability_2_id=self.ability_2_id
+                ).item_ptr
+                for i in range(number)
+            ]
+
+        # others
+        else:
+            return [Item(type=self, number=number)]
+
 
 class Item(BaseModel):
     id = models.BigAutoField(primary_key=True)
@@ -47,9 +62,9 @@ class Item(BaseModel):
 
 
 class Equipment(Item):
-    QUALITY_CHOICES = [(x, x) for x in ['S', 'A', 'B']]
+    QUALITY_CHOICES = [(x, x) for x in ['稀有', '優良', '普通']]
 
-    quality = models.CharField(max_length=1, choices=QUALITY_CHOICES)
+    quality = models.CharField(max_length=2, choices=QUALITY_CHOICES)
 
     custom_name = models.CharField(max_length=20)
 
