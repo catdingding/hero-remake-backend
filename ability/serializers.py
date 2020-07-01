@@ -78,4 +78,4 @@ class AlchemyMakeSerializer(BaseSerializer):
         self.chara.lose_proficiency(self.instance.proficiency_cost * number)
         self.chara.save()
 
-        self.chara.get_items('bag', [Item(type=self.instance.item_type, number=number)])
+        self.chara.get_items('bag', self.instance.item_type.make(number))

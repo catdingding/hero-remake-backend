@@ -303,7 +303,7 @@ class ExchangeSerializer(BaseSerializer):
         items_to_lose = [Item(type=r.item_type, number=r.number * number) for r in self.instance.requirements.all()]
         self.chara.lose_items('bag', items_to_lose)
 
-        self.chara.get_items('bag', [Item(type=self.instance.item_type, number=number)])
+        self.chara.get_items('bag', self.instance.item_type.make(number))
 
 
 class StoreOptionSerializer(BaseModelSerializer):
