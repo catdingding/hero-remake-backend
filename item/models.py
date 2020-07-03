@@ -44,7 +44,8 @@ class ItemType(BaseModel):
         if self.category_id == 1:
             return [
                 Equipment.objects.create(
-                    type=self, number=1, custom_name=self.name, attack=self.attack, defense=self.defense,
+                    type=self, number=1, element_type=self.element_type, custom_name=self.name,
+                    attack=self.attack, defense=self.defense,
                     weight=self.weight, ability_1_id=self.ability_1_id, ability_2_id=self.ability_2_id
                 ).item_ptr
                 for i in range(number)
@@ -67,6 +68,8 @@ class Equipment(Item):
     quality = models.CharField(max_length=2, choices=QUALITY_CHOICES)
 
     custom_name = models.CharField(max_length=20)
+
+    element_type = models.ForeignKey("world.ElementType", on_delete=models.PROTECT)
 
     attack = models.IntegerField(default=0)
     defense = models.IntegerField(default=0)
