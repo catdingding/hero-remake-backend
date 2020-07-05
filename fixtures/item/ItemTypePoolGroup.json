@@ -1,0 +1,15 @@
+[{
+        "model": "item.itemtypepoolgroup",
+        "pk": 1,
+        "fields": {
+            "name": "一般地圖掉寶"
+        }
+    },
+    {
+        "model": "item.itemtypepoolgroup",
+        "pk": 2,
+        "fields": {
+            "name": "神祕的寶箱"
+        }
+    }
+]

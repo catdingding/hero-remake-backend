@@ -10,6 +10,8 @@ import functools
 
 from base.models import BaseModel, BaseBuffType
 from base.utils import get_items, lose_items
+from world.models import AttributeType, SlotType
+from battle.models import BattleMap
 
 
 class Chara(BaseModel):
@@ -64,6 +66,19 @@ class Chara(BaseModel):
     def mp_limit(self):
         return self.attrs['int'].value * 5 + self.attrs['men'].value * 3 - 800
 
+    def init(self):
+        CharaAttribute.objects.bulk_create([
+            CharaAttribute(chara=self, type=attr_type, value=20, limit=200)
+            for attr_type in AttributeType.objects.all()
+        ])
+        CharaSlot.objects.bulk_create([CharaSlot(chara=self, type=slot_type) for slot_type in SlotType.objects.all()])
+        CharaIntroduction.objects.create(chara=self)
+        CharaRecord.objects.create(chara=self)
+        BattleMapTicket.objects.bulk_create([
+            BattleMapTicket(chara=self, battle_map=battle_map)
+            for battle_map in BattleMap.objects.filter(need_ticket=True)
+        ])
+
     def set_next_action_time(self, n=1):
         self.next_action_time = localtime() + timedelta(seconds=n * 15)
 
@@ -90,7 +105,7 @@ class Chara(BaseModel):
         self.hp_max = min(self.hp_max, self.hp_limit)
         self.mp_max = min(self.mp_max, self.mp_limit)
 
-        CharaAttribute.objects.bulk_update(attrs.values())
+        CharaAttribute.objects.bulk_update(attrs.values(), fields=['value'])
 
     def get_items(self, kind, *args, **kwargs):
         assert kind in ['bag', 'storage']
@@ -169,3 +184,9 @@ class CharaRecord(BaseModel):
 class CharaIntroduction(BaseModel):
     chara = models.OneToOneField("chara.Chara", on_delete=models.CASCADE, related_name="introduction")
     content = models.TextField(blank=True)
+
+
+class BattleMapTicket(BaseModel):
+    chara = models.ForeignKey("chara.Chara", related_name="battle_map_tickets", on_delete=models.CASCADE)
+    battle_map = models.ForeignKey("battle.BattleMap", on_delete=models.CASCADE)
+    value = models.IntegerField(default=0)

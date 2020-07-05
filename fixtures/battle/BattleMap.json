@@ -3,7 +3,8 @@
         "pk": 1,
         "fields": {
             "name": "草原",
-            "is_regular": true
+            "proficiency": 1,
+            "need_ticket": false
         }
     },
     {
@@ -11,7 +12,8 @@
         "pk": 2,
         "fields": {
             "name": "沼地",
-            "is_regular": true
+            "proficiency": 2,
+            "need_ticket": false
         }
     },
     {
@@ -19,7 +21,8 @@
         "pk": 3,
         "fields": {
             "name": "森林",
-            "is_regular": true
+            "proficiency": 3,
+            "need_ticket": false
         }
     },
     {
@@ -27,7 +30,8 @@
         "pk": 4,
         "fields": {
             "name": "高塔",
-            "is_regular": true
+            "proficiency": 4,
+            "need_ticket": false
         }
     },
     {
@@ -35,7 +39,8 @@
         "pk": 5,
         "fields": {
             "name": "廢城",
-            "is_regular": true
+            "proficiency": 7,
+            "need_ticket": false
         }
     },
     {
@@ -43,7 +48,8 @@
         "pk": 6,
         "fields": {
             "name": "禁地",
-            "is_regular": true
+            "proficiency": 5,
+            "need_ticket": false
         }
     },
     {
@@ -51,7 +57,8 @@
         "pk": 7,
         "fields": {
             "name": "魔王城",
-            "is_regular": true
+            "proficiency": 37,
+            "need_ticket": false
         }
     },
     {
@@ -59,7 +66,8 @@
         "pk": 8,
         "fields": {
             "name": "財寶洞窟",
-            "is_regular": false
+            "proficiency": 1,
+            "need_ticket": true
         }
     },
     {
@@ -67,7 +75,8 @@
         "pk": 9,
         "fields": {
             "name": "黃金宮殿",
-            "is_regular": false
+            "proficiency": 3,
+            "need_ticket": true
         }
     },
     {
@@ -75,7 +84,8 @@
         "pk": 10,
         "fields": {
             "name": "藍天之下",
-            "is_regular": false
+            "proficiency": 2,
+            "need_ticket": true
         }
     },
     {
@@ -83,7 +93,8 @@
         "pk": 11,
         "fields": {
             "name": "星空下的夜",
-            "is_regular": false
+            "proficiency": 1,
+            "need_ticket": true
         }
     },
     {
@@ -91,7 +102,8 @@
         "pk": 12,
         "fields": {
             "name": "傳說密地",
-            "is_regular": false
+            "proficiency": 1,
+            "need_ticket": true
         }
     }
 ]

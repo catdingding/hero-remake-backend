@@ -1,10 +1,12 @@
+from random import choices
+
 from django.db import models
 from base.models import BaseModel
 
 from rest_framework.exceptions import APIException
 
 
-class ItemEffect(BaseModel):
+class ItemUseEffect(BaseModel):
     name = models.CharField(max_length=10, unique=True)
 
 
@@ -20,10 +22,10 @@ class ItemType(BaseModel):
     attribute_type = models.ForeignKey("world.AttributeType", null=True, on_delete=models.PROTECT)
     slot_type = models.ForeignKey("world.SlotType", null=True, on_delete=models.PROTECT)
 
-    use_effect = models.ForeignKey("item.ItemEffect", null=True, on_delete=models.PROTECT)
-    rank = models.IntegerField(null=True)
+    use_effect = models.ForeignKey("item.ItemUseEffect", null=True, on_delete=models.PROTECT)
+    use_effect_param = models.IntegerField(null=True)
     # if True, disappear after use
-    is_consumable = models.BooleanField()
+    is_consumable = models.BooleanField(default=False)
 
     value = models.IntegerField(default=0)
 
@@ -79,3 +81,36 @@ class Equipment(Item):
                                   related_name="ability_1_items", on_delete=models.PROTECT)
     ability_2 = models.ForeignKey("ability.Ability", null=True,
                                   related_name="ability_2_items", on_delete=models.PROTECT)
+
+
+class ItemTypePoolGroup(BaseModel):
+    name = models.CharField(max_length=20, unique=True)
+
+    def pick(self):
+        members = self.members.all()
+        picked_member = choices(members, weights=[m.weight for m in members])[0]
+        return picked_member.pool.pick()
+
+
+class ItemTypePoolGroupMember(BaseModel):
+    group = models.ForeignKey("item.ItemTypePoolGroup", on_delete=models.CASCADE, related_name="members")
+
+    pool = models.ForeignKey("item.ItemTypePool", on_delete=models.CASCADE)
+    weight = models.PositiveIntegerField(default=10000)
+
+
+class ItemTypePool(BaseModel):
+    name = models.CharField(max_length=20, unique=True)
+
+    def pick(self):
+        members = self.members.all()
+        picked_member = choices(members, weights=[m.weight for m in members])[0]
+        return picked_member.item_type.make(picked_member.number)
+
+
+class ItemTypePoolMember(BaseModel):
+    pool = models.ForeignKey("item.ItemTypePool", on_delete=models.CASCADE, related_name="members")
+
+    item_type = models.ForeignKey("item.ItemType", on_delete=models.CASCADE)
+    number = models.PositiveIntegerField(default=1)
+    weight = models.PositiveIntegerField(default=10000)

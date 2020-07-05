@@ -1,0 +1,43 @@
+[{
+        "model": "item.itemuseeffect",
+        "pk": 1,
+        "fields": {
+            "name": "獲得熟練"
+        }
+    },
+    {
+        "model": "item.itemuseeffect",
+        "pk": 2,
+        "fields": {
+            "name": "獲得職業熟練"
+        }
+    },
+    {
+        "model": "item.itemuseeffect",
+        "pk": 3,
+        "fields": {
+            "name": "提升屬性上限"
+        }
+    },
+    {
+        "model": "item.itemuseeffect",
+        "pk": 4,
+        "fields": {
+            "name": "更改角色屬性"
+        }
+    },
+    {
+        "model": "item.itemuseeffect",
+        "pk": 5,
+        "fields": {
+            "name": "神祕的寶箱"
+        }
+    },
+    {
+        "model": "item.itemuseeffect",
+        "pk": 6,
+        "fields": {
+            "name": "地圖入場券"
+        }
+    }
+]

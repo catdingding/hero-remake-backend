@@ -15,6 +15,7 @@ from country.views import (
     CountryItemPutView, CountryItemTakeView, CountryDonateView
 )
 from trade.views import AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet
+from battle.views import BattleMapViewSet
 
 router = SimpleRouter()
 
@@ -24,6 +25,7 @@ router.register(r'trade/purchases', PurchaseViewSet)
 router.register(r'trade/exchange-options', ExchangeOptionViewSet)
 router.register(r'chara/alchemy-options', AlchemyOptionViewSet)
 router.register(r'trade/store-options', StoreOptionViewSet)
+router.register(r'battle/battle-maps', BattleMapViewSet)
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

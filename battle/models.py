@@ -4,7 +4,8 @@ from base.models import BaseModel
 
 class BattleMap(BaseModel):
     name = models.CharField(max_length=20, unique=True)
-    is_regular = models.BooleanField()
+    proficiency = models.IntegerField()
+    need_ticket = models.BooleanField()
 
 
 class Monster(BaseModel):
@@ -15,6 +16,9 @@ class Monster(BaseModel):
     mp = models.PositiveIntegerField()
 
     abilities = models.ManyToManyField("ability.Ability")
+
+    gold = models.IntegerField()
+    exp = models.IntegerField()
 
 
 class MonsterAttribute(BaseModel):
@@ -37,7 +41,7 @@ class MonsterSkillSetting(BaseModel):
 
 
 class BattleMapMonster(BaseModel):
-    battle_map = models.ForeignKey("battle.BattleMap", on_delete=models.CASCADE)
-    monster = models.ForeignKey("battle.Monster", on_delete=models.CASCADE, related_name="monsters")
+    battle_map = models.ForeignKey("battle.BattleMap", related_name="monsters", on_delete=models.CASCADE)
+    monster = models.ForeignKey("battle.Monster", on_delete=models.CASCADE)
 
-    probability = models.PositiveIntegerField(default=10000)
+    weight = models.PositiveIntegerField(default=10000)

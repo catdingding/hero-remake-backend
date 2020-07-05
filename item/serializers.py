@@ -7,6 +7,11 @@ from chara.models import Chara
 from item.use_effects import USE_EFFECT_CLASSES
 
 
+class SimpleItemSerializer(BaseSerializer):
+    name = serializers.CharField(source="type.name")
+    number = serializers.IntegerField()
+
+
 class ItemWithNumberSerializer(BaseSerializer):
     id = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
     number = serializers.IntegerField(min_value=1)

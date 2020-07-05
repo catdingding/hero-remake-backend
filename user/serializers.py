@@ -35,13 +35,7 @@ class RegistrationSerializer(BaseSerializer):
         location = Location.objects.get(x=0, y=0)
         chara = Chara.objects.create(user=user, hp=50, mp=10, hp_max=50, mp_max=10,
                                      job_id=1, location=location, **chara_data)
-        CharaAttribute.objects.bulk_create([
-            CharaAttribute(chara=chara, type=attr_type, value=20, limit=200)
-            for attr_type in AttributeType.objects.all()
-        ])
-        CharaSlot.objects.bulk_create([CharaSlot(chara=chara, type=slot_type) for slot_type in SlotType.objects.all()])
-        CharaIntroduction.objects.create(chara=chara)
-        CharaRecord.objects.create(chara=chara)
+        chara.init()
 
         return user
 

@@ -1,0 +1,57 @@
+[{
+        "model": "item.itemtypepool",
+        "pk": 1,
+        "fields": {
+            "name": "普通武器"
+        }
+    },
+    {
+        "model": "item.itemtypepool",
+        "pk": 2,
+        "fields": {
+            "name": "高級武器"
+        }
+    },
+    {
+        "model": "item.itemtypepool",
+        "pk": 3,
+        "fields": {
+            "name": "普通防具"
+        }
+    },
+    {
+        "model": "item.itemtypepool",
+        "pk": 4,
+        "fields": {
+            "name": "高級防具"
+        }
+    },
+    {
+        "model": "item.itemtypepool",
+        "pk": 5,
+        "fields": {
+            "name": "普通飾品"
+        }
+    },
+    {
+        "model": "item.itemtypepool",
+        "pk": 6,
+        "fields": {
+            "name": "高級飾品"
+        }
+    },
+    {
+        "model": "item.itemtypepool",
+        "pk": 8,
+        "fields": {
+            "name": "寵物卵"
+        }
+    },
+    {
+        "model": "item.itemtypepool",
+        "pk": 9,
+        "fields": {
+            "name": "普通道具掉寶"
+        }
+    }
+]
