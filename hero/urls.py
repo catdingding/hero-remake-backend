@@ -9,7 +9,7 @@ from ability.views import (
     LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView, AlchemyOptionViewSet
 )
 from job.views import SetSkillView, AvailableSkillView, AvailableJobView, ChangeJobView, ExerciseView
-from item.views import UseItemView, SendItemView, StorageTakeView, StoragePutView
+from item.views import UseItemView, SendItemView, StorageTakeView, StoragePutView, SmithUpgradeView, SmithReplaceAbilityView
 from country.views import (
     FoundCountryView, JoinCountryView, LeaveCountryView, ChangeKingView, CountryDismissView, SetOfficialsView,
     CountryItemPutView, CountryItemTakeView, CountryDonateView
@@ -60,5 +60,7 @@ urlpatterns = [
     path('country/item/take/', CountryItemTakeView.as_view()),
     path('country/item/put/', CountryItemPutView.as_view()),
     path('country/donate/', CountryDonateView.as_view()),
+    path('smith/upgrade/', SmithUpgradeView.as_view()),
+    path('smith/replace-ability/', SmithReplaceAbilityView.as_view()),
     path('map/', MapView.as_view())
 ] + router.urls

@@ -44,11 +44,11 @@ class ItemType(BaseModel):
     def make(self, number):
         # equipment
         if self.category_id == 1:
+            quality = choices(['稀有', '優良', '普通'], weights=[20, 2, 1])[0]
             return [
                 Equipment.objects.create(
-                    type=self, number=1, element_type=self.element_type, custom_name=self.name,
-                    attack=self.attack, defense=self.defense,
-                    weight=self.weight, ability_1_id=self.ability_1_id, ability_2_id=self.ability_2_id
+                    type=self, number=1, quality=quality, element_type=self.element_type, custom_name=self.name,
+                    ability_1_id=self.ability_1_id, ability_2_id=self.ability_2_id
                 ).item_ptr
                 for i in range(number)
             ]
@@ -73,14 +73,28 @@ class Equipment(Item):
 
     element_type = models.ForeignKey("world.ElementType", on_delete=models.PROTECT)
 
-    attack = models.IntegerField(default=0)
-    defense = models.IntegerField(default=0)
-    weight = models.IntegerField(default=0)
+    attack_add_on = models.IntegerField(default=0)
+    defense_add_on = models.IntegerField(default=0)
+    weight_add_on = models.IntegerField(default=0)
+
+    upgrade_times = models.IntegerField(default=0)
 
     ability_1 = models.ForeignKey("ability.Ability", null=True,
                                   related_name="ability_1_items", on_delete=models.PROTECT)
     ability_2 = models.ForeignKey("ability.Ability", null=True,
                                   related_name="ability_2_items", on_delete=models.PROTECT)
+
+    @property
+    def attack(self):
+        return self.type.attack + self.attack_add_on
+
+    @property
+    def defense(self):
+        return self.type.defense + self.defense_add_on
+
+    @property
+    def weight(self):
+        return self.type.weight - self.weight_add_on
 
 
 class ItemTypePoolGroup(BaseModel):

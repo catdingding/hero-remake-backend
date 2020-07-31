@@ -87,7 +87,10 @@ class CharaPostViewMixin:
         serializer.is_valid(raise_exception=True)
         result = serializer.save()
 
-        return Response({'status': 'success'})
+        if result is None:
+            return Response({'status': 'success'})
+        else:
+            return Response(result)
 
 
 class BaseGenericViewSet(LockObjectMixin, CountryViewMixin, CharaViewMixin, viewsets.GenericViewSet):
