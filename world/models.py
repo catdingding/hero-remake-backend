@@ -3,19 +3,19 @@ from base.models import BaseModel, BaseBuffType
 
 
 class ElementType(BaseModel):
-    en_name = models.CharField(max_length=10)
+    en_name = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=10, unique=True)
     suppressed_by = models.ForeignKey("world.ElementType", null=True, on_delete=models.PROTECT)
 
 
 class AttributeType(BaseModel):
-    en_name = models.CharField(max_length=10)
+    en_name = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=10, unique=True)
     class_name = models.CharField(max_length=10, unique=True)
 
 
 class SlotType(BaseModel):
-    en_name = models.CharField(max_length=10)
+    en_name = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=10, unique=True)
 
 
