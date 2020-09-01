@@ -8,6 +8,12 @@ from chara.models import Chara
 from item.serializers import ItemWithNumberSerializer
 
 
+class CountrySerializer(BaseModelSerializer):
+    class Meta:
+        model = Country
+        fields = ['id', 'name']
+
+
 class FoundCountrySerializer(BaseModelSerializer):
     class Meta:
         model = Country

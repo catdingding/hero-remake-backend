@@ -3,8 +3,53 @@ from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
 from world.models import SlotType
-from chara.models import Chara, CharaIntroduction
+from chara.models import Chara, CharaIntroduction, CharaAttribute
 from item.models import Item
+from item.serializers import SimpleItemSerializer
+from ability.serializers import AbilitySerializer
+from country.serializers import CountrySerializer
+from job.serializers import JobSerializer
+from world.serializers import LocationSerializer, ElementTypeSerializer, AttributeTypeSerializer
+
+
+class CharaAttributeSerialiser(BaseModelSerializer):
+    type = AttributeTypeSerializer()
+
+    class Meta:
+        model = CharaAttribute
+        fields = ['type', 'value', 'limit', 'proficiency']
+
+
+class CharaProfileSerializer(BaseModelSerializer):
+    location = LocationSerializer()
+    country = CountrySerializer()
+    element_type = ElementTypeSerializer()
+    job = JobSerializer(fields=['name'])
+    level = serializers.IntegerField()
+
+    main_ability = AbilitySerializer(fields=['name'])
+    job_ability = AbilitySerializer(fields=['name'])
+    live_ability = AbilitySerializer(fields=['name'])
+    abilities = AbilitySerializer(fields=['name'], many=True)
+
+    bag_items = serializers.SerializerMethodField()
+    storage_items = serializers.SerializerMethodField()
+
+    attributes = CharaAttributeSerialiser(many=True)
+
+    class Meta:
+        model = Chara
+        fields = '__all__'
+
+    def get_bag_items(self, chara):
+        return SimpleItemSerializer(
+            [item for item in chara.bag_items.all().select_related('type', 'equipment')], many=True
+        ).data
+
+    def get_storage_items(self, chara):
+        return SimpleItemSerializer(
+            [item for item in chara.storage_items.all().select_related('type', 'equipment')], many=True
+        ).data
 
 
 class CharaIntroductionSerializer(BaseModelSerializer):

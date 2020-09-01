@@ -2,14 +2,18 @@ from django.urls import path
 from rest_framework.routers import SimpleRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from world.views import MoveView, MapView
+from world.views import MoveView, MapView, ElementTypeView
 from user.views import RegistrationView, ChangePasswordView
-from chara.views import CharaIntroductionView, SendMoneyView, SlotEquipView, SlotDivestView, RestView
+from chara.views import (
+    CharaProfileView, CharaIntroductionView, SendMoneyView, SlotEquipView, SlotDivestView, RestView, CharaView
+)
 from ability.views import (
-    LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView, AlchemyOptionViewSet
+    LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView, AlchemyOptionViewSet,
 )
 from job.views import SetSkillView, AvailableSkillView, AvailableJobView, ChangeJobView, ExerciseView
-from item.views import UseItemView, SendItemView, StorageTakeView, StoragePutView, SmithUpgradeView, SmithReplaceAbilityView
+from item.views import (
+    UseItemView, SendItemView, StorageTakeView, StoragePutView, SmithUpgradeView, SmithReplaceAbilityView
+)
 from country.views import (
     FoundCountryView, JoinCountryView, LeaveCountryView, ChangeKingView, CountryDismissView, SetOfficialsView,
     CountryItemPutView, CountryItemTakeView, CountryDonateView
@@ -32,6 +36,7 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('user/registration/', RegistrationView.as_view()),
     path('user/change-password/', ChangePasswordView.as_view()),
+    path('chara/profile/', CharaProfileView.as_view()),
     path('chara/introduction/', CharaIntroductionView.as_view()),
     path('chara/rest/', RestView.as_view()),
     path('chara/move/', MoveView.as_view()),
@@ -62,5 +67,7 @@ urlpatterns = [
     path('country/donate/', CountryDonateView.as_view()),
     path('smith/upgrade/', SmithUpgradeView.as_view()),
     path('smith/replace-ability/', SmithReplaceAbilityView.as_view()),
-    path('map/', MapView.as_view())
+    path('map/', MapView.as_view()),
+    path('world/element-types/', ElementTypeView.as_view()),
+    path('user/charas/', CharaView.as_view()),
 ] + router.urls

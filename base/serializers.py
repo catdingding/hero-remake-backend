@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_flex_fields.serializers import FlexFieldsSerializerMixin
 from chara.models import Chara
 
 
@@ -15,9 +16,9 @@ class ContextMixin:
                 self.country = self.request.country
 
 
-class BaseSerializer(ContextMixin, serializers.Serializer):
+class BaseSerializer(ContextMixin, FlexFieldsSerializerMixin, serializers.Serializer):
     pass
 
 
-class BaseModelSerializer(ContextMixin, serializers.ModelSerializer):
+class BaseModelSerializer(ContextMixin, FlexFieldsSerializerMixin, serializers.ModelSerializer):
     pass

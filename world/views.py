@@ -1,9 +1,10 @@
-from base.views import BaseGenericAPIView, CharaViewMixin
+from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaViewMixin
+from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
-from world.serializers import MoveSerializer, LocationSerializer, MapQuerySerializer
-from world.models import Location
+from world.serializers import MoveSerializer, LocationSerializer, MapQuerySerializer, ElementTypeSerializer
+from world.models import Location, ElementType
 
 
 class MoveView(BaseGenericAPIView):
@@ -32,3 +33,12 @@ class MapView(BaseGenericAPIView):
 
         serializer = self.get_serializer(locations, many=True)
         return Response(serializer.data)
+
+
+class ElementTypeView(ListModelMixin, BaseGenericAPIView):
+    permission_classes = [AllowAny]
+    queryset = ElementType.objects.all()
+    serializer_class = ElementTypeSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)

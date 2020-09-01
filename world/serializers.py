@@ -2,8 +2,20 @@ from django.db.models import Q
 from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
-from world.models import Location
+from world.models import Location, ElementType, AttributeType
 from base.utils import calculate_distance
+
+
+class AttributeTypeSerializer(BaseModelSerializer):
+    class Meta:
+        model = AttributeType
+        fields = ['id', 'name']
+
+
+class ElementTypeSerializer(BaseModelSerializer):
+    class Meta:
+        model = ElementType
+        fields = ['id', 'name']
 
 
 class MoveSerializer(BaseSerializer):
@@ -41,7 +53,7 @@ class LocationSerializer(BaseModelSerializer):
 
     class Meta:
         model = Location
-        fields = ['x', 'y', 'chaos_score', 'battle_map_name', 'town_name']
+        fields = ['x', 'y', 'chaos_score', 'battle_map', 'battle_map_name', 'town_name']
 
     def get_town_name(self, obj):
         if hasattr(obj, 'town'):
