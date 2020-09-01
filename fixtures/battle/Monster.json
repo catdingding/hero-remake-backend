@@ -1,9 +1,10 @@
-[{
+[
+    {
         "model": "battle.monster",
         "pk": 1,
         "fields": {
             "name": "草原鼠",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 6,
             "mp": 0,
             "gold": 17,
@@ -16,7 +17,7 @@
         "pk": 2,
         "fields": {
             "name": "爪貓",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 7,
             "mp": 0,
             "gold": 174,
@@ -29,7 +30,7 @@
         "pk": 3,
         "fields": {
             "name": "犀牛",
-            "element_type": "fire",
+            "element_type": 2,
             "hp": 68,
             "mp": 10,
             "gold": 160,
@@ -42,7 +43,7 @@
         "pk": 4,
         "fields": {
             "name": "蜂群",
-            "element_type": "thunder",
+            "element_type": 6,
             "hp": 58,
             "mp": 70,
             "gold": 447,
@@ -55,7 +56,7 @@
         "pk": 5,
         "fields": {
             "name": "魔狼",
-            "element_type": "dark",
+            "element_type": 8,
             "hp": 260,
             "mp": 70,
             "gold": 655,
@@ -70,7 +71,7 @@
         "pk": 6,
         "fields": {
             "name": "夜狐",
-            "element_type": "fire",
+            "element_type": 2,
             "hp": 275,
             "mp": 90,
             "gold": 690,
@@ -83,7 +84,7 @@
         "pk": 7,
         "fields": {
             "name": "七彩鳥",
-            "element_type": "light",
+            "element_type": 7,
             "hp": 540,
             "mp": 800,
             "gold": 2001,
@@ -98,7 +99,7 @@
         "pk": 8,
         "fields": {
             "name": "惡龍",
-            "element_type": "dark",
+            "element_type": 8,
             "hp": 705,
             "mp": 280,
             "gold": 1494,
@@ -111,7 +112,7 @@
         "pk": 9,
         "fields": {
             "name": "七個小矮人(火)",
-            "element_type": "fire",
+            "element_type": 2,
             "hp": 3333,
             "mp": 700,
             "gold": 4706,
@@ -126,7 +127,7 @@
         "pk": 10,
         "fields": {
             "name": "七個小矮人(水)",
-            "element_type": "water",
+            "element_type": 3,
             "hp": 4444,
             "mp": 600,
             "gold": 5043,
@@ -141,7 +142,7 @@
         "pk": 11,
         "fields": {
             "name": "七個小矮人(風)",
-            "element_type": "wind",
+            "element_type": 4,
             "hp": 5555,
             "mp": 700,
             "gold": 5547,
@@ -156,7 +157,7 @@
         "pk": 12,
         "fields": {
             "name": "七個小矮人(星)",
-            "element_type": "star",
+            "element_type": 5,
             "hp": 9999,
             "mp": 700,
             "gold": 7028,
@@ -171,7 +172,7 @@
         "pk": 13,
         "fields": {
             "name": "七個小矮人(雷)",
-            "element_type": "thunder",
+            "element_type": 6,
             "hp": 6666,
             "mp": 700,
             "gold": 5917,
@@ -186,7 +187,7 @@
         "pk": 14,
         "fields": {
             "name": "七個小矮人(光)",
-            "element_type": "light",
+            "element_type": 7,
             "hp": 7777,
             "mp": 700,
             "gold": 6287,
@@ -201,7 +202,7 @@
         "pk": 15,
         "fields": {
             "name": "七個小矮人(暗)",
-            "element_type": "dark",
+            "element_type": 8,
             "hp": 8888,
             "mp": 700,
             "gold": 6658,
@@ -216,7 +217,7 @@
         "pk": 16,
         "fields": {
             "name": "禁地守護者",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 10000,
             "mp": 700,
             "gold": 7366,
@@ -232,7 +233,7 @@
         "pk": 17,
         "fields": {
             "name": "白羊座",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 10000,
             "mp": 700,
             "gold": 7566,
@@ -248,7 +249,7 @@
         "pk": 18,
         "fields": {
             "name": "金牛座",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 11000,
             "mp": 750,
             "gold": 7626,
@@ -264,7 +265,7 @@
         "pk": 19,
         "fields": {
             "name": "雙子座",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 12000,
             "mp": 1800,
             "gold": 9170,
@@ -280,7 +281,7 @@
         "pk": 20,
         "fields": {
             "name": "巨蟹座",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 13000,
             "mp": 850,
             "gold": 8996,
@@ -296,7 +297,7 @@
         "pk": 21,
         "fields": {
             "name": "獅子座",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 14000,
             "mp": 1000,
             "gold": 9590,
@@ -312,7 +313,7 @@
         "pk": 22,
         "fields": {
             "name": "處女座",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 15000,
             "mp": 1600,
             "gold": 10893,
@@ -328,7 +329,7 @@
         "pk": 23,
         "fields": {
             "name": "天秤座",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 16000,
             "mp": 850,
             "gold": 10696,
@@ -344,7 +345,7 @@
         "pk": 24,
         "fields": {
             "name": "天蠍座",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 17000,
             "mp": 800,
             "gold": 11233,
@@ -360,7 +361,7 @@
         "pk": 25,
         "fields": {
             "name": "射手座",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 18000,
             "mp": 820,
             "gold": 11823,
@@ -376,7 +377,7 @@
         "pk": 26,
         "fields": {
             "name": "山羊座",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 19000,
             "mp": 830,
             "gold": 12390,
@@ -392,7 +393,7 @@
         "pk": 27,
         "fields": {
             "name": "水瓶座",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 20000,
             "mp": 840,
             "gold": 13006,
@@ -408,7 +409,7 @@
         "pk": 28,
         "fields": {
             "name": "雙魚座",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 15000,
             "mp": 800,
             "gold": 11436,
@@ -424,7 +425,7 @@
         "pk": 29,
         "fields": {
             "name": "鼠神",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 20000,
             "mp": 700,
             "gold": 13480,
@@ -440,7 +441,7 @@
         "pk": 30,
         "fields": {
             "name": "牛神",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 20000,
             "mp": 800,
             "gold": 13333,
@@ -456,7 +457,7 @@
         "pk": 31,
         "fields": {
             "name": "虎神",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 20000,
             "mp": 900,
             "gold": 13466,
@@ -472,7 +473,7 @@
         "pk": 32,
         "fields": {
             "name": "兔神",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 20000,
             "mp": 1000,
             "gold": 13400,
@@ -488,7 +489,7 @@
         "pk": 33,
         "fields": {
             "name": "龍神",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 20000,
             "mp": 1100,
             "gold": 13433,
@@ -504,7 +505,7 @@
         "pk": 34,
         "fields": {
             "name": "蛇神",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 20000,
             "mp": 1200,
             "gold": 13666,
@@ -520,7 +521,7 @@
         "pk": 35,
         "fields": {
             "name": "馬神",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 20000,
             "mp": 1300,
             "gold": 13600,
@@ -536,7 +537,7 @@
         "pk": 36,
         "fields": {
             "name": "羊神",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 10000,
             "mp": 2400,
             "gold": 9633,
@@ -552,7 +553,7 @@
         "pk": 37,
         "fields": {
             "name": "猴神",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 10000,
             "mp": 2500,
             "gold": 10766,
@@ -568,7 +569,7 @@
         "pk": 38,
         "fields": {
             "name": "雞神",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 15000,
             "mp": 2600,
             "gold": 11366,
@@ -584,7 +585,7 @@
         "pk": 39,
         "fields": {
             "name": "狗神",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 16000,
             "mp": 2700,
             "gold": 12733,
@@ -600,7 +601,7 @@
         "pk": 40,
         "fields": {
             "name": "豬神",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 17000,
             "mp": 2800,
             "gold": 13000,
@@ -616,7 +617,7 @@
         "pk": 41,
         "fields": {
             "name": "魔王",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 200000,
             "mp": 2800,
             "gold": 74300,
@@ -634,7 +635,7 @@
         "pk": 42,
         "fields": {
             "name": "無極",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 100000,
             "mp": 50000,
             "gold": 88000,
@@ -650,7 +651,7 @@
         "pk": 43,
         "fields": {
             "name": "炎帝",
-            "element_type": "fire",
+            "element_type": 2,
             "hp": 100000,
             "mp": 1000,
             "gold": 75166,
@@ -666,7 +667,7 @@
         "pk": 44,
         "fields": {
             "name": "雨靈",
-            "element_type": "water",
+            "element_type": 3,
             "hp": 140000,
             "mp": 1000,
             "gold": 82500,
@@ -682,7 +683,7 @@
         "pk": 45,
         "fields": {
             "name": "風暴",
-            "element_type": "wind",
+            "element_type": 4,
             "hp": 100000,
             "mp": 2000,
             "gold": 78500,
@@ -698,7 +699,7 @@
         "pk": 46,
         "fields": {
             "name": "極星",
-            "element_type": "star",
+            "element_type": 5,
             "hp": 100000,
             "mp": 1000,
             "gold": 73166,
@@ -714,7 +715,7 @@
         "pk": 47,
         "fields": {
             "name": "雷鳴",
-            "element_type": "thunder",
+            "element_type": 6,
             "hp": 100000,
             "mp": 1000,
             "gold": 72166,
@@ -730,7 +731,7 @@
         "pk": 48,
         "fields": {
             "name": "光明",
-            "element_type": "light",
+            "element_type": 7,
             "hp": 100000,
             "mp": 10000,
             "gold": 75166,
@@ -746,7 +747,7 @@
         "pk": 49,
         "fields": {
             "name": "黑洞",
-            "element_type": "dark",
+            "element_type": 8,
             "hp": 100000,
             "mp": 10000,
             "gold": 75166,
@@ -762,7 +763,7 @@
         "pk": 50,
         "fields": {
             "name": "賓拉登",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 100000,
             "mp": 20000,
             "gold": 52000,
@@ -780,7 +781,7 @@
         "pk": 51,
         "fields": {
             "name": "基拉大和",
-            "element_type": "none",
+            "element_type": 1,
             "hp": 100000,
             "mp": 20000,
             "gold": 52000,

@@ -1,9 +1,10 @@
-[{
+[
+    {
         "model": "job.exercisereward",
         "pk": 1,
         "fields": {
-            "job_attribute_type": "str",
-            "reward_attribute_type": "str",
+            "job_attribute_type": 1,
+            "reward_attribute_type": 1,
             "limit_growth": 2
         }
     },
@@ -11,8 +12,8 @@
         "model": "job.exercisereward",
         "pk": 2,
         "fields": {
-            "job_attribute_type": "str",
-            "reward_attribute_type": "vit",
+            "job_attribute_type": 1,
+            "reward_attribute_type": 2,
             "limit_growth": 1
         }
     },
@@ -20,8 +21,8 @@
         "model": "job.exercisereward",
         "pk": 3,
         "fields": {
-            "job_attribute_type": "str",
-            "reward_attribute_type": "int",
+            "job_attribute_type": 1,
+            "reward_attribute_type": 3,
             "limit_growth": 0
         }
     },
@@ -29,8 +30,8 @@
         "model": "job.exercisereward",
         "pk": 4,
         "fields": {
-            "job_attribute_type": "str",
-            "reward_attribute_type": "men",
+            "job_attribute_type": 1,
+            "reward_attribute_type": 4,
             "limit_growth": 0
         }
     },
@@ -38,8 +39,8 @@
         "model": "job.exercisereward",
         "pk": 5,
         "fields": {
-            "job_attribute_type": "str",
-            "reward_attribute_type": "dex",
+            "job_attribute_type": 1,
+            "reward_attribute_type": 5,
             "limit_growth": 1
         }
     },
@@ -47,8 +48,8 @@
         "model": "job.exercisereward",
         "pk": 6,
         "fields": {
-            "job_attribute_type": "str",
-            "reward_attribute_type": "agi",
+            "job_attribute_type": 1,
+            "reward_attribute_type": 6,
             "limit_growth": 0
         }
     },
@@ -56,8 +57,8 @@
         "model": "job.exercisereward",
         "pk": 7,
         "fields": {
-            "job_attribute_type": "int",
-            "reward_attribute_type": "str",
+            "job_attribute_type": 3,
+            "reward_attribute_type": 1,
             "limit_growth": 0
         }
     },
@@ -65,8 +66,8 @@
         "model": "job.exercisereward",
         "pk": 8,
         "fields": {
-            "job_attribute_type": "int",
-            "reward_attribute_type": "vit",
+            "job_attribute_type": 3,
+            "reward_attribute_type": 2,
             "limit_growth": 0
         }
     },
@@ -74,8 +75,8 @@
         "model": "job.exercisereward",
         "pk": 9,
         "fields": {
-            "job_attribute_type": "int",
-            "reward_attribute_type": "int",
+            "job_attribute_type": 3,
+            "reward_attribute_type": 3,
             "limit_growth": 2
         }
     },
@@ -83,8 +84,8 @@
         "model": "job.exercisereward",
         "pk": 10,
         "fields": {
-            "job_attribute_type": "int",
-            "reward_attribute_type": "men",
+            "job_attribute_type": 3,
+            "reward_attribute_type": 4,
             "limit_growth": 1
         }
     },
@@ -92,8 +93,8 @@
         "model": "job.exercisereward",
         "pk": 11,
         "fields": {
-            "job_attribute_type": "int",
-            "reward_attribute_type": "dex",
+            "job_attribute_type": 3,
+            "reward_attribute_type": 5,
             "limit_growth": 0
         }
     },
@@ -101,8 +102,8 @@
         "model": "job.exercisereward",
         "pk": 12,
         "fields": {
-            "job_attribute_type": "int",
-            "reward_attribute_type": "agi",
+            "job_attribute_type": 3,
+            "reward_attribute_type": 6,
             "limit_growth": 1
         }
     },
@@ -110,8 +111,8 @@
         "model": "job.exercisereward",
         "pk": 13,
         "fields": {
-            "job_attribute_type": "men",
-            "reward_attribute_type": "str",
+            "job_attribute_type": 4,
+            "reward_attribute_type": 1,
             "limit_growth": 0
         }
     },
@@ -119,8 +120,8 @@
         "model": "job.exercisereward",
         "pk": 14,
         "fields": {
-            "job_attribute_type": "men",
-            "reward_attribute_type": "vit",
+            "job_attribute_type": 4,
+            "reward_attribute_type": 2,
             "limit_growth": 1
         }
     },
@@ -128,8 +129,8 @@
         "model": "job.exercisereward",
         "pk": 15,
         "fields": {
-            "job_attribute_type": "men",
-            "reward_attribute_type": "int",
+            "job_attribute_type": 4,
+            "reward_attribute_type": 3,
             "limit_growth": 1
         }
     },
@@ -137,8 +138,8 @@
         "model": "job.exercisereward",
         "pk": 16,
         "fields": {
-            "job_attribute_type": "men",
-            "reward_attribute_type": "men",
+            "job_attribute_type": 4,
+            "reward_attribute_type": 4,
             "limit_growth": 2
         }
     },
@@ -146,8 +147,8 @@
         "model": "job.exercisereward",
         "pk": 17,
         "fields": {
-            "job_attribute_type": "men",
-            "reward_attribute_type": "dex",
+            "job_attribute_type": 4,
+            "reward_attribute_type": 5,
             "limit_growth": 0
         }
     },
@@ -155,8 +156,8 @@
         "model": "job.exercisereward",
         "pk": 18,
         "fields": {
-            "job_attribute_type": "men",
-            "reward_attribute_type": "agi",
+            "job_attribute_type": 4,
+            "reward_attribute_type": 6,
             "limit_growth": 0
         }
     },
@@ -164,8 +165,8 @@
         "model": "job.exercisereward",
         "pk": 19,
         "fields": {
-            "job_attribute_type": "dex",
-            "reward_attribute_type": "str",
+            "job_attribute_type": 5,
+            "reward_attribute_type": 1,
             "limit_growth": 1
         }
     },
@@ -173,8 +174,8 @@
         "model": "job.exercisereward",
         "pk": 20,
         "fields": {
-            "job_attribute_type": "dex",
-            "reward_attribute_type": "vit",
+            "job_attribute_type": 5,
+            "reward_attribute_type": 2,
             "limit_growth": 0
         }
     },
@@ -182,8 +183,8 @@
         "model": "job.exercisereward",
         "pk": 21,
         "fields": {
-            "job_attribute_type": "dex",
-            "reward_attribute_type": "int",
+            "job_attribute_type": 5,
+            "reward_attribute_type": 3,
             "limit_growth": 0
         }
     },
@@ -191,8 +192,8 @@
         "model": "job.exercisereward",
         "pk": 22,
         "fields": {
-            "job_attribute_type": "dex",
-            "reward_attribute_type": "men",
+            "job_attribute_type": 5,
+            "reward_attribute_type": 4,
             "limit_growth": 0
         }
     },
@@ -200,8 +201,8 @@
         "model": "job.exercisereward",
         "pk": 23,
         "fields": {
-            "job_attribute_type": "dex",
-            "reward_attribute_type": "dex",
+            "job_attribute_type": 5,
+            "reward_attribute_type": 5,
             "limit_growth": 2
         }
     },
@@ -209,8 +210,8 @@
         "model": "job.exercisereward",
         "pk": 24,
         "fields": {
-            "job_attribute_type": "dex",
-            "reward_attribute_type": "agi",
+            "job_attribute_type": 5,
+            "reward_attribute_type": 6,
             "limit_growth": 1
         }
     },
@@ -218,8 +219,8 @@
         "model": "job.exercisereward",
         "pk": 25,
         "fields": {
-            "job_attribute_type": "vit",
-            "reward_attribute_type": "str",
+            "job_attribute_type": 2,
+            "reward_attribute_type": 1,
             "limit_growth": 1
         }
     },
@@ -227,8 +228,8 @@
         "model": "job.exercisereward",
         "pk": 26,
         "fields": {
-            "job_attribute_type": "vit",
-            "reward_attribute_type": "vit",
+            "job_attribute_type": 2,
+            "reward_attribute_type": 2,
             "limit_growth": 2
         }
     },
@@ -236,8 +237,8 @@
         "model": "job.exercisereward",
         "pk": 27,
         "fields": {
-            "job_attribute_type": "vit",
-            "reward_attribute_type": "int",
+            "job_attribute_type": 2,
+            "reward_attribute_type": 3,
             "limit_growth": 0
         }
     },
@@ -245,8 +246,8 @@
         "model": "job.exercisereward",
         "pk": 28,
         "fields": {
-            "job_attribute_type": "vit",
-            "reward_attribute_type": "men",
+            "job_attribute_type": 2,
+            "reward_attribute_type": 4,
             "limit_growth": 1
         }
     },
@@ -254,8 +255,8 @@
         "model": "job.exercisereward",
         "pk": 29,
         "fields": {
-            "job_attribute_type": "vit",
-            "reward_attribute_type": "dex",
+            "job_attribute_type": 2,
+            "reward_attribute_type": 5,
             "limit_growth": 0
         }
     },
@@ -263,8 +264,8 @@
         "model": "job.exercisereward",
         "pk": 30,
         "fields": {
-            "job_attribute_type": "vit",
-            "reward_attribute_type": "agi",
+            "job_attribute_type": 2,
+            "reward_attribute_type": 6,
             "limit_growth": 0
         }
     },
@@ -272,8 +273,8 @@
         "model": "job.exercisereward",
         "pk": 31,
         "fields": {
-            "job_attribute_type": "agi",
-            "reward_attribute_type": "str",
+            "job_attribute_type": 6,
+            "reward_attribute_type": 1,
             "limit_growth": 0
         }
     },
@@ -281,8 +282,8 @@
         "model": "job.exercisereward",
         "pk": 32,
         "fields": {
-            "job_attribute_type": "agi",
-            "reward_attribute_type": "vit",
+            "job_attribute_type": 6,
+            "reward_attribute_type": 2,
             "limit_growth": 0
         }
     },
@@ -290,8 +291,8 @@
         "model": "job.exercisereward",
         "pk": 33,
         "fields": {
-            "job_attribute_type": "agi",
-            "reward_attribute_type": "int",
+            "job_attribute_type": 6,
+            "reward_attribute_type": 3,
             "limit_growth": 1
         }
     },
@@ -299,8 +300,8 @@
         "model": "job.exercisereward",
         "pk": 34,
         "fields": {
-            "job_attribute_type": "agi",
-            "reward_attribute_type": "men",
+            "job_attribute_type": 6,
+            "reward_attribute_type": 4,
             "limit_growth": 0
         }
     },
@@ -308,8 +309,8 @@
         "model": "job.exercisereward",
         "pk": 35,
         "fields": {
-            "job_attribute_type": "agi",
-            "reward_attribute_type": "dex",
+            "job_attribute_type": 6,
+            "reward_attribute_type": 5,
             "limit_growth": 1
         }
     },
@@ -317,8 +318,8 @@
         "model": "job.exercisereward",
         "pk": 36,
         "fields": {
-            "job_attribute_type": "agi",
-            "reward_attribute_type": "agi",
+            "job_attribute_type": 6,
+            "reward_attribute_type": 6,
             "limit_growth": 2
         }
     }

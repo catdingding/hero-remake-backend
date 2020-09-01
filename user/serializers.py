@@ -3,7 +3,7 @@ from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
 
-from world.models import AttributeType, Location, SlotType
+from world.models import Location
 from user.models import User
 from chara.models import Chara, CharaAttribute, CharaSlot, CharaIntroduction, CharaRecord
 

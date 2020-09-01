@@ -1,9 +1,10 @@
-[{
+[
+    {
         "model": "job.job",
         "pk": 1,
         "fields": {
             "name": "菜鳥新手",
-            "attribute_type": "str",
+            "attribute_type": 1,
             "rank": 0,
             "base_hp": 0,
             "base_mp": 0,
@@ -15,7 +16,7 @@
         "pk": 2,
         "fields": {
             "name": "武士",
-            "attribute_type": "str",
+            "attribute_type": 1,
             "rank": 1,
             "base_hp": 100,
             "base_mp": -20,
@@ -27,7 +28,7 @@
         "pk": 3,
         "fields": {
             "name": "魔術師",
-            "attribute_type": "int",
+            "attribute_type": 3,
             "rank": 1,
             "base_hp": -50,
             "base_mp": 50,
@@ -39,7 +40,7 @@
         "pk": 4,
         "fields": {
             "name": "僧侶",
-            "attribute_type": "men",
+            "attribute_type": 4,
             "rank": 1,
             "base_hp": -20,
             "base_mp": 40,
@@ -51,7 +52,7 @@
         "pk": 5,
         "fields": {
             "name": "弓箭手",
-            "attribute_type": "dex",
+            "attribute_type": 5,
             "rank": 1,
             "base_hp": 30,
             "base_mp": -10,
@@ -63,7 +64,7 @@
         "pk": 6,
         "fields": {
             "name": "格鬥家",
-            "attribute_type": "vit",
+            "attribute_type": 2,
             "rank": 1,
             "base_hp": 150,
             "base_mp": -50,
@@ -75,7 +76,7 @@
         "pk": 7,
         "fields": {
             "name": "盜賊",
-            "attribute_type": "agi",
+            "attribute_type": 6,
             "rank": 1,
             "base_hp": 0,
             "base_mp": 0,
@@ -87,7 +88,7 @@
         "pk": 8,
         "fields": {
             "name": "聖騎士",
-            "attribute_type": "str",
+            "attribute_type": 1,
             "rank": 2,
             "base_hp": 150,
             "base_mp": -30,
@@ -99,7 +100,7 @@
         "pk": 9,
         "fields": {
             "name": "魔導士",
-            "attribute_type": "int",
+            "attribute_type": 3,
             "rank": 2,
             "base_hp": -50,
             "base_mp": 100,
@@ -111,7 +112,7 @@
         "pk": 10,
         "fields": {
             "name": "祭司",
-            "attribute_type": "men",
+            "attribute_type": 4,
             "rank": 2,
             "base_hp": 0,
             "base_mp": 60,
@@ -123,7 +124,7 @@
         "pk": 11,
         "fields": {
             "name": "遊俠",
-            "attribute_type": "dex",
+            "attribute_type": 5,
             "rank": 2,
             "base_hp": 0,
             "base_mp": 0,
@@ -135,7 +136,7 @@
         "pk": 12,
         "fields": {
             "name": "武聖",
-            "attribute_type": "vit",
+            "attribute_type": 2,
             "rank": 2,
             "base_hp": 200,
             "base_mp": -50,
@@ -147,7 +148,7 @@
         "pk": 13,
         "fields": {
             "name": "忍者",
-            "attribute_type": "agi",
+            "attribute_type": 6,
             "rank": 2,
             "base_hp": 50,
             "base_mp": 20,
@@ -159,7 +160,7 @@
         "pk": 14,
         "fields": {
             "name": "十字軍",
-            "attribute_type": "str",
+            "attribute_type": 1,
             "rank": 3,
             "base_hp": 150,
             "base_mp": 0,
@@ -171,7 +172,7 @@
         "pk": 15,
         "fields": {
             "name": "黑魔術使",
-            "attribute_type": "int",
+            "attribute_type": 3,
             "rank": 3,
             "base_hp": 0,
             "base_mp": 150,
@@ -183,7 +184,7 @@
         "pk": 16,
         "fields": {
             "name": "陰陽師",
-            "attribute_type": "men",
+            "attribute_type": 4,
             "rank": 3,
             "base_hp": 0,
             "base_mp": 120,
@@ -195,7 +196,7 @@
         "pk": 17,
         "fields": {
             "name": "狙擊手 ",
-            "attribute_type": "dex",
+            "attribute_type": 5,
             "rank": 3,
             "base_hp": 50,
             "base_mp": 50,
@@ -207,7 +208,7 @@
         "pk": 18,
         "fields": {
             "name": "刺客",
-            "attribute_type": "agi",
+            "attribute_type": 6,
             "rank": 3,
             "base_hp": 0,
             "base_mp": 50,
@@ -219,7 +220,7 @@
         "pk": 19,
         "fields": {
             "name": "武神",
-            "attribute_type": "vit",
+            "attribute_type": 2,
             "rank": 3,
             "base_hp": 250,
             "base_mp": -50,
@@ -231,7 +232,7 @@
         "pk": 20,
         "fields": {
             "name": "劍聖",
-            "attribute_type": "str",
+            "attribute_type": 1,
             "rank": 4,
             "base_hp": 300,
             "base_mp": 0,
@@ -243,7 +244,7 @@
         "pk": 21,
         "fields": {
             "name": "闇黑魔導士 ",
-            "attribute_type": "int",
+            "attribute_type": 3,
             "rank": 4,
             "base_hp": 0,
             "base_mp": 300,
@@ -255,7 +256,7 @@
         "pk": 22,
         "fields": {
             "name": "大神官",
-            "attribute_type": "men",
+            "attribute_type": 4,
             "rank": 4,
             "base_hp": 0,
             "base_mp": 280,
@@ -267,7 +268,7 @@
         "pk": 23,
         "fields": {
             "name": "天使",
-            "attribute_type": "dex",
+            "attribute_type": 5,
             "rank": 4,
             "base_hp": 100,
             "base_mp": 150,
@@ -279,7 +280,7 @@
         "pk": 24,
         "fields": {
             "name": "夜使者",
-            "attribute_type": "agi",
+            "attribute_type": 6,
             "rank": 4,
             "base_hp": 0,
             "base_mp": 100,
@@ -291,7 +292,7 @@
         "pk": 25,
         "fields": {
             "name": "阿修羅",
-            "attribute_type": "vit",
+            "attribute_type": 2,
             "rank": 4,
             "base_hp": 400,
             "base_mp": -50,
@@ -303,7 +304,7 @@
         "pk": 26,
         "fields": {
             "name": "劍宗",
-            "attribute_type": "str",
+            "attribute_type": 1,
             "rank": 5,
             "base_hp": 2000,
             "base_mp": 200,
@@ -315,7 +316,7 @@
         "pk": 27,
         "fields": {
             "name": "大法師",
-            "attribute_type": "int",
+            "attribute_type": 3,
             "rank": 5,
             "base_hp": 1500,
             "base_mp": 2800,
@@ -327,7 +328,7 @@
         "pk": 28,
         "fields": {
             "name": "大祭司長",
-            "attribute_type": "men",
+            "attribute_type": 4,
             "rank": 5,
             "base_hp": 2000,
             "base_mp": 2000,
@@ -339,7 +340,7 @@
         "pk": 29,
         "fields": {
             "name": "熾天使",
-            "attribute_type": "dex",
+            "attribute_type": 5,
             "rank": 5,
             "base_hp": 1500,
             "base_mp": 1000,
@@ -351,7 +352,7 @@
         "pk": 30,
         "fields": {
             "name": "羅煞",
-            "attribute_type": "vit",
+            "attribute_type": 2,
             "rank": 5,
             "base_hp": 4000,
             "base_mp": 0,
@@ -363,7 +364,7 @@
         "pk": 31,
         "fields": {
             "name": "吸血鬼",
-            "attribute_type": "agi",
+            "attribute_type": 6,
             "rank": 5,
             "base_hp": 1500,
             "base_mp": 1000,

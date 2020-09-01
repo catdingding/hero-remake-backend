@@ -73,13 +73,13 @@ class BattleChara:
         self.element_type = source.element_type
         self.action_points = 0
         # attributes
-        for attr in source.attributes.all():
+        for attr in source.attributes.all().select_related('type'):
             attr_value = attr.value
             if self.element_type == self.battle.element_type and self.element_type.id != 'none':
                 attr_value = int(attr_value * 1.1)
             elif self.element_type.suppressed_by == self.battle.element_type:
                 attr_value = int(attr_value * 0.9)
-            setattr(self, attr.type_id, attr_value)
+            setattr(self, attr.type.en_name, attr_value)
 
         self.skill_settings = list(source.skill_settings.all().order_by('order').select_related('skill'))
 

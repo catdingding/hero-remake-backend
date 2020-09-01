@@ -1,1 +1,2756 @@
-[{"model": "battle.monsterattribute", "pk": 1, "fields": {"monster": 1, "type": "str", "value": 7}}, {"model": "battle.monsterattribute", "pk": 2, "fields": {"monster": 1, "type": "vit", "value": 3}}, {"model": "battle.monsterattribute", "pk": 3, "fields": {"monster": 1, "type": "int", "value": 1}}, {"model": "battle.monsterattribute", "pk": 4, "fields": {"monster": 1, "type": "men", "value": 1}}, {"model": "battle.monsterattribute", "pk": 5, "fields": {"monster": 1, "type": "dex", "value": 1}}, {"model": "battle.monsterattribute", "pk": 6, "fields": {"monster": 1, "type": "agi", "value": 2}}, {"model": "battle.monsterattribute", "pk": 7, "fields": {"monster": 2, "type": "str", "value": 9}}, {"model": "battle.monsterattribute", "pk": 8, "fields": {"monster": 2, "type": "vit", "value": 4}}, {"model": "battle.monsterattribute", "pk": 9, "fields": {"monster": 2, "type": "int", "value": 12}}, {"model": "battle.monsterattribute", "pk": 10, "fields": {"monster": 2, "type": "men", "value": 100}}, {"model": "battle.monsterattribute", "pk": 11, "fields": {"monster": 2, "type": "dex", "value": 40}}, {"model": "battle.monsterattribute", "pk": 12, "fields": {"monster": 2, "type": "agi", "value": 7}}, {"model": "battle.monsterattribute", "pk": 13, "fields": {"monster": 3, "type": "str", "value": 40}}, {"model": "battle.monsterattribute", "pk": 14, "fields": {"monster": 3, "type": "vit", "value": 50}}, {"model": "battle.monsterattribute", "pk": 15, "fields": {"monster": 3, "type": "int", "value": 10}}, {"model": "battle.monsterattribute", "pk": 16, "fields": {"monster": 3, "type": "men", "value": 10}}, {"model": "battle.monsterattribute", "pk": 17, "fields": {"monster": 3, "type": "dex", "value": 10}}, {"model": "battle.monsterattribute", "pk": 18, "fields": {"monster": 3, "type": "agi", "value": 14}}, {"model": "battle.monsterattribute", "pk": 19, "fields": {"monster": 4, "type": "str", "value": 76}}, {"model": "battle.monsterattribute", "pk": 20, "fields": {"monster": 4, "type": "vit", "value": 7}}, {"model": "battle.monsterattribute", "pk": 21, "fields": {"monster": 4, "type": "int", "value": 14}}, {"model": "battle.monsterattribute", "pk": 22, "fields": {"monster": 4, "type": "men", "value": 80}}, {"model": "battle.monsterattribute", "pk": 23, "fields": {"monster": 4, "type": "dex", "value": 200}}, {"model": "battle.monsterattribute", "pk": 24, "fields": {"monster": 4, "type": "agi", "value": 28}}, {"model": "battle.monsterattribute", "pk": 25, "fields": {"monster": 5, "type": "str", "value": 134}}, {"model": "battle.monsterattribute", "pk": 26, "fields": {"monster": 5, "type": "vit", "value": 106}}, {"model": "battle.monsterattribute", "pk": 27, "fields": {"monster": 5, "type": "int", "value": 50}}, {"model": "battle.monsterattribute", "pk": 28, "fields": {"monster": 5, "type": "men", "value": 40}}, {"model": "battle.monsterattribute", "pk": 29, "fields": {"monster": 5, "type": "dex", "value": 120}}, {"model": "battle.monsterattribute", "pk": 30, "fields": {"monster": 5, "type": "agi", "value": 95}}, {"model": "battle.monsterattribute", "pk": 31, "fields": {"monster": 6, "type": "str", "value": 153}}, {"model": "battle.monsterattribute", "pk": 32, "fields": {"monster": 6, "type": "vit", "value": 126}}, {"model": "battle.monsterattribute", "pk": 33, "fields": {"monster": 6, "type": "int", "value": 10}}, {"model": "battle.monsterattribute", "pk": 34, "fields": {"monster": 6, "type": "men", "value": 10}}, {"model": "battle.monsterattribute", "pk": 35, "fields": {"monster": 6, "type": "dex", "value": 150}}, {"model": "battle.monsterattribute", "pk": 36, "fields": {"monster": 6, "type": "agi", "value": 120}}, {"model": "battle.monsterattribute", "pk": 37, "fields": {"monster": 7, "type": "str", "value": 294}}, {"model": "battle.monsterattribute", "pk": 38, "fields": {"monster": 7, "type": "vit", "value": 266}}, {"model": "battle.monsterattribute", "pk": 39, "fields": {"monster": 7, "type": "int", "value": 300}}, {"model": "battle.monsterattribute", "pk": 40, "fields": {"monster": 7, "type": "men", "value": 240}}, {"model": "battle.monsterattribute", "pk": 41, "fields": {"monster": 7, "type": "dex", "value": 250}}, {"model": "battle.monsterattribute", "pk": 42, "fields": {"monster": 7, "type": "agi", "value": 205}}, {"model": "battle.monsterattribute", "pk": 43, "fields": {"monster": 8, "type": "str", "value": 353}}, {"model": "battle.monsterattribute", "pk": 44, "fields": {"monster": 8, "type": "vit", "value": 256}}, {"model": "battle.monsterattribute", "pk": 45, "fields": {"monster": 8, "type": "int", "value": 100}}, {"model": "battle.monsterattribute", "pk": 46, "fields": {"monster": 8, "type": "men", "value": 100}}, {"model": "battle.monsterattribute", "pk": 47, "fields": {"monster": 8, "type": "dex", "value": 180}}, {"model": "battle.monsterattribute", "pk": 48, "fields": {"monster": 8, "type": "agi", "value": 177}}, {"model": "battle.monsterattribute", "pk": 49, "fields": {"monster": 9, "type": "str", "value": 777}}, {"model": "battle.monsterattribute", "pk": 50, "fields": {"monster": 9, "type": "vit", "value": 777}}, {"model": "battle.monsterattribute", "pk": 51, "fields": {"monster": 9, "type": "int", "value": 177}}, {"model": "battle.monsterattribute", "pk": 52, "fields": {"monster": 9, "type": "men", "value": 477}}, {"model": "battle.monsterattribute", "pk": 53, "fields": {"monster": 9, "type": "dex", "value": 777}}, {"model": "battle.monsterattribute", "pk": 54, "fields": {"monster": 9, "type": "agi", "value": 377}}, {"model": "battle.monsterattribute", "pk": 55, "fields": {"monster": 10, "type": "str", "value": 777}}, {"model": "battle.monsterattribute", "pk": 56, "fields": {"monster": 10, "type": "vit", "value": 677}}, {"model": "battle.monsterattribute", "pk": 57, "fields": {"monster": 10, "type": "int", "value": 277}}, {"model": "battle.monsterattribute", "pk": 58, "fields": {"monster": 10, "type": "men", "value": 477}}, {"model": "battle.monsterattribute", "pk": 59, "fields": {"monster": 10, "type": "dex", "value": 777}}, {"model": "battle.monsterattribute", "pk": 60, "fields": {"monster": 10, "type": "agi", "value": 377}}, {"model": "battle.monsterattribute", "pk": 61, "fields": {"monster": 11, "type": "str", "value": 777}}, {"model": "battle.monsterattribute", "pk": 62, "fields": {"monster": 11, "type": "vit", "value": 777}}, {"model": "battle.monsterattribute", "pk": 63, "fields": {"monster": 11, "type": "int", "value": 277}}, {"model": "battle.monsterattribute", "pk": 64, "fields": {"monster": 11, "type": "men", "value": 477}}, {"model": "battle.monsterattribute", "pk": 65, "fields": {"monster": 11, "type": "dex", "value": 777}}, {"model": "battle.monsterattribute", "pk": 66, "fields": {"monster": 11, "type": "agi", "value": 377}}, {"model": "battle.monsterattribute", "pk": 67, "fields": {"monster": 12, "type": "str", "value": 777}}, {"model": "battle.monsterattribute", "pk": 68, "fields": {"monster": 12, "type": "vit", "value": 777}}, {"model": "battle.monsterattribute", "pk": 69, "fields": {"monster": 12, "type": "int", "value": 277}}, {"model": "battle.monsterattribute", "pk": 70, "fields": {"monster": 12, "type": "men", "value": 477}}, {"model": "battle.monsterattribute", "pk": 71, "fields": {"monster": 12, "type": "dex", "value": 777}}, {"model": "battle.monsterattribute", "pk": 72, "fields": {"monster": 12, "type": "agi", "value": 377}}, {"model": "battle.monsterattribute", "pk": 73, "fields": {"monster": 13, "type": "str", "value": 777}}, {"model": "battle.monsterattribute", "pk": 74, "fields": {"monster": 13, "type": "vit", "value": 777}}, {"model": "battle.monsterattribute", "pk": 75, "fields": {"monster": 13, "type": "int", "value": 277}}, {"model": "battle.monsterattribute", "pk": 76, "fields": {"monster": 13, "type": "men", "value": 477}}, {"model": "battle.monsterattribute", "pk": 77, "fields": {"monster": 13, "type": "dex", "value": 777}}, {"model": "battle.monsterattribute", "pk": 78, "fields": {"monster": 13, "type": "agi", "value": 377}}, {"model": "battle.monsterattribute", "pk": 79, "fields": {"monster": 14, "type": "str", "value": 777}}, {"model": "battle.monsterattribute", "pk": 80, "fields": {"monster": 14, "type": "vit", "value": 777}}, {"model": "battle.monsterattribute", "pk": 81, "fields": {"monster": 14, "type": "int", "value": 277}}, {"model": "battle.monsterattribute", "pk": 82, "fields": {"monster": 14, "type": "men", "value": 477}}, {"model": "battle.monsterattribute", "pk": 83, "fields": {"monster": 14, "type": "dex", "value": 777}}, {"model": "battle.monsterattribute", "pk": 84, "fields": {"monster": 14, "type": "agi", "value": 377}}, {"model": "battle.monsterattribute", "pk": 85, "fields": {"monster": 15, "type": "str", "value": 777}}, {"model": "battle.monsterattribute", "pk": 86, "fields": {"monster": 15, "type": "vit", "value": 777}}, {"model": "battle.monsterattribute", "pk": 87, "fields": {"monster": 15, "type": "int", "value": 277}}, {"model": "battle.monsterattribute", "pk": 88, "fields": {"monster": 15, "type": "men", "value": 477}}, {"model": "battle.monsterattribute", "pk": 89, "fields": {"monster": 15, "type": "dex", "value": 777}}, {"model": "battle.monsterattribute", "pk": 90, "fields": {"monster": 15, "type": "agi", "value": 377}}, {"model": "battle.monsterattribute", "pk": 91, "fields": {"monster": 16, "type": "str", "value": 900}}, {"model": "battle.monsterattribute", "pk": 92, "fields": {"monster": 16, "type": "vit", "value": 900}}, {"model": "battle.monsterattribute", "pk": 93, "fields": {"monster": 16, "type": "int", "value": 500}}, {"model": "battle.monsterattribute", "pk": 94, "fields": {"monster": 16, "type": "men", "value": 500}}, {"model": "battle.monsterattribute", "pk": 95, "fields": {"monster": 16, "type": "dex", "value": 500}}, {"model": "battle.monsterattribute", "pk": 96, "fields": {"monster": 16, "type": "agi", "value": 500}}, {"model": "battle.monsterattribute", "pk": 97, "fields": {"monster": 17, "type": "str", "value": 800}}, {"model": "battle.monsterattribute", "pk": 98, "fields": {"monster": 17, "type": "vit", "value": 800}}, {"model": "battle.monsterattribute", "pk": 99, "fields": {"monster": 17, "type": "int", "value": 800}}, {"model": "battle.monsterattribute", "pk": 100, "fields": {"monster": 17, "type": "men", "value": 600}}, {"model": "battle.monsterattribute", "pk": 101, "fields": {"monster": 17, "type": "dex", "value": 500}}, {"model": "battle.monsterattribute", "pk": 102, "fields": {"monster": 17, "type": "agi", "value": 500}}, {"model": "battle.monsterattribute", "pk": 103, "fields": {"monster": 18, "type": "str", "value": 900}}, {"model": "battle.monsterattribute", "pk": 104, "fields": {"monster": 18, "type": "vit", "value": 900}}, {"model": "battle.monsterattribute", "pk": 105, "fields": {"monster": 18, "type": "int", "value": 500}}, {"model": "battle.monsterattribute", "pk": 106, "fields": {"monster": 18, "type": "men", "value": 500}}, {"model": "battle.monsterattribute", "pk": 107, "fields": {"monster": 18, "type": "dex", "value": 400}}, {"model": "battle.monsterattribute", "pk": 108, "fields": {"monster": 18, "type": "agi", "value": 510}}, {"model": "battle.monsterattribute", "pk": 109, "fields": {"monster": 19, "type": "str", "value": 1000}}, {"model": "battle.monsterattribute", "pk": 110, "fields": {"monster": 19, "type": "vit", "value": 1000}}, {"model": "battle.monsterattribute", "pk": 111, "fields": {"monster": 19, "type": "int", "value": 600}}, {"model": "battle.monsterattribute", "pk": 112, "fields": {"monster": 19, "type": "men", "value": 550}}, {"model": "battle.monsterattribute", "pk": 113, "fields": {"monster": 19, "type": "dex", "value": 900}}, {"model": "battle.monsterattribute", "pk": 114, "fields": {"monster": 19, "type": "agi", "value": 520}}, {"model": "battle.monsterattribute", "pk": 115, "fields": {"monster": 20, "type": "str", "value": 1100}}, {"model": "battle.monsterattribute", "pk": 116, "fields": {"monster": 20, "type": "vit", "value": 1100}}, {"model": "battle.monsterattribute", "pk": 117, "fields": {"monster": 20, "type": "int", "value": 600}}, {"model": "battle.monsterattribute", "pk": 118, "fields": {"monster": 20, "type": "men", "value": 550}}, {"model": "battle.monsterattribute", "pk": 119, "fields": {"monster": 20, "type": "dex", "value": 500}}, {"model": "battle.monsterattribute", "pk": 120, "fields": {"monster": 20, "type": "agi", "value": 530}}, {"model": "battle.monsterattribute", "pk": 121, "fields": {"monster": 21, "type": "str", "value": 1200}}, {"model": "battle.monsterattribute", "pk": 122, "fields": {"monster": 21, "type": "vit", "value": 1200}}, {"model": "battle.monsterattribute", "pk": 123, "fields": {"monster": 21, "type": "int", "value": 600}}, {"model": "battle.monsterattribute", "pk": 124, "fields": {"monster": 21, "type": "men", "value": 550}}, {"model": "battle.monsterattribute", "pk": 125, "fields": {"monster": 21, "type": "dex", "value": 500}}, {"model": "battle.monsterattribute", "pk": 126, "fields": {"monster": 21, "type": "agi", "value": 540}}, {"model": "battle.monsterattribute", "pk": 127, "fields": {"monster": 22, "type": "str", "value": 1300}}, {"model": "battle.monsterattribute", "pk": 128, "fields": {"monster": 22, "type": "vit", "value": 1300}}, {"model": "battle.monsterattribute", "pk": 129, "fields": {"monster": 22, "type": "int", "value": 610}}, {"model": "battle.monsterattribute", "pk": 130, "fields": {"monster": 22, "type": "men", "value": 900}}, {"model": "battle.monsterattribute", "pk": 131, "fields": {"monster": 22, "type": "dex", "value": 700}}, {"model": "battle.monsterattribute", "pk": 132, "fields": {"monster": 22, "type": "agi", "value": 550}}, {"model": "battle.monsterattribute", "pk": 133, "fields": {"monster": 23, "type": "str", "value": 1400}}, {"model": "battle.monsterattribute", "pk": 134, "fields": {"monster": 23, "type": "vit", "value": 1400}}, {"model": "battle.monsterattribute", "pk": 135, "fields": {"monster": 23, "type": "int", "value": 620}}, {"model": "battle.monsterattribute", "pk": 136, "fields": {"monster": 23, "type": "men", "value": 560}}, {"model": "battle.monsterattribute", "pk": 137, "fields": {"monster": 23, "type": "dex", "value": 540}}, {"model": "battle.monsterattribute", "pk": 138, "fields": {"monster": 23, "type": "agi", "value": 560}}, {"model": "battle.monsterattribute", "pk": 139, "fields": {"monster": 24, "type": "str", "value": 1500}}, {"model": "battle.monsterattribute", "pk": 140, "fields": {"monster": 24, "type": "vit", "value": 1500}}, {"model": "battle.monsterattribute", "pk": 141, "fields": {"monster": 24, "type": "int", "value": 630}}, {"model": "battle.monsterattribute", "pk": 142, "fields": {"monster": 24, "type": "men", "value": 570}}, {"model": "battle.monsterattribute", "pk": 143, "fields": {"monster": 24, "type": "dex", "value": 530}}, {"model": "battle.monsterattribute", "pk": 144, "fields": {"monster": 24, "type": "agi", "value": 570}}, {"model": "battle.monsterattribute", "pk": 145, "fields": {"monster": 25, "type": "str", "value": 1600}}, {"model": "battle.monsterattribute", "pk": 146, "fields": {"monster": 25, "type": "vit", "value": 1600}}, {"model": "battle.monsterattribute", "pk": 147, "fields": {"monster": 25, "type": "int", "value": 640}}, {"model": "battle.monsterattribute", "pk": 148, "fields": {"monster": 25, "type": "men", "value": 580}}, {"model": "battle.monsterattribute", "pk": 149, "fields": {"monster": 25, "type": "dex", "value": 550}}, {"model": "battle.monsterattribute", "pk": 150, "fields": {"monster": 25, "type": "agi", "value": 580}}, {"model": "battle.monsterattribute", "pk": 151, "fields": {"monster": 26, "type": "str", "value": 1700}}, {"model": "battle.monsterattribute", "pk": 152, "fields": {"monster": 26, "type": "vit", "value": 1700}}, {"model": "battle.monsterattribute", "pk": 153, "fields": {"monster": 26, "type": "int", "value": 650}}, {"model": "battle.monsterattribute", "pk": 154, "fields": {"monster": 26, "type": "men", "value": 590}}, {"model": "battle.monsterattribute", "pk": 155, "fields": {"monster": 26, "type": "dex", "value": 550}}, {"model": "battle.monsterattribute", "pk": 156, "fields": {"monster": 26, "type": "agi", "value": 590}}, {"model": "battle.monsterattribute", "pk": 157, "fields": {"monster": 27, "type": "str", "value": 1800}}, {"model": "battle.monsterattribute", "pk": 158, "fields": {"monster": 27, "type": "vit", "value": 1800}}, {"model": "battle.monsterattribute", "pk": 159, "fields": {"monster": 27, "type": "int", "value": 660}}, {"model": "battle.monsterattribute", "pk": 160, "fields": {"monster": 27, "type": "men", "value": 600}}, {"model": "battle.monsterattribute", "pk": 161, "fields": {"monster": 27, "type": "dex", "value": 600}}, {"model": "battle.monsterattribute", "pk": 162, "fields": {"monster": 27, "type": "agi", "value": 600}}, {"model": "battle.monsterattribute", "pk": 163, "fields": {"monster": 28, "type": "str", "value": 1900}}, {"model": "battle.monsterattribute", "pk": 164, "fields": {"monster": 28, "type": "vit", "value": 1900}}, {"model": "battle.monsterattribute", "pk": 165, "fields": {"monster": 28, "type": "int", "value": 670}}, {"model": "battle.monsterattribute", "pk": 166, "fields": {"monster": 28, "type": "men", "value": 600}}, {"model": "battle.monsterattribute", "pk": 167, "fields": {"monster": 28, "type": "dex", "value": 500}}, {"model": "battle.monsterattribute", "pk": 168, "fields": {"monster": 28, "type": "agi", "value": 600}}, {"model": "battle.monsterattribute", "pk": 169, "fields": {"monster": 29, "type": "str", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 170, "fields": {"monster": 29, "type": "vit", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 171, "fields": {"monster": 29, "type": "int", "value": 600}}, {"model": "battle.monsterattribute", "pk": 172, "fields": {"monster": 29, "type": "men", "value": 500}}, {"model": "battle.monsterattribute", "pk": 173, "fields": {"monster": 29, "type": "dex", "value": 900}}, {"model": "battle.monsterattribute", "pk": 174, "fields": {"monster": 29, "type": "agi", "value": 580}}, {"model": "battle.monsterattribute", "pk": 175, "fields": {"monster": 30, "type": "str", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 176, "fields": {"monster": 30, "type": "vit", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 177, "fields": {"monster": 30, "type": "int", "value": 600}}, {"model": "battle.monsterattribute", "pk": 178, "fields": {"monster": 30, "type": "men", "value": 500}}, {"model": "battle.monsterattribute", "pk": 179, "fields": {"monster": 30, "type": "dex", "value": 800}}, {"model": "battle.monsterattribute", "pk": 180, "fields": {"monster": 30, "type": "agi", "value": 500}}, {"model": "battle.monsterattribute", "pk": 181, "fields": {"monster": 31, "type": "str", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 182, "fields": {"monster": 31, "type": "vit", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 183, "fields": {"monster": 31, "type": "int", "value": 600}}, {"model": "battle.monsterattribute", "pk": 184, "fields": {"monster": 31, "type": "men", "value": 600}}, {"model": "battle.monsterattribute", "pk": 185, "fields": {"monster": 31, "type": "dex", "value": 800}}, {"model": "battle.monsterattribute", "pk": 186, "fields": {"monster": 31, "type": "agi", "value": 500}}, {"model": "battle.monsterattribute", "pk": 187, "fields": {"monster": 32, "type": "str", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 188, "fields": {"monster": 32, "type": "vit", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 189, "fields": {"monster": 32, "type": "int", "value": 600}}, {"model": "battle.monsterattribute", "pk": 190, "fields": {"monster": 32, "type": "men", "value": 600}}, {"model": "battle.monsterattribute", "pk": 191, "fields": {"monster": 32, "type": "dex", "value": 700}}, {"model": "battle.monsterattribute", "pk": 192, "fields": {"monster": 32, "type": "agi", "value": 500}}, {"model": "battle.monsterattribute", "pk": 193, "fields": {"monster": 33, "type": "str", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 194, "fields": {"monster": 33, "type": "vit", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 195, "fields": {"monster": 33, "type": "int", "value": 600}}, {"model": "battle.monsterattribute", "pk": 196, "fields": {"monster": 33, "type": "men", "value": 600}}, {"model": "battle.monsterattribute", "pk": 197, "fields": {"monster": 33, "type": "dex", "value": 700}}, {"model": "battle.monsterattribute", "pk": 198, "fields": {"monster": 33, "type": "agi", "value": 500}}, {"model": "battle.monsterattribute", "pk": 199, "fields": {"monster": 34, "type": "str", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 200, "fields": {"monster": 34, "type": "vit", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 201, "fields": {"monster": 34, "type": "int", "value": 700}}, {"model": "battle.monsterattribute", "pk": 202, "fields": {"monster": 34, "type": "men", "value": 700}}, {"model": "battle.monsterattribute", "pk": 203, "fields": {"monster": 34, "type": "dex", "value": 700}}, {"model": "battle.monsterattribute", "pk": 204, "fields": {"monster": 34, "type": "agi", "value": 500}}, {"model": "battle.monsterattribute", "pk": 205, "fields": {"monster": 35, "type": "str", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 206, "fields": {"monster": 35, "type": "vit", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 207, "fields": {"monster": 35, "type": "int", "value": 700}}, {"model": "battle.monsterattribute", "pk": 208, "fields": {"monster": 35, "type": "men", "value": 700}}, {"model": "battle.monsterattribute", "pk": 209, "fields": {"monster": 35, "type": "dex", "value": 600}}, {"model": "battle.monsterattribute", "pk": 210, "fields": {"monster": 35, "type": "agi", "value": 500}}, {"model": "battle.monsterattribute", "pk": 211, "fields": {"monster": 36, "type": "str", "value": 1000}}, {"model": "battle.monsterattribute", "pk": 212, "fields": {"monster": 36, "type": "vit", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 213, "fields": {"monster": 36, "type": "int", "value": 700}}, {"model": "battle.monsterattribute", "pk": 214, "fields": {"monster": 36, "type": "men", "value": 700}}, {"model": "battle.monsterattribute", "pk": 215, "fields": {"monster": 36, "type": "dex", "value": 600}}, {"model": "battle.monsterattribute", "pk": 216, "fields": {"monster": 36, "type": "agi", "value": 500}}, {"model": "battle.monsterattribute", "pk": 217, "fields": {"monster": 37, "type": "str", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 218, "fields": {"monster": 37, "type": "vit", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 219, "fields": {"monster": 37, "type": "int", "value": 700}}, {"model": "battle.monsterattribute", "pk": 220, "fields": {"monster": 37, "type": "men", "value": 800}}, {"model": "battle.monsterattribute", "pk": 221, "fields": {"monster": 37, "type": "dex", "value": 600}}, {"model": "battle.monsterattribute", "pk": 222, "fields": {"monster": 37, "type": "agi", "value": 500}}, {"model": "battle.monsterattribute", "pk": 223, "fields": {"monster": 38, "type": "str", "value": 1500}}, {"model": "battle.monsterattribute", "pk": 224, "fields": {"monster": 38, "type": "vit", "value": 1500}}, {"model": "battle.monsterattribute", "pk": 225, "fields": {"monster": 38, "type": "int", "value": 700}}, {"model": "battle.monsterattribute", "pk": 226, "fields": {"monster": 38, "type": "men", "value": 700}}, {"model": "battle.monsterattribute", "pk": 227, "fields": {"monster": 38, "type": "dex", "value": 600}}, {"model": "battle.monsterattribute", "pk": 228, "fields": {"monster": 38, "type": "agi", "value": 500}}, {"model": "battle.monsterattribute", "pk": 229, "fields": {"monster": 39, "type": "str", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 230, "fields": {"monster": 39, "type": "vit", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 231, "fields": {"monster": 39, "type": "int", "value": 700}}, {"model": "battle.monsterattribute", "pk": 232, "fields": {"monster": 39, "type": "men", "value": 700}}, {"model": "battle.monsterattribute", "pk": 233, "fields": {"monster": 39, "type": "dex", "value": 600}}, {"model": "battle.monsterattribute", "pk": 234, "fields": {"monster": 39, "type": "agi", "value": 500}}, {"model": "battle.monsterattribute", "pk": 235, "fields": {"monster": 40, "type": "str", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 236, "fields": {"monster": 40, "type": "vit", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 237, "fields": {"monster": 40, "type": "int", "value": 700}}, {"model": "battle.monsterattribute", "pk": 238, "fields": {"monster": 40, "type": "men", "value": 700}}, {"model": "battle.monsterattribute", "pk": 239, "fields": {"monster": 40, "type": "dex", "value": 500}}, {"model": "battle.monsterattribute", "pk": 240, "fields": {"monster": 40, "type": "agi", "value": 500}}, {"model": "battle.monsterattribute", "pk": 241, "fields": {"monster": 41, "type": "str", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 242, "fields": {"monster": 41, "type": "vit", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 243, "fields": {"monster": 41, "type": "int", "value": 800}}, {"model": "battle.monsterattribute", "pk": 244, "fields": {"monster": 41, "type": "men", "value": 700}}, {"model": "battle.monsterattribute", "pk": 245, "fields": {"monster": 41, "type": "dex", "value": 500}}, {"model": "battle.monsterattribute", "pk": 246, "fields": {"monster": 41, "type": "agi", "value": 700}}, {"model": "battle.monsterattribute", "pk": 247, "fields": {"monster": 42, "type": "str", "value": 6000}}, {"model": "battle.monsterattribute", "pk": 248, "fields": {"monster": 42, "type": "vit", "value": 6000}}, {"model": "battle.monsterattribute", "pk": 249, "fields": {"monster": 42, "type": "int", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 250, "fields": {"monster": 42, "type": "men", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 251, "fields": {"monster": 42, "type": "dex", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 252, "fields": {"monster": 42, "type": "agi", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 253, "fields": {"monster": 43, "type": "str", "value": 12000}}, {"model": "battle.monsterattribute", "pk": 254, "fields": {"monster": 43, "type": "vit", "value": 5000}}, {"model": "battle.monsterattribute", "pk": 255, "fields": {"monster": 43, "type": "int", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 256, "fields": {"monster": 43, "type": "men", "value": 5000}}, {"model": "battle.monsterattribute", "pk": 257, "fields": {"monster": 43, "type": "dex", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 258, "fields": {"monster": 43, "type": "agi", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 259, "fields": {"monster": 44, "type": "str", "value": 8000}}, {"model": "battle.monsterattribute", "pk": 260, "fields": {"monster": 44, "type": "vit", "value": 5000}}, {"model": "battle.monsterattribute", "pk": 261, "fields": {"monster": 44, "type": "int", "value": 4000}}, {"model": "battle.monsterattribute", "pk": 262, "fields": {"monster": 44, "type": "men", "value": 8000}}, {"model": "battle.monsterattribute", "pk": 263, "fields": {"monster": 44, "type": "dex", "value": 4000}}, {"model": "battle.monsterattribute", "pk": 264, "fields": {"monster": 44, "type": "agi", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 265, "fields": {"monster": 45, "type": "str", "value": 6000}}, {"model": "battle.monsterattribute", "pk": 266, "fields": {"monster": 45, "type": "vit", "value": 5000}}, {"model": "battle.monsterattribute", "pk": 267, "fields": {"monster": 45, "type": "int", "value": 8500}}, {"model": "battle.monsterattribute", "pk": 268, "fields": {"monster": 45, "type": "men", "value": 10000}}, {"model": "battle.monsterattribute", "pk": 269, "fields": {"monster": 45, "type": "dex", "value": 8500}}, {"model": "battle.monsterattribute", "pk": 270, "fields": {"monster": 45, "type": "agi", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 271, "fields": {"monster": 46, "type": "str", "value": 8000}}, {"model": "battle.monsterattribute", "pk": 272, "fields": {"monster": 46, "type": "vit", "value": 7000}}, {"model": "battle.monsterattribute", "pk": 273, "fields": {"monster": 46, "type": "int", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 274, "fields": {"monster": 46, "type": "men", "value": 5000}}, {"model": "battle.monsterattribute", "pk": 275, "fields": {"monster": 46, "type": "dex", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 276, "fields": {"monster": 46, "type": "agi", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 277, "fields": {"monster": 47, "type": "str", "value": 8000}}, {"model": "battle.monsterattribute", "pk": 278, "fields": {"monster": 47, "type": "vit", "value": 6000}}, {"model": "battle.monsterattribute", "pk": 279, "fields": {"monster": 47, "type": "int", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 280, "fields": {"monster": 47, "type": "men", "value": 5000}}, {"model": "battle.monsterattribute", "pk": 281, "fields": {"monster": 47, "type": "dex", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 282, "fields": {"monster": 47, "type": "agi", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 283, "fields": {"monster": 48, "type": "str", "value": 8000}}, {"model": "battle.monsterattribute", "pk": 284, "fields": {"monster": 48, "type": "vit", "value": 6000}}, {"model": "battle.monsterattribute", "pk": 285, "fields": {"monster": 48, "type": "int", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 286, "fields": {"monster": 48, "type": "men", "value": 5000}}, {"model": "battle.monsterattribute", "pk": 287, "fields": {"monster": 48, "type": "dex", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 288, "fields": {"monster": 48, "type": "agi", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 289, "fields": {"monster": 49, "type": "str", "value": 8000}}, {"model": "battle.monsterattribute", "pk": 290, "fields": {"monster": 49, "type": "vit", "value": 6000}}, {"model": "battle.monsterattribute", "pk": 291, "fields": {"monster": 49, "type": "int", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 292, "fields": {"monster": 49, "type": "men", "value": 5000}}, {"model": "battle.monsterattribute", "pk": 293, "fields": {"monster": 49, "type": "dex", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 294, "fields": {"monster": 49, "type": "agi", "value": 6500}}, {"model": "battle.monsterattribute", "pk": 295, "fields": {"monster": 50, "type": "str", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 296, "fields": {"monster": 50, "type": "vit", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 297, "fields": {"monster": 50, "type": "int", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 298, "fields": {"monster": 50, "type": "men", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 299, "fields": {"monster": 50, "type": "dex", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 300, "fields": {"monster": 50, "type": "agi", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 301, "fields": {"monster": 51, "type": "str", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 302, "fields": {"monster": 51, "type": "vit", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 303, "fields": {"monster": 51, "type": "int", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 304, "fields": {"monster": 51, "type": "men", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 305, "fields": {"monster": 51, "type": "dex", "value": 2000}}, {"model": "battle.monsterattribute", "pk": 306, "fields": {"monster": 51, "type": "agi", "value": 2000}}]
+[
+    {
+        "model": "battle.monsterattribute",
+        "pk": 1,
+        "fields": {
+            "monster": 1,
+            "type": 1,
+            "value": 7
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 2,
+        "fields": {
+            "monster": 1,
+            "type": 2,
+            "value": 3
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 3,
+        "fields": {
+            "monster": 1,
+            "type": 3,
+            "value": 1
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 4,
+        "fields": {
+            "monster": 1,
+            "type": 4,
+            "value": 1
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 5,
+        "fields": {
+            "monster": 1,
+            "type": 5,
+            "value": 1
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 6,
+        "fields": {
+            "monster": 1,
+            "type": 6,
+            "value": 2
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 7,
+        "fields": {
+            "monster": 2,
+            "type": 1,
+            "value": 9
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 8,
+        "fields": {
+            "monster": 2,
+            "type": 2,
+            "value": 4
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 9,
+        "fields": {
+            "monster": 2,
+            "type": 3,
+            "value": 12
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 10,
+        "fields": {
+            "monster": 2,
+            "type": 4,
+            "value": 100
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 11,
+        "fields": {
+            "monster": 2,
+            "type": 5,
+            "value": 40
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 12,
+        "fields": {
+            "monster": 2,
+            "type": 6,
+            "value": 7
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 13,
+        "fields": {
+            "monster": 3,
+            "type": 1,
+            "value": 40
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 14,
+        "fields": {
+            "monster": 3,
+            "type": 2,
+            "value": 50
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 15,
+        "fields": {
+            "monster": 3,
+            "type": 3,
+            "value": 10
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 16,
+        "fields": {
+            "monster": 3,
+            "type": 4,
+            "value": 10
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 17,
+        "fields": {
+            "monster": 3,
+            "type": 5,
+            "value": 10
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 18,
+        "fields": {
+            "monster": 3,
+            "type": 6,
+            "value": 14
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 19,
+        "fields": {
+            "monster": 4,
+            "type": 1,
+            "value": 76
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 20,
+        "fields": {
+            "monster": 4,
+            "type": 2,
+            "value": 7
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 21,
+        "fields": {
+            "monster": 4,
+            "type": 3,
+            "value": 14
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 22,
+        "fields": {
+            "monster": 4,
+            "type": 4,
+            "value": 80
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 23,
+        "fields": {
+            "monster": 4,
+            "type": 5,
+            "value": 200
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 24,
+        "fields": {
+            "monster": 4,
+            "type": 6,
+            "value": 28
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 25,
+        "fields": {
+            "monster": 5,
+            "type": 1,
+            "value": 134
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 26,
+        "fields": {
+            "monster": 5,
+            "type": 2,
+            "value": 106
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 27,
+        "fields": {
+            "monster": 5,
+            "type": 3,
+            "value": 50
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 28,
+        "fields": {
+            "monster": 5,
+            "type": 4,
+            "value": 40
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 29,
+        "fields": {
+            "monster": 5,
+            "type": 5,
+            "value": 120
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 30,
+        "fields": {
+            "monster": 5,
+            "type": 6,
+            "value": 95
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 31,
+        "fields": {
+            "monster": 6,
+            "type": 1,
+            "value": 153
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 32,
+        "fields": {
+            "monster": 6,
+            "type": 2,
+            "value": 126
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 33,
+        "fields": {
+            "monster": 6,
+            "type": 3,
+            "value": 10
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 34,
+        "fields": {
+            "monster": 6,
+            "type": 4,
+            "value": 10
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 35,
+        "fields": {
+            "monster": 6,
+            "type": 5,
+            "value": 150
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 36,
+        "fields": {
+            "monster": 6,
+            "type": 6,
+            "value": 120
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 37,
+        "fields": {
+            "monster": 7,
+            "type": 1,
+            "value": 294
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 38,
+        "fields": {
+            "monster": 7,
+            "type": 2,
+            "value": 266
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 39,
+        "fields": {
+            "monster": 7,
+            "type": 3,
+            "value": 300
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 40,
+        "fields": {
+            "monster": 7,
+            "type": 4,
+            "value": 240
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 41,
+        "fields": {
+            "monster": 7,
+            "type": 5,
+            "value": 250
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 42,
+        "fields": {
+            "monster": 7,
+            "type": 6,
+            "value": 205
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 43,
+        "fields": {
+            "monster": 8,
+            "type": 1,
+            "value": 353
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 44,
+        "fields": {
+            "monster": 8,
+            "type": 2,
+            "value": 256
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 45,
+        "fields": {
+            "monster": 8,
+            "type": 3,
+            "value": 100
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 46,
+        "fields": {
+            "monster": 8,
+            "type": 4,
+            "value": 100
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 47,
+        "fields": {
+            "monster": 8,
+            "type": 5,
+            "value": 180
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 48,
+        "fields": {
+            "monster": 8,
+            "type": 6,
+            "value": 177
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 49,
+        "fields": {
+            "monster": 9,
+            "type": 1,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 50,
+        "fields": {
+            "monster": 9,
+            "type": 2,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 51,
+        "fields": {
+            "monster": 9,
+            "type": 3,
+            "value": 177
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 52,
+        "fields": {
+            "monster": 9,
+            "type": 4,
+            "value": 477
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 53,
+        "fields": {
+            "monster": 9,
+            "type": 5,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 54,
+        "fields": {
+            "monster": 9,
+            "type": 6,
+            "value": 377
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 55,
+        "fields": {
+            "monster": 10,
+            "type": 1,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 56,
+        "fields": {
+            "monster": 10,
+            "type": 2,
+            "value": 677
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 57,
+        "fields": {
+            "monster": 10,
+            "type": 3,
+            "value": 277
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 58,
+        "fields": {
+            "monster": 10,
+            "type": 4,
+            "value": 477
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 59,
+        "fields": {
+            "monster": 10,
+            "type": 5,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 60,
+        "fields": {
+            "monster": 10,
+            "type": 6,
+            "value": 377
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 61,
+        "fields": {
+            "monster": 11,
+            "type": 1,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 62,
+        "fields": {
+            "monster": 11,
+            "type": 2,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 63,
+        "fields": {
+            "monster": 11,
+            "type": 3,
+            "value": 277
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 64,
+        "fields": {
+            "monster": 11,
+            "type": 4,
+            "value": 477
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 65,
+        "fields": {
+            "monster": 11,
+            "type": 5,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 66,
+        "fields": {
+            "monster": 11,
+            "type": 6,
+            "value": 377
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 67,
+        "fields": {
+            "monster": 12,
+            "type": 1,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 68,
+        "fields": {
+            "monster": 12,
+            "type": 2,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 69,
+        "fields": {
+            "monster": 12,
+            "type": 3,
+            "value": 277
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 70,
+        "fields": {
+            "monster": 12,
+            "type": 4,
+            "value": 477
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 71,
+        "fields": {
+            "monster": 12,
+            "type": 5,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 72,
+        "fields": {
+            "monster": 12,
+            "type": 6,
+            "value": 377
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 73,
+        "fields": {
+            "monster": 13,
+            "type": 1,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 74,
+        "fields": {
+            "monster": 13,
+            "type": 2,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 75,
+        "fields": {
+            "monster": 13,
+            "type": 3,
+            "value": 277
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 76,
+        "fields": {
+            "monster": 13,
+            "type": 4,
+            "value": 477
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 77,
+        "fields": {
+            "monster": 13,
+            "type": 5,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 78,
+        "fields": {
+            "monster": 13,
+            "type": 6,
+            "value": 377
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 79,
+        "fields": {
+            "monster": 14,
+            "type": 1,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 80,
+        "fields": {
+            "monster": 14,
+            "type": 2,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 81,
+        "fields": {
+            "monster": 14,
+            "type": 3,
+            "value": 277
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 82,
+        "fields": {
+            "monster": 14,
+            "type": 4,
+            "value": 477
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 83,
+        "fields": {
+            "monster": 14,
+            "type": 5,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 84,
+        "fields": {
+            "monster": 14,
+            "type": 6,
+            "value": 377
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 85,
+        "fields": {
+            "monster": 15,
+            "type": 1,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 86,
+        "fields": {
+            "monster": 15,
+            "type": 2,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 87,
+        "fields": {
+            "monster": 15,
+            "type": 3,
+            "value": 277
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 88,
+        "fields": {
+            "monster": 15,
+            "type": 4,
+            "value": 477
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 89,
+        "fields": {
+            "monster": 15,
+            "type": 5,
+            "value": 777
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 90,
+        "fields": {
+            "monster": 15,
+            "type": 6,
+            "value": 377
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 91,
+        "fields": {
+            "monster": 16,
+            "type": 1,
+            "value": 900
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 92,
+        "fields": {
+            "monster": 16,
+            "type": 2,
+            "value": 900
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 93,
+        "fields": {
+            "monster": 16,
+            "type": 3,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 94,
+        "fields": {
+            "monster": 16,
+            "type": 4,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 95,
+        "fields": {
+            "monster": 16,
+            "type": 5,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 96,
+        "fields": {
+            "monster": 16,
+            "type": 6,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 97,
+        "fields": {
+            "monster": 17,
+            "type": 1,
+            "value": 800
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 98,
+        "fields": {
+            "monster": 17,
+            "type": 2,
+            "value": 800
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 99,
+        "fields": {
+            "monster": 17,
+            "type": 3,
+            "value": 800
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 100,
+        "fields": {
+            "monster": 17,
+            "type": 4,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 101,
+        "fields": {
+            "monster": 17,
+            "type": 5,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 102,
+        "fields": {
+            "monster": 17,
+            "type": 6,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 103,
+        "fields": {
+            "monster": 18,
+            "type": 1,
+            "value": 900
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 104,
+        "fields": {
+            "monster": 18,
+            "type": 2,
+            "value": 900
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 105,
+        "fields": {
+            "monster": 18,
+            "type": 3,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 106,
+        "fields": {
+            "monster": 18,
+            "type": 4,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 107,
+        "fields": {
+            "monster": 18,
+            "type": 5,
+            "value": 400
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 108,
+        "fields": {
+            "monster": 18,
+            "type": 6,
+            "value": 510
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 109,
+        "fields": {
+            "monster": 19,
+            "type": 1,
+            "value": 1000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 110,
+        "fields": {
+            "monster": 19,
+            "type": 2,
+            "value": 1000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 111,
+        "fields": {
+            "monster": 19,
+            "type": 3,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 112,
+        "fields": {
+            "monster": 19,
+            "type": 4,
+            "value": 550
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 113,
+        "fields": {
+            "monster": 19,
+            "type": 5,
+            "value": 900
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 114,
+        "fields": {
+            "monster": 19,
+            "type": 6,
+            "value": 520
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 115,
+        "fields": {
+            "monster": 20,
+            "type": 1,
+            "value": 1100
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 116,
+        "fields": {
+            "monster": 20,
+            "type": 2,
+            "value": 1100
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 117,
+        "fields": {
+            "monster": 20,
+            "type": 3,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 118,
+        "fields": {
+            "monster": 20,
+            "type": 4,
+            "value": 550
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 119,
+        "fields": {
+            "monster": 20,
+            "type": 5,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 120,
+        "fields": {
+            "monster": 20,
+            "type": 6,
+            "value": 530
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 121,
+        "fields": {
+            "monster": 21,
+            "type": 1,
+            "value": 1200
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 122,
+        "fields": {
+            "monster": 21,
+            "type": 2,
+            "value": 1200
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 123,
+        "fields": {
+            "monster": 21,
+            "type": 3,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 124,
+        "fields": {
+            "monster": 21,
+            "type": 4,
+            "value": 550
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 125,
+        "fields": {
+            "monster": 21,
+            "type": 5,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 126,
+        "fields": {
+            "monster": 21,
+            "type": 6,
+            "value": 540
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 127,
+        "fields": {
+            "monster": 22,
+            "type": 1,
+            "value": 1300
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 128,
+        "fields": {
+            "monster": 22,
+            "type": 2,
+            "value": 1300
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 129,
+        "fields": {
+            "monster": 22,
+            "type": 3,
+            "value": 610
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 130,
+        "fields": {
+            "monster": 22,
+            "type": 4,
+            "value": 900
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 131,
+        "fields": {
+            "monster": 22,
+            "type": 5,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 132,
+        "fields": {
+            "monster": 22,
+            "type": 6,
+            "value": 550
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 133,
+        "fields": {
+            "monster": 23,
+            "type": 1,
+            "value": 1400
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 134,
+        "fields": {
+            "monster": 23,
+            "type": 2,
+            "value": 1400
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 135,
+        "fields": {
+            "monster": 23,
+            "type": 3,
+            "value": 620
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 136,
+        "fields": {
+            "monster": 23,
+            "type": 4,
+            "value": 560
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 137,
+        "fields": {
+            "monster": 23,
+            "type": 5,
+            "value": 540
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 138,
+        "fields": {
+            "monster": 23,
+            "type": 6,
+            "value": 560
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 139,
+        "fields": {
+            "monster": 24,
+            "type": 1,
+            "value": 1500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 140,
+        "fields": {
+            "monster": 24,
+            "type": 2,
+            "value": 1500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 141,
+        "fields": {
+            "monster": 24,
+            "type": 3,
+            "value": 630
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 142,
+        "fields": {
+            "monster": 24,
+            "type": 4,
+            "value": 570
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 143,
+        "fields": {
+            "monster": 24,
+            "type": 5,
+            "value": 530
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 144,
+        "fields": {
+            "monster": 24,
+            "type": 6,
+            "value": 570
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 145,
+        "fields": {
+            "monster": 25,
+            "type": 1,
+            "value": 1600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 146,
+        "fields": {
+            "monster": 25,
+            "type": 2,
+            "value": 1600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 147,
+        "fields": {
+            "monster": 25,
+            "type": 3,
+            "value": 640
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 148,
+        "fields": {
+            "monster": 25,
+            "type": 4,
+            "value": 580
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 149,
+        "fields": {
+            "monster": 25,
+            "type": 5,
+            "value": 550
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 150,
+        "fields": {
+            "monster": 25,
+            "type": 6,
+            "value": 580
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 151,
+        "fields": {
+            "monster": 26,
+            "type": 1,
+            "value": 1700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 152,
+        "fields": {
+            "monster": 26,
+            "type": 2,
+            "value": 1700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 153,
+        "fields": {
+            "monster": 26,
+            "type": 3,
+            "value": 650
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 154,
+        "fields": {
+            "monster": 26,
+            "type": 4,
+            "value": 590
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 155,
+        "fields": {
+            "monster": 26,
+            "type": 5,
+            "value": 550
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 156,
+        "fields": {
+            "monster": 26,
+            "type": 6,
+            "value": 590
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 157,
+        "fields": {
+            "monster": 27,
+            "type": 1,
+            "value": 1800
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 158,
+        "fields": {
+            "monster": 27,
+            "type": 2,
+            "value": 1800
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 159,
+        "fields": {
+            "monster": 27,
+            "type": 3,
+            "value": 660
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 160,
+        "fields": {
+            "monster": 27,
+            "type": 4,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 161,
+        "fields": {
+            "monster": 27,
+            "type": 5,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 162,
+        "fields": {
+            "monster": 27,
+            "type": 6,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 163,
+        "fields": {
+            "monster": 28,
+            "type": 1,
+            "value": 1900
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 164,
+        "fields": {
+            "monster": 28,
+            "type": 2,
+            "value": 1900
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 165,
+        "fields": {
+            "monster": 28,
+            "type": 3,
+            "value": 670
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 166,
+        "fields": {
+            "monster": 28,
+            "type": 4,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 167,
+        "fields": {
+            "monster": 28,
+            "type": 5,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 168,
+        "fields": {
+            "monster": 28,
+            "type": 6,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 169,
+        "fields": {
+            "monster": 29,
+            "type": 1,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 170,
+        "fields": {
+            "monster": 29,
+            "type": 2,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 171,
+        "fields": {
+            "monster": 29,
+            "type": 3,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 172,
+        "fields": {
+            "monster": 29,
+            "type": 4,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 173,
+        "fields": {
+            "monster": 29,
+            "type": 5,
+            "value": 900
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 174,
+        "fields": {
+            "monster": 29,
+            "type": 6,
+            "value": 580
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 175,
+        "fields": {
+            "monster": 30,
+            "type": 1,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 176,
+        "fields": {
+            "monster": 30,
+            "type": 2,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 177,
+        "fields": {
+            "monster": 30,
+            "type": 3,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 178,
+        "fields": {
+            "monster": 30,
+            "type": 4,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 179,
+        "fields": {
+            "monster": 30,
+            "type": 5,
+            "value": 800
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 180,
+        "fields": {
+            "monster": 30,
+            "type": 6,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 181,
+        "fields": {
+            "monster": 31,
+            "type": 1,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 182,
+        "fields": {
+            "monster": 31,
+            "type": 2,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 183,
+        "fields": {
+            "monster": 31,
+            "type": 3,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 184,
+        "fields": {
+            "monster": 31,
+            "type": 4,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 185,
+        "fields": {
+            "monster": 31,
+            "type": 5,
+            "value": 800
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 186,
+        "fields": {
+            "monster": 31,
+            "type": 6,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 187,
+        "fields": {
+            "monster": 32,
+            "type": 1,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 188,
+        "fields": {
+            "monster": 32,
+            "type": 2,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 189,
+        "fields": {
+            "monster": 32,
+            "type": 3,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 190,
+        "fields": {
+            "monster": 32,
+            "type": 4,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 191,
+        "fields": {
+            "monster": 32,
+            "type": 5,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 192,
+        "fields": {
+            "monster": 32,
+            "type": 6,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 193,
+        "fields": {
+            "monster": 33,
+            "type": 1,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 194,
+        "fields": {
+            "monster": 33,
+            "type": 2,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 195,
+        "fields": {
+            "monster": 33,
+            "type": 3,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 196,
+        "fields": {
+            "monster": 33,
+            "type": 4,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 197,
+        "fields": {
+            "monster": 33,
+            "type": 5,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 198,
+        "fields": {
+            "monster": 33,
+            "type": 6,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 199,
+        "fields": {
+            "monster": 34,
+            "type": 1,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 200,
+        "fields": {
+            "monster": 34,
+            "type": 2,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 201,
+        "fields": {
+            "monster": 34,
+            "type": 3,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 202,
+        "fields": {
+            "monster": 34,
+            "type": 4,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 203,
+        "fields": {
+            "monster": 34,
+            "type": 5,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 204,
+        "fields": {
+            "monster": 34,
+            "type": 6,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 205,
+        "fields": {
+            "monster": 35,
+            "type": 1,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 206,
+        "fields": {
+            "monster": 35,
+            "type": 2,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 207,
+        "fields": {
+            "monster": 35,
+            "type": 3,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 208,
+        "fields": {
+            "monster": 35,
+            "type": 4,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 209,
+        "fields": {
+            "monster": 35,
+            "type": 5,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 210,
+        "fields": {
+            "monster": 35,
+            "type": 6,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 211,
+        "fields": {
+            "monster": 36,
+            "type": 1,
+            "value": 1000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 212,
+        "fields": {
+            "monster": 36,
+            "type": 2,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 213,
+        "fields": {
+            "monster": 36,
+            "type": 3,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 214,
+        "fields": {
+            "monster": 36,
+            "type": 4,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 215,
+        "fields": {
+            "monster": 36,
+            "type": 5,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 216,
+        "fields": {
+            "monster": 36,
+            "type": 6,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 217,
+        "fields": {
+            "monster": 37,
+            "type": 1,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 218,
+        "fields": {
+            "monster": 37,
+            "type": 2,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 219,
+        "fields": {
+            "monster": 37,
+            "type": 3,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 220,
+        "fields": {
+            "monster": 37,
+            "type": 4,
+            "value": 800
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 221,
+        "fields": {
+            "monster": 37,
+            "type": 5,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 222,
+        "fields": {
+            "monster": 37,
+            "type": 6,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 223,
+        "fields": {
+            "monster": 38,
+            "type": 1,
+            "value": 1500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 224,
+        "fields": {
+            "monster": 38,
+            "type": 2,
+            "value": 1500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 225,
+        "fields": {
+            "monster": 38,
+            "type": 3,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 226,
+        "fields": {
+            "monster": 38,
+            "type": 4,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 227,
+        "fields": {
+            "monster": 38,
+            "type": 5,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 228,
+        "fields": {
+            "monster": 38,
+            "type": 6,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 229,
+        "fields": {
+            "monster": 39,
+            "type": 1,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 230,
+        "fields": {
+            "monster": 39,
+            "type": 2,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 231,
+        "fields": {
+            "monster": 39,
+            "type": 3,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 232,
+        "fields": {
+            "monster": 39,
+            "type": 4,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 233,
+        "fields": {
+            "monster": 39,
+            "type": 5,
+            "value": 600
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 234,
+        "fields": {
+            "monster": 39,
+            "type": 6,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 235,
+        "fields": {
+            "monster": 40,
+            "type": 1,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 236,
+        "fields": {
+            "monster": 40,
+            "type": 2,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 237,
+        "fields": {
+            "monster": 40,
+            "type": 3,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 238,
+        "fields": {
+            "monster": 40,
+            "type": 4,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 239,
+        "fields": {
+            "monster": 40,
+            "type": 5,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 240,
+        "fields": {
+            "monster": 40,
+            "type": 6,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 241,
+        "fields": {
+            "monster": 41,
+            "type": 1,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 242,
+        "fields": {
+            "monster": 41,
+            "type": 2,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 243,
+        "fields": {
+            "monster": 41,
+            "type": 3,
+            "value": 800
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 244,
+        "fields": {
+            "monster": 41,
+            "type": 4,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 245,
+        "fields": {
+            "monster": 41,
+            "type": 5,
+            "value": 500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 246,
+        "fields": {
+            "monster": 41,
+            "type": 6,
+            "value": 700
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 247,
+        "fields": {
+            "monster": 42,
+            "type": 1,
+            "value": 6000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 248,
+        "fields": {
+            "monster": 42,
+            "type": 2,
+            "value": 6000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 249,
+        "fields": {
+            "monster": 42,
+            "type": 3,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 250,
+        "fields": {
+            "monster": 42,
+            "type": 4,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 251,
+        "fields": {
+            "monster": 42,
+            "type": 5,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 252,
+        "fields": {
+            "monster": 42,
+            "type": 6,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 253,
+        "fields": {
+            "monster": 43,
+            "type": 1,
+            "value": 12000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 254,
+        "fields": {
+            "monster": 43,
+            "type": 2,
+            "value": 5000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 255,
+        "fields": {
+            "monster": 43,
+            "type": 3,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 256,
+        "fields": {
+            "monster": 43,
+            "type": 4,
+            "value": 5000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 257,
+        "fields": {
+            "monster": 43,
+            "type": 5,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 258,
+        "fields": {
+            "monster": 43,
+            "type": 6,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 259,
+        "fields": {
+            "monster": 44,
+            "type": 1,
+            "value": 8000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 260,
+        "fields": {
+            "monster": 44,
+            "type": 2,
+            "value": 5000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 261,
+        "fields": {
+            "monster": 44,
+            "type": 3,
+            "value": 4000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 262,
+        "fields": {
+            "monster": 44,
+            "type": 4,
+            "value": 8000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 263,
+        "fields": {
+            "monster": 44,
+            "type": 5,
+            "value": 4000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 264,
+        "fields": {
+            "monster": 44,
+            "type": 6,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 265,
+        "fields": {
+            "monster": 45,
+            "type": 1,
+            "value": 6000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 266,
+        "fields": {
+            "monster": 45,
+            "type": 2,
+            "value": 5000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 267,
+        "fields": {
+            "monster": 45,
+            "type": 3,
+            "value": 8500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 268,
+        "fields": {
+            "monster": 45,
+            "type": 4,
+            "value": 10000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 269,
+        "fields": {
+            "monster": 45,
+            "type": 5,
+            "value": 8500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 270,
+        "fields": {
+            "monster": 45,
+            "type": 6,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 271,
+        "fields": {
+            "monster": 46,
+            "type": 1,
+            "value": 8000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 272,
+        "fields": {
+            "monster": 46,
+            "type": 2,
+            "value": 7000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 273,
+        "fields": {
+            "monster": 46,
+            "type": 3,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 274,
+        "fields": {
+            "monster": 46,
+            "type": 4,
+            "value": 5000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 275,
+        "fields": {
+            "monster": 46,
+            "type": 5,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 276,
+        "fields": {
+            "monster": 46,
+            "type": 6,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 277,
+        "fields": {
+            "monster": 47,
+            "type": 1,
+            "value": 8000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 278,
+        "fields": {
+            "monster": 47,
+            "type": 2,
+            "value": 6000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 279,
+        "fields": {
+            "monster": 47,
+            "type": 3,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 280,
+        "fields": {
+            "monster": 47,
+            "type": 4,
+            "value": 5000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 281,
+        "fields": {
+            "monster": 47,
+            "type": 5,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 282,
+        "fields": {
+            "monster": 47,
+            "type": 6,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 283,
+        "fields": {
+            "monster": 48,
+            "type": 1,
+            "value": 8000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 284,
+        "fields": {
+            "monster": 48,
+            "type": 2,
+            "value": 6000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 285,
+        "fields": {
+            "monster": 48,
+            "type": 3,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 286,
+        "fields": {
+            "monster": 48,
+            "type": 4,
+            "value": 5000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 287,
+        "fields": {
+            "monster": 48,
+            "type": 5,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 288,
+        "fields": {
+            "monster": 48,
+            "type": 6,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 289,
+        "fields": {
+            "monster": 49,
+            "type": 1,
+            "value": 8000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 290,
+        "fields": {
+            "monster": 49,
+            "type": 2,
+            "value": 6000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 291,
+        "fields": {
+            "monster": 49,
+            "type": 3,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 292,
+        "fields": {
+            "monster": 49,
+            "type": 4,
+            "value": 5000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 293,
+        "fields": {
+            "monster": 49,
+            "type": 5,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 294,
+        "fields": {
+            "monster": 49,
+            "type": 6,
+            "value": 6500
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 295,
+        "fields": {
+            "monster": 50,
+            "type": 1,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 296,
+        "fields": {
+            "monster": 50,
+            "type": 2,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 297,
+        "fields": {
+            "monster": 50,
+            "type": 3,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 298,
+        "fields": {
+            "monster": 50,
+            "type": 4,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 299,
+        "fields": {
+            "monster": 50,
+            "type": 5,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 300,
+        "fields": {
+            "monster": 50,
+            "type": 6,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 301,
+        "fields": {
+            "monster": 51,
+            "type": 1,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 302,
+        "fields": {
+            "monster": 51,
+            "type": 2,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 303,
+        "fields": {
+            "monster": 51,
+            "type": 3,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 304,
+        "fields": {
+            "monster": 51,
+            "type": 4,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 305,
+        "fields": {
+            "monster": 51,
+            "type": 5,
+            "value": 2000
+        }
+    },
+    {
+        "model": "battle.monsterattribute",
+        "pk": 306,
+        "fields": {
+            "monster": 51,
+            "type": 6,
+            "value": 2000
+        }
+    }
+]

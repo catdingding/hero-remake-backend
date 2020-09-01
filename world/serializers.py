@@ -9,13 +9,13 @@ from base.utils import calculate_distance
 class AttributeTypeSerializer(BaseModelSerializer):
     class Meta:
         model = AttributeType
-        fields = ['id', 'name']
+        fields = ['id', 'en_name', 'name']
 
 
 class ElementTypeSerializer(BaseModelSerializer):
     class Meta:
         model = ElementType
-        fields = ['id', 'name']
+        fields = ['id', 'en_name', 'name']
 
 
 class MoveSerializer(BaseSerializer):

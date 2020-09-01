@@ -103,9 +103,9 @@ class SmithUpgradeSerializer(BaseSerializer):
         '稀有': 70
     }
     slot_type_add_on = {
-        'weapon': {'attack_add_on': 5, 'weight_add_on': -1},
-        'armor': {'defense_add_on': 5, 'weight_add_on': -1},
-        'jewelry': {'attack_add_on': 1, 'weight_add_on': -1}
+        1: {'attack_add_on': 5, 'weight_add_on': -1},  # weapon
+        2: {'defense_add_on': 5, 'weight_add_on': -1},  # armor
+        3: {'attack_add_on': 1, 'weight_add_on': -1}  # jewelry
     }
 
     slot_type = serializers.PrimaryKeyRelatedField(queryset=SlotType.objects.all())

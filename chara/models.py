@@ -56,7 +56,7 @@ class Chara(BaseModel):
 
     @cached_property
     def attrs(self):
-        return {x.type_id: x for x in self.attributes.all()}
+        return {x.type.en_name: x for x in self.attributes.all().select_related('type')}
 
     @property
     def hp_limit(self):
