@@ -1,23 +1,68 @@
-from base.views import BaseGenericAPIView, CharaPostViewMixin
-from rest_framework.response import Response
+from django.db.models import Count
 
+from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from rest_framework.mixins import ListModelMixin, DestroyModelMixin, CreateModelMixin
+from django_filters.rest_framework import DjangoFilterBackend
+
+from country.models import Country, CountryOfficial, CountryJoinRequest
 from country.serializers import (
-    FoundCountrySerializer, JoinCountrySerializer, LeaveCountrySerializer,
-    CountryDismissSerializer, ChangeKingSerializer, SetOfficialsSerializer,
-    CountryItemTakeSerializer, CountryItemPutSerializer, CountryDonateSerializer
+    FoundCountrySerializer, LeaveCountrySerializer,
+    CountryDismissSerializer, ChangeKingSerializer,
+    CountryItemTakeSerializer, CountryItemPutSerializer, CountryDonateSerializer,
+    CountryOfficialSerializer, CountryProfileSerializer,
+    CountryJoinRequestSerializer, CountryJoinRequestCreateSerializer, CountryJoinRequestApproveSerializer
 )
+from item.serializers import ItemSerializer
+
+
+class CountryListView(ListModelMixin, BaseGenericAPIView):
+    serializer_class = CountryProfileSerializer
+    queryset = Country.objects.annotate(town_count=Count('towns')).all()
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 
 class FoundCountryView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = FoundCountrySerializer
 
 
-class JoinCountryView(CharaPostViewMixin, BaseGenericAPIView):
-    serializer_class = JoinCountrySerializer
-
-
 class LeaveCountryView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = LeaveCountrySerializer
+
+
+class CountryJoinRequestViewSet(BaseGenericViewSet):
+    queryset = CountryJoinRequest.objects.all()
+    serializer_class = CountryJoinRequestSerializer
+    serializer_action_classes = {
+        'create': CountryJoinRequestCreateSerializer,
+        'approve': CountryJoinRequestApproveSerializer,
+    }
+
+    def create(self, request):
+        chara = self.get_chara(lock=True)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'display_message': '入國申請已發送'})
+
+    def list(self, request):
+        country = self.get_country(role='official')
+        queryset = self.get_queryset().filter(country=country)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(methods=['post'], detail=True)
+    def approve(self, request, pk):
+        country = self.get_country(role='official', lock=True)
+        serializer = self.get_serializer(self.get_object(), data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'display_message': '入國申請已通過'})
 
 
 class CountryDismissView(BaseGenericAPIView):
@@ -44,16 +89,35 @@ class ChangeKingView(BaseGenericAPIView):
         return Response({'status': 'success'})
 
 
-class SetOfficialsView(BaseGenericAPIView):
-    serializer_class = SetOfficialsSerializer
+class CountryOfficialViewSet(CreateModelMixin, ListModelMixin, DestroyModelMixin, BaseGenericViewSet):
+    serializer_class = CountryOfficialSerializer
+    queryset = CountryOfficial.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['country']
 
-    def post(self, request):
-        country = self.get_country(role='king', lock=True)
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.action == 'delete':
+            queryset = queryset.filter(country=self.get_country(role='king'))
+        return queryset
 
-        return Response({'status': 'success'})
+    def create(self, request):
+        country = self.get_country(role='king')
+        return super().create(request)
+
+    def destroy(self, request, pk):
+        country = self.get_country(role='king')
+        return super().destroy(request, pk)
+
+
+class CountryItemView(BaseGenericAPIView):
+    serializer_class = ItemSerializer
+
+    def get(self, request):
+        country = self.get_country(role='citizen')
+        serializer = self.get_serializer(country.items.all(), many=True)
+
+        return Response(serializer.data)
 
 
 class CountryItemTakeView(BaseGenericAPIView):
