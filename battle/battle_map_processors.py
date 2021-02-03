@@ -7,7 +7,7 @@ from base.utils import add_class, randint
 from battle.battle import Battle
 from item.models import ItemType, ItemTypePoolGroup
 from item.serializers import SimpleItemSerializer
-from chara.models import BattleMapTicket
+from chara.models import BattleMapTicket, CharaAttribute
 
 
 BATTLE_MAP_PROCESSORS = {}
@@ -29,7 +29,7 @@ class BaseBattleMapProcessor():
         battle = Battle(attackers=[self.chara], defenders=self.monsters, element_type=self.location.element_type)
         battle.execute()
 
-        self.win = (battle.winner == 'attackers')
+        self.win = (battle.winner == 'attacker')
 
         if self.win:
             loots = self.get_loots()
@@ -44,12 +44,22 @@ class BaseBattleMapProcessor():
             proficiency = 0
             found_battle_maps = []
 
+        battle_chara = battle.find_chara_by_source(self.chara)
+
+        self.chara.hp = battle_chara.hp
+        self.chara.mp = battle_chara.mp
+        if self.chara.health > 0 and randint(1, 100) == 1:
+            self.chara.health -= 1
         self.chara.gold += gold
         self.chara.proficiency += proficiency
         self.chara.gain_exp(exp)
         self.chara.get_items('bag', loots)
+        CharaAttribute.objects.filter(
+            chara=self.chara, type_id=self.chara.job.attribute_type_id
+        ).update(proficiency=F('proficiency') + proficiency)
         BattleMapTicket.objects.filter(
-            chara=self.chara, battle_map__in=found_battle_maps).update(value=F('value') + 1)
+            chara=self.chara, battle_map__in=found_battle_maps
+        ).update(value=F('value') + 1)
 
         self.chara.save()
 
