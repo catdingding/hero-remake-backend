@@ -3,13 +3,22 @@ from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
 from world.models import SlotType
-from chara.models import Chara, CharaIntroduction, CharaAttribute
+from chara.models import Chara, CharaIntroduction, CharaAttribute, BattleMapTicket, CharaSlot, CharaSkillSetting
 from item.models import Item
-from item.serializers import SimpleItemSerializer
+from battle.serializers import BattleMapSerializer
+from item.serializers import SimpleItemSerializer, ItemSerializer
 from ability.serializers import AbilitySerializer
-from country.serializers import CountrySerializer
-from job.serializers import JobSerializer
-from world.serializers import LocationSerializer, ElementTypeSerializer, AttributeTypeSerializer
+from country.serializers import CountrySerializer, CountryOfficialSerializer
+
+from world.serializers import SlotTypeSerializer, LocationSerializer, ElementTypeSerializer, AttributeTypeSerializer
+
+
+class BattleMapTicketSerialiser(BaseModelSerializer):
+    battle_map = BattleMapSerializer()
+
+    class Meta:
+        model = BattleMapTicket
+        fields = ['battle_map', 'value']
 
 
 class CharaAttributeSerialiser(BaseModelSerializer):
@@ -20,36 +29,59 @@ class CharaAttributeSerialiser(BaseModelSerializer):
         fields = ['type', 'value', 'limit', 'proficiency']
 
 
+class CharaSlotSerializer(BaseModelSerializer):
+    type = SlotTypeSerializer()
+    item = ItemSerializer()
+
+    class Meta:
+        model = CharaSlot
+        fields = ['type', 'item']
+
+
+class CharaSkillSettingSerializer(BaseModelSerializer):
+    class Meta:
+        model = CharaSkillSetting
+        fields = ['skill', 'hp_percentage', 'mp_percentage', 'order']
+
+
 class CharaProfileSerializer(BaseModelSerializer):
+    from job.serializers import JobSerializer
+
     location = LocationSerializer()
     country = CountrySerializer()
+    official = CountryOfficialSerializer()
+    is_king = serializers.SerializerMethodField()
     element_type = ElementTypeSerializer()
-    job = JobSerializer(fields=['name'])
+    job = JobSerializer(fields=['name', 'attribute_type'])
     level = serializers.IntegerField()
 
-    main_ability = AbilitySerializer(fields=['name'])
-    job_ability = AbilitySerializer(fields=['name'])
-    live_ability = AbilitySerializer(fields=['name'])
-    abilities = AbilitySerializer(fields=['name'], many=True)
+    main_ability = AbilitySerializer(fields=['id', 'name'])
+    job_ability = AbilitySerializer(fields=['id', 'name'])
+    live_ability = AbilitySerializer(fields=['id', 'name'])
 
+    slots = CharaSlotSerializer(many=True)
     bag_items = serializers.SerializerMethodField()
-    storage_items = serializers.SerializerMethodField()
+    skill_settings = CharaSkillSettingSerializer(many=True)
 
     attributes = CharaAttributeSerialiser(many=True)
+    battle_map_tickets = BattleMapTicketSerialiser(many=True)
 
     class Meta:
         model = Chara
-        fields = '__all__'
+        exclude = ['user', 'created_at', 'updated_at', 'abilities', 'storage_items']
 
     def get_bag_items(self, chara):
-        return SimpleItemSerializer(
-            [item for item in chara.bag_items.all().select_related('type', 'equipment')], many=True
+        return ItemSerializer(
+            chara.bag_items.all().select_related('type__slot_type', 'equipment__ability_1', 'equipment__ability_2'), many=True
         ).data
 
-    def get_storage_items(self, chara):
-        return SimpleItemSerializer(
-            [item for item in chara.storage_items.all().select_related('type', 'equipment')], many=True
+    def get_slots(self, chara):
+        return CharaSlotSerializer(
+            chara.slots.all().select_related('type', 'item__equipment__ability_1', 'item__equipment__ability_2', 'item__type'), many=True
         ).data
+
+    def get_is_king(self, chara):
+        return hasattr(chara, 'king_of')
 
 
 class CharaIntroductionSerializer(BaseModelSerializer):
@@ -58,31 +90,26 @@ class CharaIntroductionSerializer(BaseModelSerializer):
         fields = ['content']
 
 
-class SendMoneySerializer(BaseSerializer):
+class SendGoldSerializer(BaseSerializer):
     gold = serializers.IntegerField(min_value=1)
-    receiver_name = serializers.CharField()
+    receiver = serializers.PrimaryKeyRelatedField(queryset=Chara.objects.all())
 
     def save(self):
         receiver = self.validated_data['receiver']
         gold = self.validated_data['gold']
 
-        self.chara.gold -= gold
+        list(Chara.objects.filter(id__in=[self.chara.id, receiver.id]).select_for_update())
+
+        self.chara.lose_gold(gold)
         self.chara.save()
-        Chara.objects.filter(id=receiver.id).update(gold=F('gold') + gold)
 
-    def validate_gold(self, value):
-        if value > self.chara.gold:
-            raise serializers.ValidationError("你的金錢不足")
+        receiver.gold += gold
+        receiver.save()
+
+    def validate_receiver(self, value):
+        if value == self.chara:
+            raise serializers.ValidationError("不可傳送給自己")
         return value
-
-    def validate(self, data):
-        receiver = Chara.objects.filter(name=data['receiver_name']).first()
-        if receiver is None:
-            raise serializers.ValidationError("收款人不存在")
-
-        data['receiver'] = receiver
-
-        return data
 
 
 class SlotEquipSerializer(BaseSerializer):
