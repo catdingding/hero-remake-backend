@@ -44,7 +44,7 @@ class ItemType(BaseModel):
     def make(self, number):
         # equipment
         if self.category_id == 1:
-            quality = choices(['稀有', '優良', '普通'], weights=[20, 2, 1])[0]
+            quality = choices(['普通', '優良', '稀有'], weights=[20, 2, 1])[0]
             return [
                 Equipment.objects.create(
                     type=self, number=1, quality=quality, element_type=self.element_type, custom_name=self.name,
@@ -58,6 +58,22 @@ class ItemType(BaseModel):
             return [Item(type=self, number=number)]
 
 
+class PetType(BaseModel):
+    item_type = models.OneToOneField("item.ItemType", related_name="pet_type", on_delete=models.PROTECT)
+
+    upgrade_proficiency_cost = models.IntegerField()
+
+    attack_growth = models.IntegerField()
+    defense_growth = models.IntegerField()
+    weight_growth = models.IntegerField()
+
+
+class PetTypeEvolutionTarget(BaseModel):
+    pet_type = models.ForeignKey("item.PetType", related_name="evolution_targets", on_delete=models.PROTECT)
+    target_pet_type = models.ForeignKey("item.PetType", on_delete=models.PROTECT)
+    weight = models.IntegerField()
+
+
 class Item(BaseModel):
     id = models.BigAutoField(primary_key=True)
     type = models.ForeignKey("item.ItemType", on_delete=models.PROTECT)
@@ -66,6 +82,11 @@ class Item(BaseModel):
 
 class Equipment(Item):
     QUALITY_CHOICES = [(x, x) for x in ['稀有', '優良', '普通']]
+    QUALITY_UPGRADE_TIMES_LIMIT = {
+        '普通': 50,
+        '優良': 60,
+        '稀有': 70
+    }
 
     quality = models.CharField(max_length=2, choices=QUALITY_CHOICES)
 
@@ -94,7 +115,21 @@ class Equipment(Item):
 
     @property
     def weight(self):
-        return self.type.weight - self.weight_add_on
+        return self.type.weight + self.weight_add_on
+
+    @property
+    def upgrade_times_limit(self):
+        if self.type_id in [1, 2, 3]:
+            return self.QUALITY_UPGRADE_TIMES_LIMIT[self.quality]
+        else:
+            return 10
+
+    @property
+    def display_name(self):
+        if self.quality == '普通':
+            return f"{self.custom_name}"
+        else:
+            return f"{self.quality}的{self.custom_name}"
 
 
 class ItemTypePoolGroup(BaseModel):

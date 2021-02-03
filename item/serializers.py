@@ -1,9 +1,13 @@
+from random import choices
+
 from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
 from base.utils import randint
+from ability.serializers import AbilitySerializer
+from world.serializers import SlotTypeSerializer
 from world.models import SlotType
-from item.models import Item, ItemType
+from item.models import Item, ItemType, Equipment
 from chara.models import Chara
 
 from item.use_effects import USE_EFFECT_CLASSES
@@ -14,16 +18,42 @@ class SimpleItemSerializer(BaseSerializer):
     number = serializers.IntegerField()
 
 
-class ItemWithNumberSerializer(BaseSerializer):
-    id = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
-    number = serializers.IntegerField(min_value=1)
+class ItemTypeSerializer(BaseModelSerializer):
+    slot_type = SlotTypeSerializer()
+    ability_1 = AbilitySerializer(fields=['name'])
+    ability_2 = AbilitySerializer(fields=['name'])
 
-    def validate(self, data):
-        item = data['id']
-        if data['number'] > item.number:
-            raise serializers.ValidationError("物品數量不足")
-        item.number = data['number']
-        return item
+    class Meta:
+        model = ItemType
+        exclude = ['created_at', 'updated_at']
+
+
+class EquipmentSerializer(BaseModelSerializer):
+    attack = serializers.IntegerField()
+    defense = serializers.IntegerField()
+    weight = serializers.IntegerField()
+    upgrade_times_limit = serializers.IntegerField()
+    display_name = serializers.CharField()
+
+    ability_1 = AbilitySerializer(fields=['name'])
+    ability_2 = AbilitySerializer(fields=['name'])
+
+    class Meta:
+        model = Equipment
+        exclude = ['created_at', 'updated_at']
+
+
+class ItemSerializer(BaseModelSerializer):
+    type = ItemTypeSerializer(omit=['ability_1', 'ability_2'])
+    equipment = EquipmentSerializer()
+    name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Item
+        exclude = ['created_at', 'updated_at']
+
+    def get_name(self, obj):
+        return obj.equipment.display_name if hasattr(obj, 'equipment') else obj.type.name
 
 
 class UseItemSerializer(BaseSerializer):
@@ -44,7 +74,7 @@ class UseItemSerializer(BaseSerializer):
             else:
                 item.save()
 
-        return {"detail": result}
+        return {"display_message": result}
 
     def validate(self, data):
         if data['number'] > data['item'].number:
@@ -55,53 +85,63 @@ class UseItemSerializer(BaseSerializer):
         item = self.chara.bag_items.filter(id=item_id).first()
         if item is None:
             raise serializers.ValidationError("背包中無此物品")
-        if item.type.use_effect.id is None:
+        if item.type.use_effect_id is None:
             raise serializers.ValidationError("此物品無法使用")
 
         return item
 
 
 class SendItemSerializer(BaseSerializer):
-    items = ItemWithNumberSerializer(many=True)
+    item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
+    number = serializers.IntegerField(min_value=1)
     receiver = serializers.PrimaryKeyRelatedField(queryset=Chara.objects.all())
 
     def save(self):
         sender = self.chara
         receiver = self.validated_data['receiver']
-        items = self.validated_data['items']
+
+        item = self.validated_data['item']
+        item.number = self.validated_data['number']
+        items = [item]
 
         list(Chara.objects.filter(id__in=[sender.id, receiver.id]).select_for_update())
 
         items = sender.lose_items("bag", items, mode='return')
         receiver.get_items("bag", items)
 
+    def validate_receiver(self, value):
+        if value == self.chara:
+            raise serializers.ValidationError("不可傳送給自己")
+        return value
+
 
 class StorageTakeSerializer(BaseSerializer):
-    items = ItemWithNumberSerializer(many=True)
+    item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
+    number = serializers.IntegerField(min_value=1)
 
     def save(self):
-        items = self.validated_data['items']
+        item = self.validated_data['item']
+        item.number = self.validated_data['number']
+        items = [item]
 
         items = self.chara.lose_items("storage", items, mode='return')
         self.chara.get_items("bag", items)
 
 
 class StoragePutSerializer(BaseSerializer):
-    items = ItemWithNumberSerializer(many=True)
+    item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
+    number = serializers.IntegerField(min_value=1)
 
     def save(self):
-        items = self.validated_data['items']
+        item = self.validated_data['item']
+        item.number = self.validated_data['number']
+        items = [item]
 
         items = self.chara.lose_items("bag", items, mode='return')
         self.chara.get_items("storage", items)
 
 
 class SmithUpgradeSerializer(BaseSerializer):
-    quality_limit = {
-        '普通': 50,
-        '優良': 60,
-        '稀有': 70
-    }
     slot_type_add_on = {
         1: {'attack_add_on': 5, 'weight_add_on': -1},  # weapon
         2: {'defense_add_on': 5, 'weight_add_on': -1},  # armor
@@ -128,7 +168,7 @@ class SmithUpgradeSerializer(BaseSerializer):
         equipment.save()
 
     def validate_slot_type(self, value):
-        if value.id == 'pet':
+        if value.id == 4:
             raise serializers.ValidationError("寵物無法於工房強化")
         return value
 
@@ -138,11 +178,56 @@ class SmithUpgradeSerializer(BaseSerializer):
             raise serializers.ValidationError("該裝備欄未裝備")
 
         equipment = item.equipment
-        upgrade_limit = self.quality_limit[equipment.quality]
-        if equipment.upgrade_times + data['times'] > upgrade_limit:
+        if equipment.upgrade_times + data['times'] > equipment.upgrade_times_limit:
             raise serializers.ValidationError("剩餘強化次數不足")
 
         data['equipment'] = equipment
+        return data
+
+
+class PetUpgradeSerializer(BaseSerializer):
+    times = serializers.IntegerField(min_value=1)
+
+    def save(self):
+        times = self.validated_data['times']
+        item = self.validated_data['item']
+        equipment = item.equipment
+        pet_type = item.type.pet_type
+
+        self.chara.lose_proficiency(pet_type.upgrade_proficiency_cost * times)
+        self.chara.save()
+
+        if equipment.upgrade_times < equipment.upgrade_times_limit:
+            equipment.upgrade_times += times
+            equipment.attack_add_on += pet_type.attack_growth
+            equipment.defense_add_on += pet_type.defense_growth
+            equipment.weight_add_on += pet_type.weight_growth
+        else:
+            targets = pet_type.evolution_targets.all()
+            target_item_type = choices(targets, weights=[x.weight for x in targets])[0].target_pet_type.item_type
+            equipment.type = target_item_type
+            equipment.upgrade_times = 0
+            equipment.attack_add_on = 0
+            equipment.defense_add_on = 0
+            equipment.weight_add_on = 0
+
+            if equipment.custom_name == pet_type.item_type.name:
+                equipment.custom_name = target_item_type.name
+
+        equipment.save()
+
+    def validate(self, data):
+        item = self.chara.slots.get(type=4).item
+        if item is None:
+            raise serializers.ValidationError("未裝備寵物")
+
+        equipment = item.equipment
+        pet_type = item.type.pet_type
+        if equipment.upgrade_times + data['times'] > equipment.upgrade_times_limit:
+            if equipment.upgrade_times != 10 or not pet_type.evolution_targets.exists():
+                raise serializers.ValidationError(f"當前寵物無法繼續升級或轉生")
+
+        data['item'] = item
         return data
 
 
@@ -176,9 +261,9 @@ class SmithReplaceAbilitySerializer(BaseSerializer):
 
         if 50 >= randint(1, 100):
             equipment.save()
-            return {"detail": "注入成功"}
+            return {"display_message": "注入成功"}
         else:
-            return {"detail": "注入失敗"}
+            return {"display_message": "注入失敗"}
 
     def validate(self, data):
         item = self.chara.slots.get(type=data['slot_type']).item

@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from item.serializers import (
     UseItemSerializer, SendItemSerializer, StorageTakeSerializer, StoragePutSerializer,
-    SmithUpgradeSerializer, SmithReplaceAbilitySerializer
+    SmithUpgradeSerializer, SmithReplaceAbilitySerializer, PetUpgradeSerializer
 )
 
 
@@ -31,3 +31,7 @@ class SmithUpgradeView(CharaPostViewMixin, BaseGenericAPIView):
 
 class SmithReplaceAbilityView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SmithReplaceAbilitySerializer
+
+
+class PetUpgradeView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = PetUpgradeSerializer
