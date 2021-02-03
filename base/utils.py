@@ -28,6 +28,8 @@ def get_items(field, items):
     }
 
     for item in items:
+        assert item.number > 0
+
         if item.type_id in exists_item_by_type:
             exists_item_by_type[item.type_id].number += item.number
             exists_item_by_type[item.type_id].save()
@@ -54,6 +56,8 @@ def lose_items(field, items, mode='delete'):
     return_items = []
 
     for item in items:
+        assert item.number > 0
+
         if item.id in exists_item_by_id:
             exists_item = exists_item_by_id[item.id]
         elif item.type_id in exists_item_by_type:
