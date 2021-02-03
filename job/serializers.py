@@ -5,11 +5,16 @@ from rest_framework import serializers
 from base.utils import randint
 from base.serializers import BaseSerializer, BaseModelSerializer
 
-from job.models import Job, Skill
+from job.models import Job, Skill, ExerciseReward
 from chara.models import CharaSkillSetting, CharaAttribute
+
+from chara.serializers import CharaSkillSettingSerializer
+from world.serializers import AttributeTypeSerializer
 
 
 class JobSerializer(BaseModelSerializer):
+    attribute_type = AttributeTypeSerializer()
+
     class Meta:
         model = Job
         fields = ['id', 'name', 'attribute_type', 'rank', 'description']
@@ -28,7 +33,7 @@ class ChangeJobSerializer(BaseSerializer):
 
         # calculate attributes
         for job_attr in job.attributes.all():
-            chara_attr = chara.attrs[job_attr.type_id]
+            chara_attr = chara.attrs[job_attr.type.en_name]
 
             current_bonus = random.randint(0, round(chara_attr.value / 1.5))
             prof_bonus = round(chara_attr.proficiency ** 0.375)
@@ -57,7 +62,7 @@ class ChangeJobSerializer(BaseSerializer):
 
     def validate_job(self, job):
         for job_attr in job.attributes.all():
-            attr_type = job_attr.type_id
+            attr_type = job_attr.type.en_name
             if job_attr.require_value > self.chara.attrs[attr_type].value:
                 raise serializers.ValidationError("能力不足")
             if job_attr.require_proficiency > self.chara.attrs[attr_type].proficiency:
@@ -74,13 +79,7 @@ class ChangeJobSerializer(BaseSerializer):
 class SkillSerializer(BaseModelSerializer):
     class Meta:
         model = Skill
-        fields = ['name', 'power', 'rate', 'mp_cost']
-
-
-class CharaSkillSettingSerializer(BaseModelSerializer):
-    class Meta:
-        model = CharaSkillSetting
-        fields = ['skill', 'hp_percentage', 'mp_percentage', 'order']
+        fields = ['id', 'name', 'power', 'rate', 'mp_cost']
 
 
 class SetSkillSettingSerializer(BaseSerializer):
@@ -97,7 +96,7 @@ class SetSkillSettingSerializer(BaseSerializer):
             raise serializers.ValidationError("不可設定超過10項")
 
         for setting in settings:
-            skill = settings.skill
+            skill = setting['skill']
             if skill.is_general:
                 continue
             if skill.attribute_type != self.chara.job.attribute_type:
@@ -120,7 +119,7 @@ class ExerciseSerializer(BaseSerializer):
             rate = 1
 
         for reward in self.chara.job.attribute_type.exercise_rewards.all():
-            attr = self.chara.attrs[reward.reward_attribute_type_id]
+            attr = self.chara.attrs[reward.reward_attribute_type.en_name]
             limit_growth = reward.limit_growth * rate
 
             if attr.limit < 400:
@@ -135,3 +134,12 @@ class ExerciseSerializer(BaseSerializer):
             raise serializers.ValidationError("熟練度不足")
         data['proficiency_cost'] = cost
         return data
+
+
+class ExerciseRewardSerializer(BaseModelSerializer):
+    job_attribute_type = AttributeTypeSerializer()
+    reward_attribute_type = AttributeTypeSerializer()
+
+    class Meta:
+        model = ExerciseReward
+        fields = ['job_attribute_type', 'reward_attribute_type', 'limit_growth']
