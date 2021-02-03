@@ -60,15 +60,17 @@ class Chara(BaseModel):
 
     @property
     def hp_limit(self):
-        return self.attrs['str'].value * 5 + self.attrs['vit'].value * 10 + self.attrs['men'].value * 3 - 2000
+        limit = self.attrs['str'].value * 5 + self.attrs['vit'].value * 10 + self.attrs['men'].value * 3 - 2000
+        return max(50, limit)
 
     @property
     def mp_limit(self):
-        return self.attrs['int'].value * 5 + self.attrs['men'].value * 3 - 800
+        limit = self.attrs['int'].value * 5 + self.attrs['men'].value * 3 - 800
+        return max(10, limit)
 
     def init(self):
         CharaAttribute.objects.bulk_create([
-            CharaAttribute(chara=self, type=attr_type, value=20, limit=200)
+            CharaAttribute(chara=self, type=attr_type, value=30, limit=200)
             for attr_type in AttributeType.objects.all()
         ])
         CharaSlot.objects.bulk_create([CharaSlot(chara=self, type=slot_type) for slot_type in SlotType.objects.all()])
