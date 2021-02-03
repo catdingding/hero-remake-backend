@@ -5,6 +5,7 @@ from django.utils.timezone import localtime
 from rest_framework import serializers
 
 from base.serializers import BaseSerializer, BaseModelSerializer
+from item.serializers import ItemTypeSerializer
 from chara.models import Chara
 from trade.models import Auction, Sale, Purchase, ExchangeOption, ExchangeOptionRequirement, StoreOption
 from item.models import Item
@@ -307,6 +308,8 @@ class ExchangeSerializer(BaseSerializer):
 
 
 class StoreOptionSerializer(BaseModelSerializer):
+    item_type = ItemTypeSerializer()
+
     class Meta:
         model = StoreOption
         fields = ['id', 'item_type', 'price']
@@ -320,3 +323,19 @@ class StoreBuySerializer(BaseSerializer):
 
         self.chara.lose_gold(self.instance.price * number)
         self.chara.get_items('bag', self.instance.item_type.make(number))
+        self.chara.save()
+
+
+class SellItemSerializer(BaseSerializer):
+    item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
+    number = serializers.IntegerField(min_value=1)
+
+    def save(self):
+        item = self.validated_data['item']
+        number = self.validated_data['number']
+        item.number = number
+        items = [item]
+
+        self.chara.lose_items('bag', items)
+        self.chara.gold += item.type.value * number // 2
+        self.chara.save()

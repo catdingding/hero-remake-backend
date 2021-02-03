@@ -13,7 +13,7 @@ from trade.serializers import (
     SaleSerializer, SaleCreateSerializer, SaleBuySerializer, SaleReceiveItemSerializer,
     PurchaseSerializer, PurchaseCreateSerializer, PurchaseSellSerializer, PurchaseReceiveGoldSerializer,
     ExchangeOptionSerializer, ExchangeSerializer,
-    StoreOptionSerializer, StoreBuySerializer
+    StoreOptionSerializer, StoreBuySerializer, SellItemSerializer
 )
 
 
@@ -205,7 +205,9 @@ class ExchangeOptionViewSet(ListModelMixin, BaseGenericViewSet):
 
 
 class StoreOptionViewSet(ListModelMixin, BaseGenericViewSet):
-    queryset = StoreOption.objects.all()
+    queryset = StoreOption.objects.select_related(
+        'item_type__slot_type', 'item_type__ability_1', 'item_type__ability_2'
+    ).all()
     serializer_class = StoreOptionSerializer
     serializer_action_classes = {
         'buy': StoreBuySerializer,
@@ -215,7 +217,7 @@ class StoreOptionViewSet(ListModelMixin, BaseGenericViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         location = self.get_chara().location
-        if location.town is None:
+        if not hasattr(location, 'town'):
             return queryset.filter(pk__isnull=True)
         else:
             return queryset.filter(location_element_type=location.element_type)
@@ -228,3 +230,7 @@ class StoreOptionViewSet(ListModelMixin, BaseGenericViewSet):
         serializer.save()
 
         return Response({'status': 'success'})
+
+
+class SellItemSerializer(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = SellItemSerializer
