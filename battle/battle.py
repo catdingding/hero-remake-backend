@@ -6,6 +6,15 @@ from chara.models import Chara
 from item.models import Equipment
 
 
+class EmptyEquipment:
+    attack = 0
+    defense = 0
+    weight = 0
+
+    ability_1 = None
+    ability_2 = None
+
+
 class Battle:
     def __init__(self, attackers, defenders, element_type=None):
         self.element_type = element_type
@@ -23,18 +32,20 @@ class Battle:
     @property
     def winner(self):
         if not any(chara.team == 'attacker' for chara in self.alive_charas):
-            return "defenders"
+            return "defender"
         elif not any(chara.team == 'defender' for chara in self.alive_charas):
-            return "attackers"
+            return "attacker"
         else:
             return "draw"
 
     def execute(self):
         assert not self.executed
         self.executed = True
+        index = 0
 
         while True:
-            self.logs.append({'actions': []})
+            self.logs.append({'actions': [], 'index': index})
+            index += 1
 
             act_chara = self.get_act_chara()
             if act_chara is None:
@@ -63,12 +74,18 @@ class Battle:
         else:
             return choice([c for c in self.charas if c.action_points == max_action_points])
 
+    def find_chara_by_source(self, source):
+        for chara in self.charas:
+            if chara.source is source:
+                return chara
+
 
 class BattleChara:
     def __init__(self, source, battle, team):
         self.battle = battle
         self.team = team
 
+        self.source = source
         self.name = source.name
         self.element_type = source.element_type
         self.action_points = 0
@@ -90,9 +107,11 @@ class BattleChara:
         else:
             raise Exception("illegal source")
 
-        # 閃避
-        self.eva = min(400, self.dex // 3) + self.ability_type_power(8) * 10
-        # 暴擊
+        self.speed = max(self.speed, 100)
+        # 閃避率
+        self.eva = min(400, self.dex // 3)
+        # 暴擊率
+        # 奧義類型10:暴擊率提升
         self.critical = min(250, 20 + self.dex // 3 + self.ability_type_power(10) * 10)
 
         self.poison = 0
@@ -105,7 +124,7 @@ class BattleChara:
             if slot.item:
                 self.equipments[slot.type_id] = slot.item.equipment
             else:
-                self.equipments[slot.type_id] = Equipment()
+                self.equipments[slot.type_id] = EmptyEquipment()
 
         # 奧義
         abilities = []
@@ -121,10 +140,11 @@ class BattleChara:
         }
 
         # 攻防
-        self.attack = self.str + int(self.int * self.ability_type_power(8) / 100) + \
-            sum(x.attack for x in self.equipments.values()) + self.equipments['weapon'].weight // 5
+        # 奧義類型18:魔法劍
+        self.attack = self.str + int(self.int * self.ability_type_power(18) / 100) + \
+            sum(x.attack for x in self.equipments.values()) + self.equipments[1].weight // 5
         self.defense = self.vit + sum(x.defense for x in self.equipments.values())
-        self.magic_defense = (self.men + self.equipments['pet'].defense) // 2
+        self.magic_defense = (self.men + self.equipments[4].defense) // 2
         self.speed = self.agi - sum(x.weight for x in self.equipments.values())
 
         # hp, mp
@@ -138,7 +158,8 @@ class BattleChara:
             for ability in sorted(abilities, key=lambda x: x.power)
         }
 
-        self.attack = self.str + int(self.int * self.ability_type_power(8) / 100)
+        # 奧義類型18:魔法劍
+        self.attack = self.str + int(self.int * self.ability_type_power(18) / 100)
         self.defense = self.vit
         self.magic_defense = self.men // 2
         self.speed = self.agi
@@ -156,14 +177,14 @@ class BattleChara:
     def alive_enemy_charas(self):
         return [chara for chara in self.battle.alive_charas if chara.team != self.team]
 
-    def get_alive_enemy_chara(self):
+    def pick_alive_enemy_chara(self):
         return choice(self.alive_enemy_charas)
 
     def take_action(self):
         self.before_action()
 
         skill = self.get_skill()
-        defender = self.get_alive_enemy_chara()
+        defender = self.pick_alive_enemy_chara()
 
         if skill is None:
             self.normal_attack(defender)
@@ -173,7 +194,7 @@ class BattleChara:
         self.after_action()
 
     def log(self, message):
-        self.battle.logs[-1]['actions'].append({'chara': self.name, 'message': message})
+        self.battle.logs[-1]['actions'].append({'team': self.team, 'chara': self.name, 'message': message})
 
     def get_skill(self):
         for skill_setting in self.skill_settings:
@@ -186,10 +207,10 @@ class BattleChara:
         skill = skill_setting.skill
         rate = skill.rate
         mp_cost = skill.mp_cost
-        # 魔力之術
+        # 奧義類型6:魔力之術
         if self.has_ability_type(6):
             mp_cost -= int(mp_cost * self.ability_type[6].power / 100)
-        # 戰技激發
+        # 奧義類型25:戰技激發
         if self.has_ability_type(25):
             rate += rate // 2
 
@@ -200,18 +221,20 @@ class BattleChara:
             return None
 
     def before_action(self):
+        # 毒
         if self.poison > 0:
             hp_loss = min(self.hp - 1, int(self.hp_max * self.poison / 100))
             self.hp -= hp_loss
-            self.log(f"因中毒失去了{hp_loss}點 HP")
+            self.log(f"{self.name}因中毒失去了{hp_loss}點 HP")
 
             if 20 + self.ability_type_power(42) >= randint(1, 100):
-                self.log(f"成功解掉身上的毒")
+                self.log(f"{self.name}成功解掉身上的毒")
 
+        # 奧義類型1:再生
         if self.has_ability_type(1):
             hp_add = int(self.hp_max * self.ability_type_power(1) / 100)
             self.gain_hp(hp_add)
-            self.log(f"恢復了{hp_add}點 HP")
+            self.log(f"{self.name}恢復了{hp_add}點 HP")
 
     def after_action(self):
         pass
@@ -236,13 +259,13 @@ class BattleChara:
         self.action_points -= 1000
         damage = randint(0, max(0, self.attack - defender.defense // 2))
 
-        # 覺醒
+        # 奧義類型47:覺醒
         damage += int(damage * self.ability_type_power(47) * self.battle.rounds / 100)
-        # 霸氣
+        # 奧義類型50:霸氣
         damage += int(damage * self.ability_type_power(50) * self.battle.rounds / 100)
-        # 神擊系
+        # 奧義類型2:神擊
         damage += int(damage * self.ability_type_power(2) / 100)
-        # 防禦術
+        # 奧義類型3:防禦術
         damage -= int(damage * defender.ability_type_power(3) / 100)
 
         defender.take_damage(self, damage)
@@ -259,25 +282,25 @@ class BattleChara:
         if skill.type_id == 2:
             hp_add = skill.power + randint(0, self.men // 2)
             self.hp = min(self.hp_max, self.hp + hp_add)
-            self.log(f"HP 恢復了{hp_add}點")
+            self.log(f"{self.name}的 HP 恢復了{hp_add}點")
         elif skill.type_id == 3:
             hp_add = self.hp_max // 10
             mp_add = self.mp_max // 10
             self.hp = min(self.hp_max, self.hp + hp_add)
             self.mp = min(self.mp_max, self.mp + mp_add)
-            self.log(f"HP 恢復了{hp_add}點， MP 恢復了{mp_add}點")
+            self.log(f"{self.name}的 HP 恢復了{hp_add}點， MP 恢復了{mp_add}點")
         elif skill.type_id == 4:
             attack_add = int(self.men * skill.power / 100)
             self.attack += attack_add
-            self.log(f"攻擊力上升了{attack_add}點")
+            self.log(f"{self.name}的攻擊力上升了{attack_add}點")
         elif skill.type_id == 5:
             defense_add = int(self.men * skill.power / 100)
             self.defense += defense_add
-            self.log(f"防禦力上升了{defense_add}點")
+            self.log(f"{self.name}的防禦力上升了{defense_add}點")
         elif skill.type_id == 6:
             magic_defense_add = int(self.men * skill.power / 100)
             self.magic_defense += magic_defense_add
-            self.log(f"魔法防禦力上升了{magic_defense_add}點")
+            self.log(f"{self.name}的魔法防禦力上升了{magic_defense_add}點")
         elif skill.type_id == 8:
             mp_draw = min(800, defender.mp, defender.mp_max // 5)
             defender.mp -= mp_draw
@@ -292,7 +315,7 @@ class BattleChara:
             mp_add = self.mp_max // 10
             self.hp -= hp_loss
             self.mp = min(self.mp_max, self.mp + mp_add)
-            self.log(f"失去{hp_loss}點 HP，獲得 {mp_add} 點MP")
+            self.log(f"{self.name}失去{hp_loss}點 HP，獲得 {mp_add} 點MP")
         elif skill.type_id == 21:
             hp_loss = min(defender.hp - 1, randint(0, self.mp))
             defender.hp -= hp_loss
@@ -337,15 +360,15 @@ class BattleChara:
         if damage is None:
             return
 
-        # 魔神爆發
+        # 奧義類型51:魔神爆發
         if self.has_ability_type(51) and skill.type_id in [17, 18]:
             damage *= 2
 
         damage += int((self.int + self.men) * max(1000, skill.power) / 4000)
 
-        # 戰技
+        # 奧義類型5:戰技
         damage += int(damage * self.ability_type_power(5) / 100)
-        # 戰防
+        # 奧義類型7:戰防
         damage -= int(damage * defender.ability_type_power(7) / 100)
 
         defender.take_damage(self, damage, skill)
@@ -356,12 +379,12 @@ class BattleChara:
 
         speed_gap_check = 1000
         eva_check = 1000
-        # 命中祝福
+        # 奧義類型56:命中祝福
         if attacker.has_ability_type(56):
             speed_gap_check = 2000
             eva_check = 2000
 
-        # 反擊
+        # 奧義類型12:反擊
         if self.has_ability_type(12) and randint(1, max(500, 1200 - self.men)) <= 100:
             if attacker.ability_type_power(43) >= randint(1, 100):
                 damage = None
@@ -380,7 +403,7 @@ class BattleChara:
         elif speed_gap >= randint(1, speed_gap_check):
             damage = None
             self.log(f"{self.name}躲避了攻擊")
-        # 神聖護體
+        # 奧義類型8:神聖護體
         elif self.ability_type_power(8) >= randint(1, 100):
             damage = None
             self.log(f"{self.name}擋住了攻擊")
@@ -389,12 +412,14 @@ class BattleChara:
         if damage is None:
             return
 
-        # 暴擊
+        # 暴擊處理
+        # 奧義類型44:安撫
         if attacker.critical >= randint(1, 1000) and not self.has_ability_type(44):
             damage = int(damage * 1.5)
+            # 奧義類型23:暴擊傷害提升
             damage += int(damage * attacker.ability_type_power(23) / 100)
             self.log(f"暴擊！")
-        # 追加傷害
+        # 奧義類型26:追加傷害
         if attacker.has_ability_type(26) and randint(1, 3) == 1:
             damage_add = randint(0, 200)
             damage += damage_add
@@ -409,7 +434,9 @@ class BattleChara:
         self.log(f"{self.name}受到了{damage}點傷害")
 
         # 即死
+        # 奧義類型9:即死
         if skill_type == 10 and randint(1, 30) == 1 or attacker.ability_type_power(9) >= randint(1, 1000):
+            # 奧義類型40:免疫即死
             if self.ability_type_power(40) >= randint(1, 100):
                 self.log(f"不死鳥保護住{self.name}")
             elif self.has_ability_type(49):
@@ -428,6 +455,7 @@ class BattleChara:
             self.log(f"{self.name}的防禦力下降")
 
         # 毒
+        # 奧義類型14:毒
         if skill_type == 12 and randint(1, 4) == 1 or attacker.has_ability_type(14) and randint(1, 6) == 1:
             self.poison = max(1, attacker.ability_type_power(14))
             self.log(f"{self.name}中毒了")
@@ -438,29 +466,32 @@ class BattleChara:
             attacker.log(f"{attacker.name}的迴避提升了")
 
         # 麻痹
+        # 奧義類型24:麻痹
         if skill_type == 14 and randint(1, 8) == 1 or attacker.has_ability_type(24) and randint(1, 15) == 1:
             self.action_points -= 2000
             self.log(f"{self.name}被麻痹了")
 
         # 吸血
+        # 奧義類型28:吸血
         if skill_type == 7 or attacker.has_ability_type(28) and randint(1, 4) == 1:
             hp_add = damage // 2
             attacker.hp = min(attacker.hp_max, attacker.hp + hp_add)
             self.log(f"{self.name}被吸取了{hp_add}點 HP")
 
         # 降速
+        # 奧義類型16:降速
         if skill_type == 15 and randint(1, 8) or attacker.ability_type_power(16) >= randint(1, 1000):
             self.speed = max(0, self.speed - 50)
             self.log(f"{self.name}的速度降低了")
 
-        # 嗜魔
+        # 奧義類型27:嗜魔
         if attacker.has_ability_type(27) and randint(1, 3) == 1:
             mp_loss = min(self.mp, randint(0, 150))
             self.mp -= mp_loss
             attacker.mp = min(attacker.mp_max, attacker.mp + mp_loss)
             self.log(f"{self.name}的MP被奪走了")
 
-        # 封印
+        # 奧義類型31:封印
         if attacker.has_ability_type(31) and randint(1, 10 * 2 ** self.blocked_ability_count) == 1:
             if self.ability_type_power(41) >= randint(1, 100):
                 self.log(f"封印{self.name}的奧義失敗")
@@ -472,6 +503,7 @@ class BattleChara:
         if self.hp == 0:
             self.log(f"{self.name}倒下了")
 
+            # 奧義類型11:復活
             if self.ability_type_power(11) >= randint(1, 100):
                 self.hp = self.hp_max // 2
                 self.log(f"{self.name}復活了")

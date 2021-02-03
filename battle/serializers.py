@@ -2,8 +2,15 @@ from django.db.models import F
 
 from rest_framework import serializers
 
+from battle.models import BattleMap
 from base.serializers import BaseSerializer, BaseModelSerializer
 from battle.battle_map_processors import BATTLE_MAP_PROCESSORS
+
+
+class BattleMapSerializer(BaseModelSerializer):
+    class Meta:
+        model = BattleMap
+        fields = ['id', 'name']
 
 
 class BattleMapFightSerializer(BaseSerializer):
