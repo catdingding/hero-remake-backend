@@ -29,7 +29,7 @@ class MapView(BaseGenericAPIView):
 
         x, y, radius = (param_serializer.validated_data[x] for x in ['x', 'y', 'radius'])
         locations = Location.objects.filter(x__gte=x - radius, x__lte=x + radius, y__gte=y - radius, y__lte=y + radius)
-        locations = locations.select_related('battle_map', 'town')
+        locations = locations.order_by('-y', 'x').select_related('battle_map', 'town')
 
         serializer = self.get_serializer(locations, many=True)
         return Response(serializer.data)

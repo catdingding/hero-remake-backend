@@ -2,20 +2,26 @@ from django.db.models import Q
 from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
-from world.models import Location, ElementType, AttributeType
+from world.models import Location, ElementType, AttributeType, SlotType
 from base.utils import calculate_distance
 
 
 class AttributeTypeSerializer(BaseModelSerializer):
     class Meta:
         model = AttributeType
-        fields = ['id', 'en_name', 'name']
+        fields = ['id', 'name', 'class_name']
+
+
+class SlotTypeSerializer(BaseModelSerializer):
+    class Meta:
+        model = SlotType
+        fields = ['id', 'name']
 
 
 class ElementTypeSerializer(BaseModelSerializer):
     class Meta:
         model = ElementType
-        fields = ['id', 'en_name', 'name']
+        fields = ['id', 'name']
 
 
 class MoveSerializer(BaseSerializer):
@@ -25,7 +31,7 @@ class MoveSerializer(BaseSerializer):
         location = self.validated_data['location']
         distance = calculate_distance(self.chara.location, location)
 
-        chara.location = location
+        self.chara.location = location
         self.chara.set_next_action_time(distance)
         self.chara.save()
 
@@ -44,16 +50,17 @@ class MoveSerializer(BaseSerializer):
 class MapQuerySerializer(BaseSerializer):
     x = serializers.IntegerField()
     y = serializers.IntegerField()
-    radius = serializers.IntegerField()
+    radius = serializers.IntegerField(min_value=1, max_value=5)
 
 
 class LocationSerializer(BaseModelSerializer):
+    element_type = ElementTypeSerializer()
     battle_map_name = serializers.CharField(source="battle_map.name")
     town_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Location
-        fields = ['x', 'y', 'chaos_score', 'battle_map', 'battle_map_name', 'town_name']
+        fields = ['id', 'x', 'y', 'element_type', 'chaos_score', 'battle_map', 'battle_map_name', 'town_name']
 
     def get_town_name(self, obj):
         if hasattr(obj, 'town'):
