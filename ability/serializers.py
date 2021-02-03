@@ -34,7 +34,7 @@ class AbilitySerializer(BaseModelSerializer):
 
     class Meta:
         model = Ability
-        fields = ['id', 'name', 'require_proficiency', 'description', 'is_live']
+        fields = ['id', 'name', 'attribute_type', 'require_proficiency', 'description', 'is_live']
 
 
 class SetAbilitySerializer(BaseModelSerializer):
@@ -42,17 +42,29 @@ class SetAbilitySerializer(BaseModelSerializer):
         model = Chara
         fields = ['main_ability', 'job_ability', 'live_ability']
 
+    def save(self, *args, **kwargs):
+        self.update(self.chara, self.validated_data)
+
     def validate_main_ability(self, ability):
+        if ability is None:
+            return ability
+
         self.is_learned_ability(ability)
         return ability
 
     def validate_job_ability(self, ability):
+        if ability is None:
+            return ability
+
         self.is_learned_ability(ability)
         if self.chara.job.attribute_type != ability.attribute_type:
             raise serializers.ValidationError("無法將該奧義裝備為職業奧義")
         return ability
 
     def validate_live_ability(self, ability):
+        if ability is None:
+            return ability
+
         self.is_learned_ability(ability)
         if not ability.type.is_live:
             raise serializers.ValidationError("無法將該奧義裝備為生活奧義")
