@@ -8,7 +8,7 @@ from base.utils import get_items, lose_items
 
 class Country(BaseModel):
     name = models.CharField(max_length=20, unique=True)
-    king = models.ForeignKey("chara.Chara", null=True, related_name="king_of", on_delete=models.SET_NULL)
+    king = models.OneToOneField("chara.Chara", null=True, related_name="king_of", on_delete=models.SET_NULL)
 
     gold = models.BigIntegerField(default=0)
     items = models.ManyToManyField("item.Item")
@@ -18,6 +18,14 @@ class Country(BaseModel):
 
     def lose_items(self, *args, **kwargs):
         return lose_items(self.items, *args, **kwargs)
+
+
+class CountryJoinRequest(BaseModel):
+    country = models.ForeignKey("country.Country", related_name="country_join_requests", on_delete=models.CASCADE)
+    chara = models.ForeignKey("chara.Chara", related_name="country_join_requests", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('country', 'chara')
 
 
 class CountryOfficial(BaseModel):

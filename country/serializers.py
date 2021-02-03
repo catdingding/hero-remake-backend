@@ -1,17 +1,26 @@
 from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
-from country.models import Country, CountryOfficial
+from country.models import Country, CountryOfficial, CountryJoinRequest
 from item.models import Item
 from chara.models import Chara
 
-from item.serializers import ItemWithNumberSerializer
-
 
 class CountrySerializer(BaseModelSerializer):
+    king_name = serializers.CharField(source='king.name')
+
     class Meta:
         model = Country
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'king_name', 'gold']
+
+
+class CountryProfileSerializer(BaseModelSerializer):
+    town_count = serializers.IntegerField()
+    king_name = serializers.CharField(source='king.name')
+
+    class Meta:
+        model = Country
+        fields = ['id', 'name', 'gold', 'king_name', 'town_count', 'created_at']
 
 
 class FoundCountrySerializer(BaseModelSerializer):
@@ -44,17 +53,43 @@ class FoundCountrySerializer(BaseModelSerializer):
         return data
 
 
-class JoinCountrySerializer(BaseSerializer):
-    country = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all())
+class CountryJoinRequestSerializer(BaseModelSerializer):
+    chara_name = serializers.CharField(source='chara.name')
 
-    def save(self):
-        self.chara.country = self.validated_data['country']
-        self.chara.save()
+    class Meta:
+        model = CountryJoinRequest
+        fields = ['id', 'chara_name', 'created_at']
+
+
+class CountryJoinRequestCreateSerializer(BaseModelSerializer):
+    class Meta:
+        model = CountryJoinRequest
+        fields = ['country']
+
+    def create(self, validated_data):
+        return CountryJoinRequest.objects.create(chara=self.chara, country=validated_data['country'])
 
     def validate(self, data):
-        if self.chara.country is not None:
-            raise serializers.ValidationError("僅無所屬角色可以入國")
+        if self.chara.country:
+            raise serializers.ValidationError("已有所屬國家")
+        if CountryJoinRequest.objects.filter(chara=self.chara, country=data['country']).exists():
+            raise serializers.ValidationError("已提出過申請")
         return data
+
+
+class CountryJoinRequestApproveSerializer(BaseSerializer):
+    def save(self):
+        chara = self.instance.chara.lock()
+
+        if chara.country:
+            raise serializers.ValidationError("該角色已加入國家")
+
+        chara.country = self.country
+        chara.save()
+
+        CountryJoinRequest.objects.filter(chara=chara).delete()
+
+        self.instance.delete()
 
 
 class LeaveCountrySerializer(BaseSerializer):
@@ -77,11 +112,11 @@ class CountryDismissSerializer(BaseSerializer):
     def save(self):
         chara = self.validated_data['chara']
 
-        CountryOfficial.objects.filter(chara=chara).delete()
         chara.country = None
         chara.save()
 
     def validate_chara(self, chara):
+        chara = chara.lock()
         country = self.country
         if chara.country != country:
             raise serializers.ValidationError("不可開除其他國家的角色")
@@ -105,54 +140,47 @@ class ChangeKingSerializer(BaseSerializer):
     def validate_chara(self, chara):
         if chara.country != self.country:
             raise serializers.ValidationError("不可將王位交給其他國家的角色")
+        if chara == self.chara:
+            raise serializers.ValidationError("……禪讓給自己？")
         return chara
 
 
-class OfficialSerializer(BaseModelSerializer):
+class CountryOfficialSerializer(BaseModelSerializer):
     class Meta:
         model = CountryOfficial
-        fields = ['chara', 'title']
-        extra_kwargs = {
-            'chara': {'validators': []},
-        }
+        fields = ['id', 'chara', 'title']
 
+    def create(self, validated_data):
+        return CountryOfficial.objects.create(country=self.country, **validated_data)
 
-class SetOfficialsSerializer(BaseSerializer):
-    officials = OfficialSerializer(many=True)
-
-    def save(self):
-        country = self.country
-        CountryOfficial.objects.filter(country=country).delete()
-        CountryOfficial.objects.bulk_create([
-            CountryOfficial(country=country, **official)
-            for official in self.validated_data['officials']
-        ], ignore_conflicts=True)
-
-    def validate_officials(self, officials):
-        country = self.country
-        for official in officials:
-            if official['chara'].country != country:
-                raise serializers.ValidationError("不可將官職任命給其他國家的角色")
-            if official['chara'].country == country.king:
-                raise serializers.ValidationError("不可將官職任命給國王")
-        return officials
+    def validate_chara(self, chara):
+        chara = chara.lock()
+        if chara.country != self.country:
+            raise serializers.ValidationError("不可將官職任命給其他國家的角色")
+        return chara
 
 
 class CountryItemTakeSerializer(BaseSerializer):
-    items = ItemWithNumberSerializer(many=True)
+    item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
+    number = serializers.IntegerField(min_value=1)
 
     def save(self):
-        items = self.validated_data['items']
+        item = self.validated_data['item']
+        item.number = self.validated_data['number']
+        items = [item]
 
         items = self.country.lose_items(items, mode='return')
         self.chara.get_items("bag", items)
 
 
 class CountryItemPutSerializer(BaseSerializer):
-    items = ItemWithNumberSerializer(many=True)
+    item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
+    number = serializers.IntegerField(min_value=1)
 
     def save(self):
-        items = self.validated_data['items']
+        item = self.validated_data['item']
+        item.number = self.validated_data['number']
+        items = [item]
 
         items = self.chara.lose_items("bag", items, mode='return')
         self.country.get_items(items)
