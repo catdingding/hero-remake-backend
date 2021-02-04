@@ -13,8 +13,10 @@ class Country(BaseModel):
     gold = models.BigIntegerField(default=0)
     items = models.ManyToManyField("item.Item")
 
+    item_limit = models.IntegerField(default=10)
+
     def get_items(self, *args, **kwargs):
-        return get_items(self.items, *args, **kwargs)
+        return get_items(self.items, self.item_limit, *args, **kwargs)
 
     def lose_items(self, *args, **kwargs):
         return lose_items(self.items, *args, **kwargs)

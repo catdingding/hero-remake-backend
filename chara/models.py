@@ -50,6 +50,9 @@ class Chara(BaseModel):
     storage_items = models.ManyToManyField("item.Item", related_name="storage_item_chara")
     abilities = models.ManyToManyField("ability.Ability")
 
+    bag_item_limit = models.IntegerField(default=15)
+    storage_item_limit = models.IntegerField(default=15)
+
     @property
     def level(self):
         return self.exp // 100 + 1
@@ -112,8 +115,9 @@ class Chara(BaseModel):
     def get_items(self, kind, *args, **kwargs):
         assert kind in ['bag', 'storage']
         field = getattr(self, kind + '_items')
+        limit = getattr(self, kind + '_item_limit')
 
-        return get_items(field, *args, **kwargs)
+        return get_items(field, limit, *args, **kwargs)
 
     def lose_items(self, kind, *args, **kwargs):
         assert kind in ['bag', 'storage']

@@ -21,7 +21,7 @@ def add_class(dictionary):
     return decorator
 
 
-def get_items(field, items):
+def get_items(field, limit, items):
     exists_item_by_type = {
         item.type_id: item for item in
         field.filter(type__in=[x.type for x in items if x.type.category_id != 1])
@@ -37,6 +37,9 @@ def get_items(field, items):
             if item.id is None:
                 item.save()
             field.add(item)
+
+    if field.count() > limit:
+        raise APIException("物品已滿", 400)
 
 
 def lose_items(field, items, mode='delete'):
