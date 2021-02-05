@@ -65,7 +65,7 @@ class UseItemSerializer(BaseSerializer):
         number = self.validated_data['number']
 
         effect = USE_EFFECT_CLASSES[item.type.use_effect.id](item, number, self.chara)
-        result = effect.execute()
+        message = effect.execute()
 
         if item.type.is_consumable:
             item.number -= number
@@ -74,7 +74,7 @@ class UseItemSerializer(BaseSerializer):
             else:
                 item.save()
 
-        return {"display_message": result}
+        return {"display_message": message}
 
     def validate(self, data):
         if data['number'] > data['item'].number:
