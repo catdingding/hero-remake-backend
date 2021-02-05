@@ -36,7 +36,7 @@ class BaseBattleMapProcessor():
             gold = self.get_gold()
             exp = self.get_exp()
             proficiency = self.get_proficiency()
-            found_battle_maps = self.get_found_battle_maps()
+            found_battle_maps = self.find_battle_maps()
         else:
             loots = []
             exp = 0
@@ -109,7 +109,7 @@ class BaseBattleMapProcessor():
     def get_exp(self):
         return sum(monster.exp for monster in self.monsters)
 
-    def get_found_battle_maps(self):
+    def find_battle_maps(self):
         battle_maps = []
         # 財寶洞窟
         if randint(1, 30) == 1:
@@ -192,8 +192,8 @@ class BattleMapProcessor_9(BaseBattleMapProcessor):
 class BattleMapProcessor_10(BaseBattleMapProcessor):
     id = 10
 
-    def get_found_battle_maps(self):
-        battle_maps = super().get_found_battle_maps()
+    def find_battle_maps(self):
+        battle_maps = super().find_battle_maps()
         # 星空下的夜
         if randint(1, 12) == 1:
             battle_maps.append(11)
