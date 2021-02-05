@@ -108,3 +108,38 @@ class UseEffect_6(BaseUseEffect):
         ).update(value=F('value') + self.n)
         battle_map_name = BattleMap.objects.get(id=self.type.use_effect_param).name
         return f"使用了{self.n}個{self.type.name}，獲得了{self.n}次進入{battle_map_name}的機會。"
+
+
+# 降級
+@add_class(USE_EFFECT_CLASSES)
+class UseEffect_7(BaseUseEffect):
+    id = 7
+
+    def execute(self):
+        if self.type.use_effect_param == 0 and (self.n + self.chara.record.level_down_count) > 50:
+            raise APIException("每次轉職僅可用地獄草下降50等", 400)
+        if self.n * 100 > self.chara.exp:
+            raise APIException("最多僅可降低至1級", 400)
+
+        self.chara.exp = max(0, self.chara.exp - self.n * 100)
+        self.chara.save()
+
+        self.chara.record.level_down_count += self.n
+        self.chara.record.save()
+
+        return f"使用了{self.n}個{self.type.name}，降低了{self.n}級。"
+
+
+# 寵物成長
+@add_class(USE_EFFECT_CLASSES)
+class UseEffect_8(BaseUseEffect):
+    id = 8
+
+    def execute(self):
+        from item.serializers import PetUpgradeSerializer
+
+        serializer = PetUpgradeSerializer(data={'times': self.n})
+        serializer.chara = self.chara
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return f"使用了{self.n}個{self.type.name}，寵物成長了{self.n}級。"

@@ -1,15 +1,1 @@
-[{
-        "model": "item.itemtypepoolgroup",
-        "pk": 1,
-        "fields": {
-            "name": "一般地圖掉寶"
-        }
-    },
-    {
-        "model": "item.itemtypepoolgroup",
-        "pk": 2,
-        "fields": {
-            "name": "神祕的寶箱"
-        }
-    }
-]
+[{"model": "item.itemtypepoolgroup", "pk": 1, "fields": {"created_at": null, "updated_at": null, "name": "\u4e00\u822c\u5730\u5716\u6389\u5bf6"}}, {"model": "item.itemtypepoolgroup", "pk": 2, "fields": {"created_at": null, "updated_at": null, "name": "\u795e\u7955\u7684\u5bf6\u7bb1"}}, {"model": "item.itemtypepoolgroup", "pk": 3, "fields": {"created_at": "2021-02-04T19:28:45.419Z", "updated_at": "2021-02-04T19:28:45.419Z", "name": "\u6b66\u5967\u77f3\u4e4b\u7bb1"}}, {"model": "item.itemtypepoolgroup", "pk": 4, "fields": {"created_at": "2021-02-04T19:28:45.490Z", "updated_at": "2021-02-04T19:28:45.491Z", "name": "\u9632\u5967\u77f3\u4e4b\u7bb1"}}, {"model": "item.itemtypepoolgroup", "pk": 5, "fields": {"created_at": "2021-02-04T19:28:45.496Z", "updated_at": "2021-02-04T19:28:45.496Z", "name": "\u65b0\u6625\u8914\u888b"}}]

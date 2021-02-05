@@ -290,11 +290,12 @@ class ExchangeOptionRequirementSerializer(BaseModelSerializer):
 
 
 class ExchangeOptionSerializer(BaseModelSerializer):
+    item_type = ItemTypeSerializer()
     requirements = ExchangeOptionRequirementSerializer(many=True)
 
     class Meta:
         model = ExchangeOption
-        fields = ['item_type', 'requirements']
+        fields = ['id', 'item_type', 'requirements']
 
 
 class ExchangeSerializer(BaseSerializer):

@@ -188,7 +188,7 @@ class PurchaseViewSet(BaseGenericViewSet):
 
 
 class ExchangeOptionViewSet(ListModelMixin, BaseGenericViewSet):
-    queryset = ExchangeOption.objects.all()
+    queryset = ExchangeOption.objects.select_related('item_type').prefetch_related('requirements__item_type').all()
     serializer_class = ExchangeOptionSerializer
     serializer_action_classes = {
         'exchange': ExchangeSerializer,
