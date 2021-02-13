@@ -5,13 +5,18 @@ from django.utils.timezone import localtime
 from rest_framework import serializers
 
 from base.serializers import BaseSerializer, BaseModelSerializer
-from item.serializers import ItemTypeSerializer
+from item.serializers import ItemTypeSerializer, ItemSerializer
+from chara.serializers import CharaProfileSerializer
 from chara.models import Chara
 from trade.models import Auction, Sale, Purchase, ExchangeOption, ExchangeOptionRequirement, StoreOption
 from item.models import Item
 
 
 class AuctionSerializer(BaseModelSerializer):
+    item = ItemSerializer()
+    seller = CharaProfileSerializer(fields=['id', 'name'])
+    bidder = CharaProfileSerializer(fields=['id', 'name'])
+
     class Meta:
         model = Auction
         fields = ['id', 'seller', 'item', 'reserve_price', 'bidder', 'bid_price', 'due_time']
@@ -120,6 +125,8 @@ class AuctionReceiveItemSerializer(BaseSerializer):
 
 
 class SaleSerializer(BaseModelSerializer):
+    item = ItemSerializer()
+
     class Meta:
         model = Sale
         fields = ['id', 'seller', 'item', 'price', 'due_time']
