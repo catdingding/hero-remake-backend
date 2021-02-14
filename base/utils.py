@@ -1,6 +1,8 @@
 from numba import jit, int32
+import paramiko
 import random
 
+from django.conf import settings
 from rest_framework.exceptions import APIException
 
 
@@ -85,3 +87,11 @@ def lose_items(field, items, mode='delete'):
 
         if mode == 'return':
             return return_items
+
+
+def sftp_put_fo(fo, dest):
+    t = paramiko.Transport((settings.SFTP['host'], settings.SFTP['port']))
+    t.connect(username=settings.SFTP['user'], password=settings.SFTP['password'])
+    sftp = paramiko.SFTPClient.from_transport(t)
+    sftp.putfo(fo, dest)
+    t.close()

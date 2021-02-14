@@ -24,6 +24,7 @@ class RegistrationSerializer(BaseSerializer):
     password1 = serializers.CharField()
     password2 = serializers.CharField()
     chara = RegistrationCharaSerializer()
+    chara_avatar = serializers.ImageField()
 
     def create(self, validated_data):
         chara_data = validated_data.pop('chara')
@@ -36,6 +37,7 @@ class RegistrationSerializer(BaseSerializer):
         chara = Chara.objects.create(user=user, hp=50, mp=10, hp_max=50, mp_max=10,
                                      job_id=1, location=location, **chara_data)
         chara.init()
+        chara.set_avatar(validated_data['chara_avatar'])
 
         return user
 

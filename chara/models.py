@@ -1,15 +1,18 @@
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.timezone import localtime
+from django.conf import settings
 
 from rest_framework.exceptions import APIException
 
+import os
 from datetime import timedelta
 import random
 import functools
 
 from base.models import BaseModel, BaseBuffType
-from base.utils import get_items, lose_items
+from base.utils import get_items, lose_items, sftp_put_fo
+from chara.utils import process_avatar
 from world.models import AttributeType, SlotType
 from battle.models import BattleMap
 
@@ -83,6 +86,10 @@ class Chara(BaseModel):
             BattleMapTicket(chara=self, battle_map=battle_map)
             for battle_map in BattleMap.objects.filter(need_ticket=True)
         ])
+
+    def set_avatar(self, file):
+        fo = process_avatar(file)
+        sftp_put_fo(fo, os.path.join(settings.CHARA_AVATAR_PATH, f"{self.id}.jpg"))
 
     def set_next_action_time(self, n=1):
         self.next_action_time = localtime() + timedelta(seconds=n * 15)

@@ -168,7 +168,18 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [(os.environ['REDIS_HOST'], os.environ['REDIS_PORT'])],
         },
     },
 }
+
+# SFTP
+SFTP = {
+    'host': os.environ['SFTP_HOST'],
+    'port': int(os.environ['SFTP_PORT']),
+    'user': os.environ['SFTP_USER'],
+    'password': os.environ['SFTP_PASS']
+}
+
+# img path
+CHARA_AVATAR_PATH = os.path.join(os.environ['SFTP_PATH'], 'chara_avatar')

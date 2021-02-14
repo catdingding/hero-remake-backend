@@ -1,4 +1,6 @@
 from base.views import BaseGenericAPIView
+from base.parsers import MultipartJsonParser
+
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
@@ -9,6 +11,7 @@ from user.serializers import RegistrationSerializer, ChangePasswordSerializer
 
 class RegistrationView(BaseGenericAPIView):
     permission_classes = [AllowAny]
+    parser_classes = [MultipartJsonParser]
     serializer_class = RegistrationSerializer
 
     def post(self, request):
