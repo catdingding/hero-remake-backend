@@ -1,4 +1,4 @@
-import json
+from datetime import datetime
 
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from channels.db import database_sync_to_async
@@ -28,6 +28,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 
         data['type'] = 'chat_message'
         data['sender_profile'] = await get_chara_profile(self.scope['chara_id'])
+        data['created_at'] = datetime.now().isoformat() + 'Z'
         if receiver is not None:
             data['receiver_profile'] = await get_chara_profile(receiver)
 
