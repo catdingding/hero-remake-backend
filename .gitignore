@@ -4,7 +4,8 @@
 */migrations/*
 !*/migrations/__init__.py
 
-.env
+.env*
+!.env.example
 .vscode
 .dist
 ### Django ###
