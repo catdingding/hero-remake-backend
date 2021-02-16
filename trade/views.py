@@ -203,9 +203,9 @@ class ExchangeOptionViewSet(ListModelMixin, BaseGenericViewSet):
         chara = self.get_chara(lock=True)
         serializer = self.get_serializer(self.get_object(), data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        result = serializer.save()
 
-        return Response({'status': 'success'})
+        return Response(result)
 
 
 class StoreOptionViewSet(ListModelMixin, BaseGenericViewSet):
@@ -232,9 +232,9 @@ class StoreOptionViewSet(ListModelMixin, BaseGenericViewSet):
         chara = self.get_chara(lock=True)
         serializer = self.get_serializer(self.get_object(), data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        result = serializer.save()
 
-        return Response({'status': 'success'})
+        return Response(result)
 
 
 class SellItemView(CharaPostViewMixin, BaseGenericAPIView):

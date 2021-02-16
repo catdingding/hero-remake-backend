@@ -316,6 +316,8 @@ class ExchangeSerializer(BaseSerializer):
 
         self.chara.get_items('bag', self.instance.item_type.make(number))
 
+        return {'display_message': f'換取了{number}個{self.instance.item_type.name}'}
+
 
 class StoreOptionSerializer(BaseModelSerializer):
     item_type = ItemTypeSerializer()
@@ -331,9 +333,12 @@ class StoreBuySerializer(BaseSerializer):
     def save(self):
         number = self.validated_data['number']
 
-        self.chara.lose_gold(self.instance.price * number)
+        cost = self.instance.price * number
+        self.chara.lose_gold(cost)
         self.chara.get_items('bag', self.instance.item_type.make(number))
         self.chara.save()
+
+        return {'display_message': f'購買了{number}個{self.instance.item_type.name}'}
 
 
 class SellItemSerializer(BaseSerializer):
@@ -347,5 +352,8 @@ class SellItemSerializer(BaseSerializer):
         items = [item]
 
         self.chara.lose_items('bag', items)
-        self.chara.gold += item.type.value * number // 2
+        gold = item.type.value * number // 2
+        self.chara.gold += gold
         self.chara.save()
+
+        return {'display_message': f'出售物品，獲得了{gold}金錢'}
