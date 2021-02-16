@@ -22,7 +22,7 @@ from country.views import (
     CountryListView, CountryJoinRequestViewSet, CountryOfficialViewSet
 )
 from trade.views import (
-    AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemSerializer
+    AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView
 )
 from battle.views import BattleMapViewSet
 
@@ -59,7 +59,7 @@ urlpatterns = [
     path('chara/exercise/', ExerciseView.as_view()),
     path('chara/item/use/', UseItemView.as_view()),
     path('chara/item/send/', SendItemView.as_view()),
-    path('chara/item/sell/', SellItemSerializer.as_view()),
+    path('chara/item/sell/', SellItemView.as_view()),
     path('chara/storage/items/', CharaStorageItemView.as_view()),
     path('chara/storage/take/', StorageTakeView.as_view()),
     path('chara/storage/put/', StoragePutView.as_view()),

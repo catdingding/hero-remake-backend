@@ -237,6 +237,6 @@ class StoreOptionViewSet(ListModelMixin, BaseGenericViewSet):
         return Response({'status': 'success'})
 
 
-class SellItemSerializer(CharaPostViewMixin, BaseGenericAPIView):
+class SellItemView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SellItemSerializer
     check_in_town = True
