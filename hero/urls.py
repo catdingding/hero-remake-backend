@@ -11,7 +11,9 @@ from chara.views import (
 from ability.views import (
     LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView, AlchemyOptionViewSet,
 )
-from job.views import SetSkillView, AvailableSkillView, AvailableJobView, ChangeJobView, ExerciseView, ExerciseRewardView
+from job.views import (
+    SetSkillView, AvailableSkillView, AvailableJobView, ChangeJobView, ExerciseView, ExerciseRewardView
+)
 from item.views import (
     UseItemView, SendItemView, StorageTakeView, StoragePutView, SmithUpgradeView, SmithReplaceAbilityView,
     PetUpgradeView
@@ -25,6 +27,7 @@ from trade.views import (
     AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView
 )
 from battle.views import BattleMapViewSet
+from town.views import InnSleepView
 
 router = SimpleRouter()
 
@@ -81,5 +84,6 @@ urlpatterns = [
     path('user/charas/', UserCharaView.as_view()),
     path('countries/', CountryListView.as_view()),
     path('charas/', CharaListView.as_view()),
-    path('exercise-rewards/', ExerciseRewardView.as_view())
+    path('exercise-rewards/', ExerciseRewardView.as_view()),
+    path('town/inn/sleep/', InnSleepView.as_view())
 ] + router.urls
