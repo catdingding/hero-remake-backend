@@ -3,7 +3,7 @@ from django.utils.functional import cached_property
 from django.utils.timezone import localtime
 from django.conf import settings
 
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import ValidationError
 
 import os
 from datetime import timedelta
@@ -137,12 +137,12 @@ class Chara(BaseModel):
 
     def lose_gold(self, number):
         if self.gold < number:
-            raise APIException("金錢不足")
+            raise ValidationError("金錢不足")
         self.gold -= number
 
     def lose_proficiency(self, number):
         if self.proficiency < number:
-            raise APIException("熟練不足")
+            raise ValidationError("熟練不足")
         self.proficiency -= number
 
 

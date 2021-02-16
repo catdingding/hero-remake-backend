@@ -1,4 +1,4 @@
-from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaViewMixin
+from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaViewMixin, CharaPostViewMixin
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
@@ -7,16 +7,9 @@ from world.serializers import MoveSerializer, LocationSerializer, MapQuerySerial
 from world.models import Location, ElementType
 
 
-class MoveView(BaseGenericAPIView):
+class MoveView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = MoveSerializer
-
-    def post(self, request):
-        chara = self.get_chara(lock=True, check_next_action_time=True)
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response({'status': 'success'})
+    check_next_action_time = True
 
 
 class MapView(BaseGenericAPIView):

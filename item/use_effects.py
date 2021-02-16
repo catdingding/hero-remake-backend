@@ -1,7 +1,7 @@
 from random import choice
 
 from django.db.models import F
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import ValidationError
 
 from world.models import AttributeType
 from battle.models import BattleMap
@@ -117,9 +117,9 @@ class UseEffect_7(BaseUseEffect):
 
     def execute(self):
         if self.type.use_effect_param == 0 and (self.n + self.chara.record.level_down_count) > 50:
-            raise APIException("每次轉職僅可用地獄草下降50等", 400)
+            raise ValidationError("每次轉職僅可用地獄草下降50等", 400)
         if self.n * 100 > self.chara.exp:
-            raise APIException("最多僅可降低至1級", 400)
+            raise ValidationError("最多僅可降低至1級", 400)
 
         self.chara.exp = max(0, self.chara.exp - self.n * 100)
         self.chara.save()

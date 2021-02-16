@@ -1,7 +1,6 @@
 from random import choice, choices
 
 from django.db.models import F
-from rest_framework.exceptions import APIException
 
 from base.utils import add_class, randint
 from battle.battle import Battle

@@ -3,7 +3,7 @@ import paramiko
 import random
 
 from django.conf import settings
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import ValidationError
 
 
 @jit(int32(int32, int32), nopython=True)
@@ -41,7 +41,7 @@ def get_items(field, limit, items):
             field.add(item)
 
     if field.count() > limit:
-        raise APIException("物品已滿", 400)
+        raise ValidationError("物品已滿")
 
 
 def lose_items(field, items, mode='delete'):
@@ -68,7 +68,7 @@ def lose_items(field, items, mode='delete'):
         elif item.type_id in exists_item_by_type:
             exists_item = exists_item_by_type[item.type_id]
         else:
-            raise APIException(f"未擁有{item.type.name}", 400)
+            raise ValidationError(f"未擁有{item.type.name}")
 
         if exists_item.number > item.number:
             exists_item.number -= item.number
@@ -83,7 +83,7 @@ def lose_items(field, items, mode='delete'):
                 field.remove(exists_item)
                 return_items.append(exists_item)
         else:
-            raise APIException(f"{item.type.name}數量不足", 400)
+            raise ValidationError(f"{item.type.name}數量不足")
 
         if mode == 'return':
             return return_items

@@ -19,19 +19,24 @@ class SendItemView(CharaPostViewMixin, BaseGenericAPIView):
 
 class StorageTakeView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = StorageTakeSerializer
+    check_in_town = True
 
 
 class StoragePutView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = StoragePutSerializer
+    check_in_town = True
 
 
 class SmithUpgradeView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SmithUpgradeSerializer
+    check_in_town = True
 
 
 class SmithReplaceAbilityView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SmithReplaceAbilitySerializer
+    check_in_town = True
 
 
 class PetUpgradeView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = PetUpgradeSerializer
+    check_in_town = True

@@ -26,6 +26,7 @@ class AuctionViewSet(BaseGenericViewSet):
         'receive_item': AuctionReceiveItemSerializer,
         'receive_gold': AuctionReceiveGoldSerializer
     }
+    check_in_town = True
 
     def create(self, request):
         chara = self.get_chara(lock=True)
@@ -93,6 +94,7 @@ class SaleViewSet(BaseGenericViewSet):
         'buy': SaleBuySerializer,
         'receive_item': SaleReceiveItemSerializer
     }
+    check_in_town = True
 
     def create(self, request):
         chara = self.get_chara(lock=True)
@@ -144,6 +146,7 @@ class PurchaseViewSet(BaseGenericViewSet):
         'sell': PurchaseSellSerializer,
         'receive_gold': PurchaseReceiveGoldSerializer
     }
+    check_in_town = True
 
     def create(self, request):
         chara = self.get_chara(lock=True)
@@ -193,6 +196,7 @@ class ExchangeOptionViewSet(ListModelMixin, BaseGenericViewSet):
     serializer_action_classes = {
         'exchange': ExchangeSerializer,
     }
+    check_in_town = True
 
     @action(methods=['post'], detail=True)
     def exchange(self, request, pk):
@@ -213,6 +217,7 @@ class StoreOptionViewSet(ListModelMixin, BaseGenericViewSet):
         'buy': StoreBuySerializer,
     }
     filterset_fields = ['store_type']
+    check_in_town = True
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -234,3 +239,4 @@ class StoreOptionViewSet(ListModelMixin, BaseGenericViewSet):
 
 class SellItemSerializer(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SellItemSerializer
+    check_in_town = True

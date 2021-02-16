@@ -3,8 +3,6 @@ from random import choices
 from django.db import models
 from base.models import BaseModel
 
-from rest_framework.exceptions import APIException
-
 
 class ItemUseEffect(BaseModel):
     name = models.CharField(max_length=10, unique=True)

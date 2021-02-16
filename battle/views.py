@@ -14,9 +14,9 @@ class BattleMapViewSet(BaseGenericViewSet):
         'fight': BattleMapFightSerializer,
     }
 
-    @action(methods=['post'], detail=True)
+    @action(methods=['post'], detail=True, check_next_action_time=True)
     def fight(self, request, pk):
-        chara = self.get_chara(lock=True, check_next_action_time=True)
+        chara = self.get_chara(lock=True)
         serializer = self.get_serializer(self.get_object(), data=request.data)
         serializer.is_valid(raise_exception=True)
         result = serializer.save()

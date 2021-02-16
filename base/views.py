@@ -1,27 +1,35 @@
 from django.db.models import Q, Exists, OuterRef
 from django.utils.timezone import localtime
 
-from rest_framework import viewsets, views, generics, exceptions
+from rest_framework import viewsets, views, generics
+from rest_framework.exceptions import ValidationError, PermissionDenied
 from rest_framework.response import Response
 
+from town.models import Town
 from chara.models import Chara
 from country.models import Country, CountryOfficial
 
 
 class CharaViewMixin:
-    def get_chara(self, lock=False, check_next_action_time=False):
+    check_next_action_time = False
+    check_in_town = False
+
+    def get_chara(self, lock=False):
         queryset = self.request.user.charas.filter(id=int(self.request.headers['Chara-ID']))
         if lock:
             queryset = queryset.select_for_update()
 
         chara = queryset.first()
         if chara is None:
-            raise exceptions.PermissionDenied("角色錯誤")
+            raise PermissionDenied("角色錯誤")
 
-        if check_next_action_time:
+        if self.check_next_action_time:
             waiting_time = (chara.next_action_time - localtime()).total_seconds()
             if waiting_time > 0:
-                raise exceptions.APIException(f"尚需等待{waiting_time}秒才能行動")
+                raise ValidationError(f"尚需等待{waiting_time}秒才能行動")
+        if self.check_in_town:
+            if not Town.objects.filter(location=chara.location_id).exists():
+                raise ValidationError(f"需位於城鎮中")
         self.request.chara = chara
         return chara
 
@@ -32,7 +40,7 @@ class CountryViewMixin:
         country = chara.country
 
         if country is None:
-            raise exceptions.APIException(f"未加入國家")
+            raise ValidationError(f"未加入國家")
 
         if role == 'king':
             pass_role_check = (country.king == chara)
@@ -44,7 +52,7 @@ class CountryViewMixin:
             raise Exception("ilegal role setting")
 
         if not pass_role_check:
-            raise exceptions.APIException(f"沒有足夠的對國家權限")
+            raise ValidationError(f"沒有足夠的對國家權限")
 
         if lock:
             country = country.lock()

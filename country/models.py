@@ -1,7 +1,5 @@
 from django.db import models
 
-from rest_framework.exceptions import APIException
-
 from base.models import BaseModel
 from base.utils import get_items, lose_items
 
