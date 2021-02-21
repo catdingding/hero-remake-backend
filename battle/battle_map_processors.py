@@ -3,6 +3,7 @@ from random import choice, choices
 from django.db.models import F
 
 from base.utils import add_class, randint
+from battle.utils import get_event_item_type
 from battle.battle import Battle
 from item.models import ItemType, ItemTypePoolGroup
 from item.serializers import SimpleItemSerializer
@@ -85,7 +86,20 @@ class BaseBattleMapProcessor():
         return choices([m.monster for m in monsters], k=number, weights=weights)
 
     def get_loots(self):
-        return self.get_monster_loots() + self.get_map_loots()
+        return self.get_common_loots() + self.get_monster_loots() + self.get_map_loots() + self.get_event_loots()
+
+    def get_common_loots(self):
+        loots = []
+
+        # 建國之石
+        rand = 2000
+        if self.chara.country_id is None:
+            rand = 500
+
+        if randint(1, rand) == 1:
+            loots.extend(ItemType.objects.get(id=472).make(1))
+
+        return loots
 
     def get_monster_loots(self):
         return []
@@ -96,6 +110,16 @@ class BaseBattleMapProcessor():
             if randint(1, group_setting['rand']) == 1:
                 group = ItemTypePoolGroup.objects.get(id=group_setting['id'])
                 loots.extend(group.pick())
+
+        return loots
+
+    def get_event_loots(self):
+        loots = []
+
+        event_item_type = get_event_item_type()
+
+        if event_item_type is not None and randint(1, 250) == 1:
+            loots.extend(event_item_type.make(1))
 
         return loots
 
@@ -174,17 +198,32 @@ class BattleMapProcessor_4(BaseBattleMapProcessor):
 class BattleMapProcessor_5(BaseBattleMapProcessor):
     id = 5
 
+    map_loot_group_settings = [
+        {'id': 1, 'rand': 10000},
+        {'id': 6, 'rand': 400}
+    ]
+
 
 # 禁地
 @add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_6(BaseBattleMapProcessor):
     id = 6
 
+    map_loot_group_settings = [
+        {'id': 1, 'rand': 10000},
+        {'id': 6, 'rand': 400}
+    ]
+
 
 # 魔王城
 @add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_7(BaseBattleMapProcessor):
     id = 7
+
+    map_loot_group_settings = [
+        {'id': 1, 'rand': 10000},
+        {'id': 6, 'rand': 400}
+    ]
 
 
 # 財寶洞窟
