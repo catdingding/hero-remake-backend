@@ -72,12 +72,6 @@ class CharaIntroductionView(BaseGenericAPIView):
 
         return Response({'status': 'success'})
 
-    def get(self, request):
-        chara = self.get_chara()
-        serializer = self.get_serializer(chara.introduction)
-
-        return Response(serializer.data)
-
 
 class SendGoldView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SendGoldSerializer

@@ -44,6 +44,12 @@ class CharaSkillSettingSerializer(BaseModelSerializer):
         fields = ['skill', 'hp_percentage', 'mp_percentage', 'order']
 
 
+class CharaIntroductionSerializer(BaseModelSerializer):
+    class Meta:
+        model = CharaIntroduction
+        fields = ['content']
+
+
 class CharaProfileSerializer(BaseModelSerializer):
     from job.serializers import JobSerializer
 
@@ -66,6 +72,8 @@ class CharaProfileSerializer(BaseModelSerializer):
     attributes = CharaAttributeSerialiser(many=True)
     battle_map_tickets = BattleMapTicketSerialiser(many=True)
 
+    introduction = CharaIntroductionSerializer()
+
     class Meta:
         model = Chara
         exclude = ['user', 'created_at', 'updated_at', 'abilities', 'storage_items']
@@ -82,12 +90,6 @@ class CharaProfileSerializer(BaseModelSerializer):
 
     def get_is_king(self, chara):
         return hasattr(chara, 'king_of')
-
-
-class CharaIntroductionSerializer(BaseModelSerializer):
-    class Meta:
-        model = CharaIntroduction
-        fields = ['content']
 
 
 class SendGoldSerializer(BaseSerializer):
