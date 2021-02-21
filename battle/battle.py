@@ -1,4 +1,5 @@
 from random import choice
+from collections import Counter
 
 from base.utils import randint
 from battle.models import Monster
@@ -20,6 +21,7 @@ class Battle:
         self.element_type = element_type
         self.charas = [BattleChara(x, battle=self, team='attacker') for x in attackers] + \
             [BattleChara(x, battle=self, team='defender') for x in defenders]
+        self.rename_charas()
 
         self.executed = False
         self.logs = []
@@ -37,6 +39,15 @@ class Battle:
             return "attacker"
         else:
             return "draw"
+
+    def rename_charas(self):
+        total_counter = Counter([x.name for x in self.charas])
+        current_counter = Counter()
+
+        for chara in self.charas:
+            if total_counter[chara.name] != 1:
+                current_counter[chara.name] += 1
+                chara.name = f"{chara.name}{current_counter[chara.name]}"
 
     def execute(self):
         assert not self.executed
