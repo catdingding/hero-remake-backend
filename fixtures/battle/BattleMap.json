@@ -1,4 +1,5 @@
-[{
+[
+    {
         "model": "battle.battlemap",
         "pk": 1,
         "fields": {
@@ -103,6 +104,42 @@
         "fields": {
             "name": "傳說密地",
             "proficiency": 1,
+            "need_ticket": true
+        }
+    },
+    {
+        "model": "battle.battlemap",
+        "pk": 13,
+        "fields": {
+            "name": "冒險者的試煉",
+            "proficiency": 100,
+            "need_ticket": true
+        }
+    },
+    {
+        "model": "battle.battlemap",
+        "pk": 14,
+        "fields": {
+            "name": "勇者的試練",
+            "proficiency": 500,
+            "need_ticket": true
+        }
+    },
+    {
+        "model": "battle.battlemap",
+        "pk": 15,
+        "fields": {
+            "name": "英雄的試練",
+            "proficiency": 1000,
+            "need_ticket": true
+        }
+    },
+    {
+        "model": "battle.battlemap",
+        "pk": 16,
+        "fields": {
+            "name": "暗黑雪原",
+            "proficiency": 200,
             "need_ticket": true
         }
     }

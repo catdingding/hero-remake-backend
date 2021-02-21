@@ -7,6 +7,7 @@ from battle.battle import Battle
 from item.models import ItemType, ItemTypePoolGroup
 from item.serializers import SimpleItemSerializer
 from chara.models import BattleMapTicket, CharaAttribute
+from world.models import AttributeType
 
 
 BATTLE_MAP_PROCESSORS = {}
@@ -29,6 +30,8 @@ class BaseBattleMapProcessor():
         battle.execute()
 
         self.win = (battle.winner == 'attacker')
+
+        self.chara.record.total_battle += 1
 
         if self.win:
             loots = self.get_loots()
@@ -62,7 +65,6 @@ class BaseBattleMapProcessor():
 
         self.chara.save()
 
-        self.chara.record.total_battle += 1
         self.chara.record.save()
 
         return {
@@ -71,7 +73,8 @@ class BaseBattleMapProcessor():
             'loots': SimpleItemSerializer(loots, many=True).data,
             'gold': gold,
             'proficiency': proficiency,
-            'exp': exp
+            'exp': exp,
+            'messages': []
         }
 
     def get_monsters(self):
@@ -110,6 +113,7 @@ class BaseBattleMapProcessor():
 
     def find_battle_maps(self):
         battle_maps = []
+        """ 隨機地圖 """
         # 財寶洞窟
         if randint(1, 30) == 1:
             battle_maps.append(8)
@@ -122,6 +126,21 @@ class BaseBattleMapProcessor():
         # 星空下的夜
         if randint(1, 20000) == 1:
             battle_maps.append(11)
+        # 暗黑雪原
+        if randint(1, 1000) == 1:
+            battle_maps.append(16)
+
+        """ 戰數地圖 """
+        if self.chara.record.total_battle % 100 == 0:
+            battle_maps.append(13)
+        if self.chara.record.total_battle % 300 == 0:
+            battle_maps.append(14)
+        if self.chara.record.total_battle % 600 == 0:
+            battle_maps.append(15)
+        if self.chara.record.total_battle % 3000 == 0:
+            battle_maps.append(11)
+        if self.chara.record.total_battle % 10000 == 0:
+            battle_maps.append(12)
 
         return battle_maps
 
@@ -217,3 +236,52 @@ class BattleMapProcessor_12(BaseBattleMapProcessor):
 
     def get_map_loots(self):
         return super().get_map_loots() + ItemType.objects.get(id=482).make(1)
+
+
+# 冒險者的試煉
+@add_class(BATTLE_MAP_PROCESSORS)
+class BattleMapProcessor_13(BaseBattleMapProcessor):
+    id = 13
+
+    def get_gold(self):
+        return randint(1, 250000) + 250000
+
+
+# 勇者的試練
+@add_class(BATTLE_MAP_PROCESSORS)
+class BattleMapProcessor_14(BaseBattleMapProcessor):
+    id = 14
+
+    def get_gold(self):
+        return randint(1, 500000) + 500000
+
+
+# 英雄的試練
+@add_class(BATTLE_MAP_PROCESSORS)
+class BattleMapProcessor_15(BaseBattleMapProcessor):
+    id = 15
+
+    def get_gold(self):
+        return randint(1, 1000000) + 1000000
+
+
+# 暗黑雪原
+@add_class(BATTLE_MAP_PROCESSORS)
+class BattleMapProcessor_16(BaseBattleMapProcessor):
+    id = 16
+
+    def get_gold(self):
+        return randint(1, 2000000)
+
+    def execute(self):
+        result = super().execute()
+
+        attribute_type = choice(AttributeType.objects.all())
+
+        chara_attr = self.chara.attributes.get(type=attribute_type)
+        chara_attr.limit += 1
+        chara_attr.save()
+
+        result['messages'].append(f"{attribute_type.name}上限提升了1點")
+
+        return result

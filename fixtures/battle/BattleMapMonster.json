@@ -1,4 +1,5 @@
-[{
+[
+    {
         "model": "battle.battlemapmonster",
         "pk": 1,
         "fields": {
@@ -472,6 +473,78 @@
         "fields": {
             "battle_map": 12,
             "monster": 1,
+            "weight": 10000
+        }
+    },
+    {
+        "model": "battle.battlemapmonster",
+        "pk": 54,
+        "fields": {
+            "battle_map": 16,
+            "monster": 7,
+            "weight": 10000
+        }
+    },
+    {
+        "model": "battle.battlemapmonster",
+        "pk": 55,
+        "fields": {
+            "battle_map": 16,
+            "monster": 8,
+            "weight": 10000
+        }
+    },
+    {
+        "model": "battle.battlemapmonster",
+        "pk": 56,
+        "fields": {
+            "battle_map": 13,
+            "monster": 2,
+            "weight": 10000
+        }
+    },
+    {
+        "model": "battle.battlemapmonster",
+        "pk": 57,
+        "fields": {
+            "battle_map": 13,
+            "monster": 1,
+            "weight": 10000
+        }
+    },
+    {
+        "model": "battle.battlemapmonster",
+        "pk": 58,
+        "fields": {
+            "battle_map": 14,
+            "monster": 3,
+            "weight": 10000
+        }
+    },
+    {
+        "model": "battle.battlemapmonster",
+        "pk": 59,
+        "fields": {
+            "battle_map": 14,
+            "monster": 4,
+            "weight": 10000
+        }
+    },
+    {
+        "model": "battle.battlemapmonster",
+        "pk": 60,
+        "fields": {
+            "battle_map": 15,
+            "monster": 6,
+            "weight": 10000
+        }
+    },
+    {
+        "model": "battle.battlemapmonster",
+        "pk": 61,
+        "fields": {
+            "battle_map": 15,
+            "monster": 5,
             "weight": 10000
         }
     }
