@@ -60,6 +60,9 @@ class ChangeJobSerializer(BaseSerializer):
         chara.job = job
         chara.save()
 
+        chara.record.level_down_count = 0
+        chara.record.save()
+
     def validate_job(self, job):
         for job_attr in job.attributes.all():
             attr_type = job_attr.type.en_name
