@@ -6,7 +6,7 @@ from world.views import MoveView, MapView, ElementTypeView
 from user.views import RegistrationView, ChangePasswordView
 from chara.views import (
     CharaProfileView, CharaIntroductionView, SendGoldView, SlotEquipView, SlotDivestView, RestView, UserCharaView,
-    CharaStorageItemView, CharaListView
+    CharaStorageItemView, CharaListView, CharaViewSet
 )
 from ability.views import (
     LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView, AlchemyOptionViewSet,
@@ -31,6 +31,7 @@ from town.views import InnSleepView
 
 router = SimpleRouter()
 
+router.register(r'charas', CharaViewSet)
 router.register(r'trade/auctions', AuctionViewSet)
 router.register(r'trade/sales', SaleViewSet)
 router.register(r'trade/purchases', PurchaseViewSet)
@@ -83,7 +84,7 @@ urlpatterns = [
     path('world/element-types/', ElementTypeView.as_view()),
     path('user/charas/', UserCharaView.as_view()),
     path('countries/', CountryListView.as_view()),
-    path('charas/', CharaListView.as_view()),
+    # path('charas/', CharaListView.as_view()),
     path('exercise-rewards/', ExerciseRewardView.as_view()),
     path('town/inn/sleep/', InnSleepView.as_view())
 ] + router.urls

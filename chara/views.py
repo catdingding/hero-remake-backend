@@ -1,8 +1,10 @@
-from base.views import BaseGenericAPIView, CharaPostViewMixin
+from base.views import BaseGenericAPIView, CharaPostViewMixin, BaseGenericViewSet
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.decorators import action
+
 
 from .models import Chara
 from chara.serializers import (
@@ -48,6 +50,20 @@ class CharaProfileView(BaseGenericAPIView):
         chara = self.get_chara()
         serializer = self.get_serializer(chara)
 
+        return Response(serializer.data)
+
+
+class CharaViewSet(ListModelMixin, BaseGenericViewSet):
+    queryset = Chara.objects.all()
+    serializer_class = CharaProfileSerializer
+    serializer_fields = ['id', 'name', 'official']
+
+    @action(methods=['get'], detail=True, serializer_fields=[
+        'name', 'country', 'element_type', 'job', 'level', 'slots',
+        'hp', 'hp_max', 'mp', 'mp_max', 'attributes', 'introduction'
+    ])
+    def profile(self, request, pk):
+        serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
 
 

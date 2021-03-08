@@ -101,7 +101,17 @@ class CharaPostViewMixin:
             return Response(result)
 
 
-class BaseGenericViewSet(LockObjectMixin, CountryViewMixin, CharaViewMixin, viewsets.GenericViewSet):
+class SerializerFieldsMixin:
+    serializer_fields = None
+
+    def get_serializer(self, *args, **kwargs):
+        if 'fields' not in kwargs and self.serializer_fields is not None:
+            kwargs['fields'] = self.serializer_fields
+
+        return super().get_serializer(*args, **kwargs)
+
+
+class BaseGenericViewSet(SerializerFieldsMixin, LockObjectMixin, CountryViewMixin, CharaViewMixin, viewsets.GenericViewSet):
     def get_serializer_class(self):
         try:
             return self.serializer_action_classes[self.action]
@@ -109,5 +119,5 @@ class BaseGenericViewSet(LockObjectMixin, CountryViewMixin, CharaViewMixin, view
             return super().get_serializer_class()
 
 
-class BaseGenericAPIView(LockObjectMixin, CountryViewMixin, CharaViewMixin, generics.GenericAPIView):
+class BaseGenericAPIView(SerializerFieldsMixin, LockObjectMixin, CountryViewMixin, CharaViewMixin, generics.GenericAPIView):
     pass
