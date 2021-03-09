@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'channels',
     'rest_framework',
     'corsheaders',
+    'system.apps.SystemConfig',
     'base.apps.BaseConfig',
     'battle.apps.BattleConfig',
     'chara.apps.CharaConfig',
