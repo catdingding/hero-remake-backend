@@ -67,20 +67,20 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def get_public_chat_messages(self):
-        queryset = PublicChatMessage.objects.order_by('created_at')[:10]
-        return PublicChatMessageSerializer(queryset, many=True).data
+        queryset = PublicChatMessage.objects.order_by('-created_at')[:10]
+        return PublicChatMessageSerializer(queryset, many=True).data[::-1]
 
     @database_sync_to_async
     def get_country_chat_messages(self):
-        queryset = CountryChatMessage.objects.filter(country=self.scope['country_id']).order_by('created_at')[:10]
-        return CountryChatMessageSerializer(queryset, many=True).data
+        queryset = CountryChatMessage.objects.filter(country=self.scope['country_id']).order_by('-created_at')[:10]
+        return CountryChatMessageSerializer(queryset, many=True).data[::-1]
 
     @database_sync_to_async
     def get_private_chat_messages(self):
         queryset = PrivateChatMessage.objects.filter(
             Q(sender=self.scope['chara_id']) | Q(receiver=self.scope['chara_id'])
-        ).order_by('created_at')[:10]
-        return PrivateChatMessageSerializer(queryset, many=True).data
+        ).order_by('-created_at')[:10]
+        return PrivateChatMessageSerializer(queryset, many=True).data[::-1]
 
     async def chat_message(self, event):
         await self.send_json(event)
