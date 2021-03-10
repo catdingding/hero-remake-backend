@@ -27,7 +27,7 @@ SECRET_KEY = '_^v#lvxn_w4mc*j__$stsy&7d9&2wa*d-uf+9n1i1m%@%-wxml'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ['HOSTS'].split(',')
 
 
 # Application definition
@@ -83,8 +83,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hero.wsgi.application'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=365),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=365),
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
