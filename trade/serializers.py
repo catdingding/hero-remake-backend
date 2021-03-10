@@ -126,6 +126,7 @@ class AuctionReceiveItemSerializer(BaseSerializer):
 
 class SaleSerializer(BaseModelSerializer):
     item = ItemSerializer()
+    seller = CharaProfileSerializer(fields=['id', 'name'])
 
     class Meta:
         model = Sale
