@@ -66,12 +66,12 @@ class Chara(BaseModel):
 
     @property
     def hp_limit(self):
-        limit = self.attrs['str'].value * 5 + self.attrs['vit'].value * 10 + self.attrs['men'].value * 3 - 2000
+        limit = self.attrs['str'].limit * 5 + self.attrs['vit'].limit * 10 + self.attrs['men'].limit * 3 - 2000
         return max(50, limit)
 
     @property
     def mp_limit(self):
-        limit = self.attrs['int'].value * 5 + self.attrs['men'].value * 3 - 800
+        limit = self.attrs['int'].limit * 5 + self.attrs['men'].limit * 3 - 800
         return max(10, limit)
 
     def init(self):
