@@ -89,6 +89,7 @@ class SetSkillSettingSerializer(BaseSerializer):
     settings = CharaSkillSettingSerializer(many=True)
 
     def save(self):
+        CharaSkillSetting.objects.filter(chara=self.chara).delete()
         CharaSkillSetting.objects.bulk_create([
             CharaSkillSetting(chara=self.chara, **setting)
             for setting in self.validated_data['settings']
