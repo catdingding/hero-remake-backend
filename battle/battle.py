@@ -83,7 +83,7 @@ class Battle:
         if max_action_points < 1000:
             return None
         else:
-            return choice([c for c in self.charas if c.action_points == max_action_points])
+            return choice([c for c in self.alive_charas if c.action_points == max_action_points])
 
     def find_chara_by_source(self, source):
         for chara in self.charas:
