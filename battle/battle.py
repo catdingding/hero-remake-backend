@@ -209,8 +209,8 @@ class BattleChara:
 
     def get_skill(self):
         for skill_setting in self.skill_settings:
-            if self.hp / self.hp_max <= skill_setting.hp_percentage \
-                    and self.mp / self.mp_max <= skill_setting.mp_percentage:
+            if self.hp / self.hp_max * 100 <= skill_setting.hp_percentage \
+                    and self.mp / self.mp_max * 100 <= skill_setting.mp_percentage:
                 break
         else:
             return None
