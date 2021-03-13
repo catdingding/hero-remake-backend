@@ -3,7 +3,7 @@ from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
 from world.models import SlotType
-from chara.models import Chara, CharaIntroduction, CharaAttribute, BattleMapTicket, CharaSlot, CharaSkillSetting
+from chara.models import Chara, CharaIntroduction, CharaAttribute, BattleMapTicket, CharaRecord, CharaSlot, CharaSkillSetting
 from item.models import Item
 from battle.serializers import BattleMapSerializer
 from item.serializers import SimpleItemSerializer, ItemSerializer
@@ -50,6 +50,12 @@ class CharaIntroductionSerializer(BaseModelSerializer):
         fields = ['content']
 
 
+class CharaRecordSerializer(BaseModelSerializer):
+    class Meta:
+        model = CharaRecord
+        fields = ['total_battle']
+
+
 class CharaProfileSerializer(BaseModelSerializer):
     from job.serializers import JobSerializer
 
@@ -69,10 +75,11 @@ class CharaProfileSerializer(BaseModelSerializer):
     bag_items = serializers.SerializerMethodField()
     skill_settings = CharaSkillSettingSerializer(many=True)
 
-    attributes = CharaAttributeSerialiser(many=True)
-    battle_map_tickets = BattleMapTicketSerialiser(many=True)
+    attributes = serializers.SerializerMethodField()
+    battle_map_tickets = serializers.SerializerMethodField()
 
     introduction = CharaIntroductionSerializer()
+    record = CharaRecordSerializer()
 
     class Meta:
         model = Chara
@@ -90,6 +97,12 @@ class CharaProfileSerializer(BaseModelSerializer):
 
     def get_is_king(self, chara):
         return hasattr(chara, 'king_of')
+
+    def get_attributes(self, chara):
+        return CharaAttributeSerialiser(chara.attributes.all().select_related('type'), many=True).data
+
+    def get_battle_map_tickets(self, chara):
+        return BattleMapTicketSerialiser(chara.battle_map_tickets.all().select_related('battle_map'), many=True).data
 
 
 class SendGoldSerializer(BaseSerializer):
