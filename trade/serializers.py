@@ -49,7 +49,7 @@ class AuctionBidSerializer(BaseSerializer):
     bid_price = serializers.IntegerField(min_value=1)
 
     def update(self, auction, validated_data):
-        chara, latest_bidder = Chara.objects.lock_by_pks([self.chara.id, auction.bidder])
+        chara, latest_bidder = Chara.objects.lock_by_pks([self.chara.id, auction.bidder_id])
         if latest_bidder:
             latest_bidder.gold += auction.bid_price
             latest_bidder.save()
