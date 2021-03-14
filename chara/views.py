@@ -13,23 +13,9 @@ from chara.serializers import (
 )
 from item.serializers import ItemSerializer
 
-
-# search / filter all charas
-class CharaListView(ListModelMixin, BaseGenericAPIView):
-    serializer_class = CharaProfileSerializer
-    queryset = Chara.objects.all()
-    filter_backends = [SearchFilter, DjangoFilterBackend]
-    search_fields = ['name']
-    filterset_fields = ['id', 'country']
-
-    def get_serializer(self, *args, **kwargs):
-        return super().get_serializer(*args, fields=['id', 'name', 'official'], **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-
 # charas belong to user
+
+
 class UserCharaView(ListModelMixin, BaseGenericAPIView):
     serializer_class = CharaProfileSerializer
 
@@ -57,6 +43,10 @@ class CharaViewSet(ListModelMixin, BaseGenericViewSet):
     queryset = Chara.objects.all()
     serializer_class = CharaProfileSerializer
     serializer_fields = ['id', 'name', 'official']
+
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    search_fields = ['name']
+    filterset_fields = ['id', 'country']
 
     @action(methods=['get'], detail=True, serializer_fields=[
         'name', 'country', 'element_type', 'job', 'level', 'slots',
