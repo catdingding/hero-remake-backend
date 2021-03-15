@@ -117,7 +117,7 @@ class Equipment(Item):
 
     @property
     def upgrade_times_limit(self):
-        if self.type_id in [1, 2, 3]:
+        if self.type.slot_type_id in [1, 2, 3]:
             return self.QUALITY_UPGRADE_TIMES_LIMIT[self.quality]
         else:
             return 10
