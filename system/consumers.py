@@ -12,8 +12,8 @@ from system.serializers import PublicChatMessageSerializer, CountryChatMessageSe
 @database_sync_to_async
 def get_chara_profile(chara_id):
     profile = Chara.objects.values('id', 'name', 'country__name', 'official__title').get(id=chara_id)
-    profile['country'] = {'name': profile.pop('country__name')}
-    profile['official'] = {'title': profile.pop('official__title')}
+    profile['country'] = {'name': profile.pop('country__name')} if profile['country__name'] else None
+    profile['official'] = {'title': profile.pop('official__title')} if profile['official__title'] else None
     return profile
 
 
