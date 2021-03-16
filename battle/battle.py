@@ -239,6 +239,7 @@ class BattleChara:
             self.log(f"{self.name}因中毒失去了{hp_loss}點 HP")
 
             if 20 + self.ability_type_power(42) >= randint(1, 100):
+                self.poison = 0
                 self.log(f"{self.name}成功解掉身上的毒")
 
         # 奧義類型1:再生
