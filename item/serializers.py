@@ -5,7 +5,7 @@ from base.serializers import BaseSerializer, BaseModelSerializer
 
 from base.utils import randint
 from ability.serializers import AbilitySerializer
-from world.serializers import SlotTypeSerializer
+from world.serializers import SlotTypeSerializer, ElementTypeSerializer
 from world.models import SlotType
 from item.models import Item, ItemType, Equipment
 from chara.models import Chara
@@ -34,6 +34,7 @@ class EquipmentSerializer(BaseModelSerializer):
     weight = serializers.IntegerField()
     upgrade_times_limit = serializers.IntegerField()
     display_name = serializers.CharField()
+    element_type = ElementTypeSerializer()
 
     ability_1 = AbilitySerializer(fields=['name'])
     ability_2 = AbilitySerializer(fields=['name'])

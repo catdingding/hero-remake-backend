@@ -87,12 +87,18 @@ class CharaProfileSerializer(BaseModelSerializer):
 
     def get_bag_items(self, chara):
         return ItemSerializer(
-            chara.bag_items.all().select_related('type__slot_type', 'equipment__ability_1', 'equipment__ability_2'), many=True
+            chara.bag_items.all().select_related(
+                'type__slot_type', 'equipment__ability_1', 'equipment__ability_2', 'equipment__element_type'
+            ),
+            many=True
         ).data
 
     def get_slots(self, chara):
         return CharaSlotSerializer(
-            chara.slots.all().select_related('type', 'item__equipment__ability_1', 'item__equipment__ability_2', 'item__type'), many=True
+            chara.slots.all().select_related(
+                'type', 'item__equipment__ability_1', 'item__equipment__ability_2', 'item__equipment__element_type', 'item__type'
+            ),
+            many=True
         ).data
 
     def get_is_king(self, chara):
