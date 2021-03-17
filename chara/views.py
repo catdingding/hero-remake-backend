@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from base.views import BaseGenericAPIView, CharaPostViewMixin, BaseGenericViewSet
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
@@ -54,6 +55,14 @@ class CharaViewSet(ListModelMixin, BaseGenericViewSet):
     ])
     def profile(self, request, pk):
         serializer = self.get_serializer(self.get_object())
+        return Response(serializer.data)
+
+    @action(methods=['get'], detail=False, serializer_fields=['id', 'name'])
+    def online(self, request):
+        serializer = self.get_serializer(
+            self.get_queryset().filter(updated_at__gt=datetime.now() - timedelta(minutes=10)),
+            many=True
+        )
         return Response(serializer.data)
 
 
