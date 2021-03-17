@@ -159,7 +159,7 @@ class SmithUpgradeSerializer(BaseSerializer):
         self.chara.lose_items(
             'bag', ItemType.objects.get(element_type=equipment.element_type, category=4).make(3 * times)
         )
-        self.chara.lose_proficiency(1500 * times)
+        self.chara.lose_gold(15000000 * times)
         self.chara.save()
 
         equipment.upgrade_times += times
