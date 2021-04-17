@@ -4,6 +4,7 @@ from django.db.models import F
 from rest_framework.exceptions import ValidationError
 
 from world.models import AttributeType
+from ability.models import Ability
 from battle.models import BattleMap
 from item.models import ItemTypePoolGroup
 from chara.models import BattleMapTicket
@@ -143,3 +144,20 @@ class UseEffect_8(BaseUseEffect):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return f"使用了{self.n}個{self.type.name}，寵物成長了{self.n}級。"
+
+
+# 奧義卷軸
+@add_class(USE_EFFECT_CLASSES)
+class UseEffect_9(BaseUseEffect):
+    id = 9
+
+    def execute(self):
+        ability = Ability.objects.get(id=self.type.use_effect_param)
+        if ability.prerequisite is not None:
+            if not self.chara.abilities.filter(pk=ability.prerequisite.pk).exists():
+                raise ValidationError("需先學習前置奧義")
+
+        self.chara.abilities.add(ability)
+        self.chara.save()
+
+        return f"使用了{self.type.name}，習得了{ability.name}。"

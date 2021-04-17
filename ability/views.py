@@ -5,9 +5,8 @@ from rest_framework.mixins import ListModelMixin
 from rest_framework.decorators import action
 
 from ability.models import Ability, AlchemyOption
-from ability.serializers import (
-    LearnAbilitySerializer, AbilitySerializer, SetAbilitySerializer, AlchemyOptionSerializer, AlchemyMakeSerializer
-)
+from ability.serializers import LearnAbilitySerializer, AbilitySerializer, SetAbilitySerializer
+from ability.serializers_alchemy import AlchemyOptionSerializer, AlchemyMakeSerializer
 
 
 class LearnAbilityView(CharaPostViewMixin, BaseGenericAPIView):

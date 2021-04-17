@@ -15,9 +15,12 @@ BATTLE_MAP_PROCESSORS = {}
 
 
 class BaseBattleMapProcessor():
+    # ItemTypePoolGroup
     map_loot_group_settings = [
         {'id': 1, 'rand': 10000}
     ]
+    # ItemType
+    map_loot_settings = []
 
     def __init__(self, chara, battle_map):
         self.chara = chara
@@ -106,10 +109,16 @@ class BaseBattleMapProcessor():
 
     def get_map_loots(self):
         loots = []
+        # ItemTypePoolGroup
         for group_setting in self.map_loot_group_settings:
             if randint(1, group_setting['rand']) == 1:
                 group = ItemTypePoolGroup.objects.get(id=group_setting['id'])
                 loots.extend(group.pick())
+
+        # ItemType
+        for setting in self.map_loot_settings:
+            if randint(1, setting['rand']) == 1:
+                loots.extend(ItemType.objects.get(id=setting['id']).make(1))
 
         return loots
 
@@ -185,18 +194,27 @@ class BattleMapProcessor_2(BaseBattleMapProcessor):
 @add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_3(BaseBattleMapProcessor):
     id = 3
+    map_loot_settings = [
+        {'id': 1018, 'rand': 1000}
+    ]
 
 
 # 高塔
 @add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_4(BaseBattleMapProcessor):
     id = 4
+    map_loot_settings = [
+        {'id': 1019, 'rand': 1000}
+    ]
 
 
 # 廢城
 @add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_5(BaseBattleMapProcessor):
     id = 5
+    map_loot_settings = [
+        {'id': 1020, 'rand': 1000}
+    ]
 
     map_loot_group_settings = [
         {'id': 1, 'rand': 10000},
