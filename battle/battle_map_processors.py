@@ -14,6 +14,21 @@ from world.models import AttributeType
 BATTLE_MAP_PROCESSORS = {}
 
 
+class AttributeUpgradeMixin:
+    def execute(self):
+        result = super().execute()
+
+        attribute_type = choice(AttributeType.objects.all())
+
+        chara_attr = self.chara.attributes.get(type=attribute_type)
+        chara_attr.limit += 1
+        chara_attr.save()
+
+        result['messages'].append(f"{attribute_type.name}上限提升了1點")
+
+        return result
+
+
 class BaseBattleMapProcessor():
     # ItemTypePoolGroup
     map_loot_group_settings = [
@@ -315,7 +330,7 @@ class BattleMapProcessor_14(BaseBattleMapProcessor):
 
 # 英雄的試練
 @add_class(BATTLE_MAP_PROCESSORS)
-class BattleMapProcessor_15(BaseBattleMapProcessor):
+class BattleMapProcessor_15(AttributeUpgradeMixin, BaseBattleMapProcessor):
     id = 15
 
     def get_gold(self):
@@ -324,21 +339,8 @@ class BattleMapProcessor_15(BaseBattleMapProcessor):
 
 # 暗黑雪原
 @add_class(BATTLE_MAP_PROCESSORS)
-class BattleMapProcessor_16(BaseBattleMapProcessor):
+class BattleMapProcessor_16(AttributeUpgradeMixin, BaseBattleMapProcessor):
     id = 16
 
     def get_gold(self):
         return randint(1, 2000000)
-
-    def execute(self):
-        result = super().execute()
-
-        attribute_type = choice(AttributeType.objects.all())
-
-        chara_attr = self.chara.attributes.get(type=attribute_type)
-        chara_attr.limit += 1
-        chara_attr.save()
-
-        result['messages'].append(f"{attribute_type.name}上限提升了1點")
-
-        return result
