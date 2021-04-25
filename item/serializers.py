@@ -243,7 +243,7 @@ class SmithReplaceAbilitySerializer(BaseSerializer):
         # 以裝備注入
         if source_item.type.category_id == 1:
             source_equipment = source_item.equipment
-            cost = 50 - (source_equipment.attack - source_equipment.defense + source_equipment.weight * 3) // 10
+            cost = 50 - (source_equipment.attack + source_equipment.defense - source_equipment.weight * 3) // 10
             if source_equipment.element_type == equipment.element_type:
                 cost -= 10
                 if self.chara.element_type == equipment.element_type:
