@@ -225,7 +225,9 @@ class StoreOptionViewSet(ListModelMixin, BaseGenericViewSet):
         if not hasattr(location, 'town'):
             return queryset.filter(pk__isnull=True)
         else:
-            return queryset.filter(location_element_type=location.element_type)
+            return queryset.filter(
+                Q(location_element_type=location.element_type) | Q(location_element_type__isnull=True)
+            )
 
     @action(methods=['post'], detail=True)
     def buy(self, request, pk):

@@ -161,3 +161,35 @@ class UseEffect_9(BaseUseEffect):
         self.chara.save()
 
         return f"使用了{self.type.name}，習得了{ability.name}。"
+
+
+# 擴充背包
+@add_class(USE_EFFECT_CLASSES)
+class UseEffect_10(BaseUseEffect):
+    id = 10
+
+    def execute(self):
+        value = self.type.power * self.n
+        if self.type.use_effect_param == 0:
+            maxima = 35
+        elif self.type.use_effect_param == 1:
+            maxima = 60
+
+        self.chara.bag_item_limit = min(maxima, self.chara.bag_item_limit + value)
+        self.chara.save()
+
+        return f"使用了{self.n}個{self.type.name}，背包上限變為{self.chara.bag_item_limit}。"
+
+
+# 擴充倉庫
+@add_class(USE_EFFECT_CLASSES)
+class UseEffect_11(BaseUseEffect):
+    id = 11
+
+    def execute(self):
+        value = self.type.power * self.n
+
+        self.chara.storage_item_limit += value
+        self.chara.save()
+
+        return f"使用了{self.n}個{self.type.name}，倉庫上限變為{self.chara.storage_item_limit}。"
