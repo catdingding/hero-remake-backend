@@ -1,5 +1,6 @@
 from django.db.models import F
 from rest_framework import serializers
+from base.utils import randint
 from base.serializers import BaseSerializer, BaseModelSerializer
 
 from world.models import SlotType
@@ -66,6 +67,9 @@ class CharaProfileSerializer(BaseModelSerializer):
     element_type = ElementTypeSerializer()
     job = JobSerializer(fields=['name', 'attribute_type'])
     level = serializers.IntegerField()
+
+    hp_limit = serializers.IntegerField()
+    mp_limit = serializers.IntegerField()
 
     main_ability = AbilitySerializer(fields=['id', 'name'])
     job_ability = AbilitySerializer(fields=['id', 'name'])
@@ -180,3 +184,21 @@ class RestSerializer(BaseSerializer):
         chara.hp = max(chara.hp, int(chara.hp_max * chara.health / 100))
         chara.mp = max(chara.mp, int(chara.mp_max * chara.health / 100))
         chara.save()
+
+
+class IncreaseHPMPMaxSerializer(BaseSerializer):
+    def save(self):
+        self.chara.lose_gold(self.validated_data['gold_cost'])
+
+        self.chara.hp_max = min(self.chara.hp_limit, self.chara.hp_max + 250 + randint(0, 250))
+        self.chara.mp_max = min(self.chara.mp_limit, self.chara.mp_max + 120 + randint(0, 120))
+
+        self.chara.save()
+
+    def validate(self, data):
+        cost = self.chara.hp_max + self.chara.mp_max
+        cost += sum(attr.value for attr in self.chara.attrs.values())
+        cost *= 5000
+        cost = max(1000000, cost)
+        data['gold_cost'] = cost
+        return data

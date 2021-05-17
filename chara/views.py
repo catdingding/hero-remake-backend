@@ -10,7 +10,7 @@ from rest_framework.decorators import action
 from .models import Chara
 from chara.serializers import (
     CharaIntroductionSerializer, SendGoldSerializer, SlotEquipSerializer, SlotDivestSerializer, RestSerializer,
-    CharaProfileSerializer
+    CharaProfileSerializer, IncreaseHPMPMaxSerializer
 )
 from item.serializers import ItemSerializer
 
@@ -103,3 +103,7 @@ class SlotDivestView(CharaPostViewMixin, BaseGenericAPIView):
 
 class RestView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = RestSerializer
+
+
+class IncreaseHPMPMaxView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = IncreaseHPMPMaxSerializer
