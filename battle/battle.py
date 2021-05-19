@@ -295,7 +295,6 @@ class BattleChara:
 
         # 特殊技能
         # 不造成 damage
-        # 不可反擊/迴避
         # 不受技能加減成影響
         if skill.type_id == 2:
             hp_add = skill.power + randint(0, self.men // 2)
@@ -357,7 +356,6 @@ class BattleChara:
 
         # 一般技能
         # 造成 damage
-        # 可以反擊/迴避
         # 受技能加減成影響
         elif skill.type_id == 7:
             damage = skill.power + randint(0, self.int) - defender.magic_defense
@@ -402,8 +400,11 @@ class BattleChara:
             speed_gap_check = 2000
             eva_check = 2000
 
+        # 17,18無視反擊、迴避、躲避、奧義類型8
+        if skill is not None and skill.type_id in [17, 18]:
+            pass
         # 奧義類型12:反擊
-        if self.has_ability_type(12) and randint(1, max(500, 1200 - self.men)) <= 100:
+        elif self.has_ability_type(12) and randint(1, max(500, 1200 - self.men)) <= 100:
             if attacker.ability_type_power(43) >= randint(1, 100):
                 damage = None
                 self.log(f"{self.name}的反擊發動！但被{attacker.name}回避了")
