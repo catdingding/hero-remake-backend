@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin
 
 from battle.models import BattleMap
-from battle.serializers import BattleMapFightSerializer
+from battle.serializers import BattleMapFightSerializer, PvPFightSerializer
 
 
 class BattleMapViewSet(BaseGenericViewSet):
@@ -22,3 +22,8 @@ class BattleMapViewSet(BaseGenericViewSet):
         result = serializer.save()
 
         return Response(result)
+
+
+class PvPFightView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = PvPFightSerializer
+    LOCK_CHARA = False

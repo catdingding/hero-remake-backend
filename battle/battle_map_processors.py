@@ -45,7 +45,8 @@ class BaseBattleMapProcessor():
     def execute(self):
         self.monsters = self.get_monsters()
 
-        battle = Battle(attackers=[self.chara], defenders=self.monsters, element_type=self.location.element_type)
+        battle = Battle(attackers=[self.chara], defenders=self.monsters,
+                        battle_type='pve', element_type=self.location.element_type)
         battle.execute()
 
         self.win = (battle.winner == 'attacker')

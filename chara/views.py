@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from base.views import BaseGenericAPIView, CharaPostViewMixin, BaseGenericViewSet
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
-from rest_framework.filters import SearchFilter
+from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
 
@@ -43,14 +43,15 @@ class CharaProfileView(BaseGenericAPIView):
 class CharaViewSet(ListModelMixin, BaseGenericViewSet):
     queryset = Chara.objects.all()
     serializer_class = CharaProfileSerializer
-    serializer_fields = ['id', 'name', 'official']
+    serializer_fields = ['id', 'name', 'official', 'pvp_points']
 
-    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filter_backends = [OrderingFilter, SearchFilter, DjangoFilterBackend]
+    ordering_fields = ['pvp_points']
     search_fields = ['name']
     filterset_fields = ['id', 'country']
 
     @action(methods=['get'], detail=True, serializer_fields=[
-        'name', 'country', 'element_type', 'job', 'level', 'slots',
+        'name', 'country', 'element_type', 'job', 'level', 'pvp_points', 'slots',
         'hp', 'hp_max', 'mp', 'mp_max', 'attributes', 'introduction'
     ])
     def profile(self, request, pk):

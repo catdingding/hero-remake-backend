@@ -17,7 +17,9 @@ class EmptyEquipment:
 
 
 class Battle:
-    def __init__(self, attackers, defenders, element_type=None):
+    def __init__(self, attackers, defenders, battle_type, element_type=None):
+        assert battle_type in ['pvp', 'pve']
+        self.battle_type = battle_type
         self.element_type = element_type
         self.charas = [BattleChara(x, battle=self, team='attacker') for x in attackers] + \
             [BattleChara(x, battle=self, team='defender') for x in defenders]
@@ -161,6 +163,10 @@ class BattleChara:
         # hp, mp
         for field in ['hp', 'hp_max', 'mp', 'mp_max']:
             setattr(self, field, getattr(chara, field))
+
+        if self.battle.battle_type == 'pvp':
+            self.hp = self.hp_max
+            self.mp = self.mp_max
 
     def create_from_monster(self, monster):
         abilities = list(monster.abilities.all())

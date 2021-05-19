@@ -32,6 +32,7 @@ class Chara(BaseModel):
 
     exp = models.PositiveIntegerField(default=0)
     proficiency = models.BigIntegerField(default=0)
+    pvp_points = models.IntegerField(default=1000)
 
     gold = models.BigIntegerField(default=0)
 

@@ -26,7 +26,7 @@ from country.views import (
 from trade.views import (
     AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView
 )
-from battle.views import BattleMapViewSet
+from battle.views import BattleMapViewSet, PvPFightView
 from town.views import InnSleepView
 
 router = SimpleRouter()
@@ -70,6 +70,7 @@ urlpatterns = [
     path('chara/storage/put/', StoragePutView.as_view()),
     path('chara/slot/equip/', SlotEquipView.as_view()),
     path('chara/slot/divest/', SlotDivestView.as_view()),
+    path('battle/pvp-fight/', PvPFightView.as_view()),
     path('country/found/', FoundCountryView.as_view()),
     path('country/leave/', LeaveCountryView.as_view()),
     path('country/change-king/', ChangeKingView.as_view()),
