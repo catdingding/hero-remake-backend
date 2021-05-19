@@ -1,8 +1,6 @@
 
 # Created by https://www.gitignore.io/api/git,django,python
 # Edit at https://www.gitignore.io/?templates=git,django,python
-*/migrations/*
-!*/migrations/__init__.py
 
 .env*
 !.env.example
