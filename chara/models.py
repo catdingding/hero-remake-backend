@@ -65,6 +65,31 @@ class Chara(BaseModel):
     def attrs(self):
         return {x.type.en_name: x for x in self.attributes.all().select_related('type')}
 
+    @cached_property
+    def equipped_ability_types(self):
+        abilities = []
+        for slot in self.slots.all().select_related('item__equipment'):
+            if slot.item:
+                abilities.append(slot.item.equipment.ability_1)
+                abilities.append(slot.item.equipment.ability_2)
+        abilities.append(self.main_ability)
+        abilities.append(self.job_ability)
+        abilities.append(self.live_ability)
+        abilities = list(filter(None, abilities))
+        return {
+            ability.type_id: ability
+            for ability in sorted(abilities, key=lambda x: x.power)
+        }
+
+    def has_equipped_ability_type(self, type_id):
+        return type_id in self.equipped_ability_types
+
+    def equipped_ability_type_power(self, type_id):
+        try:
+            return self.equipped_ability_types[type_id].power
+        except KeyError:
+            return 0
+
     @property
     def hp_limit(self):
         limit = self.attrs['str'].limit * 5 + self.attrs['vit'].limit * 10 + self.attrs['men'].limit * 3 - 2000

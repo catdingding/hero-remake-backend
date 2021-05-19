@@ -140,17 +140,7 @@ class BattleChara:
                 self.equipments[slot.type_id] = EmptyEquipment()
 
         # 奧義
-        abilities = []
-        for equipment in self.equipments.values():
-            abilities.append(equipment.ability_1)
-            abilities.append(equipment.ability_2)
-        abilities.append(chara.main_ability)
-        abilities.append(chara.job_ability)
-        abilities = list(filter(None, abilities))
-        self.ability_type = {
-            ability.type_id: ability
-            for ability in sorted(abilities, key=lambda x: x.power)
-        }
+        self.ability_types = chara.equipped_ability_types
 
         # 攻防
         # 奧義類型18:魔法劍
@@ -170,7 +160,7 @@ class BattleChara:
 
     def create_from_monster(self, monster):
         abilities = list(monster.abilities.all())
-        self.ability_type = {
+        self.ability_types = {
             ability.type_id: ability
             for ability in sorted(abilities, key=lambda x: x.power)
         }
@@ -226,7 +216,7 @@ class BattleChara:
         mp_cost = skill.mp_cost
         # 奧義類型6:魔力之術
         if self.has_ability_type(6):
-            mp_cost -= int(mp_cost * self.ability_type[6].power / 100)
+            mp_cost -= int(mp_cost * self.ability_type_power(6) / 100)
         # 奧義類型25:戰技激發
         if self.has_ability_type(25):
             rate += rate // 2
@@ -258,11 +248,11 @@ class BattleChara:
         pass
 
     def has_ability_type(self, type_id):
-        return type_id in self.ability_type
+        return type_id in self.ability_types
 
     def ability_type_power(self, type_id):
         try:
-            return self.ability_type[type_id].power
+            return self.ability_types[type_id].power
         except KeyError:
             return 0
 
@@ -514,8 +504,8 @@ class BattleChara:
         if attacker.has_ability_type(31) and randint(1, 10 * 2 ** self.blocked_ability_count) == 1:
             if self.ability_type_power(41) >= randint(1, 100):
                 self.log(f"封印{self.name}的奧義失敗")
-            elif len(self.ability_type) > 0:
-                ability = self.ability_type.pop(choice(list(self.ability_type.keys())))
+            elif len(self.ability_types) > 0:
+                ability = self.ability_types.pop(choice(list(self.ability_types.keys())))
                 self.blocked_ability_count += 1
                 self.log(f"{self.name}的{ability.name}被封印了")
 
