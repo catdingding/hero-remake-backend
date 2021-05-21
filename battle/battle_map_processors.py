@@ -5,7 +5,7 @@ from django.db.models import F
 from base.utils import add_class, randint
 from battle.utils import get_event_item_type
 from battle.battle import Battle
-from item.models import ItemType, ItemTypePoolGroup
+from item.models import ItemType, ItemTypePoolGroup, ItemTypePool
 from item.serializers import SimpleItemSerializer
 from chara.models import BattleMapTicket, CharaAttribute
 from world.models import AttributeType
@@ -104,8 +104,15 @@ class BaseBattleMapProcessor():
 
         return choices([m.monster for m in monsters], k=number, weights=weights)
 
+    def rand_loot(self, n):
+        # 奧義類型13:獲得額外金錢與掉寶
+        n = n * (1 - self.chara.equipped_ability_type_power(13) * 0.1)
+        n = max(int(n), 1)
+        return randint(1, n) == 1
+
     def get_loots(self):
-        return self.get_common_loots() + self.get_monster_loots() + self.get_map_loots() + self.get_event_loots()
+        return self.get_common_loots() + self.get_monster_loots() + self.get_map_loots() + self.get_event_loots() + \
+            self.get_ability_loots()
 
     def get_common_loots(self):
         loots = []
@@ -115,7 +122,7 @@ class BaseBattleMapProcessor():
         if self.chara.country_id is None:
             rand = 500
 
-        if randint(1, rand) == 1:
+        if self.rand_loot(rand):
             loots.extend(ItemType.objects.get(id=472).make(1))
 
         return loots
@@ -127,13 +134,13 @@ class BaseBattleMapProcessor():
         loots = []
         # ItemTypePoolGroup
         for group_setting in self.map_loot_group_settings:
-            if randint(1, group_setting['rand']) == 1:
+            if self.rand_loot(group_setting['rand']):
                 group = ItemTypePoolGroup.objects.get(id=group_setting['id'])
                 loots.extend(group.pick())
 
         # ItemType
         for setting in self.map_loot_settings:
-            if randint(1, setting['rand']) == 1:
+            if self.rand_loot(setting['rand']):
                 loots.extend(ItemType.objects.get(id=setting['id']).make(1))
 
         return loots
@@ -148,17 +155,38 @@ class BaseBattleMapProcessor():
 
         return loots
 
+    def get_ability_loots(self):
+        loots = []
+
+        if self.id in [5, 6, 7]:
+            # 奧義類型38:尋找原料
+            if self.chara.has_equipped_ability_type(38) and randint(1, self.chara.equipped_ability_type_power(38)) == 1:
+                group = ItemTypePoolGroup.objects.get(id=6)
+                loots.extend(group.pick())
+
+        if self.chara.has_equipped_ability_type(36) and randint(1, self.chara.equipped_ability_type_power(36)) == 1:
+            pool = ItemTypePool.objects.get(id=8)
+            loots.extend(pool.pick())
+
+        return loots
+
     def get_monster_number(self):
         return choices([1, 2], k=1, weights=[20, 1])[0]
 
     def get_proficiency(self):
-        return self.battle_map.proficiency * len(self.monsters)
+        # 奧義類型22:獲得額外熟練與經驗
+        return self.battle_map.proficiency * len(self.monsters) + self.chara.equipped_ability_type_power(22)
 
     def get_gold(self):
-        return sum(monster.gold for monster in self.monsters)
+        gold = sum(monster.gold for monster in self.monsters)
+        # 奧義類型13:獲得額外金錢與掉寶
+        if self.chara.equipped_ability_type_power(13) >= randint(1, 10):
+            gold *= 3
+        return gold
 
     def get_exp(self):
-        return sum(monster.exp for monster in self.monsters)
+        # 奧義類型22:獲得額外熟練與經驗
+        return sum(monster.exp for monster in self.monsters) * int(1 + self.chara.equipped_ability_type_power(22) * 2)
 
     def find_battle_maps(self):
         battle_maps = []
@@ -223,6 +251,10 @@ class BattleMapProcessor_4(BaseBattleMapProcessor):
         {'id': 1019, 'rand': 1000}
     ]
 
+    map_loot_group_settings = [
+        {'id': 1, 'rand': 8000}
+    ]
+
 
 # 廢城
 @add_class(BATTLE_MAP_PROCESSORS)
@@ -233,7 +265,7 @@ class BattleMapProcessor_5(BaseBattleMapProcessor):
     ]
 
     map_loot_group_settings = [
-        {'id': 1, 'rand': 10000},
+        {'id': 1, 'rand': 7000},
         {'id': 6, 'rand': 400}
     ]
 
@@ -244,7 +276,7 @@ class BattleMapProcessor_6(BaseBattleMapProcessor):
     id = 6
 
     map_loot_group_settings = [
-        {'id': 1, 'rand': 10000},
+        {'id': 1, 'rand': 6000},
         {'id': 6, 'rand': 400}
     ]
 
@@ -286,7 +318,9 @@ class BattleMapProcessor_10(BaseBattleMapProcessor):
     def find_battle_maps(self):
         battle_maps = super().find_battle_maps()
         # 星空下的夜
-        if randint(1, 12) == 1:
+        # 奧義類型30:天運
+        rand = 12 - self.chara.equipped_ability_type_power(30)
+        if randint(1, rand) == 1:
             battle_maps.append(11)
 
         return battle_maps

@@ -78,7 +78,7 @@ class Battle:
         self.rounds += 1
 
         for chara in self.alive_charas:
-            chara.action_points += chara.speed
+            chara.increase_action_points()
 
     def get_act_chara(self):
         max_action_points = max([c.action_points for c in self.alive_charas])
@@ -125,10 +125,13 @@ class BattleChara:
         self.eva = min(400, self.dex // 3)
         # 暴擊率
         # 奧義類型10:暴擊率提升
-        self.critical = min(250, 20 + self.dex // 3 + self.ability_type_power(10) * 10)
+        self.critical = min(250, 20 + self.dex // 3 + self.ability_type_power(10) * 1000)
 
         self.poison = 0
         self.blocked_ability_count = 0
+
+        # 奧義類型15:增加初始AP
+        self.action_points += self.ability_type_power(15)
 
     def create_from_chara(self, chara):
         # 裝備
@@ -144,7 +147,7 @@ class BattleChara:
 
         # 攻防
         # 奧義類型18:魔法劍
-        self.attack = self.str + int(self.int * self.ability_type_power(18) / 100) + \
+        self.attack = self.str + int(self.int * self.ability_type_power(18)) + \
             sum(x.attack for x in self.equipments.values()) + self.equipments[1].weight // 5
         self.defense = self.vit + sum(x.defense for x in self.equipments.values())
         self.magic_defense = (self.men + self.equipments[4].defense) // 2
@@ -166,7 +169,7 @@ class BattleChara:
         }
 
         # 奧義類型18:魔法劍
-        self.attack = self.str + int(self.int * self.ability_type_power(18) / 100)
+        self.attack = self.str + int(self.int * self.ability_type_power(18))
         self.defense = self.vit
         self.magic_defense = self.men // 2
         self.speed = self.agi
@@ -203,6 +206,10 @@ class BattleChara:
     def log(self, message):
         self.battle.logs[-1]['actions'].append({'team': self.team, 'chara': self.name, 'message': message})
 
+    def increase_action_points(self):
+        # 奧義類型53:天使之翼
+        self.action_points += int(self.speed * (1 + self.ability_type_power(53)))
+
     def get_skill(self):
         for skill_setting in self.skill_settings:
             if self.hp / self.hp_max * 100 <= skill_setting.hp_percentage \
@@ -216,7 +223,7 @@ class BattleChara:
         mp_cost = skill.mp_cost
         # 奧義類型6:魔力之術
         if self.has_ability_type(6):
-            mp_cost -= int(mp_cost * self.ability_type_power(6) / 100)
+            mp_cost -= int(mp_cost * self.ability_type_power(6))
         # 奧義類型25:戰技激發
         if self.has_ability_type(25):
             rate += rate // 2
@@ -240,7 +247,7 @@ class BattleChara:
 
         # 奧義類型1:再生
         if self.has_ability_type(1):
-            hp_add = int(self.hp_max * self.ability_type_power(1) / 100)
+            hp_add = int(self.hp_max * self.ability_type_power(1))
             self.gain_hp(hp_add)
             self.log(f"{self.name}恢復了{hp_add}點 HP")
 
@@ -268,13 +275,13 @@ class BattleChara:
         damage = randint(0, max(0, self.attack - defender.defense // 2))
 
         # 奧義類型47:覺醒
-        damage += int(damage * self.ability_type_power(47) * self.battle.rounds / 100)
+        damage += int(damage * self.ability_type_power(47) * self.battle.rounds)
         # 奧義類型50:霸氣
-        damage += int(damage * self.ability_type_power(50) * self.battle.rounds / 100)
+        damage += int(damage * self.ability_type_power(50) * self.battle.rounds)
         # 奧義類型2:神擊
-        damage += int(damage * self.ability_type_power(2) / 100)
+        damage += int(damage * self.ability_type_power(2))
         # 奧義類型3:防禦術
-        damage -= int(damage * defender.ability_type_power(3) / 100)
+        damage -= int(damage * defender.ability_type_power(3))
 
         defender.take_damage(self, damage)
 
@@ -373,9 +380,9 @@ class BattleChara:
         damage += int((self.int + self.men) * max(1000, skill.power) / 4000)
 
         # 奧義類型5:戰技
-        damage += int(damage * self.ability_type_power(5) / 100)
+        damage += int(damage * self.ability_type_power(5))
         # 奧義類型7:戰防
-        damage -= int(damage * defender.ability_type_power(7) / 100)
+        damage -= int(damage * defender.ability_type_power(7))
 
         defender.take_damage(self, damage, skill)
 
@@ -422,11 +429,12 @@ class BattleChara:
             return
 
         # 暴擊處理
+        # 奧義類型10:詛咒
         # 奧義類型44:安撫
-        if attacker.critical >= randint(1, 1000) and not self.has_ability_type(44):
+        if attacker.critical * (1 - self.ability_type_power(10)) >= randint(1, 1000) and not self.has_ability_type(44):
             damage = int(damage * 1.5)
             # 奧義類型23:暴擊傷害提升
-            damage += int(damage * attacker.ability_type_power(23) / 100)
+            damage += int(damage * attacker.ability_type_power(23))
             self.log(f"暴擊！")
         # 奧義類型26:追加傷害
         if attacker.has_ability_type(26) and randint(1, 3) == 1:
@@ -500,9 +508,39 @@ class BattleChara:
             attacker.mp = min(attacker.mp_max, attacker.mp + mp_loss)
             self.log(f"{self.name}的MP被奪走了")
 
+        # 奧義類型45:束縛
+        if attacker.has_ability_type(45):
+            self.action_points -= attacker.ability_type_power(45)
+            self.log(f"[束縛]{self.name}的AP減少了")
+
+        # 奧義類型54:亡命鎖鏈
+        if attacker.has_ability_type(54):
+            hp_loss = int(attacker.hp_max * attacker.ability_type_power(54))
+            attacker.hp = max(1, attacker.hp - hp_loss)
+            self.hp = max(1, self.hp - hp_loss * 2)
+            attacker.log(f"[亡命鎖鏈]{attacker.name}自身扣血{hp_loss}")
+            self.log(f"[亡命鎖鏈]{self.name}扣血{hp_loss*2}")
+
+        # 奧義類型55:吸血鬼之吻
+        if attacker.has_ability_type(55) and randint(1, 7) == 1:
+            hp_loss = min(self.hp - 1, (attacker.hp_max - attacker.hp) // attacker.ability_type_power(55) +
+                          randint(1, attacker.agi + attacker.dex))
+            mp_loss = min(self.mp, (attacker.mp_max - attacker.mp) // attacker.ability_type_power(55) +
+                          randint(1, attacker.agi + attacker.dex))
+            self.hp -= hp_loss
+            self.mp -= mp_loss
+            attacker.gain_hp(hp_loss)
+            attacker.gain_mp(mp_loss)
+            attacker.log(f"[吸血鬼之吻]吸收了{self.name}的{hp_loss}HP與{mp_loss}MP")
+
         # 奧義類型31:封印
-        if attacker.has_ability_type(31) and randint(1, 10 * 2 ** self.blocked_ability_count) == 1:
-            if self.ability_type_power(41) >= randint(1, 100):
+        # 奧義類型52:十字封印
+        if (attacker.has_ability_type(31) or attacker.has_ability_type(52)) and randint(1, 5 * 2 ** self.blocked_ability_count) == 1:
+            # 奧義類型57:神之封印
+            if self.blocked_ability_count >= max(attacker.ability_type_power(31), attacker.ability_type_power(31)) + attacker.ability_type_power(57):
+                pass
+            # 奧義類型41:封印防護
+            elif not attacker.has_ability_type(52) and self.ability_type_power(41) >= randint(1, 100):
                 self.log(f"封印{self.name}的奧義失敗")
             elif len(self.ability_types) > 0:
                 ability = self.ability_types.pop(choice(list(self.ability_types.keys())))
