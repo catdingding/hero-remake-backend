@@ -190,10 +190,13 @@ class IncreaseHPMPMaxSerializer(BaseSerializer):
     def save(self):
         self.chara.lose_gold(self.validated_data['gold_cost'])
 
+        hp_max_orig = self.chara.hp_max
+        mp_max_orig = self.chara.mp_max
         self.chara.hp_max = min(self.chara.hp_limit, self.chara.hp_max + 250 + randint(0, 250))
         self.chara.mp_max = min(self.chara.mp_limit, self.chara.mp_max + 120 + randint(0, 120))
 
         self.chara.save()
+        return {"display_message": f"增加了{self.chara.hp_max-hp_max_orig}HP上限、{self.chara.mp_max-mp_max_orig}MP上限"}
 
     def validate(self, data):
         cost = self.chara.hp_max + self.chara.mp_max
