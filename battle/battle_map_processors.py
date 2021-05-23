@@ -227,11 +227,15 @@ class BaseBattleMapProcessor():
 class BattleMapProcessor_1(BaseBattleMapProcessor):
     id = 1
 
+    map_loot_group_settings = []
+
 
 # 沼地
 @add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_2(BaseBattleMapProcessor):
     id = 2
+
+    map_loot_group_settings = []
 
 
 # 森林
