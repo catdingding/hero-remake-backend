@@ -18,13 +18,14 @@ class AttributeUpgradeMixin:
     def execute(self):
         result = super().execute()
 
-        attribute_type = choice(AttributeType.objects.all())
+        if self.win:
+            attribute_type = choice(AttributeType.objects.all())
 
-        chara_attr = self.chara.attributes.get(type=attribute_type)
-        chara_attr.limit += 1
-        chara_attr.save()
+            chara_attr = self.chara.attributes.get(type=attribute_type)
+            chara_attr.limit += 1
+            chara_attr.save()
 
-        result['messages'].append(f"{attribute_type.name}上限提升了1點")
+            result['messages'].append(f"{attribute_type.name}上限提升了1點")
 
         return result
 
@@ -284,6 +285,34 @@ class BattleMapProcessor_6(BaseBattleMapProcessor):
         {'id': 6, 'rand': 400}
     ]
 
+    def get_monster_loots(self):
+        loots = super().get_monster_loots()
+        for monster in self.monsters:
+            # 魔王
+            if monster.id == 41:
+                if self.rand_loot(250):
+                    group = ItemTypePoolGroup.objects.get(id=7)
+                    loots.extend(group.pick())
+
+        return loots
+
+    def execute(self):
+        result = super().execute()
+
+        if self.win:
+            for monster in self.monsters:
+                # 魔王
+                if monster.id == 41:
+                    attribute_type = choice(AttributeType.objects.all())
+
+                    chara_attr = self.chara.attributes.get(type=attribute_type)
+                    chara_attr.limit += 1
+                    chara_attr.save()
+
+                    result['messages'].append(f"{attribute_type.name}上限提升了1點")
+
+        return result
+
 
 # 魔王城
 @add_class(BATTLE_MAP_PROCESSORS)
@@ -292,7 +321,8 @@ class BattleMapProcessor_7(BaseBattleMapProcessor):
 
     map_loot_group_settings = [
         {'id': 1, 'rand': 10000},
-        {'id': 6, 'rand': 400}
+        {'id': 6, 'rand': 400},
+        {'id': 8, 'rand': 500}
     ]
 
 
