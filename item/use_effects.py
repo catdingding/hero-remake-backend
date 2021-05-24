@@ -142,7 +142,7 @@ class UseEffect_8(BaseUseEffect):
         serializer = PetUpgradeSerializer(data={'times': self.n})
         serializer.chara = self.chara
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        serializer.save(no_cost=True)
         return f"使用了{self.n}個{self.type.name}，寵物成長了{self.n}級。"
 
 

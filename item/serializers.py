@@ -192,14 +192,15 @@ class SmithUpgradeSerializer(BaseSerializer):
 class PetUpgradeSerializer(BaseSerializer):
     times = serializers.IntegerField(min_value=1)
 
-    def save(self):
+    def save(self, no_cost=False):
         times = self.validated_data['times']
         item = self.validated_data['item']
         equipment = item.equipment
         pet_type = item.type.pet_type
 
-        self.chara.lose_proficiency(pet_type.upgrade_proficiency_cost * times)
-        self.chara.save()
+        if not no_cost:
+            self.chara.lose_proficiency(pet_type.upgrade_proficiency_cost * times)
+            self.chara.save()
 
         if equipment.upgrade_times < equipment.upgrade_times_limit:
             equipment.upgrade_times += times
