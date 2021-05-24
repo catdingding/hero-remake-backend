@@ -90,8 +90,13 @@ class BaseBattleMapProcessor():
         self.chara.record.save()
 
         if loots:
-            push_log(
-                "打寶", f"{self.chara.name}於{self.battle_map.name}獲得了{'、'.join(f'{x.type.name}*{x.number}' for x in loots)}")
+            log_loots = [x for x in loots if '原料' not in x.type.name and '建國之石' not in x.type.name]
+            if log_loots:
+                log_loots = '、'.join(f'{x.type.name}*{x.number}' for x in log_loots)
+                push_log("打寶", f"{self.chara.name}於{self.battle_map.name}獲得了{log_loots}")
+        if battle.winner == 'defender':
+            push_log("陣亡", f"{self.chara.name}於{self.battle_map.name}被{'與'.join({x.name for x in self.monsters})}打到在地上磨擦")
+
         return {
             'winner': battle.winner,
             'logs': battle.logs,
@@ -228,7 +233,7 @@ class BaseBattleMapProcessor():
 
 
 # 草原
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_1(BaseBattleMapProcessor):
     id = 1
 
@@ -236,7 +241,7 @@ class BattleMapProcessor_1(BaseBattleMapProcessor):
 
 
 # 沼地
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_2(BaseBattleMapProcessor):
     id = 2
 
@@ -244,7 +249,7 @@ class BattleMapProcessor_2(BaseBattleMapProcessor):
 
 
 # 森林
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_3(BaseBattleMapProcessor):
     id = 3
     map_loot_settings = [
@@ -253,7 +258,7 @@ class BattleMapProcessor_3(BaseBattleMapProcessor):
 
 
 # 高塔
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_4(BaseBattleMapProcessor):
     id = 4
     map_loot_settings = [
@@ -266,7 +271,7 @@ class BattleMapProcessor_4(BaseBattleMapProcessor):
 
 
 # 廢城
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_5(BaseBattleMapProcessor):
     id = 5
     map_loot_settings = [
@@ -280,7 +285,7 @@ class BattleMapProcessor_5(BaseBattleMapProcessor):
 
 
 # 禁地
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_6(BaseBattleMapProcessor):
     id = 6
 
@@ -319,7 +324,7 @@ class BattleMapProcessor_6(BaseBattleMapProcessor):
 
 
 # 魔王城
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_7(BaseBattleMapProcessor):
     id = 7
 
@@ -331,7 +336,7 @@ class BattleMapProcessor_7(BaseBattleMapProcessor):
 
 
 # 財寶洞窟
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_8(BaseBattleMapProcessor):
     id = 8
 
@@ -340,7 +345,7 @@ class BattleMapProcessor_8(BaseBattleMapProcessor):
 
 
 # 黃金宮殿
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_9(BaseBattleMapProcessor):
     id = 9
 
@@ -349,7 +354,7 @@ class BattleMapProcessor_9(BaseBattleMapProcessor):
 
 
 # 藍天之下
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_10(BaseBattleMapProcessor):
     id = 10
 
@@ -365,7 +370,7 @@ class BattleMapProcessor_10(BaseBattleMapProcessor):
 
 
 # 星空下的夜
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_11(BaseBattleMapProcessor):
     id = 11
 
@@ -375,7 +380,7 @@ class BattleMapProcessor_11(BaseBattleMapProcessor):
 
 
 # 傳說密地
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_12(BaseBattleMapProcessor):
     id = 12
 
@@ -384,7 +389,7 @@ class BattleMapProcessor_12(BaseBattleMapProcessor):
 
 
 # 冒險者的試煉
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_13(BaseBattleMapProcessor):
     id = 13
 
@@ -393,7 +398,7 @@ class BattleMapProcessor_13(BaseBattleMapProcessor):
 
 
 # 勇者的試練
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_14(BaseBattleMapProcessor):
     id = 14
 
@@ -402,7 +407,7 @@ class BattleMapProcessor_14(BaseBattleMapProcessor):
 
 
 # 英雄的試練
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_15(AttributeUpgradeMixin, BaseBattleMapProcessor):
     id = 15
 
@@ -411,7 +416,7 @@ class BattleMapProcessor_15(AttributeUpgradeMixin, BaseBattleMapProcessor):
 
 
 # 暗黑雪原
-@add_class(BATTLE_MAP_PROCESSORS)
+@ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_16(AttributeUpgradeMixin, BaseBattleMapProcessor):
     id = 16
 

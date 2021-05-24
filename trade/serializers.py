@@ -11,6 +11,8 @@ from chara.models import Chara
 from trade.models import Auction, Sale, Purchase, ExchangeOption, ExchangeOptionRequirement, StoreOption
 from item.models import Item
 
+from system.utils import push_log
+
 
 class AuctionSerializer(BaseModelSerializer):
     item = ItemSerializer()
@@ -102,12 +104,15 @@ class AuctionReceiveGoldSerializer(BaseSerializer):
 
 class AuctionReceiveItemSerializer(BaseSerializer):
     def update(self, auction, validated_data):
-        self.chara.get_items('bag', [auction.item])
+        item = auction.item
+        self.chara.get_items('bag', [item])
 
         auction.item = None
         auction.item_received = True
         auction.save()
 
+        if self.chara == auction.bidder:
+            push_log("拍賣", f"{self.chara.name}以{auction.bid_price}金錢拍得了{item.type.name}*{item.number}")
         return auction
 
     def validate(self, data):
@@ -166,13 +171,15 @@ class SaleBuySerializer(BaseSerializer):
         chara.lose_gold(sale.price)
         chara.save()
 
-        chara.get_items('bag', [sale.item])
+        item = sale.item
+        chara.get_items('bag', [item])
 
         sale.buyer = chara
         sale.item = None
         sale.item_received = True
         sale.save()
 
+        push_log("交易", f"{self.chara.name}以{sale.price}金錢買下了{item.type.name}*{item.number}")
         return sale
 
     def validate(self, data):

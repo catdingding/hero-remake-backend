@@ -15,7 +15,7 @@ class LogView(ListModelMixin, BaseGenericAPIView):
     search_fields = ['category', 'content']
 
     def filter_queryset(self, queryset):
-        return super().filter_queryset(queryset)[:200]
+        return super().filter_queryset(queryset).order_by('-created_at')[:200]
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
