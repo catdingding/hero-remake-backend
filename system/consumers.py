@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 
 from django.db.models import Q
@@ -85,6 +86,10 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
             Q(sender=self.scope['chara_id']) | Q(receiver=self.scope['chara_id'])
         ).order_by('-created_at')[:10]
         return PrivateChatMessageSerializer(queryset, many=True).data[::-1]
+
+    @classmethod
+    async def encode_json(cls, content):
+        return json.dumps(content, ensure_ascii=False)
 
     async def chat_message(self, event):
         await self.send_json(event)
