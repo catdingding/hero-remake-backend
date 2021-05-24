@@ -11,6 +11,7 @@ from item.models import Item, ItemType, Equipment
 from chara.models import Chara
 
 from item.use_effects import USE_EFFECT_CLASSES
+from system.utils import push_log
 
 
 class SimpleItemSerializer(BaseSerializer):
@@ -109,6 +110,8 @@ class SendItemSerializer(BaseSerializer):
 
         items = sender.lose_items("bag", items, mode='return')
         receiver.get_items("bag", items)
+
+        push_log("傳送", f"{sender.name}向{receiver.name}傳送了{item.type.name}*{item.number}")
 
     def validate_receiver(self, value):
         if value == self.chara:
@@ -248,11 +251,13 @@ class SmithReplaceAbilitySerializer(BaseSerializer):
                 cost -= 10
                 if self.chara.element_type == equipment.element_type:
                     cost -= 10
-            equipment.ability_1 = source_equipment.ability_1
+            ability = source_equipment.ability_1
+            equipment.ability_1 = ability
         # 以奧義石注入
         elif source_item.type.category_id == 3:
             cost = 50
-            equipment.ability_2 = source_item.type.ability_1
+            ability = source_item.type.ability_1
+            equipment.ability_2 = ability
 
         cost = max(0, cost)
         self.chara.lose_proficiency(cost * 500)
@@ -262,8 +267,10 @@ class SmithReplaceAbilitySerializer(BaseSerializer):
 
         if 50 >= randint(1, 100):
             equipment.save()
+            push_log("製作", f"{self.chara.name}成功的將「{ability.name}」注入了{equipment.display_name}")
             return {"display_message": "注入成功"}
         else:
+            push_log("製作", f"{self.chara.name}嘗試將「{ability.name}」注入了{equipment.display_name}，但失敗了")
             return {"display_message": "注入失敗"}
 
     def validate(self, data):

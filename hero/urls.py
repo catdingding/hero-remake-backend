@@ -2,6 +2,7 @@ from django.urls import path
 from rest_framework.routers import SimpleRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+from system.views import LogView
 from world.views import MoveView, MapView, ElementTypeView
 from user.views import RegistrationView, ChangePasswordView
 from chara.views import (
@@ -87,5 +88,6 @@ urlpatterns = [
     path('user/charas/', UserCharaView.as_view()),
     path('countries/', CountryListView.as_view()),
     path('exercise-rewards/', ExerciseRewardView.as_view()),
-    path('town/inn/sleep/', InnSleepView.as_view())
+    path('town/inn/sleep/', InnSleepView.as_view()),
+    path('logs/', LogView.as_view()),
 ] + router.urls

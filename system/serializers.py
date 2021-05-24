@@ -1,6 +1,14 @@
 from rest_framework import serializers
 
+from base.serializers import BaseModelSerializer
 from country.serializers import CountrySerializer, CountryOfficialSerializer
+from system.models import Log
+
+
+class LogSerializer(BaseModelSerializer):
+    class Meta:
+        model = Log
+        fields = ['category', 'content', 'created_at']
 
 
 class CharaProfileSerializer(serializers.Serializer):

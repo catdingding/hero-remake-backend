@@ -3,7 +3,7 @@ from base.models import BaseModel
 
 
 class Log(BaseModel):
-    type = models.CharField(max_length=20)
+    category = models.CharField(max_length=20)
     content = models.CharField(max_length=400)
 
 

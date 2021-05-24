@@ -10,6 +10,7 @@ from item.serializers import SimpleItemSerializer
 from chara.models import BattleMapTicket, CharaAttribute
 from world.models import AttributeType
 
+from system.utils import push_log
 
 BATTLE_MAP_PROCESSORS = {}
 
@@ -88,6 +89,9 @@ class BaseBattleMapProcessor():
 
         self.chara.record.save()
 
+        if loots:
+            push_log(
+                "打寶", f"{self.chara.name}於{self.battle_map.name}獲得了{'、'.join(f'{x.type.name}*{x.number}' for x in loots)}")
         return {
             'winner': battle.winner,
             'logs': battle.logs,

@@ -7,6 +7,8 @@ from world.models import Location
 from user.models import User
 from chara.models import Chara, CharaAttribute, CharaSlot, CharaIntroduction, CharaRecord
 
+from system.utils import push_log
+
 
 class RegistrationCharaSerializer(BaseModelSerializer):
     class Meta:
@@ -38,6 +40,8 @@ class RegistrationSerializer(BaseSerializer):
                                      job_id=1, location=location, **chara_data)
         chara.init()
         chara.set_avatar(validated_data['chara_avatar'])
+
+        push_log("新人", f"{chara.name}加入了世界")
 
         return user
 

@@ -17,8 +17,9 @@ def get_chara_profile(chara_id):
     return profile
 
 
-class ChatConsumer(AsyncJsonWebsocketConsumer):
+class MessageConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self):
+        await self.channel_layer.group_add('log', self.channel_name)
         for group in self.scope['group_mapping'].values():
             await self.channel_layer.group_add(group, self.channel_name)
 
@@ -26,6 +27,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         await self.load_messages()
 
     async def disconnect(self, close_code):
+        await self.channel_layer.group_discard('log', self.channel_name)
         for group in self.scope['group_mapping'].values():
             await self.channel_layer.group_discard(group, self.channel_name)
 
@@ -85,4 +87,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         return PrivateChatMessageSerializer(queryset, many=True).data[::-1]
 
     async def chat_message(self, event):
+        await self.send_json(event)
+
+    async def log_message(self, event):
         await self.send_json(event)

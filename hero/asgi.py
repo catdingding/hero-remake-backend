@@ -7,14 +7,14 @@ from django.urls import path
 asgi_app = get_asgi_application()
 
 from .channels_middleware import JWTAuthMiddleware
-from system.consumers import ChatConsumer
+from system.consumers import MessageConsumer
 
 
 application = ProtocolTypeRouter({
     "http": asgi_app,
     "websocket": JWTAuthMiddleware(
         URLRouter(
-            [path('ws/chat/', ChatConsumer.as_asgi())]
+            [path('ws/chat/', MessageConsumer.as_asgi())]
         )
     )
 })
