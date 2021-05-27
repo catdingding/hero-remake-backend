@@ -523,7 +523,7 @@ class BattleChara:
 
         # 奧義類型55:吸血鬼之吻
         if attacker.has_ability_type(55) and randint(1, 7) == 1:
-            hp_loss = min(self.hp - 1, (attacker.hp_max - attacker.hp) // attacker.ability_type_power(55) +
+            hp_loss = min(self.hp, (attacker.hp_max - attacker.hp) // attacker.ability_type_power(55) +
                           randint(1, attacker.agi + attacker.dex))
             mp_loss = min(self.mp, (attacker.mp_max - attacker.mp) // attacker.ability_type_power(55) +
                           randint(1, attacker.agi + attacker.dex))
