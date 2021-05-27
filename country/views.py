@@ -19,7 +19,7 @@ from item.serializers import ItemSerializer
 
 class CountryListView(ListModelMixin, BaseGenericAPIView):
     serializer_class = CountryProfileSerializer
-    queryset = Country.objects.annotate(town_count=Count('towns')).all()
+    queryset = Country.objects.annotate(location_count=Count('locations')).all()
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)

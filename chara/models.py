@@ -224,6 +224,11 @@ class CharaRecord(BaseModel):
 
     level_down_count = models.IntegerField(default=0)
 
+    today_battle = models.IntegerField(default=0)
+
+    world_monster_quest_counter = models.IntegerField(default=0)
+    country_monster_quest_counter = models.IntegerField(default=0)
+
 
 class CharaIntroduction(BaseModel):
     chara = models.OneToOneField("chara.Chara", on_delete=models.CASCADE, related_name="introduction")

@@ -2,6 +2,7 @@ from django.db.models import Q
 from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
+from country.serializers import CountrySerializer
 from world.models import Location, ElementType, AttributeType, SlotType
 from base.utils import calculate_distance
 
@@ -56,11 +57,13 @@ class MapQuerySerializer(BaseSerializer):
 class LocationSerializer(BaseModelSerializer):
     element_type = ElementTypeSerializer()
     battle_map_name = serializers.CharField(source="battle_map.name")
+    country = CountrySerializer(fields=['id', 'name'])
     town_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Location
-        fields = ['id', 'x', 'y', 'element_type', 'chaos_score', 'battle_map', 'battle_map_name', 'town_name']
+        fields = ['id', 'x', 'y', 'element_type', 'chaos_score',
+                  'battle_map', 'battle_map_name', 'country', 'town_name']
 
     def get_town_name(self, obj):
         if hasattr(obj, 'town'):

@@ -15,12 +15,12 @@ class CountrySerializer(BaseModelSerializer):
 
 
 class CountryProfileSerializer(BaseModelSerializer):
-    town_count = serializers.IntegerField()
+    location_count = serializers.IntegerField()
     king_name = serializers.CharField(source='king.name')
 
     class Meta:
         model = Country
-        fields = ['id', 'name', 'gold', 'king_name', 'town_count', 'created_at']
+        fields = ['id', 'name', 'gold', 'king_name', 'location_count', 'created_at']
 
 
 class FoundCountrySerializer(BaseModelSerializer):
@@ -29,11 +29,9 @@ class FoundCountrySerializer(BaseModelSerializer):
         fields = ['name']
 
     def save(self):
-        town = self.chara.location.town
-
         country = Country.objects.create(name=self.validated_data['name'], king=self.chara)
-        town.country = country
-        town.save()
+        self.chara.location.country = country
+        self.chara.location.save()
 
         self.chara.gold -= 5000000000
         self.chara.lose_items('bag', [Item(type_id=472, number=50)])
@@ -44,9 +42,7 @@ class FoundCountrySerializer(BaseModelSerializer):
         location = self.chara.location.lock()
         if self.chara.country is not None:
             raise serializers.ValidationError("僅無所屬角色可以建國")
-        if not hasattr(location, 'town'):
-            raise serializers.ValidationError("需於有城鎮的地點建國")
-        if location.town.country is not None:
+        if location.country is not None:
             raise serializers.ValidationError("僅可於無所屬城鎮建國")
         if self.chara.gold < 5000000000:
             raise serializers.ValidationError("你的資金不足 50 億")

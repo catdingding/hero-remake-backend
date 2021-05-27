@@ -4,7 +4,6 @@ from base.models import BaseModel
 
 class Town(BaseModel):
     name = models.CharField(max_length=20, unique=True)
-    country = models.ForeignKey("country.Country", related_name='towns', null=True, on_delete=models.SET_NULL)
     location = models.OneToOneField("world.Location", unique=True, on_delete=models.PROTECT)
 
     description = models.CharField(max_length=200)
