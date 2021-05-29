@@ -326,7 +326,7 @@ class BattleChara:
             self.log(f"{defender.name}失去了{hp_loss}點 HP")
         elif skill.type_id == 19:
             hp_loss = self.hp // 10
-            mp_add = self.mp_max // 10
+            mp_add = self.hp_max // 10
             self.hp -= hp_loss
             self.mp = min(self.mp_max, self.mp + mp_add)
             self.log(f"{self.name}失去{hp_loss}點 HP，獲得 {mp_add} 點MP")
