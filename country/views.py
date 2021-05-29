@@ -1,9 +1,9 @@
 from django.db.models import Count
 
-from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin
+from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin, CountryPostViewMixin
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.mixins import ListModelMixin, DestroyModelMixin, CreateModelMixin
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, DestroyModelMixin, CreateModelMixin
 from django_filters.rest_framework import DjangoFilterBackend
 
 from country.models import Country, CountryOfficial, CountryJoinRequest
@@ -12,17 +12,15 @@ from country.serializers import (
     CountryDismissSerializer, ChangeKingSerializer,
     CountryItemTakeSerializer, CountryItemPutSerializer, CountryDonateSerializer,
     CountryOfficialSerializer, CountryProfileSerializer,
-    CountryJoinRequestSerializer, CountryJoinRequestCreateSerializer, CountryJoinRequestApproveSerializer
+    CountryJoinRequestSerializer, CountryJoinRequestCreateSerializer, CountryJoinRequestApproveSerializer,
+    CountryOccupyLocationSerializer, CountryAbandonLocationSerializer
 )
 from item.serializers import ItemSerializer
 
 
-class CountryListView(ListModelMixin, BaseGenericAPIView):
+class CountryViewSet(ListModelMixin, RetrieveModelMixin, BaseGenericViewSet):
     serializer_class = CountryProfileSerializer
-    queryset = Country.objects.annotate(location_count=Count('locations')).all()
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    queryset = Country.objects.annotate(location_count=Count('locations')).select_related('king').all()
 
 
 class FoundCountryView(CharaPostViewMixin, BaseGenericAPIView):
@@ -157,3 +155,11 @@ class CountryDonateView(BaseGenericAPIView):
         serializer.save()
 
         return Response({'status': 'success'})
+
+
+class CountryOccupyLocationView(CountryPostViewMixin, BaseGenericAPIView):
+    serializer_class = CountryOccupyLocationSerializer
+
+
+class CountryAbandonLocationView(CountryPostViewMixin, BaseGenericAPIView):
+    serializer_class = CountryAbandonLocationSerializer

@@ -101,6 +101,24 @@ class CharaPostViewMixin:
             return Response(result)
 
 
+class CountryPostViewMixin:
+    lock_chara = True
+    lock_country = True
+    role = 'king'
+
+    def post(self, request):
+        chara = self.get_chara(lock=self.lock_chara)
+        country = self.get_country(role=self.role, lock=self.lock_country)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        result = serializer.save()
+
+        if result is None:
+            return Response({'status': 'success'})
+        else:
+            return Response(result)
+
+
 class SerializerFieldsMixin:
     serializer_fields = None
 
@@ -117,6 +135,12 @@ class BaseGenericViewSet(SerializerFieldsMixin, LockObjectMixin, CountryViewMixi
             return self.serializer_action_classes[self.action]
         except (KeyError, AttributeError):
             return super().get_serializer_class()
+
+    def get_queryset(self):
+        try:
+            return self.action_querysets[self.action].all()
+        except (KeyError, AttributeError):
+            return super().get_queryset()
 
 
 class BaseGenericAPIView(SerializerFieldsMixin, LockObjectMixin, CountryViewMixin, CharaViewMixin, generics.GenericAPIView):

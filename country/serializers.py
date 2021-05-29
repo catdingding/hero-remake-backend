@@ -7,20 +7,21 @@ from chara.models import Chara
 
 
 class CountrySerializer(BaseModelSerializer):
-    king_name = serializers.CharField(source='king.name')
-
     class Meta:
         model = Country
-        fields = ['id', 'name', 'king_name', 'gold']
+        fields = ['id', 'name']
 
 
 class CountryProfileSerializer(BaseModelSerializer):
     location_count = serializers.IntegerField()
-    king_name = serializers.CharField(source='king.name')
+    expandable_fields = {
+        'king': ('chara.serializers.CharaProfileSerializer', {'fields': ['id', 'name']}),
+        'locations': ('world.serializers.LocationSerializer', {'fields': ['id', 'x', 'y'], 'many': True})
+    }
 
     class Meta:
         model = Country
-        fields = ['id', 'name', 'gold', 'king_name', 'location_count', 'created_at']
+        fields = ['id', 'name', 'gold', 'location_count', 'created_at']
 
 
 class FoundCountrySerializer(BaseModelSerializer):
@@ -198,3 +199,34 @@ class CountryDonateSerializer(BaseSerializer):
         if gold > self.chara.gold:
             raise serializers.ValidationError("金錢不足")
         return gold
+
+
+class CountryOccupyLocationSerializer(BaseSerializer):
+    def save(self):
+        self.chara.location.country = self.country
+        self.chara.location.save()
+
+        cost = 2 ** self.country.locations.count()
+        self.chara.lose_gold(1000000000 * cost)
+        self.chara.lose_items('bag', [Item(type_id=472, number=50 * cost)])
+        self.chara.save()
+
+    def validate(self, data):
+        location = self.chara.location.lock()
+        if location.country is not None:
+            raise serializers.ValidationError("此地已被其他國家佔領")
+
+        return data
+
+
+class CountryAbandonLocationSerializer(BaseSerializer):
+    def save(self):
+        self.chara.location.country = None
+        self.chara.location.save()
+
+    def validate(self, data):
+        location = self.chara.location.lock()
+        if location.country != self.chara.country:
+            raise serializers.ValidationError("僅可放棄所屬國家的領土")
+
+        return data

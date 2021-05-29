@@ -22,7 +22,8 @@ from item.views import (
 from country.views import (
     FoundCountryView, LeaveCountryView, ChangeKingView, CountryDismissView,
     CountryItemPutView, CountryItemTakeView, CountryDonateView, CountryItemView,
-    CountryListView, CountryJoinRequestViewSet, CountryOfficialViewSet
+    CountryViewSet, CountryJoinRequestViewSet, CountryOfficialViewSet,
+    CountryOccupyLocationView, CountryAbandonLocationView
 )
 from trade.views import (
     AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView
@@ -40,6 +41,7 @@ router.register(r'trade/exchange-options', ExchangeOptionViewSet)
 router.register(r'ability/alchemy-options', AlchemyOptionViewSet)
 router.register(r'trade/store-options', StoreOptionViewSet)
 router.register(r'battle/battle-maps', BattleMapViewSet)
+router.register(r'countries', CountryViewSet)
 router.register(r'country/join-requests', CountryJoinRequestViewSet)
 router.register(r'country/officials', CountryOfficialViewSet)
 
@@ -81,13 +83,14 @@ urlpatterns = [
     path('country/storage/take/', CountryItemTakeView.as_view()),
     path('country/storage/put/', CountryItemPutView.as_view()),
     path('country/donate/', CountryDonateView.as_view()),
+    path('country/occupy-location/', CountryOccupyLocationView.as_view()),
+    path('country/abandon-location/', CountryAbandonLocationView.as_view()),
     path('smith/upgrade/', SmithUpgradeView.as_view()),
     path('smith/replace-ability/', SmithReplaceAbilityView.as_view()),
     path('pet/upgrade/', PetUpgradeView.as_view()),
     path('map/', MapView.as_view()),
     path('world/element-types/', ElementTypeView.as_view()),
     path('user/charas/', UserCharaView.as_view()),
-    path('countries/', CountryListView.as_view()),
     path('exercise-rewards/', ExerciseRewardView.as_view()),
     path('town/inn/sleep/', InnSleepView.as_view()),
     path('logs/', LogView.as_view()),

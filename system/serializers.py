@@ -14,7 +14,7 @@ class LogSerializer(BaseModelSerializer):
 class CharaProfileSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     name = serializers.CharField()
-    country = CountrySerializer(fields=['name'])
+    country = CountrySerializer()
     official = CountryOfficialSerializer(fields=['title'])
 
 

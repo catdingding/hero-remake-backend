@@ -57,7 +57,7 @@ class MapQuerySerializer(BaseSerializer):
 class LocationSerializer(BaseModelSerializer):
     element_type = ElementTypeSerializer()
     battle_map_name = serializers.CharField(source="battle_map.name")
-    country = CountrySerializer(fields=['id', 'name'])
+    country = CountrySerializer()
     town_name = serializers.SerializerMethodField()
 
     class Meta:
