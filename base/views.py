@@ -1,5 +1,6 @@
 from django.db.models import Q, Exists, OuterRef
 from django.utils.timezone import localtime
+from django.conf import settings
 
 from rest_framework import viewsets, views, generics
 from rest_framework.exceptions import ValidationError, PermissionDenied
@@ -25,7 +26,7 @@ class CharaViewMixin:
 
         if self.check_next_action_time:
             waiting_time = (chara.next_action_time - localtime()).total_seconds()
-            if waiting_time > 0:
+            if waiting_time > settings.ACTION_TIME_GRACE:
                 raise ValidationError(f"尚需等待{waiting_time}秒才能行動")
         if self.check_in_town:
             if not Town.objects.filter(location=chara.location_id).exists():

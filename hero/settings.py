@@ -183,3 +183,6 @@ SFTP = {
 
 # img path
 CHARA_AVATAR_PATH = os.path.join(os.environ['SFTP_PATH'], 'chara_avatar')
+
+# time
+ACTION_TIME_GRACE = 3

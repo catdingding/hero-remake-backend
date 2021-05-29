@@ -118,7 +118,7 @@ class Chara(BaseModel):
         sftp_put_fo(fo, os.path.join(settings.CHARA_AVATAR_PATH, f"{self.id}.jpg"))
 
     def set_next_action_time(self, n=1):
-        self.next_action_time = localtime() + timedelta(seconds=n * 15)
+        self.next_action_time = max(self.next_action_time, localtime()) + timedelta(seconds=n * 15)
 
     def gain_exp(self, exp):
         orig_level = self.level
