@@ -5,7 +5,7 @@ from base.serializers import BaseSerializer, BaseModelSerializer
 
 from world.models import SlotType
 from chara.models import Chara, CharaIntroduction, CharaAttribute, BattleMapTicket, CharaRecord, CharaSlot, CharaSkillSetting
-from item.models import Item
+from item.models import Item, ItemTypePoolGroup
 from battle.serializers import BattleMapSerializer
 from item.serializers import SimpleItemSerializer, ItemSerializer
 from ability.serializers import AbilitySerializer
@@ -55,7 +55,7 @@ class CharaIntroductionSerializer(BaseModelSerializer):
 class CharaRecordSerializer(BaseModelSerializer):
     class Meta:
         model = CharaRecord
-        fields = ['total_battle']
+        fields = ['total_battle', 'today_battle', 'world_monster_quest_counter', 'country_monster_quest_counter']
 
 
 class CharaProfileSerializer(BaseModelSerializer):
@@ -207,4 +207,33 @@ class IncreaseHPMPMaxSerializer(BaseSerializer):
         cost *= 5000
         cost = max(1000000, cost)
         data['gold_cost'] = cost
+        return data
+
+
+class HandInQuestSerializer(BaseSerializer):
+    quest = serializers.CharField()
+
+    quest_requirements = {
+        'world_monster_quest': 100,
+        'country_monster_quest': 400
+    }
+
+    def save(self):
+        setattr(self.chara.record, self.validated_data['counter'], 0)
+        self.chara.record.save()
+
+        # 任務池
+        items = ItemTypePoolGroup.objects.get(id=9).pick()
+        self.chara.get_items('bag', items)
+
+        return {"display_message": f"獲得了{'、'.join(f'{x.type.name}*{x.number}' for x in items)}"}
+
+    def validate(self, data):
+        data['counter'] = data['quest'] + '_counter'
+        if not hasattr(self.chara.record, data['counter']):
+            raise serializers.ValidationError("任務不存在")
+
+        if getattr(self.chara.record, data['counter']) < self.quest_requirements[data['quest']]:
+            raise serializers.ValidationError("數量不足")
+
         return data

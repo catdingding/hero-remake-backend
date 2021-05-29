@@ -57,9 +57,9 @@ class BaseBattleMapProcessor():
         self.chara.record.today_battle += 1
 
         if self.win:
-            self.chara.record.world_monster_quest_counter += 1
+            self.chara.record.world_monster_quest_counter += len(self.monsters)
             if self.chara.country is not None and self.chara.country == self.location.country:
-                self.chara.record.country_monster_quest_counter += 1
+                self.chara.record.country_monster_quest_counter += len(self.monsters)
 
             loots = self.get_loots()
             gold = self.get_gold()

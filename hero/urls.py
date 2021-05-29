@@ -7,7 +7,7 @@ from world.views import MoveView, MapView, ElementTypeView
 from user.views import RegistrationView, ChangePasswordView
 from chara.views import (
     CharaProfileView, CharaIntroductionView, SendGoldView, SlotEquipView, SlotDivestView, RestView, UserCharaView,
-    CharaStorageItemView, CharaViewSet, IncreaseHPMPMaxView
+    CharaStorageItemView, CharaViewSet, IncreaseHPMPMaxView, HandInQuestView
 )
 from ability.views import (
     LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView, AlchemyOptionViewSet,
@@ -63,6 +63,7 @@ urlpatterns = [
     path('chara/job/available/', AvailableJobView.as_view()),
     path('chara/exercise/', ExerciseView.as_view()),
     path('chara/increase-hp-mp-max/', IncreaseHPMPMaxView.as_view()),
+    path('chara/quest/hand-in/', HandInQuestView.as_view()),
     path('chara/item/use/', UseItemView.as_view()),
     path('chara/item/send/', SendItemView.as_view()),
     path('chara/item/sell/', SellItemView.as_view()),
