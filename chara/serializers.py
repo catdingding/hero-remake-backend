@@ -226,7 +226,14 @@ class HandInQuestSerializer(BaseSerializer):
         items = ItemTypePoolGroup.objects.get(id=9).pick()
         self.chara.get_items('bag', items)
 
-        return {"display_message": f"獲得了{'、'.join(f'{x.type.name}*{x.number}' for x in items)}"}
+        gold = 5000000
+        proficiency = 500
+
+        self.chara.gold += gold
+        self.chara.proficiency += proficiency
+        self.chara.save()
+
+        return {"display_message": f"獲得了{gold}金錢、{proficiency}熟練、{'、'.join(f'{x.type.name}*{x.number}' for x in items)}"}
 
     def validate(self, data):
         data['counter'] = data['quest'] + '_counter'
