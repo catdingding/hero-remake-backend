@@ -65,8 +65,8 @@ class Battle:
                 self.next_round()
             else:
                 act_chara.take_action()
+                self.logs[-1]['charas'] = [chara.profile for chara in self.charas]
 
-            self.logs[-1]['charas'] = [chara.profile for chara in self.charas]
             if self.winner != 'draw' or self.rounds >= self.max_rounds:
                 break
 
