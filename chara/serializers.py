@@ -1,5 +1,6 @@
-from django.db.models import F
+from django.db.models import F, Prefetch
 from rest_framework import serializers
+from rest_flex_fields import is_included
 from base.utils import randint
 from base.serializers import BaseSerializer, BaseModelSerializer
 
@@ -77,11 +78,11 @@ class CharaProfileSerializer(BaseModelSerializer):
     live_ability = AbilitySerializer(fields=['id', 'name'])
 
     slots = CharaSlotSerializer(many=True)
-    bag_items = serializers.SerializerMethodField()
+    bag_items = ItemSerializer(many=True)
     skill_settings = CharaSkillSettingSerializer(many=True)
 
-    attributes = serializers.SerializerMethodField()
-    battle_map_tickets = serializers.SerializerMethodField()
+    attributes = CharaAttributeSerialiser(many=True)
+    battle_map_tickets = BattleMapTicketSerialiser(many=True)
 
     introduction = CharaIntroductionSerializer()
     record = CharaRecordSerializer()
@@ -90,30 +91,43 @@ class CharaProfileSerializer(BaseModelSerializer):
         model = Chara
         exclude = ['user', 'created_at', 'updated_at', 'abilities', 'storage_items']
 
-    def get_bag_items(self, chara):
-        return ItemSerializer(
-            chara.bag_items.all().select_related(
-                'type__slot_type', 'equipment__ability_1', 'equipment__ability_2', 'equipment__element_type'
-            ),
-            many=True
-        ).data
-
-    def get_slots(self, chara):
-        return CharaSlotSerializer(
-            chara.slots.all().select_related(
-                'type', 'item__equipment__ability_1', 'item__equipment__ability_2', 'item__equipment__element_type', 'item__type'
-            ),
-            many=True
-        ).data
-
     def get_is_king(self, chara):
         return hasattr(chara, 'king_of')
 
-    def get_attributes(self, chara):
-        return CharaAttributeSerialiser(chara.attributes.all().select_related('type'), many=True).data
+    def process_queryset(request, queryset):
+        for field in ['country', 'official', 'element_type', 'job', 'main_ability', 'job_ability', 'live_ability', 'record', 'introduction']:
+            if is_included(request, field):
+                queryset = queryset.select_related(field)
+        if is_included(request, 'job'):
+            queryset = queryset.select_related('job__attribute_type')
+        if is_included(request, 'location'):
+            queryset = queryset.select_related('location__country', 'location__town',
+                                               'location__element_type', 'location__battle_map')
+        if is_included(request, 'is_king'):
+            queryset = queryset.select_related('king_of')
 
-    def get_battle_map_tickets(self, chara):
-        return BattleMapTicketSerialiser(chara.battle_map_tickets.all().select_related('battle_map'), many=True).data
+        if is_included(request, 'bag_items'):
+            queryset = queryset.prefetch_related(Prefetch('bag_items', Item.objects.select_related(
+                'type__slot_type', 'equipment__ability_1', 'equipment__ability_2', 'equipment__element_type'
+            )))
+        if is_included(request, 'slots'):
+            queryset = queryset.prefetch_related(Prefetch('slots', CharaSlot.objects.select_related(
+                'type', 'item__type__slot_type', 'item__equipment__ability_1', 'item__equipment__ability_2', 'item__equipment__element_type'
+            )))
+
+        if is_included(request, 'attributes'):
+            queryset = queryset.prefetch_related(Prefetch('attributes', CharaAttribute.objects.select_related(
+                'type'
+            )))
+
+        if is_included(request, 'battle_map_tickets'):
+            queryset = queryset.prefetch_related(Prefetch('battle_map_tickets', BattleMapTicket.objects.select_related(
+                'battle_map'
+            )))
+        if is_included(request, 'skill_settings'):
+            queryset = queryset.prefetch_related('skill_settings')
+
+        return queryset
 
 
 class SendGoldSerializer(BaseSerializer):

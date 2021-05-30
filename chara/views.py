@@ -7,7 +7,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
 
 
-from .models import Chara
+from .models import Chara, CharaSlot, CharaAttribute, BattleMapTicket
+from item.models import Item
 from chara.serializers import (
     CharaIntroductionSerializer, SendGoldSerializer, SlotEquipSerializer, SlotDivestSerializer, RestSerializer,
     CharaProfileSerializer, IncreaseHPMPMaxSerializer, HandInQuestSerializer
@@ -36,8 +37,11 @@ class CharaProfileView(BaseGenericAPIView):
     def get(self, request):
         chara = self.get_chara()
         serializer = self.get_serializer(chara)
-
         return Response(serializer.data)
+
+    def get_chara(self):
+        chara = super().get_chara()
+        return self.get_serializer_class().process_queryset(self.request, Chara.objects.all()).get(id=chara.id)
 
 
 class CharaViewSet(ListModelMixin, BaseGenericViewSet):
