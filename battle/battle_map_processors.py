@@ -5,6 +5,7 @@ from django.db.models import F
 from base.utils import add_class, randint
 from battle.utils import get_event_item_type
 from battle.battle import Battle
+from battle.models import Monster
 from item.models import ItemType, ItemTypePoolGroup, ItemTypePool
 from item.serializers import SimpleItemSerializer
 from chara.models import BattleMapTicket, CharaAttribute
@@ -58,7 +59,7 @@ class BaseBattleMapProcessor():
 
         if self.win:
             self.chara.record.world_monster_quest_counter += len(self.monsters)
-            if self.chara.country is not None and self.chara.country == self.location.country:
+            if self.chara.country_id is not None and self.chara.country_id == self.location.country_id:
                 self.chara.record.country_monster_quest_counter += len(self.monsters)
 
             loots = self.get_loots()
@@ -84,7 +85,7 @@ class BaseBattleMapProcessor():
         self.chara.gain_exp(exp)
         self.chara.get_items('bag', loots)
         CharaAttribute.objects.filter(
-            chara=self.chara, type_id=self.chara.job.attribute_type_id
+            chara=self.chara, type_id=F('chara__job__attribute_type')
         ).update(proficiency=F('proficiency') + proficiency)
         BattleMapTicket.objects.filter(
             chara=self.chara, battle_map__in=found_battle_maps
@@ -114,10 +115,15 @@ class BaseBattleMapProcessor():
 
     def get_monsters(self):
         number = self.get_monster_number()
-        monsters = self.battle_map.monsters.all()
-        weights = [m.weight for m in monsters]
+        monster_settings = self.battle_map.monsters.all()
+        selected_monster_settings = choices(monster_settings, k=number, weights=[m.weight for m in monster_settings])
 
-        return choices([m.monster for m in monsters], k=number, weights=weights)
+        monsters = {
+            x.id: x
+            for x in Monster.objects.filter(id__in=[s.monster_id for s in selected_monster_settings])
+        }
+
+        return [monsters[x.monster_id] for x in selected_monster_settings]
 
     def rand_loot(self, n):
         # 奧義類型13:獲得額外金錢與掉寶

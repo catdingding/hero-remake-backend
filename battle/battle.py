@@ -136,7 +136,7 @@ class BattleChara:
     def create_from_chara(self, chara):
         # 裝備
         self.equipments = {}
-        for slot in chara.slots.all().select_related('item__equipment'):
+        for slot in chara.slots.all().select_related('item__equipment', 'item__type'):
             if slot.item:
                 self.equipments[slot.type_id] = slot.item.equipment
             else:

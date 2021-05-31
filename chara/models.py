@@ -12,6 +12,7 @@ import functools
 
 from base.models import BaseModel, BaseBuffType
 from base.utils import get_items, lose_items, sftp_put_fo
+from ability.models import Ability
 from chara.utils import process_avatar
 from world.models import AttributeType, SlotType
 from battle.models import BattleMap
@@ -70,15 +71,15 @@ class Chara(BaseModel):
         abilities = []
         for slot in self.slots.all().select_related('item__equipment'):
             if slot.item:
-                abilities.append(slot.item.equipment.ability_1)
-                abilities.append(slot.item.equipment.ability_2)
-        abilities.append(self.main_ability)
-        abilities.append(self.job_ability)
-        abilities.append(self.live_ability)
+                abilities.append(slot.item.equipment.ability_1_id)
+                abilities.append(slot.item.equipment.ability_2_id)
+        abilities.append(self.main_ability_id)
+        abilities.append(self.job_ability_id)
+        abilities.append(self.live_ability_id)
         abilities = list(filter(None, abilities))
         return {
             ability.type_id: ability
-            for ability in sorted(abilities, key=lambda x: x.power)
+            for ability in sorted(Ability.objects.filter(id__in=abilities), key=lambda x: x.power)
         }
 
     def has_equipped_ability_type(self, type_id):
