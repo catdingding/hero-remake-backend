@@ -30,22 +30,14 @@ class MoveSerializer(BaseSerializer):
 
     def save(self):
         location = self.validated_data['location']
-        distance = calculate_distance(self.chara.location, location)
+        cost = calculate_distance(self.chara.location, location)
+        # 奧義類型17:飛行
+        if self.chara.abilities.filter(type=17).exists():
+            cost = cost / 5
 
         self.chara.location = location
-        self.chara.set_next_action_time(distance)
+        self.chara.set_next_action_time(cost)
         self.chara.save()
-
-    def validate_location(self, value):
-        x = value.x
-        y = value.y
-        can_move_to = Location.objects.filter(
-            Q(x__gte=x - 1, x__lte=x + 1, y=y) | Q(y__gte=y - 1, y__lte=y + 1, x=x), chaos_score=0
-        ).exists()
-
-        if not can_move_to:
-            raise serializers.ValidationError("無法前往該地點")
-        return value
 
 
 class MapQuerySerializer(BaseSerializer):
@@ -62,7 +54,7 @@ class LocationSerializer(BaseModelSerializer):
 
     class Meta:
         model = Location
-        fields = ['id', 'x', 'y', 'element_type', 'chaos_score',
+        fields = ['id', 'x', 'y', 'element_type',
                   'battle_map', 'battle_map_name', 'country', 'town_name']
 
     def get_town_name(self, obj):

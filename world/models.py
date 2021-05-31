@@ -25,7 +25,6 @@ class Location(BaseModel):
     element_type = models.ForeignKey("world.ElementType", on_delete=models.PROTECT)
     battle_map = models.ForeignKey("battle.BattleMap", on_delete=models.PROTECT)
     country = models.ForeignKey("country.Country", related_name='locations', null=True, on_delete=models.SET_NULL)
-    chaos_score = models.PositiveIntegerField()
 
     class Meta:
         unique_together = ('x', 'y')
