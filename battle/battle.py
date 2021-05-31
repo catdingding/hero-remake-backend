@@ -516,8 +516,8 @@ class BattleChara:
         # 奧義類型54:亡命鎖鏈
         if attacker.has_ability_type(54):
             hp_loss = int(attacker.hp_max * attacker.ability_type_power(54))
-            attacker.hp = max(1, attacker.hp - hp_loss)
-            self.hp = max(1, self.hp - hp_loss * 2)
+            attacker.hp = max(0, attacker.hp - hp_loss)
+            self.hp = max(0, self.hp - hp_loss * 2)
             attacker.log(f"[亡命鎖鏈]{attacker.name}自身扣血{hp_loss}")
             self.log(f"[亡命鎖鏈]{self.name}扣血{hp_loss*2}")
 

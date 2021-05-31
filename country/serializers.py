@@ -203,13 +203,13 @@ class CountryDonateSerializer(BaseSerializer):
 
 class CountryOccupyLocationSerializer(BaseSerializer):
     def save(self):
-        self.chara.location.country = self.country
-        self.chara.location.save()
-
         cost = 2 ** self.country.locations.count()
         self.chara.lose_gold(1000000000 * cost)
         self.chara.lose_items('bag', [Item(type_id=472, number=50 * cost)])
         self.chara.save()
+
+        self.chara.location.country = self.country
+        self.chara.location.save()
 
     def validate(self, data):
         location = self.chara.location.lock()
