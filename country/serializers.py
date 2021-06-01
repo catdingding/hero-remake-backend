@@ -234,7 +234,7 @@ class CountryAbandonLocationSerializer(BaseSerializer):
 
 
 class CountryBuildTownSerializer(BaseSerializer):
-    name = serializers.CharField()
+    name = serializers.CharField(max_length=10)
 
     def save(self):
         self.chara.lose_gold(1000000000)

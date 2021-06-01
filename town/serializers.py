@@ -39,7 +39,7 @@ class InnSleepSerializer(BaseSerializer):
 
 class ChangeNameSerializer(BaseSerializer):
     kind = serializers.CharField()
-    name = serializers.CharField()
+    name = serializers.CharField(max_length=10)
 
     def save(self):
         kind = self.validated_data['kind']
