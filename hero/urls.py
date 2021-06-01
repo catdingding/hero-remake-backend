@@ -29,7 +29,7 @@ from trade.views import (
     AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView
 )
 from battle.views import BattleMapViewSet, PvPFightView
-from town.views import InnSleepView
+from town.views import InnSleepView, ChangeNameView
 
 router = SimpleRouter()
 
@@ -93,5 +93,6 @@ urlpatterns = [
     path('user/charas/', UserCharaView.as_view()),
     path('exercise-rewards/', ExerciseRewardView.as_view()),
     path('town/inn/sleep/', InnSleepView.as_view()),
+    path('town/change-name/', ChangeNameView.as_view()),
     path('logs/', LogView.as_view()),
 ] + router.urls

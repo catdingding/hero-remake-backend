@@ -1,8 +1,13 @@
 from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin
 
-from town.serializers import InnSleepSerializer
+from town.serializers import InnSleepSerializer, ChangeNameSerializer
 
 
 class InnSleepView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = InnSleepSerializer
+    check_in_town = True
+
+
+class ChangeNameView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = ChangeNameSerializer
     check_in_town = True
