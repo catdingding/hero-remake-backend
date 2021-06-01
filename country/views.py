@@ -13,7 +13,7 @@ from country.serializers import (
     CountryItemTakeSerializer, CountryItemPutSerializer, CountryDonateSerializer,
     CountryOfficialSerializer, CountryProfileSerializer,
     CountryJoinRequestSerializer, CountryJoinRequestCreateSerializer, CountryJoinRequestApproveSerializer,
-    CountryOccupyLocationSerializer, CountryAbandonLocationSerializer
+    CountryOccupyLocationSerializer, CountryAbandonLocationSerializer, CountryBuildTownSerializer
 )
 from item.serializers import ItemSerializer
 
@@ -163,3 +163,7 @@ class CountryOccupyLocationView(CountryPostViewMixin, BaseGenericAPIView):
 
 class CountryAbandonLocationView(CountryPostViewMixin, BaseGenericAPIView):
     serializer_class = CountryAbandonLocationSerializer
+
+
+class CountryBuildTownView(CountryPostViewMixin, BaseGenericAPIView):
+    serializer_class = CountryBuildTownSerializer

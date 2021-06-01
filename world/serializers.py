@@ -3,6 +3,7 @@ from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
 from country.serializers import CountrySerializer
+from town.serializers import TownSerializer
 from world.models import Location, ElementType, AttributeType, SlotType
 from base.utils import calculate_distance
 
@@ -50,15 +51,9 @@ class LocationSerializer(BaseModelSerializer):
     element_type = ElementTypeSerializer()
     battle_map_name = serializers.CharField(source="battle_map.name")
     country = CountrySerializer()
-    town_name = serializers.SerializerMethodField()
+    town = TownSerializer()
 
     class Meta:
         model = Location
         fields = ['id', 'x', 'y', 'element_type',
-                  'battle_map', 'battle_map_name', 'country', 'town_name']
-
-    def get_town_name(self, obj):
-        if hasattr(obj, 'town'):
-            return obj.town.name
-        else:
-            return None
+                  'battle_map', 'battle_map_name', 'country', 'town']

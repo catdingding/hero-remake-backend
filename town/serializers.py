@@ -2,8 +2,15 @@ from django.db.models import Sum
 from rest_framework import serializers
 
 from base.serializers import BaseSerializer, BaseModelSerializer
+from town.models import Town
 
 from system.utils import push_log
+
+
+class TownSerializer(BaseModelSerializer):
+    class Meta:
+        model = Town
+        fields = ['id', 'name']
 
 
 class InnSleepSerializer(BaseSerializer):

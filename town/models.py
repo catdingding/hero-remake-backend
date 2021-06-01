@@ -3,7 +3,7 @@ from base.models import BaseModel
 
 
 class Town(BaseModel):
-    name = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=10, unique=True)
     location = models.OneToOneField("world.Location", unique=True, on_delete=models.PROTECT)
 
     description = models.CharField(max_length=200)

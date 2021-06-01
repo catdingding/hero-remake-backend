@@ -4,6 +4,7 @@ from base.serializers import BaseSerializer, BaseModelSerializer
 from country.models import Country, CountryOfficial, CountryJoinRequest
 from item.models import Item
 from chara.models import Chara
+from town.models import Town
 
 
 class CountrySerializer(BaseModelSerializer):
@@ -228,5 +229,25 @@ class CountryAbandonLocationSerializer(BaseSerializer):
         location = self.chara.location.lock()
         if location.country != self.chara.country:
             raise serializers.ValidationError("僅可放棄所屬國家的領土")
+
+        return data
+
+
+class CountryBuildTownSerializer(BaseSerializer):
+    name = serializers.CharField()
+
+    def save(self):
+        self.chara.lose_gold(1000000000)
+        self.chara.lose_items('bag', [Item(type_id=472, number=50)])
+        self.chara.save()
+
+        Town.objects.create(name=self.validated_data['name'], location=self.chara.location)
+
+    def validate(self, data):
+        location = self.chara.location.lock()
+        if location.country != self.chara.country:
+            raise serializers.ValidationError("僅可在所屬國家領土建立城鎮")
+        if hasattr(location, 'town'):
+            raise serializers.ValidationError("該位置已有城鎮")
 
         return data
