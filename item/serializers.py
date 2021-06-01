@@ -20,6 +20,7 @@ class SimpleItemSerializer(BaseSerializer):
 
 
 class ItemTypeSerializer(BaseModelSerializer):
+    element_type = ElementTypeSerializer()
     slot_type = SlotTypeSerializer()
     ability_1 = AbilitySerializer(fields=['name'])
     ability_2 = AbilitySerializer(fields=['name'])
