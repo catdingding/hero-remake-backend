@@ -259,7 +259,12 @@ class SmithReplaceAbilitySerializer(BaseSerializer):
         elif source_item.type.category_id == 3:
             cost = 50
             ability = source_item.type.ability_1
-            equipment.ability_2 = ability
+
+            # 寵物可用飾品奧義石注入ability_1
+            if equipment.type.slot_type_id == 4 and source_item.type.slot_type_id == 3:
+                equipment.ability_1 = ability
+            else:
+                equipment.ability_2 = ability
 
         cost = max(0, cost)
         self.chara.lose_proficiency(cost * 500)
@@ -282,6 +287,8 @@ class SmithReplaceAbilitySerializer(BaseSerializer):
         data['equipment'] = item.equipment
 
         if data['source_item'].type.slot_type != data['equipment'].type.slot_type:
-            raise serializers.ValidationError("裝備欄位不符")
+            # 寵物可用飾品奧義石注入ability_1
+            if not (data['equipment'].type.slot_type_id == 4 and data['source_item'].type.slot_type_id == 3 and data['source_item'].type.category_id == 3):
+                raise serializers.ValidationError("裝備欄位不符")
 
         return data
