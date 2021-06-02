@@ -17,7 +17,7 @@ from job.views import (
 )
 from item.views import (
     UseItemView, SendItemView, StorageTakeView, StoragePutView, SmithUpgradeView, SmithReplaceAbilityView,
-    PetUpgradeView
+    PetUpgradeView, SmithReplaceElementTypeView
 )
 from country.views import (
     FoundCountryView, LeaveCountryView, ChangeKingView, CountryDismissView,
@@ -88,6 +88,7 @@ urlpatterns = [
     path('country/build-town/', CountryBuildTownView.as_view()),
     path('smith/upgrade/', SmithUpgradeView.as_view()),
     path('smith/replace-ability/', SmithReplaceAbilityView.as_view()),
+    path('smith/replace-element-type/', SmithReplaceElementTypeView.as_view()),
     path('pet/upgrade/', PetUpgradeView.as_view()),
     path('map/', MapView.as_view()),
     path('world/element-types/', ElementTypeView.as_view()),

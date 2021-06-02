@@ -6,7 +6,7 @@ from base.serializers import BaseSerializer, BaseModelSerializer
 from base.utils import randint
 from ability.serializers import AbilitySerializer
 from world.serializers import SlotTypeSerializer, ElementTypeSerializer
-from world.models import SlotType
+from world.models import SlotType, ElementType
 from item.models import Item, ItemType, Equipment
 from chara.models import Chara
 
@@ -291,4 +291,37 @@ class SmithReplaceAbilitySerializer(BaseSerializer):
             if not (data['equipment'].type.slot_type_id == 4 and data['source_item'].type.slot_type_id == 3 and data['source_item'].type.category_id == 3):
                 raise serializers.ValidationError("裝備欄位不符")
 
+        return data
+
+
+class SmithReplaceElementTypeSerializer(BaseSerializer):
+    slot_type = serializers.PrimaryKeyRelatedField(queryset=SlotType.objects.all())
+    new_element_type = serializers.PrimaryKeyRelatedField(queryset=ElementType.objects.all())
+
+    def save(self):
+        equipment = self.validated_data['equipment']
+
+        equipment.upgrade_times = 0
+        equipment.attack_add_on = 0
+        equipment.defense_add_on = 0
+        equipment.weight_add_on = 0
+        equipment.element_type = self.validated_data['new_element_type']
+
+        equipment.save()
+
+    def validate_slot_type(self, value):
+        if value.id == 4:
+            raise serializers.ValidationError("寵物無法更改屬性")
+        return value
+
+    def validate(self, data):
+        item = self.chara.slots.get(type=data['slot_type']).item
+        if item is None:
+            raise serializers.ValidationError("該裝備欄未裝備")
+
+        equipment = item.equipment
+        if equipment.upgrade_times < equipment.upgrade_times_limit:
+            raise serializers.ValidationError("尚未強化滿級")
+
+        data['equipment'] = equipment
         return data
