@@ -15,6 +15,8 @@ class EmptyEquipment:
     ability_1 = None
     ability_2 = None
 
+    element_type_id = None
+
 
 class Battle:
     def __init__(self, attackers, defenders, battle_type, element_type=None):
@@ -129,6 +131,8 @@ class BattleChara:
 
         self.poison = 0
         self.blocked_ability_count = 0
+        self.weapon_effect_blocked = False
+        self.reduced_skill_rate = 0
 
         # 奧義類型15:增加初始AP
         self.action_points += self.ability_type_power(15)
@@ -224,9 +228,15 @@ class BattleChara:
         # 奧義類型6:魔力之術
         if self.has_ability_type(6):
             mp_cost -= int(mp_cost * self.ability_type_power(6))
+        # 無防
+        if self.has_equipment_effect(2, 1):
+            mp_cost -= int(mp_cost * 0.5)
+            self.log(f"[無防特效]{self.name}的技能MP消耗降低")
+
         # 奧義類型25:戰技激發
         if self.has_ability_type(25):
             rate += rate // 2
+        rate -= int(rate * self.reduced_skill_rate)
 
         if self.mp >= skill.mp_cost and skill.rate >= randint(1, 100):
             self.mp -= mp_cost
@@ -252,7 +262,8 @@ class BattleChara:
             self.log(f"{self.name}恢復了{hp_add}點 HP")
 
     def after_action(self):
-        pass
+        self.weapon_effect_blocked = False
+        self.reduced_skill_rate = 0
 
     def has_ability_type(self, type_id):
         return type_id in self.ability_types
@@ -262,6 +273,11 @@ class BattleChara:
             return self.ability_types[type_id].power
         except KeyError:
             return 0
+
+    def has_equipment_effect(self, slot_type_id, element_type_id):
+        if self.weapon_effect_blocked and slot_type_id == 1:
+            return False
+        return hasattr(self, 'equipments') and self.equipments[slot_type_id].element_type_id == element_type_id and self.element_type.id == element_type_id
 
     def gain_hp(self, hp_add):
         self.hp = min(self.hp_max, self.hp + hp_add)
@@ -282,6 +298,14 @@ class BattleChara:
         damage += int(damage * self.ability_type_power(2))
         # 奧義類型3:防禦術
         damage -= int(damage * defender.ability_type_power(3))
+        # 星防
+        if self.has_equipment_effect(2, 5):
+            damage += int(damage * 0.25)
+            self.log(f"[星防特效]{self.name}造成的普攻傷害上升")
+        # 暗防
+        if defender.has_equipment_effect(2, 8):
+            damage -= int(damage * 0.4)
+            defender.log(f"[暗防特效]{defender.name}受到的普攻傷害減低")
 
         defender.take_damage(self, damage)
 
@@ -383,6 +407,19 @@ class BattleChara:
         damage += int(damage * self.ability_type_power(5))
         # 奧義類型7:戰防
         damage -= int(damage * defender.ability_type_power(7))
+        # 無武
+        if self.has_equipment_effect(1, 1):
+            damage += int(damage * 0.4)
+            self.log(f"[無武特效]{self.name}的技能傷害增加")
+
+        # 光武
+        if defender.has_equipment_effect(1, 7):
+            damage -= int(damage * 0.3)
+            defender.log(f"[光武特效]{defender.name}受到的技能傷害減少")
+        # 光防
+        if defender.has_equipment_effect(2, 7):
+            damage -= int(damage * 0.64)
+            defender.log(f"[光防特效]{defender.name}受到的技能傷害減少")
 
         defender.take_damage(self, damage, skill)
 
@@ -396,6 +433,11 @@ class BattleChara:
         if attacker.has_ability_type(56):
             speed_gap_check = 2000
             eva_check = 2000
+        # 星武
+        if attacker.has_equipment_effect(1, 5):
+            speed_gap_check *= 10
+            eva_check *= 10
+            attacker.log(f"[星武特效]{attacker.name}的命中率上升")
 
         # 17,18無視反擊、迴避、躲避、奧義類型8
         if skill is not None and skill.type_id in [17, 18]:
@@ -547,7 +589,53 @@ class BattleChara:
                 self.blocked_ability_count += 1
                 self.log(f"{self.name}的{ability.name}被封印了")
 
-        if self.hp == 0:
+        # 火武
+        if attacker.has_equipment_effect(1, 2):
+            hp_loss = int(self.hp_max * 0.01)
+            self.hp -= hp_loss
+            self.log(f"[火武特效]{self.name}損失了{hp_loss}HP")
+        # 水武
+        elif attacker.has_equipment_effect(1, 3):
+            hp_loss = int(self.hp_max * 0.005)
+            self.hp -= hp_loss
+            attacker.gain_hp(hp_loss)
+            attacker.log(f"[水武特效]吸收了{self.name}的{hp_loss}HP")
+        # 風武
+        elif attacker.has_equipment_effect(1, 4):
+            attacker.action_points += 100
+            attacker.log(f"[風武特效]{attacker.name}獲得了100AP")
+        # 雷武
+        elif attacker.has_equipment_effect(1, 6):
+            if randint(1, 5) == 1:
+                self.action_points -= 1000
+                self.log(f"[雷武特效]{self.name}被麻痹了，AP減少了1000")
+        # 暗武
+        elif attacker.has_equipment_effect(1, 8):
+            self.reduced_skill_rate = 0.5
+            self.log(f"[暗武特效]{self.name}的技能發動率被降低了")
+
+        # 火防
+        if self.has_equipment_effect(2, 2):
+            hp_loss = int(self.hp_max * 0.01)
+            self.hp -= hp_loss
+            attacker.log(f"[火防特效]{attacker.name}損失了{hp_loss}HP")
+        # 水防
+        elif self.has_equipment_effect(2, 3):
+            hp_add = int(self.hp_max * 0.01)
+            self.gain_hp(hp_add)
+            attacker.weapon_effect_blocked = True
+            self.log(f"[水防特效]{self.name}恢復了{hp_add}HP，並封印了對手的武器特效")
+        # 風防
+        elif self.has_equipment_effect(2, 4):
+            self.action_points += 100
+            self.log(f"[風防特效]{self.name}獲得了100AP")
+        # 雷防
+        elif self.has_equipment_effect(2, 6):
+            attacker.action_points -= 100
+            attacker.log(f"[雷防特效]{attacker.name}的AP減少了100點")
+
+        if self.hp <= 0:
+            self.hp = 0
             self.log(f"{self.name}倒下了")
 
             # 奧義類型11:復活
