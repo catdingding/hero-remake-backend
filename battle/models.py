@@ -4,6 +4,7 @@ from base.models import BaseModel
 
 class BattleMap(BaseModel):
     name = models.CharField(max_length=20, unique=True)
+    exp = models.IntegerField()
     proficiency = models.IntegerField()
     need_ticket = models.BooleanField()
 
@@ -19,6 +20,7 @@ class Monster(BaseModel):
 
     gold = models.IntegerField()
     exp = models.IntegerField()
+    proficiency = models.IntegerField()
 
 
 class MonsterAttribute(BaseModel):

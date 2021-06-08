@@ -196,7 +196,9 @@ class BaseBattleMapProcessor():
 
     def get_proficiency(self):
         # 奧義類型22:獲得額外熟練與經驗
-        return self.battle_map.proficiency * len(self.monsters) + self.chara.equipped_ability_type_power(22)
+        proficiency = sum(self.battle_map.proficiency + monster.proficiency for monster in self.monsters)
+        proficiency += self.chara.equipped_ability_type_power(22)
+        return proficiency
 
     def get_gold(self):
         gold = sum(monster.gold for monster in self.monsters)
@@ -207,7 +209,9 @@ class BaseBattleMapProcessor():
 
     def get_exp(self):
         # 奧義類型22:獲得額外熟練與經驗
-        return sum(monster.exp for monster in self.monsters) * int(1 + self.chara.equipped_ability_type_power(22) * 2)
+        exp = self.battle_map.exp + sum(monster.exp for monster in self.monsters)
+        exp *= int(1 + self.chara.equipped_ability_type_power(22) * 2)
+        return exp
 
     def find_battle_maps(self):
         battle_maps = []
