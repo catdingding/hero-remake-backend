@@ -165,6 +165,17 @@ class BattleChara:
             self.hp = self.hp_max
             self.mp = self.mp_max
 
+        # 同屬武防提升HP
+        equipmen_hp_bonus = 0.1 * \
+            (int(self.equipments[1].element_type_id == self.element_type.id) +
+             int(self.equipments[2].element_type_id == self.element_type.id))
+        self.hp_max += int(self.hp_max * equipmen_hp_bonus)
+        self.hp += int(self.hp * equipmen_hp_bonus)
+        # 同屬飾品提升MP
+        equipmen_mp_bonus = 0.1 * int(self.equipments[3].element_type_id == self.element_type.id)
+        self.mp_max += int(self.mp_max * equipmen_mp_bonus)
+        self.mp += int(self.mp * equipmen_mp_bonus)
+
     def create_from_monster(self, monster):
         abilities = list(monster.abilities.all())
         self.ability_types = {
