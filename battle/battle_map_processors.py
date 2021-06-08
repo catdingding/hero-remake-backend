@@ -304,6 +304,9 @@ class BattleMapProcessor_6(BaseBattleMapProcessor):
         {'id': 1, 'rand': 6000},
         {'id': 6, 'rand': 400}
     ]
+    map_loot_settings = [
+        {'id': 1004, 'rand': 2500}
+    ]
 
     def get_monster_loots(self):
         loots = super().get_monster_loots()
