@@ -205,9 +205,9 @@ class PetUpgradeSerializer(BaseSerializer):
 
         if equipment.upgrade_times < equipment.upgrade_times_limit:
             equipment.upgrade_times += times
-            equipment.attack_add_on += pet_type.attack_growth
-            equipment.defense_add_on += pet_type.defense_growth
-            equipment.weight_add_on += pet_type.weight_growth
+            equipment.attack_add_on += pet_type.attack_growth * times
+            equipment.defense_add_on += pet_type.defense_growth * times
+            equipment.weight_add_on += pet_type.weight_growth * times
         else:
             targets = pet_type.evolution_targets.all()
             target_item_type = choices(targets, weights=[x.weight for x in targets])[0].target_pet_type.item_type

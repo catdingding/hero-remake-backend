@@ -139,6 +139,9 @@ class UseEffect_8(BaseUseEffect):
     def execute(self):
         from item.serializers import PetUpgradeSerializer
 
+        if not self.chara.slots.filter(type=4, item__equipment__element_type=self.type.element_type).exists():
+            raise ValidationError("未裝備對應屬性的寵物")
+
         serializer = PetUpgradeSerializer(data={'times': self.n})
         serializer.chara = self.chara
         serializer.is_valid(raise_exception=True)
