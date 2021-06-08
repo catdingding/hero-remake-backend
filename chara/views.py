@@ -11,7 +11,7 @@ from .models import Chara, CharaSlot, CharaAttribute, BattleMapTicket
 from item.models import Item
 from chara.serializers import (
     CharaIntroductionSerializer, SendGoldSerializer, SlotEquipSerializer, SlotDivestSerializer, RestSerializer,
-    CharaProfileSerializer, IncreaseHPMPMaxSerializer, HandInQuestSerializer
+    CharaProfileSerializer, CharaPublicProfileSerializer, IncreaseHPMPMaxSerializer, HandInQuestSerializer
 )
 from item.serializers import ItemSerializer
 
@@ -46,23 +46,22 @@ class CharaProfileView(BaseGenericAPIView):
 
 class CharaViewSet(ListModelMixin, BaseGenericViewSet):
     queryset = Chara.objects.all()
-    serializer_class = CharaProfileSerializer
-    serializer_fields = ['id', 'name', 'official', 'pvp_points']
+    serializer_class = CharaPublicProfileSerializer
 
     filter_backends = [OrderingFilter, SearchFilter, DjangoFilterBackend]
     ordering_fields = ['pvp_points']
     search_fields = ['name']
     filterset_fields = ['id', 'country']
 
-    @action(methods=['get'], detail=True, serializer_fields=[
-        'name', 'country', 'element_type', 'job', 'level', 'pvp_points', 'slots',
-        'hp', 'hp_max', 'mp', 'mp_max', 'attributes', 'introduction'
-    ])
+    def get_queryset(self):
+        return self.get_serializer_class().process_queryset(self.request, super().get_queryset())
+
+    @action(methods=['get'], detail=True)
     def profile(self, request, pk):
         serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
 
-    @action(methods=['get'], detail=False, serializer_fields=['id', 'name'])
+    @action(methods=['get'], detail=False)
     def online(self, request):
         serializer = self.get_serializer(
             self.get_queryset().filter(updated_at__gt=datetime.now() - timedelta(minutes=10)),

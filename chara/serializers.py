@@ -56,50 +56,83 @@ class CharaIntroductionSerializer(BaseModelSerializer):
 class CharaRecordSerializer(BaseModelSerializer):
     class Meta:
         model = CharaRecord
-        fields = ['total_battle', 'today_battle', 'world_monster_quest_counter', 'country_monster_quest_counter']
+        exclude = ['id', 'created_at', 'updated_at']
 
 
-class CharaProfileSerializer(BaseModelSerializer):
+class CharaPublicProfileSerializer(BaseModelSerializer):
     from job.serializers import JobSerializer
 
-    location = LocationSerializer()
     country = CountrySerializer()
     official = CountryOfficialSerializer()
-    is_king = serializers.SerializerMethodField()
-    element_type = ElementTypeSerializer()
+
     job = JobSerializer(fields=['name', 'attribute_type'])
     level = serializers.IntegerField()
-
-    hp_limit = serializers.IntegerField()
-    mp_limit = serializers.IntegerField()
+    element_type = ElementTypeSerializer()
 
     main_ability = AbilitySerializer(fields=['id', 'name'])
     job_ability = AbilitySerializer(fields=['id', 'name'])
     live_ability = AbilitySerializer(fields=['id', 'name'])
 
     slots = CharaSlotSerializer(many=True)
-    bag_items = ItemSerializer(many=True)
-    skill_settings = CharaSkillSettingSerializer(many=True)
-
     attributes = CharaAttributeSerialiser(many=True)
-    battle_map_tickets = BattleMapTicketSerialiser(many=True)
 
     introduction = CharaIntroductionSerializer()
     record = CharaRecordSerializer()
 
     class Meta:
         model = Chara
-        exclude = ['user', 'created_at', 'updated_at', 'abilities', 'storage_items']
+        exclude = [
+            'user', 'created_at', 'updated_at', 'abilities', 'storage_items',
+            'location', 'bag_items', 'gold', 'proficiency', 'next_action_time', 'health'
+        ]
+
+    @classmethod
+    def process_queryset(cls, request, queryset):
+        for field in ['country', 'official', 'element_type', 'job', 'main_ability', 'job_ability', 'live_ability', 'record', 'introduction']:
+            if is_included(request, field):
+                queryset = queryset.select_related(field)
+
+        if is_included(request, 'job'):
+            queryset = queryset.select_related('job__attribute_type')
+
+        if is_included(request, 'slots'):
+            queryset = queryset.prefetch_related(Prefetch('slots', CharaSlot.objects.select_related(
+                'type', 'item__type__slot_type', 'item__equipment__ability_1', 'item__equipment__ability_2', 'item__equipment__element_type'
+            )))
+
+        if is_included(request, 'attributes'):
+            queryset = queryset.prefetch_related(Prefetch('attributes', CharaAttribute.objects.select_related(
+                'type'
+            )))
+
+        return queryset
+
+
+class CharaProfileSerializer(CharaPublicProfileSerializer):
+    location = LocationSerializer()
+    is_king = serializers.SerializerMethodField()
+
+    hp_limit = serializers.IntegerField()
+    mp_limit = serializers.IntegerField()
+
+    bag_items = ItemSerializer(many=True)
+    skill_settings = CharaSkillSettingSerializer(many=True)
+
+    battle_map_tickets = BattleMapTicketSerialiser(many=True)
+
+    class Meta:
+        model = Chara
+        exclude = [
+            'user', 'created_at', 'updated_at', 'abilities', 'storage_items'
+        ]
 
     def get_is_king(self, chara):
         return hasattr(chara, 'king_of')
 
-    def process_queryset(request, queryset):
-        for field in ['country', 'official', 'element_type', 'job', 'main_ability', 'job_ability', 'live_ability', 'record', 'introduction']:
-            if is_included(request, field):
-                queryset = queryset.select_related(field)
-        if is_included(request, 'job'):
-            queryset = queryset.select_related('job__attribute_type')
+    @classmethod
+    def process_queryset(cls, request, queryset):
+        queryset = super().process_queryset(request, queryset)
+
         if is_included(request, 'location'):
             queryset = queryset.select_related('location__country', 'location__town',
                                                'location__element_type', 'location__battle_map')
@@ -109,15 +142,6 @@ class CharaProfileSerializer(BaseModelSerializer):
         if is_included(request, 'bag_items'):
             queryset = queryset.prefetch_related(Prefetch('bag_items', Item.objects.select_related(
                 'type__slot_type', 'equipment__ability_1', 'equipment__ability_2', 'equipment__element_type'
-            )))
-        if is_included(request, 'slots'):
-            queryset = queryset.prefetch_related(Prefetch('slots', CharaSlot.objects.select_related(
-                'type', 'item__type__slot_type', 'item__equipment__ability_1', 'item__equipment__ability_2', 'item__equipment__element_type'
-            )))
-
-        if is_included(request, 'attributes'):
-            queryset = queryset.prefetch_related(Prefetch('attributes', CharaAttribute.objects.select_related(
-                'type'
             )))
 
         if is_included(request, 'battle_map_tickets'):
