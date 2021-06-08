@@ -6,6 +6,8 @@ from item.models import Item
 from chara.models import Chara
 from town.models import Town
 
+from system.utils import push_log
+
 
 class CountrySerializer(BaseModelSerializer):
     class Meta:
@@ -170,6 +172,8 @@ class CountryItemTakeSerializer(BaseSerializer):
         items = self.country.lose_items(items, mode='return')
         self.chara.get_items("bag", items)
 
+        push_log("國庫", f"{self.chara.name}自國庫取出了{item.type.name}*{item.number}")
+
 
 class CountryItemPutSerializer(BaseSerializer):
     item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
@@ -182,6 +186,8 @@ class CountryItemPutSerializer(BaseSerializer):
 
         items = self.chara.lose_items("bag", items, mode='return')
         self.country.get_items(items)
+
+        push_log("國庫", f"{self.chara.name}向國庫存入了{item.type.name}*{item.number}")
 
 
 class CountryDonateSerializer(BaseSerializer):

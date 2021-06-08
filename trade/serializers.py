@@ -44,6 +44,7 @@ class AuctionCreateSerializer(BaseModelSerializer):
         item.save()
         auction = Auction.objects.create(seller=self.chara, item=item, due_time=due_time, **validated_data)
 
+        push_log("拍賣", f"{self.chara.name}在拍賣場上架了{item.type.name}*{item.number}，底價{auction.reserve_price}，時限{hours}小時")
         return auction
 
 
@@ -158,6 +159,7 @@ class SaleCreateSerializer(BaseModelSerializer):
         item.save()
         sale = Sale.objects.create(seller=self.chara, item=item, due_time=due_time, **validated_data)
 
+        push_log("交易", f"{self.chara.name}在出售所上架了{item.type.name}*{item.number}，價格{sale.price}，時限{hours}小時")
         return sale
 
 
