@@ -146,9 +146,6 @@ class Chara(BaseModel):
 
         CharaAttribute.objects.bulk_update(attrs.values(), fields=['value'])
 
-        self.record.monthly_level_up += n_level
-        self.record.save()
-
     def get_items(self, kind, *args, **kwargs):
         assert kind in ['bag', 'storage']
         field = getattr(self, kind + '_items')
@@ -221,7 +218,6 @@ class CharaRecord(BaseModel):
     chara = models.OneToOneField("chara.Chara", on_delete=models.CASCADE, related_name="record")
 
     total_battle = models.IntegerField(default=0)
-    monthly_level_up = models.IntegerField(default=0)
 
     level_down_count = models.IntegerField(default=0)
 

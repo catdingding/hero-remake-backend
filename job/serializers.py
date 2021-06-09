@@ -28,8 +28,7 @@ class ChangeJobSerializer(BaseSerializer):
         job = self.validated_data['job']
 
         # calculat bonus
-        level_up_bonus = min(50, chara.record.monthly_level_up // 100)
-        total_battle_bonus = min(100, chara.record.total_battle // 2000)
+        total_battle_bonus = min(200, chara.record.total_battle // 2000)
 
         # calculate attributes
         for job_attr in job.attributes.all():
@@ -38,7 +37,7 @@ class ChangeJobSerializer(BaseSerializer):
             current_bonus = random.randint(0, round(chara_attr.value / 1.5))
             prof_bonus = round(chara_attr.proficiency ** 0.375)
 
-            new_attr_value = job_attr.base_value + current_bonus + prof_bonus + level_up_bonus + total_battle_bonus
+            new_attr_value = job_attr.base_value + current_bonus + prof_bonus + total_battle_bonus
             chara_attr.value = min(chara_attr.limit, max(30, new_attr_value))
 
             if chara_attr.type_id != job.attribute_type:
