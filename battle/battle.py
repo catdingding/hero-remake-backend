@@ -625,8 +625,10 @@ class BattleChara:
             self.reduced_skill_rate = 0.5
             self.log(f"[暗武特效]{self.name}的技能發動率被降低了")
 
+        if self.hp <= 0:
+            pass
         # 火防
-        if self.has_equipment_effect(2, 2):
+        elif self.has_equipment_effect(2, 2):
             hp_loss = int(self.hp_max * 0.01)
             self.hp -= hp_loss
             attacker.log(f"[火防特效]{attacker.name}損失了{hp_loss}HP")
