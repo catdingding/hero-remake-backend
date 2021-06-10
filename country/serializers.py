@@ -24,7 +24,7 @@ class CountryProfileSerializer(BaseModelSerializer):
 
     class Meta:
         model = Country
-        fields = ['id', 'name', 'gold', 'location_count', 'created_at']
+        fields = ['id', 'name', 'gold', 'item_limit', 'location_count', 'created_at']
 
 
 class FoundCountrySerializer(BaseModelSerializer):
@@ -257,3 +257,10 @@ class CountryBuildTownSerializer(BaseSerializer):
             raise serializers.ValidationError("該位置已有城鎮")
 
         return data
+
+
+class CountryUpgradeStorageSerializer(BaseSerializer):
+    def save(self):
+        self.country.lose_gold(self.country.item_limit * 1000000)
+        self.country.item_limit += 1
+        self.country.save()

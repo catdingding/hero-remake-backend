@@ -23,7 +23,8 @@ from country.views import (
     FoundCountryView, LeaveCountryView, ChangeKingView, CountryDismissView,
     CountryItemPutView, CountryItemTakeView, CountryDonateView, CountryItemView,
     CountryViewSet, CountryJoinRequestViewSet, CountryOfficialViewSet,
-    CountryOccupyLocationView, CountryAbandonLocationView, CountryBuildTownView
+    CountryOccupyLocationView, CountryAbandonLocationView, CountryBuildTownView,
+    CountryUpgradeStorageView
 )
 from trade.views import (
     AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView
@@ -86,6 +87,7 @@ urlpatterns = [
     path('country/occupy-location/', CountryOccupyLocationView.as_view()),
     path('country/abandon-location/', CountryAbandonLocationView.as_view()),
     path('country/build-town/', CountryBuildTownView.as_view()),
+    path('country/upgrade-storage/', CountryUpgradeStorageView.as_view()),
     path('smith/upgrade/', SmithUpgradeView.as_view()),
     path('smith/replace-ability/', SmithReplaceAbilityView.as_view()),
     path('smith/replace-element-type/', SmithReplaceElementTypeView.as_view()),

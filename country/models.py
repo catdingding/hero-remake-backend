@@ -1,4 +1,5 @@
 from django.db import models
+from rest_framework.exceptions import ValidationError
 
 from base.models import BaseModel
 from base.utils import get_items, lose_items
@@ -18,6 +19,11 @@ class Country(BaseModel):
 
     def lose_items(self, *args, **kwargs):
         return lose_items(self.items, *args, **kwargs)
+
+    def lose_gold(self, number):
+        if self.gold < number:
+            raise ValidationError("金錢不足")
+        self.gold -= number
 
 
 class CountryJoinRequest(BaseModel):
