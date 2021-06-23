@@ -83,7 +83,8 @@ class CharaPublicProfileSerializer(BaseModelSerializer):
         model = Chara
         exclude = [
             'user', 'created_at', 'updated_at', 'abilities', 'storage_items',
-            'location', 'bag_items', 'gold', 'proficiency', 'next_action_time', 'health'
+            'location', 'bag_items', 'gold', 'proficiency', 'next_action_time', 'health',
+            'member_point', 'has_cold_down_bonus', 'has_quest_bonus', 'has_auto_heal'
         ]
 
     @classmethod
@@ -257,7 +258,12 @@ class HandInQuestSerializer(BaseSerializer):
     }
 
     def save(self):
-        setattr(self.chara.record, self.validated_data['counter'], 0)
+        if self.chara.has_quest_bonus:
+            orig = getattr(self.chara.record, self.validated_data['counter'])
+            cost = self.quest_requirements[self.validated_data['quest']]
+            setattr(self.chara.record, self.validated_data['counter'], orig - cost)
+        else:
+            setattr(self.chara.record, self.validated_data['counter'], 0)
         self.chara.record.save()
 
         # 任務池

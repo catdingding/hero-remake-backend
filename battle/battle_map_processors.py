@@ -76,10 +76,16 @@ class BaseBattleMapProcessor():
 
         battle_chara = battle.find_chara_by_source(self.chara)
 
-        self.chara.hp = min(self.chara.hp_max, battle_chara.hp)
-        self.chara.mp = min(self.chara.mp_max, battle_chara.mp)
+        if self.chara.has_auto_heal:
+            self.chara.hp = self.chara.hp_max
+            self.chara.mp = self.chara.mp_max
+        else:
+            self.chara.hp = min(self.chara.hp_max, battle_chara.hp)
+            self.chara.mp = min(self.chara.mp_max, battle_chara.mp)
+
         if self.chara.health > 0 and randint(1, 100) == 1:
             self.chara.health -= 1
+
         self.chara.gold += gold
         self.chara.proficiency += proficiency
         self.chara.gain_exp(exp)

@@ -13,7 +13,9 @@ from trade.serializers import (
     SaleSerializer, SaleCreateSerializer, SaleBuySerializer, SaleReceiveItemSerializer,
     PurchaseSerializer, PurchaseCreateSerializer, PurchaseSellSerializer, PurchaseReceiveGoldSerializer,
     ExchangeOptionSerializer, ExchangeSerializer,
-    StoreOptionSerializer, StoreBuySerializer, SellItemSerializer
+    StoreOptionSerializer, StoreBuySerializer, SellItemSerializer,
+    MemberShopBuyColdDownBonusSerializer, MemberShopBuyAutoHealSerializer, MemberShopBuyQuestBonusSerializer,
+    MemberShopBuyBagItemLimitSerializer, MemberShopBuyLevelDownSerializer
 )
 
 
@@ -242,3 +244,41 @@ class StoreOptionViewSet(ListModelMixin, BaseGenericViewSet):
 class SellItemView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SellItemSerializer
     check_in_town = True
+
+
+class MemberShopViewSet(BaseGenericViewSet):
+    serializer_action_classes = {
+        'buy_cold_down_bonus': MemberShopBuyColdDownBonusSerializer,
+        'buy_quest_bonus': MemberShopBuyQuestBonusSerializer,
+        'buy_auto_heal': MemberShopBuyAutoHealSerializer,
+        'buy_bag_item_limit': MemberShopBuyBagItemLimitSerializer,
+        'buy_level_down': MemberShopBuyLevelDownSerializer
+    }
+
+    def buy(self, request):
+        chara = self.get_chara(lock=True)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        result = serializer.save()
+
+        return Response(result)
+
+    @action(methods=['post'], detail=False, url_path='buy-cold-down-bonus')
+    def buy_cold_down_bonus(self, request):
+        return self.buy(request)
+
+    @action(methods=['post'], detail=False, url_path='buy-quest-bonus')
+    def buy_quest_bonus(self, request):
+        return self.buy(request)
+
+    @action(methods=['post'], detail=False, url_path='buy-auto-heal')
+    def buy_auto_heal(self, request):
+        return self.buy(request)
+
+    @action(methods=['post'], detail=False, url_path='buy-bag-item-limit')
+    def buy_bag_item_limit(self, request):
+        return self.buy(request)
+
+    @action(methods=['post'], detail=False, url_path='buy-level-down')
+    def buy_level_down(self, request):
+        return self.buy(request)

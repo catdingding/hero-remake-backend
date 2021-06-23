@@ -367,3 +367,86 @@ class SellItemSerializer(BaseSerializer):
         self.chara.save()
 
         return {'display_message': f'出售物品，獲得了{gold}金錢'}
+
+
+class MemberShopBuyColdDownBonusSerializer(BaseSerializer):
+    def save(self):
+        self.chara.lose_member_point(300)
+        self.chara.has_cold_down_bonus = True
+        self.chara.save()
+
+        return {'display_message': '已成功購買冷卻加成'}
+
+    def validate(self, data):
+        if self.chara.has_cold_down_bonus:
+            raise serializers.ValidationError("已購買冷卻加成")
+        return data
+
+
+class MemberShopBuyQuestBonusSerializer(BaseSerializer):
+    def save(self):
+        self.chara.lose_member_point(200)
+        self.chara.has_quest_bonus = True
+        self.chara.save()
+
+        return {'display_message': '已成功購買任務加成'}
+
+    def validate(self, data):
+        if self.chara.has_quest_bonus:
+            raise serializers.ValidationError("已購買任務加成")
+        return data
+
+
+class MemberShopBuyAutoHealSerializer(BaseSerializer):
+    def save(self):
+        self.chara.lose_member_point(200)
+        self.chara.has_auto_heal = True
+        self.chara.save()
+
+        return {'display_message': '已成功購買自動回血回魔'}
+
+    def validate(self, data):
+        if self.chara.has_quest_bonus:
+            raise serializers.ValidationError("已購買自動回血回魔")
+        return data
+
+
+class MemberShopBuyBagItemLimitSerializer(BaseSerializer):
+    number = serializers.IntegerField(min_value=1)
+
+    def save(self):
+        number = self.validated_data['number']
+
+        self.chara.lose_member_point(20 * number)
+        self.chara.bag_item_limit += number
+        self.chara.save()
+
+        return {'display_message': f'已成功擴充背包至{self.chara.bag_item_limit}格'}
+
+    def validate(self, data):
+        if self.chara.bag_item_limit + data['number'] > 60:
+            raise serializers.ValidationError("背包最多擴充可至60格")
+        return data
+
+
+class MemberShopBuyLevelDownSerializer(BaseSerializer):
+    number = serializers.IntegerField(min_value=1)
+
+    def save(self):
+        number = self.validated_data['number']
+
+        self.chara.lose_member_point(20 * number)
+        self.chara.exp -= 100 * number
+        self.chara.save()
+
+        self.chara.record.level_down_count += number
+        self.chara.record.save()
+
+        return {'display_message': f'已降低了{number}級'}
+
+    def validate(self, data):
+        if self.chara.record.level_down_count + data['number'] > 300:
+            raise serializers.ValidationError("每次轉職最多可降低300等")
+        if data['number'] * 100 > self.chara.exp:
+            raise serializers.ValidationError("最多僅可降低至1級")
+        return data

@@ -58,6 +58,13 @@ class Chara(BaseModel):
     bag_item_limit = models.IntegerField(default=15)
     storage_item_limit = models.IntegerField(default=15)
 
+    # member
+    member_point = models.PositiveIntegerField(default=0)
+
+    has_cold_down_bonus = models.BooleanField(default=False)
+    has_quest_bonus = models.BooleanField(default=False)
+    has_auto_heal = models.BooleanField(default=False)
+
     @property
     def level(self):
         return self.exp // 100 + 1
@@ -119,7 +126,11 @@ class Chara(BaseModel):
         sftp_put_fo(fo, os.path.join(settings.CHARA_AVATAR_PATH, f"{self.id}.jpg"))
 
     def set_next_action_time(self, n=1):
-        self.next_action_time = max(self.next_action_time, localtime()) + timedelta(seconds=n * 15)
+        if self.has_cold_down_bonus:
+            cost = 15
+        else:
+            cost = 20
+        self.next_action_time = max(self.next_action_time, localtime()) + timedelta(seconds=n * cost)
 
     def gain_exp(self, exp):
         orig_level = self.level
@@ -136,7 +147,7 @@ class Chara(BaseModel):
             self.hp_max += random.randint(0, int(attrs['vit'].value / 40 + attrs['men'].value / 80 + 8))
             self.mp_max += random.randint(0, int(attrs['int'].value / 40 + attrs['men'].value / 80 + 2))
             for attr in attrs.values():
-                if attr.value >= attr.limit or (attr.value > 1200 and attr.type_id != self.job.attribute_id):
+                if attr.value >= attr.limit or (attr.value > 1200 and attr.type_id != self.job.attribute_type_id):
                     continue
 
                 attr.value += random.randint(0, 1)
@@ -168,6 +179,11 @@ class Chara(BaseModel):
         if self.proficiency < number:
             raise ValidationError("熟練不足")
         self.proficiency -= number
+
+    def lose_member_point(self, number):
+        if self.member_point < number:
+            raise ValidationError("點數不足")
+        self.member_point -= number
 
 
 class CharaAttribute(BaseModel):

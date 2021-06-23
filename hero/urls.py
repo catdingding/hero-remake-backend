@@ -27,7 +27,8 @@ from country.views import (
     CountryUpgradeStorageView
 )
 from trade.views import (
-    AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView
+    AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView,
+    MemberShopViewSet
 )
 from battle.views import BattleMapViewSet, PvPFightView
 from town.views import InnSleepView, ChangeNameView
@@ -45,6 +46,7 @@ router.register(r'battle/battle-maps', BattleMapViewSet)
 router.register(r'countries', CountryViewSet)
 router.register(r'country/join-requests', CountryJoinRequestViewSet)
 router.register(r'country/officials', CountryOfficialViewSet)
+router.register(r'trade/member-shop', MemberShopViewSet, basename='member-shop')
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
