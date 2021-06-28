@@ -406,7 +406,7 @@ class MemberShopBuyAutoHealSerializer(BaseSerializer):
         return {'display_message': '已成功購買自動回血回魔'}
 
     def validate(self, data):
-        if self.chara.has_quest_bonus:
+        if self.chara.has_auto_heal:
             raise serializers.ValidationError("已購買自動回血回魔")
         return data
 
