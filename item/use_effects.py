@@ -58,7 +58,7 @@ class UseEffect_3(BaseUseEffect):
         if self.type.use_effect_param == 0:
             maxima = 500
         elif self.type.use_effect_param == 1:
-            maxima = 1200
+            maxima = 9999
 
         attribute_type = self.type.attribute_type
         if attribute_type is None:
