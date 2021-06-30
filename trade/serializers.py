@@ -299,7 +299,7 @@ class PurchaseReceiveGoldSerializer(BaseSerializer):
 
 
 class ExchangeOptionRequirementSerializer(BaseModelSerializer):
-    item_type = ItemTypeSerializer(fields=['name'])
+    item_type = ItemTypeSerializer(fields=['name', 'description'])
 
     class Meta:
         model = ExchangeOptionRequirement
