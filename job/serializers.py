@@ -40,7 +40,7 @@ class ChangeJobSerializer(BaseSerializer):
             new_attr_value = job_attr.base_value + current_bonus + prof_bonus + total_battle_bonus
             chara_attr.value = min(chara_attr.limit, max(30, new_attr_value))
 
-            if chara_attr.type_id != job.attribute_type:
+            if chara_attr.type_id != job.attribute_type_id:
                 chara_attr.value = min(1200, chara_attr.value)
 
         # calculate hp / mp
