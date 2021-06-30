@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
-from country.models import Country, CountryOfficial, CountryJoinRequest
+from country.models import Country, CountryOfficial, CountryJoinRequest, CountrySetting
 from item.models import Item
 from chara.models import Chara
 from town.models import Town
@@ -15,8 +15,16 @@ class CountrySerializer(BaseModelSerializer):
         fields = ['id', 'name']
 
 
+class CountrySettingSerialzier(BaseModelSerializer):
+    class Meta:
+        model = CountrySetting
+        fields = ['introduction']
+
+
 class CountryProfileSerializer(BaseModelSerializer):
     location_count = serializers.IntegerField()
+    setting = CountrySettingSerialzier()
+
     expandable_fields = {
         'king': ('chara.serializers.CharaProfileSerializer', {'fields': ['id', 'name']}),
         'locations': ('world.serializers.LocationSerializer', {'fields': ['id', 'x', 'y'], 'many': True})
@@ -24,7 +32,7 @@ class CountryProfileSerializer(BaseModelSerializer):
 
     class Meta:
         model = Country
-        fields = ['id', 'name', 'gold', 'item_limit', 'location_count', 'created_at']
+        fields = ['id', 'name', 'gold', 'item_limit', 'location_count', 'setting', 'created_at']
 
 
 class FoundCountrySerializer(BaseModelSerializer):
@@ -34,6 +42,7 @@ class FoundCountrySerializer(BaseModelSerializer):
 
     def save(self):
         country = Country.objects.create(name=self.validated_data['name'], king=self.chara)
+        CountrySetting.objects.create(country=country)
         self.chara.location.country = country
         self.chara.location.save()
 

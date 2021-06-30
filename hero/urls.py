@@ -24,7 +24,7 @@ from country.views import (
     CountryItemPutView, CountryItemTakeView, CountryDonateView, CountryItemView,
     CountryViewSet, CountryJoinRequestViewSet, CountryOfficialViewSet,
     CountryOccupyLocationView, CountryAbandonLocationView, CountryBuildTownView,
-    CountryUpgradeStorageView
+    CountryUpgradeStorageView, SetCountrySettingView
 )
 from trade.views import (
     AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView,
@@ -81,6 +81,7 @@ urlpatterns = [
     path('country/found/', FoundCountryView.as_view()),
     path('country/leave/', LeaveCountryView.as_view()),
     path('country/change-king/', ChangeKingView.as_view()),
+    path('country/set-setting/', SetCountrySettingView.as_view()),
     path('country/dismiss/', CountryDismissView.as_view()),
     path('country/storage/items/', CountryItemView.as_view()),
     path('country/storage/take/', CountryItemTakeView.as_view()),

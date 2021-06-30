@@ -26,6 +26,12 @@ class Country(BaseModel):
         self.gold -= number
 
 
+class CountrySetting(BaseModel):
+    country = models.OneToOneField('country.Country', related_name='setting', on_delete=models.CASCADE)
+
+    introduction = models.TextField(blank=True)
+
+
 class CountryJoinRequest(BaseModel):
     country = models.ForeignKey("country.Country", related_name="country_join_requests", on_delete=models.CASCADE)
     chara = models.ForeignKey("chara.Chara", related_name="country_join_requests", on_delete=models.CASCADE)

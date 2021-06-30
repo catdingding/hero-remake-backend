@@ -14,7 +14,7 @@ from country.serializers import (
     CountryOfficialSerializer, CountryProfileSerializer,
     CountryJoinRequestSerializer, CountryJoinRequestCreateSerializer, CountryJoinRequestApproveSerializer,
     CountryOccupyLocationSerializer, CountryAbandonLocationSerializer, CountryBuildTownSerializer,
-    CountryUpgradeStorageSerializer
+    CountryUpgradeStorageSerializer, CountrySettingSerialzier
 )
 from item.serializers import ItemSerializer
 
@@ -64,24 +64,22 @@ class CountryJoinRequestViewSet(BaseGenericViewSet):
         return Response({'display_message': '入國申請已通過'})
 
 
-class CountryDismissView(BaseGenericAPIView):
+class CountryDismissView(CountryPostViewMixin, BaseGenericAPIView):
     serializer_class = CountryDismissSerializer
-
-    def post(self, request):
-        country = self.get_country(role='official', lock=True)
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response({'status': 'success'})
+    lock_chara = False
+    role = 'official'
 
 
-class ChangeKingView(BaseGenericAPIView):
+class ChangeKingView(CountryPostViewMixin, BaseGenericAPIView):
     serializer_class = ChangeKingSerializer
+
+
+class SetCountrySettingView(BaseGenericAPIView):
+    serializer_class = CountrySettingSerialzier
 
     def post(self, request):
         country = self.get_country(role='king', lock=True)
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(country.setting, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
