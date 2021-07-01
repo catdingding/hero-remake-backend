@@ -44,6 +44,7 @@ class CountryChatMessageSerializer(ChatMessageSerializer):
 
 class PrivateChatMessageSerializer(ChatMessageSerializer):
     receiver = CharaProfileSerializer()
+    is_system_generated = serializers.BooleanField()
 
     class Meta:
         channel = 'private'

@@ -11,7 +11,7 @@ from item.models import Item, ItemType, Equipment
 from chara.models import Chara
 
 from item.use_effects import USE_EFFECT_CLASSES
-from system.utils import push_log
+from system.utils import push_log, send_private_message_by_system
 
 
 class SimpleItemSerializer(BaseSerializer):
@@ -113,6 +113,8 @@ class SendItemSerializer(BaseSerializer):
         receiver.get_items("bag", items)
 
         push_log("傳送", f"{sender.name}向{receiver.name}傳送了{item.type.name}*{item.number}")
+        send_private_message_by_system(
+            sender, receiver, f"{sender.name}向{receiver.name}傳送了{item.type.name}*{item.number}")
 
     def validate_receiver(self, value):
         if value == self.chara:

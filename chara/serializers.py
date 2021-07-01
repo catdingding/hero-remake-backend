@@ -13,7 +13,7 @@ from ability.serializers import AbilitySerializer
 from country.serializers import CountrySerializer, CountryOfficialSerializer
 
 from world.serializers import SlotTypeSerializer, LocationSerializer, ElementTypeSerializer, AttributeTypeSerializer
-from system.utils import push_log
+from system.utils import push_log, send_private_message_by_system
 
 
 class BattleMapTicketSerialiser(BaseModelSerializer):
@@ -172,6 +172,7 @@ class SendGoldSerializer(BaseSerializer):
         receiver.save()
 
         push_log("傳送", f"{self.chara.name}向{receiver.name}傳送了{gold}金錢")
+        send_private_message_by_system(self.chara, receiver, f"{self.chara.name}向{receiver.name}傳送了{gold}金錢")
 
     def validate_receiver(self, value):
         if value == self.chara:

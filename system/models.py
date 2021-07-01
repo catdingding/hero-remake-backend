@@ -22,3 +22,5 @@ class PrivateChatMessage(BaseModel):
     sender = models.ForeignKey("chara.Chara", related_name="sent_chat_messages", on_delete=models.PROTECT)
     receiver = models.ForeignKey("chara.Chara", related_name="received_chat_messages", on_delete=models.PROTECT)
     content = models.CharField(max_length=400)
+
+    is_system_generated = models.BooleanField(default=False)
