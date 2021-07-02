@@ -16,23 +16,8 @@ from system.utils import push_log
 BATTLE_MAP_PROCESSORS = {}
 
 
-class AttributeUpgradeMixin:
-    def execute(self):
-        result = super().execute()
-
-        if self.win:
-            attribute_type = choice(AttributeType.objects.all())
-
-            chara_attr = self.chara.attributes.get(type=attribute_type)
-            chara_attr.limit += 1
-            chara_attr.save()
-
-            result['messages'].append(f"{attribute_type.name}上限提升了1點")
-
-        return result
-
-
 class BaseBattleMapProcessor():
+    upgrade_attribute_after_win = False
     # ItemTypePoolGroup
     map_loot_group_settings = [
         {'id': 1, 'rand': 10000}
@@ -44,6 +29,7 @@ class BaseBattleMapProcessor():
         self.chara = chara
         self.location = chara.location
         self.battle_map = battle_map
+        self.messages = []
 
     def execute(self):
         self.monsters = self.get_monsters()
@@ -67,6 +53,10 @@ class BaseBattleMapProcessor():
             exp = self.get_exp()
             proficiency = self.get_proficiency()
             found_battle_maps = self.find_battle_maps()
+
+            # 奧義類型29:成長
+            if self.upgrade_attribute_after_win or (self.chara.has_equipped_ability_type(29) and randint(1, 1000) == 1):
+                self.upgrade_attribute()
         else:
             loots = []
             exp = 0
@@ -116,7 +106,7 @@ class BaseBattleMapProcessor():
             'gold': gold,
             'proficiency': proficiency,
             'exp': exp,
-            'messages': []
+            'messages': self.messages
         }
 
     def get_monsters(self):
@@ -252,6 +242,15 @@ class BaseBattleMapProcessor():
 
         return battle_maps
 
+    def upgrade_attribute(self):
+        attribute_type = choice(AttributeType.objects.all())
+
+        chara_attr = self.chara.attributes.get(type=attribute_type)
+        chara_attr.limit += 1
+        chara_attr.save()
+
+        self.messages.append(f"{attribute_type.name}上限提升了1點")
+
 
 # 草原
 @ add_class(BATTLE_MAP_PROCESSORS)
@@ -317,6 +316,15 @@ class BattleMapProcessor_6(BaseBattleMapProcessor):
     map_loot_settings = [
         {'id': 1004, 'rand': 2500}
     ]
+
+    def get_monsters(self):
+        # 奧義類型39:挑戰之心
+        monsters = super().get_monsters()
+        if self.chara.has_equipped_ability_type(39) and randint(1, 10) == 1:
+            # 魔王
+            monsters[0] = Monster.objects.get(id=41)
+
+        return monsters
 
     def get_monster_loots(self):
         loots = super().get_monster_loots()
@@ -432,8 +440,9 @@ class BattleMapProcessor_14(BaseBattleMapProcessor):
 
 # 英雄的試練
 @ add_class(BATTLE_MAP_PROCESSORS)
-class BattleMapProcessor_15(AttributeUpgradeMixin, BaseBattleMapProcessor):
+class BattleMapProcessor_15(BaseBattleMapProcessor):
     id = 15
+    upgrade_ability_after_win = True
 
     def get_gold(self):
         return randint(1, 1000000) + 1000000
@@ -441,8 +450,9 @@ class BattleMapProcessor_15(AttributeUpgradeMixin, BaseBattleMapProcessor):
 
 # 暗黑雪原
 @ add_class(BATTLE_MAP_PROCESSORS)
-class BattleMapProcessor_16(AttributeUpgradeMixin, BaseBattleMapProcessor):
+class BattleMapProcessor_16(BaseBattleMapProcessor):
     id = 16
+    upgrade_ability_after_win = True
 
     def get_gold(self):
         return randint(1, 2000000)
