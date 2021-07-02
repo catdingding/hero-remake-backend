@@ -75,8 +75,10 @@ class CharaStorageItemView(BaseGenericAPIView):
 
     def get(self, request):
         chara = self.get_chara()
-        serializer = self.get_serializer(chara.storage_items.all(), many=True)
-
+        queryset = chara.storage_items.all().select_related(
+            'type__slot_type', 'equipment__ability_1', 'equipment__ability_2', 'equipment__element_type'
+        )
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
 
