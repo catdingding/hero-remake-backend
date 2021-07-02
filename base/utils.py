@@ -43,6 +43,8 @@ def get_items(field, limit, items):
                 item.save()
             field.add(item)
 
+            exists_item_by_type[item.type_id] = item
+
     if field.count() > limit:
         raise ValidationError("物品已滿")
 
