@@ -17,7 +17,7 @@ BATTLE_MAP_PROCESSORS = {}
 
 
 class BaseBattleMapProcessor():
-    upgrade_attribute_after_win = False
+    upgrade_attribute_limit_after_win = False
     # ItemTypePoolGroup
     map_loot_group_settings = [
         {'id': 1, 'rand': 10000}
@@ -55,7 +55,7 @@ class BaseBattleMapProcessor():
             found_battle_maps = self.find_battle_maps()
 
             # 奧義類型29:成長
-            if self.upgrade_attribute_after_win or (self.chara.has_equipped_ability_type(29) and randint(1, 1000) == 1):
+            if self.upgrade_attribute_limit_after_win or (self.chara.has_equipped_ability_type(29) and randint(1, 1000) == 1):
                 self.upgrade_attribute()
         else:
             loots = []
@@ -442,7 +442,7 @@ class BattleMapProcessor_14(BaseBattleMapProcessor):
 @ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_15(BaseBattleMapProcessor):
     id = 15
-    upgrade_ability_after_win = True
+    upgrade_attribute_limit_after_win = True
 
     def get_gold(self):
         return randint(1, 1000000) + 1000000
@@ -452,7 +452,7 @@ class BattleMapProcessor_15(BaseBattleMapProcessor):
 @ add_class(BATTLE_MAP_PROCESSORS)
 class BattleMapProcessor_16(BaseBattleMapProcessor):
     id = 16
-    upgrade_ability_after_win = True
+    upgrade_attribute_limit_after_win = True
 
     def get_gold(self):
         return randint(1, 2000000)
