@@ -28,7 +28,7 @@ def push_log(category, content):
 def send_private_message_by_system(sender, receiver, content):
     message = PrivateChatMessage.objects.create(
         sender=sender, receiver=receiver, content=content, is_system_generated=True)
-    data = {'type': 'chat_message', 'channel': 'private',
+    data = {'type': 'chat_message', 'channel': 'private', 'is_system_generated': True,
             'content': content, 'created_at': message.created_at.isoformat()}
     data['sender'] = get_chara_profile_sync(sender.id)
     data['receiver'] = get_chara_profile_sync(receiver.id)
