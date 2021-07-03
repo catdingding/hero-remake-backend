@@ -320,7 +320,7 @@ class BattleMapProcessor_6(BaseBattleMapProcessor):
     def get_monsters(self):
         # 奧義類型39:挑戰之心
         monsters = super().get_monsters()
-        if self.chara.has_equipped_ability_type(39) and randint(1, 10) == 1:
+        if self.chara.has_equipped_ability_type(39) and randint(1, 50) == 1:
             # 魔王
             monsters[0] = Monster.objects.get(id=41)
 
