@@ -1,5 +1,6 @@
 from numba import jit, int32
 import paramiko
+import math
 import random
 
 from django.conf import settings
@@ -101,3 +102,22 @@ def sftp_put_fo(fo, dest):
     sftp = paramiko.SFTPClient.from_transport(t)
     sftp.putfo(fo, dest)
     t.close()
+
+
+def format_currency(value):
+    if value == 0:
+        return "0"
+
+    output = ""
+    if value >= 100000000:
+        output = f"{math.floor(value / 100000000)}億"
+        value = value % 100000000
+
+    if value >= 10000:
+        output = f"{output}{math.floor(value / 10000)}萬"
+        value = value % 10000
+
+    if value >= 1:
+        output = f"{output}{value}"
+
+    return output

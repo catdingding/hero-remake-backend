@@ -1,7 +1,7 @@
 from django.db.models import F, Prefetch
 from rest_framework import serializers
 from rest_flex_fields import is_included
-from base.utils import randint
+from base.utils import randint, format_currency
 from base.serializers import BaseSerializer, BaseModelSerializer
 
 from world.models import SlotType
@@ -171,8 +171,9 @@ class SendGoldSerializer(BaseSerializer):
         receiver.gold += gold
         receiver.save()
 
-        push_log("傳送", f"{self.chara.name}向{receiver.name}傳送了{gold}金錢")
-        send_private_message_by_system(self.chara, receiver, f"{self.chara.name}向{receiver.name}傳送了{gold}金錢")
+        push_log("傳送", f"{self.chara.name}向{receiver.name}傳送了{format_currency(gold)}金錢")
+        send_private_message_by_system(
+            self.chara, receiver, f"{self.chara.name}向{receiver.name}傳送了{format_currency(gold)}金錢")
 
     def validate_receiver(self, value):
         if value == self.chara:
