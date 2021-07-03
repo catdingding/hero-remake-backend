@@ -211,6 +211,8 @@ class PetUpgradeSerializer(BaseSerializer):
             equipment.defense_add_on += pet_type.defense_growth * times
             equipment.weight_add_on += pet_type.weight_growth * times
         else:
+            orig_name = equipment.display_name
+
             targets = pet_type.evolution_targets.all()
             target_item_type = choices(targets, weights=[x.weight for x in targets])[0].target_pet_type.item_type
             equipment.type = target_item_type
@@ -221,6 +223,8 @@ class PetUpgradeSerializer(BaseSerializer):
 
             if equipment.custom_name == pet_type.item_type.name:
                 equipment.custom_name = target_item_type.name
+
+            push_log("進化", f"{self.chara.name}的{orig_name}進化為{target_item_type.name}")
 
         equipment.save()
 

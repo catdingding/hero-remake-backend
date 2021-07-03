@@ -51,6 +51,8 @@ class FoundCountrySerializer(BaseModelSerializer):
         self.chara.country = country
         self.chara.save()
 
+        push_log("建國", f"{self.chara.name}建立了{country.name}")
+
     def validate(self, data):
         location = self.chara.location.lock()
         if self.chara.country is not None:
@@ -100,12 +102,18 @@ class CountryJoinRequestApproveSerializer(BaseSerializer):
 
         self.instance.delete()
 
+        push_log("入國", f"{chara.name}加入了{self.country.name}")
+
 
 class LeaveCountrySerializer(BaseSerializer):
     def save(self):
+        country = self.chara.country
+
         CountryOfficial.objects.filter(chara=self.chara).delete()
         self.chara.country = None
         self.chara.save()
+
+        push_log("下野", f"{self.chara.name}離開了{country.name}")
 
     def validate(self, data):
         if self.chara.country is None:
@@ -227,6 +235,8 @@ class CountryOccupyLocationSerializer(BaseSerializer):
         self.chara.location.country = self.country
         self.chara.location.save()
 
+        push_log("建城", f"{self.country.name}佔領了({self.chara.location.x},{self.chara.location.y})")
+
     def validate(self, data):
         location = self.chara.location.lock()
         if location.country is not None:
@@ -256,7 +266,9 @@ class CountryBuildTownSerializer(BaseSerializer):
         self.chara.lose_items('bag', [Item(type_id=472, number=50)])
         self.chara.save()
 
-        Town.objects.create(name=self.validated_data['name'], location=self.chara.location)
+        town = Town.objects.create(name=self.validated_data['name'], location=self.chara.location)
+
+        push_log("建城", f"{self.chara.country.name}於({self.chara.location.x},{self.chara.location.y})建立了{town.name}")
 
     def validate(self, data):
         location = self.chara.location.lock()

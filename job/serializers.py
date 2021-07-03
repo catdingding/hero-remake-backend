@@ -11,6 +11,8 @@ from chara.models import CharaSkillSetting, CharaAttribute
 from chara.serializers import CharaSkillSettingSerializer
 from world.serializers import AttributeTypeSerializer
 
+from system.utils import push_log
+
 
 class JobSerializer(BaseModelSerializer):
     attribute_type = AttributeTypeSerializer()
@@ -129,6 +131,9 @@ class ExerciseSerializer(BaseSerializer):
                 attr.limit += limit_growth
 
         CharaAttribute.objects.bulk_update(self.chara.attrs.values(), fields=['limit'])
+
+        if rate > 1:
+            push_log("成長", f"{self.chara.name}的屬性上限在修煉後急速的上升了")
 
     def validate(self, data):
         cost = (sum(attr.limit for attr in self.chara.attrs.values()) - 1000) // 20
