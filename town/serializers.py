@@ -71,3 +71,9 @@ class ChangeNameSerializer(BaseSerializer):
         else:
             raise serializers.ValidationError("類型不存在")
         return kind
+
+    def validate(self, data):
+        if data['kind'] in ['weapon', 'armor', 'jewelry', 'pet']:
+            if '稀有' in data['name'] or '優良' in data['name']:
+                raise serializers.ValidationError("名稱中不可帶有「稀有」或是「優良」")
+        return data
