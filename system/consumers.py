@@ -60,6 +60,7 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
         messages = await self.get_public_chat_messages() + await self.get_country_chat_messages() + await self.get_private_chat_messages()
         messages.sort(key=lambda x: x['created_at'])
         for message in messages:
+            message['is_init'] = True
             await self.send_json(message)
 
     @database_sync_to_async
