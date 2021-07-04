@@ -189,7 +189,7 @@ class CountryItemTakeSerializer(BaseSerializer):
         items = self.country.lose_items(items, mode='return')
         self.chara.get_items("bag", items)
 
-        push_log("國庫", f"{self.chara.name}自國庫取出了{item.type.name}*{item.number}")
+        push_log("國庫", f"{self.chara.name}自國庫取出了{item.name}*{item.number}")
 
 
 class CountryItemPutSerializer(BaseSerializer):
@@ -204,7 +204,7 @@ class CountryItemPutSerializer(BaseSerializer):
         items = self.chara.lose_items("bag", items, mode='return')
         self.country.get_items(items)
 
-        push_log("國庫", f"{self.chara.name}向國庫存入了{item.type.name}*{item.number}")
+        push_log("國庫", f"{self.chara.name}向國庫存入了{item.name}*{item.number}")
 
 
 class CountryDonateSerializer(BaseSerializer):

@@ -112,9 +112,8 @@ class SendItemSerializer(BaseSerializer):
         items = sender.lose_items("bag", items, mode='return')
         receiver.get_items("bag", items)
 
-        item_name = item.equipment.display_name if item.type.category_id == 1 else item.type.name
-        push_log("傳送", f"{sender.name}向{receiver.name}傳送了{item_name}*{item.number}")
-        send_private_message_by_system(sender, receiver, f"{sender.name}向{receiver.name}傳送了{item_name}*{item.number}")
+        push_log("傳送", f"{sender.name}向{receiver.name}傳送了{item.name}*{item.number}")
+        send_private_message_by_system(sender, receiver, f"{sender.name}向{receiver.name}傳送了{item.name}*{item.number}")
 
     def validate_receiver(self, value):
         if value == self.chara:

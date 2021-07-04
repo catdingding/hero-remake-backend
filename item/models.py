@@ -77,6 +77,10 @@ class Item(BaseModel):
     type = models.ForeignKey("item.ItemType", on_delete=models.PROTECT)
     number = models.PositiveIntegerField()
 
+    @property
+    def name(self):
+        return self.equipment.display_name if self.type.category_id == 1 else self.type.name
+
 
 class Equipment(Item):
     QUALITY_CHOICES = [(x, x) for x in ['稀有', '優良', '普通']]
