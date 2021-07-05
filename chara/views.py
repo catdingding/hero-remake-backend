@@ -11,7 +11,8 @@ from .models import Chara, CharaSlot, CharaAttribute, BattleMapTicket
 from item.models import Item
 from chara.serializers import (
     CharaIntroductionSerializer, SendGoldSerializer, SlotEquipSerializer, SlotDivestSerializer, RestSerializer,
-    CharaProfileSerializer, CharaPublicProfileSerializer, IncreaseHPMPMaxSerializer, HandInQuestSerializer
+    CharaProfileSerializer, CharaPublicProfileSerializer, IncreaseHPMPMaxSerializer, HandInQuestSerializer,
+    CharaAvatarSerializer
 )
 from item.serializers import ItemSerializer
 
@@ -117,3 +118,7 @@ class IncreaseHPMPMaxView(CharaPostViewMixin, BaseGenericAPIView):
 
 class HandInQuestView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = HandInQuestSerializer
+
+
+class ChangeAvatarView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = CharaAvatarSerializer

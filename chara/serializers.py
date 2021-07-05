@@ -290,3 +290,13 @@ class HandInQuestSerializer(BaseSerializer):
             raise serializers.ValidationError("數量不足")
 
         return data
+
+
+class CharaAvatarSerializer(BaseSerializer):
+    avatar = serializers.ImageField()
+
+    def save(self):
+        self.chara.lose_member_point(100)
+        self.chara.save()
+
+        self.chara.set_avatar(self.validated_data['avatar'])

@@ -21,6 +21,7 @@ from battle.models import BattleMap
 class Chara(BaseModel):
     user = models.ForeignKey("user.User", related_name="charas", on_delete=models.CASCADE)
     name = models.CharField(max_length=30, unique=True)
+    avatar_version = models.IntegerField(default=0)
 
     next_action_time = models.DateTimeField(default=localtime)
 
@@ -124,6 +125,7 @@ class Chara(BaseModel):
     def set_avatar(self, file):
         fo = process_avatar(file)
         sftp_put_fo(fo, os.path.join(settings.CHARA_AVATAR_PATH, f"{self.id}.jpg"))
+        Chara.objects.filter(id=self.id).update(avatar_version=models.F('avatar_version') + 1)
 
     def set_next_action_time(self, n=1):
         if self.has_cold_down_bonus:
