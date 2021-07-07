@@ -27,7 +27,7 @@ class CountryProfileSerializer(BaseModelSerializer):
 
     expandable_fields = {
         'king': ('chara.serializers.CharaProfileSerializer', {'fields': ['id', 'name']}),
-        'locations': ('world.serializers.LocationSerializer', {'fields': ['id', 'x', 'y'], 'many': True})
+        'locations': ('world.serializers.LocationSerializer', {'fields': ['id', 'x', 'y', 'battle_map_name'], 'many': True})
     }
 
     class Meta:
