@@ -127,7 +127,7 @@ class BattleChara:
         self.eva = min(400, self.dex // 3)
         # 暴擊率
         # 奧義類型10:暴擊率提升
-        self.critical = min(250, 20 + self.dex // 3 + self.ability_type_power(10) * 1000)
+        self.critical = min(250, 20 + self.dex // 3) + self.ability_type_power(10) * 1000
 
         self.poison = 0
         self.blocked_ability_count = 0
@@ -482,9 +482,9 @@ class BattleChara:
             return
 
         # 暴擊處理
-        # 奧義類型10:詛咒
+        # 奧義類型58:詛咒
         # 奧義類型44:安撫
-        if attacker.critical * (1 - self.ability_type_power(10)) >= randint(1, 1000) and not self.has_ability_type(44):
+        if attacker.critical * (1 - self.ability_type_power(58)) >= randint(1, 1000) and not self.has_ability_type(44):
             damage = int(damage * 1.5)
             # 奧義類型23:暴擊傷害提升
             damage += int(damage * attacker.ability_type_power(23))
