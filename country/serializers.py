@@ -6,7 +6,7 @@ from item.models import Item
 from chara.models import Chara
 from town.models import Town
 
-from system.utils import push_log
+from system.utils import push_log, send_private_message_by_system
 
 
 class CountrySerializer(BaseModelSerializer):
@@ -78,7 +78,12 @@ class CountryJoinRequestCreateSerializer(BaseModelSerializer):
         fields = ['country']
 
     def create(self, validated_data):
-        return CountryJoinRequest.objects.create(chara=self.chara, country=validated_data['country'])
+        join_request = CountryJoinRequest.objects.create(chara=self.chara, country=validated_data['country'])
+
+        for official in validated_data['country'].officials.all():
+            send_private_message_by_system(self.chara.id, official.chara_id, f"{self.chara.name}發出了入國申請")
+
+        return join_request
 
     def validate(self, data):
         if self.chara.country:

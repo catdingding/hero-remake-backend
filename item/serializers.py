@@ -113,7 +113,8 @@ class SendItemSerializer(BaseSerializer):
         receiver.get_items("bag", items)
 
         push_log("傳送", f"{sender.name}向{receiver.name}傳送了{item.name}*{item.number}")
-        send_private_message_by_system(sender, receiver, f"{sender.name}向{receiver.name}傳送了{item.name}*{item.number}")
+        send_private_message_by_system(
+            sender.id, receiver.id, f"{sender.name}向{receiver.name}傳送了{item.name}*{item.number}")
 
     def validate_receiver(self, value):
         if value == self.chara:

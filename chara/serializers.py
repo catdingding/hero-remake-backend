@@ -173,7 +173,7 @@ class SendGoldSerializer(BaseSerializer):
 
         push_log("傳送", f"{self.chara.name}向{receiver.name}傳送了{format_currency(gold)}金錢")
         send_private_message_by_system(
-            self.chara, receiver, f"{self.chara.name}向{receiver.name}傳送了{format_currency(gold)}金錢")
+            self.chara.id, receiver.id, f"{self.chara.name}向{receiver.name}傳送了{format_currency(gold)}金錢")
 
     def validate_receiver(self, value):
         if value == self.chara:

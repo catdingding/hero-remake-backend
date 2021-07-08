@@ -25,14 +25,14 @@ def push_log(category, content):
     )
 
 
-def send_private_message_by_system(sender, receiver, content):
+def send_private_message_by_system(sender_id, receiver_id, content):
     message = PrivateChatMessage.objects.create(
-        sender=sender, receiver=receiver, content=content, is_system_generated=True)
+        sender_id=sender_id, receiver_id=receiver_id, content=content, is_system_generated=True)
     data = {'type': 'chat_message', 'channel': 'private', 'is_system_generated': True,
             'content': content, 'created_at': message.created_at.isoformat()}
-    data['sender'] = get_chara_profile_sync(sender.id)
-    data['receiver'] = get_chara_profile_sync(receiver.id)
+    data['sender'] = get_chara_profile_sync(sender_id)
+    data['receiver'] = get_chara_profile_sync(receiver_id)
 
     layer = get_channel_layer()
-    for chara in [sender, receiver]:
-        async_to_sync(layer.group_send)(f'private_{chara.id}', data)
+    for chara_id in [sender_id, receiver_id]:
+        async_to_sync(layer.group_send)(f'private_{chara_id}', data)
