@@ -11,6 +11,7 @@ from chara.views import (
 )
 from ability.views import (
     LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView, AlchemyOptionViewSet,
+    AbilityView
 )
 from job.views import (
     SetSkillView, AvailableSkillView, AvailableJobView, ChangeJobView, ExerciseView, ExerciseRewardView
@@ -100,6 +101,7 @@ urlpatterns = [
     path('world/element-types/', ElementTypeView.as_view()),
     path('user/charas/', UserCharaView.as_view()),
     path('exercise-rewards/', ExerciseRewardView.as_view()),
+    path('abilities/', AbilityView.as_view()),
     path('town/inn/sleep/', InnSleepView.as_view()),
     path('town/change-name/', ChangeNameView.as_view()),
     path('logs/', LogView.as_view()),

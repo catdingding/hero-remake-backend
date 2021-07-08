@@ -13,6 +13,14 @@ class LearnAbilityView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = LearnAbilitySerializer
 
 
+class AbilityView(ListModelMixin, BaseGenericAPIView):
+    serializer_class = AbilitySerializer
+    queryset = Ability.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
 class AvailableToLearnAbilityView(BaseGenericAPIView):
     serializer_class = AbilitySerializer
 
