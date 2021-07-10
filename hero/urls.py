@@ -18,7 +18,7 @@ from job.views import (
 )
 from item.views import (
     UseItemView, SendItemView, StorageTakeView, StoragePutView, SmithUpgradeView, SmithReplaceAbilityView,
-    PetUpgradeView, SmithReplaceElementTypeView
+    PetUpgradeView, SmithReplaceElementTypeView, BattleMapTicketToItemView
 )
 from country.views import (
     FoundCountryView, LeaveCountryView, ChangeKingView, CountryDismissView,
@@ -79,6 +79,7 @@ urlpatterns = [
     path('chara/slot/equip/', SlotEquipView.as_view()),
     path('chara/slot/divest/', SlotDivestView.as_view()),
     path('chara/change-avatar/', ChangeAvatarView.as_view()),
+    path('chara/battle-map-ticket-to-item/', BattleMapTicketToItemView.as_view()),
     path('battle/pvp-fight/', PvPFightView.as_view()),
     path('country/found/', FoundCountryView.as_view()),
     path('country/leave/', LeaveCountryView.as_view()),

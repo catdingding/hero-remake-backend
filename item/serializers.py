@@ -1,14 +1,16 @@
-from random import choices
+from random import choices, random
 
+from django.db.models import F
 from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
 from base.utils import randint
 from ability.serializers import AbilitySerializer
+from battle.models import BattleMap
 from world.serializers import SlotTypeSerializer, ElementTypeSerializer
 from world.models import SlotType, ElementType
 from item.models import Item, ItemType, Equipment
-from chara.models import Chara
+from chara.models import Chara, BattleMapTicket
 
 from item.use_effects import USE_EFFECT_CLASSES
 from system.utils import push_log, send_private_message_by_system
@@ -330,4 +332,28 @@ class SmithReplaceElementTypeSerializer(BaseSerializer):
             raise serializers.ValidationError("尚未強化滿級")
 
         data['equipment'] = equipment
+        return data
+
+
+class BattleMapTicketToItemSerializer(BaseSerializer):
+    battle_map = serializers.PrimaryKeyRelatedField(queryset=BattleMap.objects.all())
+    number = serializers.IntegerField(min_value=1)
+
+    def save(self):
+        battle_map, number = [self.validated_data[x] for x in ['battle_map', 'number']]
+        BattleMapTicket.objects.filter(chara=self.chara, battle_map=battle_map).update(value=F('value') - number)
+
+        if random() <= 0.8:
+            item_type = ItemType.objects.get(use_effect=6, use_effect_param=battle_map.id)
+            items = item_type.make(number)
+            self.chara.get_items('bag', items)
+
+            return {'display_message': f"成功的製作了{number}個{item_type.name}"}
+        else:
+            return {'display_message': "不小心打翻了墨水，所有的地圖都被損毀了"}
+
+    def validate(self, data):
+        if not BattleMapTicket.objects.filter(chara=self.chara, battle_map=data['battle_map'], value__gte=data['number']).exists():
+            raise serializers.ValidationError("地圖剩餘次數不足")
+
         return data
