@@ -28,6 +28,9 @@ def get_items(field, limit, items):
     if not items:
         return
 
+    if field.count() > limit:
+        raise ValidationError("物品已滿")
+
     exists_item_by_type = {
         item.type_id: item for item in
         field.filter(type__in=[x.type for x in items if x.type.category_id != 1])
@@ -46,9 +49,6 @@ def get_items(field, limit, items):
 
             if item.type.category_id != 1:
                 exists_item_by_type[item.type_id] = item
-
-    if field.count() > limit:
-        raise ValidationError("物品已滿")
 
 
 def lose_items(field, items, mode='delete'):
