@@ -51,6 +51,8 @@ class FoundCountrySerializer(BaseModelSerializer):
         self.chara.country = country
         self.chara.save()
 
+        CountryJoinRequest.objects.filter(chara=self.chara).delete()
+
         push_log("建國", f"{self.chara.name}建立了{country.name}")
 
     def validate(self, data):

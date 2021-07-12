@@ -28,6 +28,8 @@ class FoundTeamSerializer(BaseModelSerializer):
         self.chara.team = team
         self.chara.save()
 
+        TeamJoinRequest.objects.filter(chara=self.chara).delete()
+
         push_log("隊伍", f"{self.chara.name}建立了{team.name}")
 
     def validate(self, data):
