@@ -27,9 +27,11 @@ class JWTAuthMiddleware:
 
         scope['chara_id'] = chara.id
         scope['country_id'] = chara.country_id
+        scope['team_id'] = chara.team_id
         scope['group_mapping'] = {
             'public': 'public',
             'country': f'country_{chara.country_id}',
+            'team': f'team_{chara.team_id}',
             'private': f'private_{chara.id}'
         }
 

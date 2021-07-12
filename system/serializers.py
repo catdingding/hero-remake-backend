@@ -43,6 +43,11 @@ class CountryChatMessageSerializer(ChatMessageSerializer):
         channel = 'country'
 
 
+class TeamChatMessageSerializer(ChatMessageSerializer):
+    class Meta:
+        channel = 'team'
+
+
 class PrivateChatMessageSerializer(ChatMessageSerializer):
     receiver = CharaProfileSerializer()
     is_system_generated = serializers.BooleanField()

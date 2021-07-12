@@ -59,11 +59,19 @@ class CharaRecordSerializer(BaseModelSerializer):
         exclude = ['id', 'created_at', 'updated_at']
 
 
+class CharaSimpleSerializer(BaseModelSerializer):
+    class Meta:
+        model = Chara
+        fields = ['id', 'name']
+
+
 class CharaPublicProfileSerializer(BaseModelSerializer):
     from job.serializers import JobSerializer
+    from team.serializers import TeamProfileSerializer
 
     country = CountrySerializer()
     official = CountryOfficialSerializer()
+    team = TeamProfileSerializer(fields=['id', 'name'])
 
     job = JobSerializer(fields=['name', 'attribute_type'])
     level = serializers.IntegerField()
@@ -89,7 +97,7 @@ class CharaPublicProfileSerializer(BaseModelSerializer):
 
     @classmethod
     def process_queryset(cls, request, queryset):
-        for field in ['country', 'official', 'element_type', 'job', 'main_ability', 'job_ability', 'live_ability', 'record', 'introduction']:
+        for field in ['country', 'official', 'team', 'element_type', 'job', 'main_ability', 'job_ability', 'live_ability', 'record', 'introduction']:
             if is_included(request, field):
                 queryset = queryset.select_related(field)
 
@@ -112,6 +120,7 @@ class CharaPublicProfileSerializer(BaseModelSerializer):
 class CharaProfileSerializer(CharaPublicProfileSerializer):
     location = LocationSerializer()
     is_king = serializers.SerializerMethodField()
+    is_leader = serializers.SerializerMethodField()
 
     hp_limit = serializers.IntegerField()
     mp_limit = serializers.IntegerField()
@@ -130,6 +139,9 @@ class CharaProfileSerializer(CharaPublicProfileSerializer):
     def get_is_king(self, chara):
         return hasattr(chara, 'king_of')
 
+    def get_is_leader(self, chara):
+        return hasattr(chara, 'leader_of')
+
     @classmethod
     def process_queryset(cls, request, queryset):
         queryset = super().process_queryset(request, queryset)
@@ -139,6 +151,9 @@ class CharaProfileSerializer(CharaPublicProfileSerializer):
                                                'location__element_type', 'location__battle_map')
         if is_included(request, 'is_king'):
             queryset = queryset.select_related('king_of')
+
+        if is_included(request, 'is_leader'):
+            queryset = queryset.select_related('leader_of')
 
         if is_included(request, 'bag_items'):
             queryset = queryset.prefetch_related(Prefetch('bag_items', Item.objects.select_related(

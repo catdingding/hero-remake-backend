@@ -27,6 +27,9 @@ from country.views import (
     CountryOccupyLocationView, CountryAbandonLocationView, CountryBuildTownView,
     CountryUpgradeStorageView, SetCountrySettingView
 )
+from team.views import (
+    TeamViewSet, FoundTeamView, LeaveTeamView, TeamJoinRequestViewSet, DismissTeamMemberView, DisbandTeamView
+)
 from trade.views import (
     AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView,
     MemberShopViewSet
@@ -47,6 +50,8 @@ router.register(r'battle/battle-maps', BattleMapViewSet)
 router.register(r'countries', CountryViewSet)
 router.register(r'country/join-requests', CountryJoinRequestViewSet)
 router.register(r'country/officials', CountryOfficialViewSet)
+router.register(r'teams', TeamViewSet)
+router.register(r'team/join-requests', TeamJoinRequestViewSet)
 router.register(r'trade/member-shop', MemberShopViewSet, basename='member-shop')
 
 urlpatterns = [
@@ -94,6 +99,10 @@ urlpatterns = [
     path('country/abandon-location/', CountryAbandonLocationView.as_view()),
     path('country/build-town/', CountryBuildTownView.as_view()),
     path('country/upgrade-storage/', CountryUpgradeStorageView.as_view()),
+    path('team/found/', FoundTeamView.as_view()),
+    path('team/leave/', LeaveTeamView.as_view()),
+    path('team/dismiss-member/', DismissTeamMemberView.as_view()),
+    path('team/disband/', DisbandTeamView.as_view()),
     path('smith/upgrade/', SmithUpgradeView.as_view()),
     path('smith/replace-ability/', SmithReplaceAbilityView.as_view()),
     path('smith/replace-element-type/', SmithReplaceElementTypeView.as_view()),

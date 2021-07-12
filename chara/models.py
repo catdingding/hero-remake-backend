@@ -28,6 +28,7 @@ class Chara(BaseModel):
     location = models.ForeignKey("world.Location", on_delete=models.PROTECT)
     country = models.ForeignKey("country.Country", null=True,
                                 related_name="citizens", on_delete=models.SET_NULL)
+    team = models.ForeignKey("team.Team", null=True, related_name="members", on_delete=models.SET_NULL)
 
     element_type = models.ForeignKey("world.ElementType", on_delete=models.PROTECT)
     job = models.ForeignKey("job.Job", on_delete=models.PROTECT)

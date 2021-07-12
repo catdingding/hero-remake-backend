@@ -5,8 +5,10 @@ from django.db.models import Q
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from channels.db import database_sync_to_async
 
-from system.models import PublicChatMessage, CountryChatMessage, PrivateChatMessage
-from system.serializers import PublicChatMessageSerializer, CountryChatMessageSerializer, PrivateChatMessageSerializer
+from system.models import PublicChatMessage, CountryChatMessage, TeamChatMessage, PrivateChatMessage
+from system.serializers import (
+    PublicChatMessageSerializer, CountryChatMessageSerializer, TeamChatMessageSerializer, PrivateChatMessageSerializer
+)
 from system.utils import get_chara_profile
 
 
@@ -51,13 +53,20 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
             CountryChatMessage.objects.create(
                 country_id=self.scope['country_id'], sender_id=self.scope['chara_id'], content=data['content']
             )
+        elif data['channel'] == 'team':
+            TeamChatMessage.objects.create(
+                team_id=self.scope['team_id'], sender_id=self.scope['chara_id'], content=data['content']
+            )
         elif data['channel'] == 'private':
             PrivateChatMessage.objects.create(
                 sender_id=self.scope['chara_id'], receiver_id=data['receiver'], content=data['content']
             )
 
     async def load_messages(self):
-        messages = await self.get_public_chat_messages() + await self.get_country_chat_messages() + await self.get_private_chat_messages()
+        messages = (
+            await self.get_public_chat_messages() + await self.get_country_chat_messages() +
+            await self.get_team_chat_messages() + await self.get_private_chat_messages()
+        )
         messages.sort(key=lambda x: x['created_at'])
         for message in messages:
             message['is_init'] = True
@@ -72,6 +81,11 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
     def get_country_chat_messages(self):
         queryset = CountryChatMessage.objects.filter(country=self.scope['country_id']).order_by('-created_at')[:10]
         return CountryChatMessageSerializer(queryset, many=True).data[::-1]
+
+    @database_sync_to_async
+    def get_team_chat_messages(self):
+        queryset = TeamChatMessage.objects.filter(team=self.scope['team_id']).order_by('-created_at')[:10]
+        return TeamChatMessageSerializer(queryset, many=True).data[::-1]
 
     @database_sync_to_async
     def get_private_chat_messages(self):

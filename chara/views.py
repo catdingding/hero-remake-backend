@@ -52,7 +52,7 @@ class CharaViewSet(ListModelMixin, BaseGenericViewSet):
     filter_backends = [OrderingFilter, SearchFilter, DjangoFilterBackend]
     ordering_fields = ['pvp_points']
     search_fields = ['name']
-    filterset_fields = ['id', 'country']
+    filterset_fields = ['id', 'country', 'team']
 
     def get_queryset(self):
         return self.get_serializer_class().process_queryset(self.request, super().get_queryset())

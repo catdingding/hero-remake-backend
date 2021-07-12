@@ -61,6 +61,30 @@ class CountryViewMixin:
         return country
 
 
+class TeamViewMixin:
+    def get_team(self, role, lock=False):
+        chara = self.get_chara()
+        team = chara.team
+
+        if team is None:
+            raise ValidationError(f"未加入隊伍")
+
+        if role == 'leader':
+            pass_role_check = (team.leader == chara)
+        elif role == 'member':
+            pass_role_check = True
+        else:
+            raise Exception("ilegal role setting")
+
+        if not pass_role_check:
+            raise ValidationError(f"沒有足夠的對隊伍權限")
+
+        if lock:
+            team = team.lock()
+        self.request.team = team
+        return team
+
+
 class LockObjectMixin:
     def get_object(self, lock=False):
         """
@@ -120,6 +144,24 @@ class CountryPostViewMixin:
             return Response(result)
 
 
+class TeamPostViewMixin:
+    lock_chara = True
+    lock_team = True
+    role = 'leader'
+
+    def post(self, request):
+        chara = self.get_chara(lock=self.lock_chara)
+        team = self.get_team(role=self.role, lock=self.lock_team)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        result = serializer.save()
+
+        if result is None:
+            return Response({'status': 'success'})
+        else:
+            return Response(result)
+
+
 class SerializerFieldsMixin:
     serializer_fields = None
 
@@ -130,7 +172,7 @@ class SerializerFieldsMixin:
         return super().get_serializer(*args, **kwargs)
 
 
-class BaseGenericViewSet(SerializerFieldsMixin, LockObjectMixin, CountryViewMixin, CharaViewMixin, viewsets.GenericViewSet):
+class BaseGenericViewSet(SerializerFieldsMixin, LockObjectMixin, TeamViewMixin, CountryViewMixin, CharaViewMixin, viewsets.GenericViewSet):
     def get_serializer_class(self):
         try:
             return self.serializer_action_classes[self.action]
@@ -144,5 +186,5 @@ class BaseGenericViewSet(SerializerFieldsMixin, LockObjectMixin, CountryViewMixi
             return super().get_queryset()
 
 
-class BaseGenericAPIView(SerializerFieldsMixin, LockObjectMixin, CountryViewMixin, CharaViewMixin, generics.GenericAPIView):
+class BaseGenericAPIView(SerializerFieldsMixin, LockObjectMixin, TeamViewMixin, CountryViewMixin, CharaViewMixin, generics.GenericAPIView):
     pass

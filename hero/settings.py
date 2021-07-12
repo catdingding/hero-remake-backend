@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'battle.apps.BattleConfig',
     'chara.apps.CharaConfig',
     'country.apps.CountryConfig',
+    'team.apps.TeamConfig',
     'item.apps.ItemConfig',
     'town.apps.TownConfig',
     'user.apps.UserConfig',
