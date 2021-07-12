@@ -66,7 +66,7 @@ class TeamJoinRequestApproveSerializer(BaseSerializer):
         chara = self.instance.chara.lock()
 
         if chara.team:
-            raise serializers.ValidationError("該角色已加入國家")
+            raise serializers.ValidationError("該角色已加入隊伍")
 
         chara.team = self.team
         chara.save()
