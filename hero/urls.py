@@ -34,7 +34,7 @@ from trade.views import (
     AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView,
     MemberShopViewSet
 )
-from battle.views import BattleMapViewSet, PvPFightView
+from battle.views import BattleMapViewSet, PvPFightView, DungeonFightView, BattleResultViewSet
 from town.views import InnSleepView, ChangeNameView
 
 router = SimpleRouter()
@@ -47,6 +47,7 @@ router.register(r'trade/exchange-options', ExchangeOptionViewSet)
 router.register(r'ability/alchemy-options', AlchemyOptionViewSet)
 router.register(r'trade/store-options', StoreOptionViewSet)
 router.register(r'battle/battle-maps', BattleMapViewSet)
+router.register(r'battle/battle-results', BattleResultViewSet)
 router.register(r'countries', CountryViewSet)
 router.register(r'country/join-requests', CountryJoinRequestViewSet)
 router.register(r'country/officials', CountryOfficialViewSet)
@@ -86,6 +87,7 @@ urlpatterns = [
     path('chara/change-avatar/', ChangeAvatarView.as_view()),
     path('chara/battle-map-ticket-to-item/', BattleMapTicketToItemView.as_view()),
     path('battle/pvp-fight/', PvPFightView.as_view()),
+    path('battle/dungeon-fight/', DungeonFightView.as_view()),
     path('country/found/', FoundCountryView.as_view()),
     path('country/leave/', LeaveCountryView.as_view()),
     path('country/change-king/', ChangeKingView.as_view()),

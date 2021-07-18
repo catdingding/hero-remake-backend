@@ -1,0 +1,1 @@
+[{"model": "battle.dungeon", "pk": 1, "fields": {"name": "魔王城-地城版", "description": "就是把魔王城數據搬過來的POC", "max_floor": 3}}]

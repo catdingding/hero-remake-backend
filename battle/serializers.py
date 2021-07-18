@@ -1,9 +1,11 @@
+import json
 from django.db.models import F
 
 from rest_framework import serializers
 
-from battle.models import BattleMap
+from battle.models import BattleMap, Dungeon, DungeonFloor, BattleResult
 from chara.models import Chara
+from team.models import TeamDungeonRecord
 from base.serializers import BaseSerializer, BaseModelSerializer
 from battle.battle_map_processors import BATTLE_MAP_PROCESSORS
 from battle.battle import Battle
@@ -64,3 +66,48 @@ class PvPFightSerializer(BaseSerializer):
             'logs': battle.logs,
             'messages': [f"PvP點數{points if points < 0 else f'+{points}' }"]
         }
+
+
+class DungeonSerializer(BaseModelSerializer):
+    class Meta:
+        model = Dungeon
+        fields = ['id', 'name', 'description', 'max_floor']
+
+
+class DungeonFightSerializer(BaseSerializer):
+    dungeon = serializers.PrimaryKeyRelatedField(queryset=Dungeon.objects.all())
+
+    def save(self):
+        dungeon = self.validated_data['dungeon']
+        team = self.team
+        dungeon_record = TeamDungeonRecord.objects.get(dungeon=dungeon, team=team)
+        dungeon_floor = DungeonFloor.objects.get(dungeon=dungeon, floor=dungeon_record.current_floor + 1)
+
+        battle = Battle(attackers=team.members.all(), defenders=dungeon_floor.monsters.all(), battle_type='dungeon')
+        battle.execute()
+        win = (battle.winner == 'attacker')
+
+        if win:
+            dungeon_record.current_floor += 1
+
+        if dungeon_record.current_floor == dungeon.max_floor:
+            dungeon_record.current_floor = 0
+            dungeon_record.passed_times += 1
+
+        result = {
+            'winner': battle.winner,
+            'logs': battle.logs,
+            'messages': []
+        }
+
+        dungeon_record.save()
+
+        BattleResult.objects.create(title=f"{team.name}-{dungeon.name}-{dungeon_floor.floor}層", content=result)
+
+        return result
+
+
+class BattleResultSerializer(BaseModelSerializer):
+    class Meta:
+        model = BattleResult
+        fields = ['id', 'title', 'content', 'created_at']

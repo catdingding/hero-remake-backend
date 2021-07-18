@@ -20,7 +20,7 @@ class EmptyEquipment:
 
 class Battle:
     def __init__(self, attackers, defenders, battle_type, element_type=None):
-        assert battle_type in ['pvp', 'pve']
+        assert battle_type in ['pvp', 'pve', 'dungeon']
         self.battle_type = battle_type
         self.element_type = element_type
         self.charas = [BattleChara(x, battle=self, team='attacker') for x in attackers] + \
@@ -506,8 +506,10 @@ class BattleChara:
         # 即死
         # 奧義類型9:即死
         if skill_type == 10 and randint(1, 30) == 1 or attacker.ability_type_power(9) >= randint(1, 1000):
+            if self.battle.battle_type == 'dungeon':
+                self.log(f"因為地城的神祕力量，即死被無效化了")
             # 奧義類型40:免疫即死
-            if self.ability_type_power(40) >= randint(1, 100):
+            elif self.ability_type_power(40) >= randint(1, 100):
                 self.log(f"不死鳥保護住{self.name}")
             elif self.has_ability_type(49):
                 if self.ability_type_power(49) >= randint(1, 100):

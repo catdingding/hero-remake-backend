@@ -1,11 +1,13 @@
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, DestroyModelMixin, CreateModelMixin
+from rest_framework.filters import SearchFilter
 
-from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin
+from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin, TeamPostViewMixin
 
-from battle.models import BattleMap
-from battle.serializers import BattleMapFightSerializer, PvPFightSerializer
+from battle.models import BattleMap, BattleResult
+from battle.serializers import BattleMapFightSerializer, PvPFightSerializer, DungeonFightSerializer, BattleResultSerializer
 
 
 class BattleMapViewSet(BaseGenericViewSet):
@@ -27,3 +29,21 @@ class BattleMapViewSet(BaseGenericViewSet):
 class PvPFightView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = PvPFightSerializer
     LOCK_CHARA = False
+
+
+class DungeonFightView(TeamPostViewMixin, BaseGenericAPIView):
+    serializer_class = DungeonFightSerializer
+    role = 'leader'
+
+
+class BattleResultViewSet(ListModelMixin, RetrieveModelMixin, BaseGenericViewSet):
+    serializer_class = BattleResultSerializer
+    queryset = BattleResult.objects.all()
+
+    filter_backends = [SearchFilter]
+    search_fields = ['title']
+
+    def list(self, request):
+        queryset = self.filter_queryset(self.get_queryset()).order_by('-created_at')[:200]
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

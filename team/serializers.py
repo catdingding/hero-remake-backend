@@ -1,11 +1,21 @@
 from rest_framework import serializers
 from base.serializers import BaseSerializer, BaseModelSerializer
 
+from battle.models import Dungeon
 from chara.models import Chara
-from team.models import Team, TeamJoinRequest
+from team.models import Team, TeamJoinRequest, TeamDungeonRecord
+from battle.serializers import DungeonSerializer
 from chara.serializers import CharaSimpleSerializer
 
 from system.utils import push_log, send_private_message_by_system
+
+
+class TeamDungeonRecordSerializer(BaseModelSerializer):
+    dungeon = DungeonSerializer()
+
+    class Meta:
+        model = TeamDungeonRecord
+        fields = ['id', 'dungeon', 'current_floor', 'passed_times']
 
 
 class TeamProfileSerializer(BaseModelSerializer):
@@ -13,9 +23,11 @@ class TeamProfileSerializer(BaseModelSerializer):
     members = CharaSimpleSerializer(many=True)
     member_count = serializers.IntegerField()
 
+    dungeon_records = TeamDungeonRecordSerializer(many=True)
+
     class Meta:
         model = Team
-        fields = ['id', 'name', 'leader', 'members', 'member_count']
+        fields = ['id', 'name', 'leader', 'members', 'member_count', 'dungeon_records']
 
 
 class FoundTeamSerializer(BaseModelSerializer):
@@ -25,6 +37,7 @@ class FoundTeamSerializer(BaseModelSerializer):
 
     def save(self):
         team = Team.objects.create(name=self.validated_data['name'], leader=self.chara)
+        TeamDungeonRecord.objects.bulk_create([TeamDungeonRecord(team=team, dungeon=x) for x in Dungeon.objects.all()])
         self.chara.team = team
         self.chara.save()
 

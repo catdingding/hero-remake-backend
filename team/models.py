@@ -13,3 +13,14 @@ class TeamJoinRequest(BaseModel):
 
     class Meta:
         unique_together = ('team', 'chara')
+
+
+class TeamDungeonRecord(BaseModel):
+    team = models.ForeignKey("team.Team", related_name="dungeon_records", on_delete=models.CASCADE)
+    dungeon = models.ForeignKey("battle.Dungeon", related_name="team_records", on_delete=models.CASCADE)
+
+    passed_times = models.PositiveIntegerField(default=0)
+    current_floor = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together = ('team', 'dungeon')

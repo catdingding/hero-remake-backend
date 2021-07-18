@@ -47,3 +47,26 @@ class BattleMapMonster(BaseModel):
     monster = models.ForeignKey("battle.Monster", on_delete=models.CASCADE)
 
     weight = models.PositiveIntegerField(default=10000)
+
+
+class Dungeon(BaseModel):
+    name = models.CharField(max_length=20, unique=True)
+    description = models.TextField(blank=True)
+
+    max_floor = models.IntegerField()
+
+
+class DungeonFloor(BaseModel):
+    dungeon = models.ForeignKey("battle.Dungeon", related_name="floors", on_delete=models.CASCADE)
+    floor = models.IntegerField()
+
+    monsters = models.ManyToManyField("battle.Monster")
+
+    class Meta:
+        unique_together = ('dungeon', 'floor')
+
+
+class BattleResult(BaseModel):
+    category = models.CharField(max_length=20)
+    title = models.CharField(max_length=100)
+    content = models.JSONField()
