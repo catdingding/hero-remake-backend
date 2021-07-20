@@ -249,7 +249,7 @@ class BattleChara:
             rate += rate // 2
         rate -= int(rate * self.reduced_skill_rate)
 
-        if self.mp >= skill.mp_cost and skill.rate >= randint(1, 100):
+        if self.mp >= skill.mp_cost and rate >= randint(1, 100):
             self.mp -= mp_cost
             return skill
         else:
