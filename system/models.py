@@ -4,7 +4,7 @@ from base.models import BaseModel
 
 class Log(BaseModel):
     category = models.CharField(max_length=20)
-    content = models.CharField(max_length=400)
+    content = models.TextField()
 
 
 class PublicChatMessage(BaseModel):
