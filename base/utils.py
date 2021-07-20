@@ -28,7 +28,7 @@ def get_items(field, limit, items):
     if not items:
         return
 
-    if field.count() > limit:
+    if field.count() >= limit:
         raise ValidationError("物品已滿")
 
     exists_item_by_type = {
