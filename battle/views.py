@@ -28,6 +28,7 @@ class BattleMapViewSet(BaseGenericViewSet):
 
 class PvPFightView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = PvPFightSerializer
+    check_next_action_time = True
     LOCK_CHARA = False
 
 
