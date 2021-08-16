@@ -1,12 +1,16 @@
 FROM python:3.6-buster
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y musl-dev libffi-dev default-libmysqlclient-dev build-essential
+RUN apt-get update && apt-get install -y musl-dev libffi-dev default-libmysqlclient-dev build-essential nginx supervisor
+
+COPY docker_build_files/nginx/default.conf /etc/nginx/conf.d/
+COPY docker_build_files/supervisor/asgi.conf /etc/supervisor/conf.d/
+RUN mkdir /run/daphne/
+RUN rm /etc/nginx/sites-enabled/default
 
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
 COPY . .
-EXPOSE 8000
 
 ENV DJANGO_SETTINGS_MODULE=hero.settings
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "hero.asgi:application"]
+CMD supervisord && nginx -g "daemon off;"
