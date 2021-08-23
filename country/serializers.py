@@ -82,6 +82,7 @@ class CountryJoinRequestCreateSerializer(BaseModelSerializer):
     def create(self, validated_data):
         join_request = CountryJoinRequest.objects.create(chara=self.chara, country=validated_data['country'])
 
+        send_private_message_by_system(self.chara.id, validated_data['country'].king_id, f"{self.chara.name}發出了入國申請")
         for official in validated_data['country'].officials.all():
             send_private_message_by_system(self.chara.id, official.chara_id, f"{self.chara.name}發出了入國申請")
 
