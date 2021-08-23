@@ -132,6 +132,7 @@ class BattleChara:
         self.poison = 0
         self.blocked_ability_count = 0
         self.weapon_effect_blocked = False
+        self.weapon_effect_blocked_flag = False
         self.reduced_skill_rate = 0
 
         # 奧義類型15:增加初始AP
@@ -273,7 +274,9 @@ class BattleChara:
             self.log(f"{self.name}恢復了{hp_add}點 HP")
 
     def after_action(self):
-        self.weapon_effect_blocked = False
+        self.weapon_effect_blocked = self.weapon_effect_blocked_flag
+        self.weapon_effect_blocked_flag = False
+
         self.reduced_skill_rate = 0
 
     def has_ability_type(self, type_id):
@@ -638,7 +641,7 @@ class BattleChara:
         elif self.has_equipment_effect(2, 3):
             hp_add = int(self.hp_max * 0.01)
             self.gain_hp(hp_add)
-            attacker.weapon_effect_blocked = True
+            attacker.weapon_effect_blocked_flag = True
             self.log(f"[水防特效]{self.name}恢復了{hp_add}HP，並封印了對手的武器特效")
         # 風防
         elif self.has_equipment_effect(2, 4):
