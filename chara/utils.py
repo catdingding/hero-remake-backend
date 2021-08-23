@@ -5,6 +5,9 @@ from io import BytesIO
 def process_avatar(file):
     image = Image.open(file)
 
+    if image.mode == 'P':
+        image = image.convert('RGBA')
+
     if image.mode == 'RGBA':
         image.load()
         background = Image.new('RGB', image.size, (255, 255, 255))
