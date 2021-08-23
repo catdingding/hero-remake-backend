@@ -1,4 +1,4 @@
-from django.db.models import Q, Exists, OuterRef
+from django.db.models import Q, Exists, OuterRef, Prefetch
 from base.views import BaseGenericAPIView, CharaPostViewMixin
 from rest_framework.response import Response
 from rest_framework.mixins import ListModelMixin
@@ -15,8 +15,8 @@ class AvailableJobView(BaseGenericAPIView):
 
     def get(self, request):
         chara = self.get_chara()
-        jobs = Job.objects.filter(
-            ~ Exists(JobAttribute.objects.filter(job=OuterRef('id')).filter(
+        jobs = Job.objects.annotate(
+            is_available=~ Exists(JobAttribute.objects.filter(job=OuterRef('id')).filter(
                 Exists(CharaAttribute.objects.filter(
                     chara=chara,
                     type=OuterRef('type'),
@@ -24,7 +24,7 @@ class AvailableJobView(BaseGenericAPIView):
                     Q(value__lt=OuterRef('require_value')) | Q(proficiency__lt=OuterRef('require_proficiency'))
                 ))
             ))
-        )
+        ).prefetch_related(Prefetch('attributes', JobAttribute.objects.select_related('type')))
         serializer = self.get_serializer(jobs, many=True)
         return Response(serializer.data)
 

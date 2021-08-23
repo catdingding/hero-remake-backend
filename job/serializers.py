@@ -5,7 +5,7 @@ from rest_framework import serializers
 from base.utils import randint
 from base.serializers import BaseSerializer, BaseModelSerializer
 
-from job.models import Job, Skill, ExerciseReward
+from job.models import Job, Skill, ExerciseReward, JobAttribute
 from chara.models import CharaSkillSetting, CharaAttribute
 
 from chara.serializers import CharaSkillSettingSerializer
@@ -14,12 +14,22 @@ from world.serializers import AttributeTypeSerializer
 from system.utils import push_log
 
 
+class JobAttributeSerializer(BaseModelSerializer):
+    type = AttributeTypeSerializer()
+
+    class Meta:
+        model = JobAttribute
+        fields = ['type', 'require_value', 'require_proficiency']
+
+
 class JobSerializer(BaseModelSerializer):
     attribute_type = AttributeTypeSerializer()
+    attributes = JobAttributeSerializer(many=True)
+    is_available = serializers.BooleanField()
 
     class Meta:
         model = Job
-        fields = ['id', 'name', 'attribute_type', 'rank', 'description']
+        fields = ['id', 'name', 'attribute_type', 'rank', 'description', 'attributes', 'is_available']
 
 
 class ChangeJobSerializer(BaseSerializer):
