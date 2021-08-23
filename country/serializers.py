@@ -227,6 +227,8 @@ class CountryDonateSerializer(BaseSerializer):
         self.chara.save()
         self.country.save()
 
+        push_log("國庫", f"{self.chara.name}向國庫捐贈了{gold}金錢")
+
     def validate_gold(self, gold):
         if gold > self.chara.gold:
             raise serializers.ValidationError("金錢不足")
