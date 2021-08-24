@@ -95,7 +95,7 @@ class UseEffect_5(BaseUseEffect):
             items.extend(group.pick())
 
         self.chara.get_items('bag', items)
-        items_name = "、".join(item.type.name for item in items)
+        items_name = "、".join(item.name for item in items)
         push_log("寶箱", f"{self.chara.name}使用了{self.n}個{self.type.name}，獲得了{items_name}。")
         return f"使用了{self.n}個{self.type.name}，獲得了{items_name}。"
 
