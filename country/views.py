@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, Subquery, OuterRef, IntegerField
 
 from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin, CountryPostViewMixin
 from rest_framework.response import Response
@@ -6,7 +6,9 @@ from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, DestroyModelMixin, CreateModelMixin
 from django_filters.rest_framework import DjangoFilterBackend
 
+from chara.models import Chara
 from country.models import Country, CountryOfficial, CountryJoinRequest
+from world.models import Location
 from country.serializers import (
     FoundCountrySerializer, LeaveCountrySerializer,
     CountryDismissSerializer, ChangeKingSerializer,
@@ -21,7 +23,16 @@ from item.serializers import ItemSerializer
 
 class CountryViewSet(ListModelMixin, RetrieveModelMixin, BaseGenericViewSet):
     serializer_class = CountryProfileSerializer
-    queryset = Country.objects.annotate(location_count=Count('locations')).select_related('king').all()
+    queryset = Country.objects.annotate(
+        location_count=Subquery(
+            Location.objects.filter(country=OuterRef('id')).values('country').annotate(count=Count('id')).values('count'),
+            output_field=IntegerField()
+        ),
+        citizen_count=Subquery(
+            Chara.objects.filter(country=OuterRef('id')).values('country').annotate(count=Count('id')).values('count'),
+            output_field=IntegerField()
+        )
+    ).select_related('king').all()
 
 
 class FoundCountryView(CharaPostViewMixin, BaseGenericAPIView):

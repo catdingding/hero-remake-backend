@@ -23,6 +23,7 @@ class CountrySettingSerialzier(BaseModelSerializer):
 
 class CountryProfileSerializer(BaseModelSerializer):
     location_count = serializers.IntegerField()
+    citizen_count = serializers.IntegerField()
     setting = CountrySettingSerialzier()
 
     expandable_fields = {
@@ -32,7 +33,7 @@ class CountryProfileSerializer(BaseModelSerializer):
 
     class Meta:
         model = Country
-        fields = ['id', 'name', 'gold', 'item_limit', 'location_count', 'setting', 'created_at']
+        fields = ['id', 'name', 'gold', 'item_limit', 'location_count', 'citizen_count', 'setting', 'created_at']
 
 
 class FoundCountrySerializer(BaseModelSerializer):
