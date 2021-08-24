@@ -76,19 +76,28 @@ class TeamJoinRequestSerializer(BaseModelSerializer):
         return data
 
 
-class TeamJoinRequestApproveSerializer(BaseSerializer):
+class TeamJoinRequestReviewSerializer(BaseSerializer):
+    action = serializers.ChoiceField(choices=['accept', 'reject'])
+
     def save(self):
         chara = self.instance.chara.lock()
 
-        if chara.team:
-            raise serializers.ValidationError("該角色已加入隊伍")
+        if self.validated_data['action'] == 'accept':
+            if chara.team:
+                raise serializers.ValidationError("該角色已加入隊伍")
 
-        chara.team = self.team
-        chara.save()
+            chara.team = self.team
+            chara.save()
 
-        TeamJoinRequest.objects.filter(chara=chara).delete()
+            TeamJoinRequest.objects.filter(chara=chara).delete()
 
-        push_log("隊伍", f"{chara.name}加入了{self.team.name}")
+            push_log("隊伍", f"{chara.name}加入了{self.team.name}")
+
+            return {'display_message': '入隊申請已通過'}
+
+        elif self.validated_data['action'] == 'reject':
+            self.instance.delete()
+            return {'display_message': '入隊申請已拒絕'}
 
     def validate(self, data):
         if self.team.members.count() >= 3:

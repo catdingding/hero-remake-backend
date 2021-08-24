@@ -97,21 +97,27 @@ class CountryJoinRequestCreateSerializer(BaseModelSerializer):
         return data
 
 
-class CountryJoinRequestApproveSerializer(BaseSerializer):
+class CountryJoinRequestReviewSerializer(BaseSerializer):
+    action = serializers.ChoiceField(choices=['accept', 'reject'])
+
     def save(self):
         chara = self.instance.chara.lock()
 
-        if chara.country:
-            raise serializers.ValidationError("該角色已加入國家")
+        if self.validated_data['action'] == 'accept':
+            if chara.country:
+                raise serializers.ValidationError("該角色已加入國家")
 
-        chara.country = self.country
-        chara.save()
+            chara.country = self.country
+            chara.save()
 
-        CountryJoinRequest.objects.filter(chara=chara).delete()
+            CountryJoinRequest.objects.filter(chara=chara).delete()
+            push_log("入國", f"{chara.name}加入了{self.country.name}")
 
-        self.instance.delete()
+            return {'display_message': '入國申請已通過'}
 
-        push_log("入國", f"{chara.name}加入了{self.country.name}")
+        elif self.validated_data['action'] == 'reject':
+            self.instance.delete()
+            return {'display_message': '入國申請已拒絕'}
 
 
 class LeaveCountrySerializer(BaseSerializer):

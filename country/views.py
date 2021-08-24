@@ -14,7 +14,7 @@ from country.serializers import (
     CountryDismissSerializer, ChangeKingSerializer,
     CountryItemTakeSerializer, CountryItemPutSerializer, CountryDonateSerializer,
     CountryOfficialSerializer, CountryProfileSerializer,
-    CountryJoinRequestSerializer, CountryJoinRequestCreateSerializer, CountryJoinRequestApproveSerializer,
+    CountryJoinRequestSerializer, CountryJoinRequestCreateSerializer, CountryJoinRequestReviewSerializer,
     CountryOccupyLocationSerializer, CountryAbandonLocationSerializer, CountryBuildTownSerializer,
     CountryUpgradeStorageSerializer, CountrySettingSerialzier
 )
@@ -25,7 +25,8 @@ class CountryViewSet(ListModelMixin, RetrieveModelMixin, BaseGenericViewSet):
     serializer_class = CountryProfileSerializer
     queryset = Country.objects.annotate(
         location_count=Subquery(
-            Location.objects.filter(country=OuterRef('id')).values('country').annotate(count=Count('id')).values('count'),
+            Location.objects.filter(country=OuterRef('id')).values(
+                'country').annotate(count=Count('id')).values('count'),
             output_field=IntegerField()
         ),
         citizen_count=Subquery(
@@ -48,7 +49,7 @@ class CountryJoinRequestViewSet(BaseGenericViewSet):
     serializer_class = CountryJoinRequestSerializer
     serializer_action_classes = {
         'create': CountryJoinRequestCreateSerializer,
-        'approve': CountryJoinRequestApproveSerializer,
+        'review': CountryJoinRequestReviewSerializer,
     }
 
     def create(self, request):
@@ -66,13 +67,13 @@ class CountryJoinRequestViewSet(BaseGenericViewSet):
         return Response(serializer.data)
 
     @action(methods=['post'], detail=True)
-    def approve(self, request, pk):
+    def review(self, request, pk):
         country = self.get_country(role='official', lock=True)
         serializer = self.get_serializer(self.get_object(), data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        result = serializer.save()
 
-        return Response({'display_message': '入國申請已通過'})
+        return Response(result)
 
 
 class CountryDismissView(CountryPostViewMixin, BaseGenericAPIView):

@@ -8,7 +8,7 @@ from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, DestroyMod
 from team.models import Team, TeamJoinRequest
 from team.serializers import (
     TeamProfileSerializer, FoundTeamSerializer,
-    TeamJoinRequestApproveSerializer, LeaveTeamSerializer, TeamJoinRequestSerializer,
+    TeamJoinRequestReviewSerializer, LeaveTeamSerializer, TeamJoinRequestSerializer,
     DismissTeamMemberSerializer, DisbandTeamSerializer
 )
 
@@ -30,7 +30,7 @@ class TeamJoinRequestViewSet(BaseGenericViewSet):
     queryset = TeamJoinRequest.objects.all()
     serializer_class = TeamJoinRequestSerializer
     serializer_action_classes = {
-        'approve': TeamJoinRequestApproveSerializer,
+        'review': TeamJoinRequestReviewSerializer,
     }
 
     def create(self, request):
@@ -48,13 +48,13 @@ class TeamJoinRequestViewSet(BaseGenericViewSet):
         return Response(serializer.data)
 
     @action(methods=['post'], detail=True)
-    def approve(self, request, pk):
+    def review(self, request, pk):
         team = self.get_team(role='leader', lock=True)
         serializer = self.get_serializer(self.get_object(), data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        result = serializer.save()
 
-        return Response({'display_message': '入隊申請已通過'})
+        return Response(result)
 
 
 class DismissTeamMemberView(TeamPostViewMixin, BaseGenericAPIView):
