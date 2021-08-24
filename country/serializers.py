@@ -214,6 +214,11 @@ class CountryItemPutSerializer(BaseSerializer):
 
         push_log("國庫", f"{self.chara.name}向國庫存入了{item.name}*{item.number}")
 
+    def validate_item(self, item):
+        if not item.type.is_transferable:
+            raise serializers.ValidationError("不可存入綁定道具")
+        return item
+
 
 class CountryDonateSerializer(BaseSerializer):
     gold = serializers.IntegerField(min_value=1)

@@ -24,6 +24,7 @@ class ItemType(BaseModel):
     use_effect_param = models.IntegerField(null=True)
     # if True, disappear after use
     is_consumable = models.BooleanField(default=False)
+    is_transferable = models.BooleanField(default=True)
 
     value = models.IntegerField(default=0)
 

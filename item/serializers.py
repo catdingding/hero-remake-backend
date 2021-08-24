@@ -118,6 +118,11 @@ class SendItemSerializer(BaseSerializer):
         send_private_message_by_system(
             sender.id, receiver.id, f"{sender.name}向{receiver.name}傳送了{item.name}*{item.number}")
 
+    def validate_item(self, item):
+        if not item.type.is_transferable:
+            raise serializers.ValidationError("不可傳送綁定道具")
+        return item
+
     def validate_receiver(self, value):
         if value == self.chara:
             raise serializers.ValidationError("不可傳送給自己")

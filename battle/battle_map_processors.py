@@ -129,7 +129,7 @@ class BaseBattleMapProcessor():
 
     def get_loots(self):
         return self.get_common_loots() + self.get_monster_loots() + self.get_map_loots() + self.get_event_loots() + \
-            self.get_ability_loots()
+            self.get_ability_loots() + self.get_member_point_loots()
 
     def get_common_loots(self):
         loots = []
@@ -164,6 +164,8 @@ class BaseBattleMapProcessor():
 
     def get_event_loots(self):
         loots = []
+        if self.chara.record.today_battle > 1500:
+            return loots
 
         event_item_type = get_event_item_type()
 
@@ -184,6 +186,17 @@ class BaseBattleMapProcessor():
         if self.chara.has_equipped_ability_type(36) and randint(1, self.chara.equipped_ability_type_power(36)) == 1:
             pool = ItemTypePool.objects.get(id=8)
             loots.extend(pool.pick())
+
+        return loots
+
+    def get_member_point_loots(self):
+        loots = []
+        if self.chara.record.today_battle > 3000:
+            return loots
+
+        if randint(1, 1000) == 1:
+            # 綁定點數
+            loots.extend(ItemType.objects.get(id=1552).make(10))
 
         return loots
 
