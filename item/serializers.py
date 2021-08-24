@@ -347,14 +347,15 @@ class BattleMapTicketToItemSerializer(BaseSerializer):
     def save(self):
         battle_map, number = [self.validated_data[x] for x in ['battle_map', 'number']]
         BattleMapTicket.objects.filter(chara=self.chara, battle_map=battle_map).update(value=F('value') - number)
+        item_type = ItemType.objects.get(use_effect=6, use_effect_param=battle_map.id)
 
         if random() <= 0.8:
-            item_type = ItemType.objects.get(use_effect=6, use_effect_param=battle_map.id)
             items = item_type.make(number)
             self.chara.get_items('bag', items)
 
             return {'display_message': f"成功的製作了{number}個{item_type.name}"}
         else:
+            push_log("製作", f"{self.chara.name}製作地圖時不小心打翻了墨水，損毀了{number}個{item_type.name}")
             return {'display_message': "不小心打翻了墨水，所有的地圖都被損毀了"}
 
     def validate(self, data):
