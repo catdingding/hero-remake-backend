@@ -245,6 +245,8 @@ class PetUpgradeSerializer(BaseSerializer):
         if equipment.upgrade_times + data['times'] > equipment.upgrade_times_limit:
             if equipment.upgrade_times != 10 or not pet_type.evolution_targets.exists():
                 raise serializers.ValidationError(f"當前寵物無法繼續升級或轉生")
+            if equipment.upgrade_times == 10 and data['times'] > 1:
+                raise serializers.ValidationError(f"轉生時請勿投入多次升級資源")
 
         data['item'] = item
         return data
