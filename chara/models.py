@@ -78,14 +78,14 @@ class Chara(BaseModel):
     @cached_property
     def equipped_ability_types(self):
         abilities = []
-        for slot in self.slots.all().select_related('item__equipment'):
-            if slot.item:
-                abilities.append(slot.item.equipment.ability_1_id)
-                abilities.append(slot.item.equipment.ability_2_id)
+        for slot in self.slots.all().values('item__equipment__ability_1', 'item__equipment__ability_2'):
+            abilities.append(slot['item__equipment__ability_1'])
+            abilities.append(slot['item__equipment__ability_2'])
         abilities.append(self.main_ability_id)
         abilities.append(self.job_ability_id)
         abilities.append(self.live_ability_id)
         abilities = list(filter(None, abilities))
+
         return {
             ability.type_id: ability
             for ability in sorted(Ability.objects.filter(id__in=abilities), key=lambda x: x.power)

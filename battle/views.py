@@ -22,7 +22,6 @@ class BattleMapViewSet(BaseGenericViewSet):
         serializer = self.get_serializer(self.get_object(), data=request.data)
         serializer.is_valid(raise_exception=True)
         result = serializer.save()
-
         return Response(result)
 
 

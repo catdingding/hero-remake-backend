@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from base.views import BaseGenericAPIView, CharaPostViewMixin, BaseGenericViewSet
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
@@ -62,6 +64,7 @@ class CharaViewSet(ListModelMixin, BaseGenericViewSet):
         serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
 
+    @method_decorator(cache_page(60))
     @action(methods=['get'], detail=False)
     def online(self, request):
         serializer = self.get_serializer(
