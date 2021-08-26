@@ -94,10 +94,10 @@ class BaseBattleMapProcessor():
         if loots:
             log_loots = [x for x in loots if '原料' not in x.type.name and '建國之石' not in x.type.name]
             if log_loots:
-                log_loots = '、'.join(f'{x.type.name}*{x.number}' for x in log_loots)
+                log_loots = '、'.join(f'{x.name}*{x.number}' for x in log_loots)
                 push_log("打寶", f"{self.chara.name}於{self.battle_map.name}獲得了{log_loots}")
         if battle.winner == 'defender':
-            push_log("陣亡", f"{self.chara.name}於{self.battle_map.name}被{'與'.join({x.name for x in self.monsters})}打到在地上磨擦")
+            push_log("陣亡", f"{self.chara.name}於{self.battle_map.name}被{'與'.join(x.name for x in self.monsters)}打到在地上磨擦")
 
         return {
             'winner': battle.winner,
