@@ -596,7 +596,7 @@ class BattleChara:
         # 奧義類型52:十字封印
         if (attacker.has_ability_type(31) or attacker.has_ability_type(52)) and randint(1, 5 * 2 ** self.blocked_ability_count) == 1:
             # 奧義類型57:神之封印
-            if self.blocked_ability_count >= max(attacker.ability_type_power(31), attacker.ability_type_power(31)) + attacker.ability_type_power(57):
+            if self.blocked_ability_count >= max(attacker.ability_type_power(31), attacker.ability_type_power(52)) + attacker.ability_type_power(57):
                 pass
             # 奧義類型41:封印防護
             elif not attacker.has_ability_type(52) and self.ability_type_power(41) >= randint(1, 100):
