@@ -507,6 +507,9 @@ class BattleChara:
         self.hp = max(0, self.hp - damage)
         self.log(f"{self.name}受到了{damage}點傷害")
 
+        # 奧義類型4:連擊
+        attacker.action_points += int(attacker.ability_type_power(4))
+
         # 即死
         # 奧義類型9:即死
         if skill_type == 10 and randint(1, 30) == 1 or attacker.ability_type_power(9) >= randint(1, 1000):
