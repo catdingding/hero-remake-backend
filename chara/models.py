@@ -67,6 +67,8 @@ class Chara(BaseModel):
     has_quest_bonus = models.BooleanField(default=False)
     has_auto_heal = models.BooleanField(default=False)
 
+    has_transfer_permission = models.BooleanField(default=True)
+
     @property
     def level(self):
         return self.exp // 100 + 1

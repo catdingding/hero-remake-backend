@@ -2,7 +2,7 @@ from random import choices, random
 
 from django.db.models import F
 from rest_framework import serializers
-from base.serializers import BaseSerializer, BaseModelSerializer
+from base.serializers import BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin
 
 from base.utils import randint
 from ability.serializers import AbilitySerializer
@@ -96,7 +96,7 @@ class UseItemSerializer(BaseSerializer):
         return item
 
 
-class SendItemSerializer(BaseSerializer):
+class SendItemSerializer(TransferPermissionCheckerMixin, BaseSerializer):
     item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
     number = serializers.IntegerField(min_value=1)
     receiver = serializers.PrimaryKeyRelatedField(queryset=Chara.objects.all())

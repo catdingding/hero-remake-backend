@@ -4,7 +4,7 @@ from django.utils.timezone import localtime
 
 from rest_framework import serializers
 
-from base.serializers import BaseSerializer, BaseModelSerializer
+from base.serializers import BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin
 from item.serializers import ItemTypeSerializer, ItemSerializer
 from chara.serializers import CharaProfileSerializer
 from chara.models import Chara
@@ -24,7 +24,7 @@ class AuctionSerializer(BaseModelSerializer):
         fields = ['id', 'seller', 'item', 'reserve_price', 'bidder', 'bid_price', 'due_time']
 
 
-class AuctionCreateSerializer(BaseModelSerializer):
+class AuctionCreateSerializer(TransferPermissionCheckerMixin, BaseModelSerializer):
     number = serializers.IntegerField(min_value=1)
     hours = serializers.IntegerField(min_value=1, max_value=24)
 
@@ -141,7 +141,7 @@ class SaleSerializer(BaseModelSerializer):
         fields = ['id', 'seller', 'item', 'price', 'due_time']
 
 
-class SaleCreateSerializer(BaseModelSerializer):
+class SaleCreateSerializer(TransferPermissionCheckerMixin, BaseModelSerializer):
     number = serializers.IntegerField(min_value=1)
     hours = serializers.IntegerField(min_value=1, max_value=24)
 

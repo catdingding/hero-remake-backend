@@ -19,6 +19,14 @@ class ContextMixin:
                 self.team = self.request.team
 
 
+class TransferPermissionCheckerMixin:
+    def validate(self, data):
+        if not self.chara.has_transfer_permission:
+            raise serializers.ValidationError("你不具有傳送權限")
+
+        return super().validate(data)
+
+
 class BaseSerializer(ContextMixin, FlexFieldsSerializerMixin, serializers.Serializer):
     pass
 

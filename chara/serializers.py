@@ -2,7 +2,7 @@ from django.db.models import F, Prefetch
 from rest_framework import serializers
 from rest_flex_fields import is_included
 from base.utils import randint, format_currency
-from base.serializers import BaseSerializer, BaseModelSerializer
+from base.serializers import BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin
 
 from world.models import SlotType
 from chara.models import Chara, CharaIntroduction, CharaAttribute, BattleMapTicket, CharaRecord, CharaSlot, CharaSkillSetting
@@ -170,7 +170,7 @@ class CharaProfileSerializer(CharaPublicProfileSerializer):
         return queryset
 
 
-class SendGoldSerializer(BaseSerializer):
+class SendGoldSerializer(TransferPermissionCheckerMixin, BaseSerializer):
     gold = serializers.IntegerField(min_value=1)
     receiver = serializers.PrimaryKeyRelatedField(queryset=Chara.objects.all())
 

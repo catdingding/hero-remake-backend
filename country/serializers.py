@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from base.serializers import BaseSerializer, BaseModelSerializer
+from base.serializers import BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin
 
 from country.models import Country, CountryOfficial, CountryJoinRequest, CountrySetting
 from item.models import Item
@@ -207,7 +207,7 @@ class CountryItemTakeSerializer(BaseSerializer):
         push_log("國庫", f"{self.chara.name}自國庫取出了{item.name}*{item.number}")
 
 
-class CountryItemPutSerializer(BaseSerializer):
+class CountryItemPutSerializer(TransferPermissionCheckerMixin, BaseSerializer):
     item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
     number = serializers.IntegerField(min_value=1)
 
