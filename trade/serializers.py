@@ -62,13 +62,15 @@ class AuctionBidSerializer(BaseSerializer):
 
         auction.bidder = chara
         auction.bid_price = validated_data['bid_price']
+        auction.due_time = max(auction.due_time, localtime() + timedelta(minutes=10))
         auction.save()
 
+        push_log("拍賣", f"{self.chara.name}在拍賣場對{auction.item.type.name}*{auction.item.number}出價{auction.bid_price}")
         return auction
 
     def validate(self, data):
-        if self.instance.bid_price is not None and data['bid_price'] <= self.instance.bid_price:
-            raise serializers.ValidationError("出價必須高於當前最高出價")
+        if self.instance.bid_price is not None and data['bid_price'] < self.instance.bid_price * 1.1:
+            raise serializers.ValidationError("出價必須高於當前最高出價*1.1")
         if data['bid_price'] < self.instance.reserve_price:
             raise serializers.ValidationError("出價不得低於底價")
         if self.chara == self.instance.seller:
