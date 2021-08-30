@@ -9,7 +9,7 @@ from ability.serializers import AbilitySerializer
 from battle.models import BattleMap
 from world.serializers import SlotTypeSerializer, ElementTypeSerializer
 from world.models import SlotType, ElementType
-from item.models import Item, ItemType, Equipment
+from item.models import Item, ItemType, Equipment, PetType
 from chara.models import Chara, BattleMapTicket
 
 from item.use_effects import USE_EFFECT_CLASSES
@@ -365,3 +365,11 @@ class BattleMapTicketToItemSerializer(BaseSerializer):
             raise serializers.ValidationError("地圖剩餘次數不足")
 
         return data
+
+
+class PetTypeSerializer(BaseModelSerializer):
+    item_type = ItemTypeSerializer(fields=['name', 'attack', 'defense', 'weight', 'element_type'])
+
+    class Meta:
+        model = PetType
+        fields = ['item_type', 'upgrade_proficiency_cost', 'attack_growth', 'defense_growth', 'weight_growth']

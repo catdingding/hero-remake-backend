@@ -1,11 +1,13 @@
 from django.db.models import Q
 from base.views import BaseGenericAPIView, CharaPostViewMixin
+from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
 
+from item.models import PetType
 from item.serializers import (
     UseItemSerializer, SendItemSerializer, StorageTakeSerializer, StoragePutSerializer,
     SmithUpgradeSerializer, SmithReplaceAbilitySerializer, PetUpgradeSerializer, SmithReplaceElementTypeSerializer,
-    BattleMapTicketToItemSerializer
+    BattleMapTicketToItemSerializer, PetTypeSerializer
 )
 
 
@@ -50,3 +52,11 @@ class SmithReplaceElementTypeView(CharaPostViewMixin, BaseGenericAPIView):
 
 class BattleMapTicketToItemView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = BattleMapTicketToItemSerializer
+
+
+class PetTypeView(ListModelMixin, BaseGenericAPIView):
+    serializer_class = PetTypeSerializer
+    queryset = PetType.objects.select_related('item_type__element_type').all()
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)

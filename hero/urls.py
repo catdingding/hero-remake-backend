@@ -18,7 +18,7 @@ from job.views import (
 )
 from item.views import (
     UseItemView, SendItemView, StorageTakeView, StoragePutView, SmithUpgradeView, SmithReplaceAbilityView,
-    PetUpgradeView, SmithReplaceElementTypeView, BattleMapTicketToItemView
+    PetUpgradeView, SmithReplaceElementTypeView, BattleMapTicketToItemView, PetTypeView
 )
 from country.views import (
     FoundCountryView, LeaveCountryView, ChangeKingView, CountryDismissView,
@@ -114,6 +114,7 @@ urlpatterns = [
     path('user/charas/', UserCharaView.as_view()),
     path('exercise-rewards/', ExerciseRewardView.as_view()),
     path('abilities/', AbilityView.as_view()),
+    path('item/pet-types/', PetTypeView.as_view()),
     path('town/inn/sleep/', InnSleepView.as_view()),
     path('town/change-name/', ChangeNameView.as_view()),
     path('logs/', LogView.as_view()),
