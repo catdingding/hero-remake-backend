@@ -39,11 +39,9 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
         if receiver is not None:
             data['receiver'] = await get_chara_profile(receiver)
 
-        if channel == 'private':
-            await self.send_json(data)
+        if channel == 'private' and receiver != self.scope['chara_id']:
             await self.channel_layer.group_send(f'private_{receiver}', data)
-        else:
-            await self.channel_layer.group_send(self.scope['group_mapping'][channel], data)
+        await self.channel_layer.group_send(self.scope['group_mapping'][channel], data)
 
     @database_sync_to_async
     def save_message(self, data):
