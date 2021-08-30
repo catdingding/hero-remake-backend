@@ -42,7 +42,13 @@ class AuctionCreateSerializer(TransferPermissionCheckerMixin, BaseModelSerialize
 
         item = self.chara.lose_items('bag', [item], mode='return')[0]
         item.save()
-        auction = Auction.objects.create(seller=self.chara, item=item, due_time=due_time, **validated_data)
+
+        deposit = max(100000, validated_data['reserve_price'] // 100)
+        self.chara.lose_gold(deposit)
+        self.chara.save()
+
+        auction = Auction.objects.create(seller=self.chara, item=item, deposit=deposit,
+                                         due_time=due_time, **validated_data)
 
         push_log("拍賣", f"{self.chara.name}在拍賣場上架了{item.type.name}*{item.number}，底價{auction.reserve_price}，時限{hours}小時")
         return auction
@@ -85,7 +91,7 @@ class AuctionBidSerializer(BaseSerializer):
 
 class AuctionReceiveGoldSerializer(BaseSerializer):
     def update(self, auction, validated_data):
-        self.chara.gold += auction.bid_price
+        self.chara.gold += (auction.bid_price + auction.deposit)
         self.chara.save()
 
         auction.gold_received = True
@@ -159,7 +165,12 @@ class SaleCreateSerializer(TransferPermissionCheckerMixin, BaseModelSerializer):
 
         item = self.chara.lose_items('bag', [item], mode='return')[0]
         item.save()
-        sale = Sale.objects.create(seller=self.chara, item=item, due_time=due_time, **validated_data)
+
+        deposit = max(100000, validated_data['price'] // 100)
+        self.chara.lose_gold(deposit)
+        self.chara.save()
+
+        sale = Sale.objects.create(seller=self.chara, item=item, deposit=deposit, due_time=due_time, **validated_data)
 
         push_log("交易", f"{self.chara.name}在出售所上架了{item.type.name}*{item.number}，價格{sale.price}，時限{hours}小時")
         return sale
@@ -169,7 +180,7 @@ class SaleBuySerializer(BaseSerializer):
     def update(self, sale, validated_data):
         chara, seller = Chara.objects.lock_by_pks([self.chara.id, sale.seller.id])
 
-        seller.gold += sale.price
+        seller.gold += (sale.price + sale.deposit)
         seller.save()
 
         chara.lose_gold(sale.price)

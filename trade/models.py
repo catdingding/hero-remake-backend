@@ -10,6 +10,7 @@ class Auction(BaseModel):
 
     bidder = models.ForeignKey("chara.Chara", null=True, related_name="auction_bidder_of", on_delete=models.PROTECT)
     bid_price = models.BigIntegerField(null=True)
+    deposit = models.BigIntegerField(null=True, default=0)
 
     due_time = models.DateTimeField()
 
@@ -22,6 +23,7 @@ class Sale(BaseModel):
 
     item = models.ForeignKey("item.Item", null=True, on_delete=models.PROTECT)
     price = models.BigIntegerField()
+    deposit = models.BigIntegerField(null=True, default=0)
 
     buyer = models.ForeignKey("chara.Chara", null=True, related_name="sale_buyer_of", on_delete=models.PROTECT)
 
