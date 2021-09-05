@@ -180,7 +180,10 @@ class UseEffect_10(BaseUseEffect):
         elif self.type.use_effect_param == 1:
             maxima = 60
 
-        self.chara.bag_item_limit = min(maxima, self.chara.bag_item_limit + value)
+        if self.chara.bag_item_limit + value > maxima:
+            raise ValidationError("超過使用上限")
+
+        self.chara.bag_item_limit = self.chara.bag_item_limit + value
         self.chara.save()
 
         return f"使用了{self.n}個{self.type.name}，背包上限變為{self.chara.bag_item_limit}。"
