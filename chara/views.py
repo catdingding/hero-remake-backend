@@ -14,7 +14,7 @@ from item.models import Item
 from chara.serializers import (
     CharaIntroductionSerializer, SendGoldSerializer, SlotEquipSerializer, SlotDivestSerializer, RestSerializer,
     CharaProfileSerializer, CharaPublicProfileSerializer, IncreaseHPMPMaxSerializer, HandInQuestSerializer,
-    CharaAvatarSerializer
+    CharaAvatarSerializer, CharaIntroductionUpdateSerializer
 )
 from item.serializers import ItemSerializer
 
@@ -87,7 +87,7 @@ class CharaStorageItemView(BaseGenericAPIView):
 
 
 class CharaIntroductionView(BaseGenericAPIView):
-    serializer_class = CharaIntroductionSerializer
+    serializer_class = CharaIntroductionUpdateSerializer
 
     def put(self, request):
         chara = self.get_chara()

@@ -13,7 +13,7 @@ from country.serializers import (
     FoundCountrySerializer, LeaveCountrySerializer,
     CountryDismissSerializer, ChangeKingSerializer,
     CountryItemTakeSerializer, CountryItemPutSerializer, CountryDonateSerializer,
-    CountryOfficialSerializer, CountryProfileSerializer,
+    CountryOfficialSerializer, CountryOfficialCreateSerializer, CountryProfileSerializer,
     CountryJoinRequestSerializer, CountryJoinRequestCreateSerializer, CountryJoinRequestReviewSerializer,
     CountryOccupyLocationSerializer, CountryAbandonLocationSerializer, CountryBuildTownSerializer,
     CountryUpgradeStorageSerializer, CountrySettingSerialzier
@@ -100,6 +100,10 @@ class SetCountrySettingView(BaseGenericAPIView):
 
 class CountryOfficialViewSet(CreateModelMixin, ListModelMixin, DestroyModelMixin, BaseGenericViewSet):
     serializer_class = CountryOfficialSerializer
+    serializer_action_classes = {
+        'create': CountryOfficialCreateSerializer,
+    }
+
     queryset = CountryOfficial.objects.all()
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['country']

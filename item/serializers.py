@@ -1,8 +1,13 @@
 from random import choices, random
 
+import serpy
 from django.db.models import F
 from rest_framework import serializers
-from base.serializers import BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin
+import serpy
+from base.serializers import (
+    BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin,
+    SerpyModelSerializer
+)
 
 from base.utils import randint
 from ability.serializers import AbilitySerializer
@@ -16,12 +21,15 @@ from item.use_effects import USE_EFFECT_CLASSES
 from system.utils import push_log, send_private_message_by_system
 
 
-class SimpleItemSerializer(BaseSerializer):
-    name = serializers.CharField(source="type.name")
-    number = serializers.IntegerField()
+class SimpleItemSerializer(SerpyModelSerializer):
+    name = serpy.MethodField()
+    number = serpy.Field()
+
+    def get_name(self, obj):
+        return obj.type.name
 
 
-class ItemTypeSerializer(BaseModelSerializer):
+class ItemTypeSerializer(SerpyModelSerializer):
     element_type = ElementTypeSerializer()
     slot_type = SlotTypeSerializer()
     ability_1 = AbilitySerializer(fields=['name'])
@@ -32,12 +40,12 @@ class ItemTypeSerializer(BaseModelSerializer):
         exclude = ['created_at', 'updated_at']
 
 
-class EquipmentSerializer(BaseModelSerializer):
-    attack = serializers.IntegerField()
-    defense = serializers.IntegerField()
-    weight = serializers.IntegerField()
-    upgrade_times_limit = serializers.IntegerField()
-    display_name = serializers.CharField()
+class EquipmentSerializer(SerpyModelSerializer):
+    attack = serpy.IntField()
+    defense = serpy.IntField()
+    weight = serpy.IntField()
+    upgrade_times_limit = serpy.IntField()
+    display_name = serpy.StrField()
     element_type = ElementTypeSerializer()
 
     ability_1 = AbilitySerializer(fields=['name'])
@@ -48,10 +56,10 @@ class EquipmentSerializer(BaseModelSerializer):
         exclude = ['created_at', 'updated_at']
 
 
-class ItemSerializer(BaseModelSerializer):
+class ItemSerializer(SerpyModelSerializer):
     type = ItemTypeSerializer(omit=['ability_1', 'ability_2'])
-    equipment = EquipmentSerializer()
-    name = serializers.SerializerMethodField()
+    equipment = EquipmentSerializer(required=False)
+    name = serpy.MethodField()
 
     class Meta:
         model = Item
@@ -367,7 +375,7 @@ class BattleMapTicketToItemSerializer(BaseSerializer):
         return data
 
 
-class PetTypeSerializer(BaseModelSerializer):
+class PetTypeSerializer(SerpyModelSerializer):
     item_type = ItemTypeSerializer(fields=['name', 'attack', 'defense', 'weight', 'element_type'])
 
     class Meta:

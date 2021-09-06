@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from base.serializers import BaseSerializer, BaseModelSerializer
+import serpy
+from base.serializers import BaseSerializer, BaseModelSerializer, SerpyModelSerializer
 
 from ability.models import Ability, AlchemyOption
 from chara.models import Chara
@@ -29,12 +30,15 @@ class LearnAbilitySerializer(BaseSerializer):
         return ability
 
 
-class AbilitySerializer(BaseModelSerializer):
-    is_live = serializers.BooleanField(source='type.is_live')
+class AbilitySerializer(SerpyModelSerializer):
+    is_live = serpy.MethodField()
 
     class Meta:
         model = Ability
         fields = ['id', 'name', 'attribute_type', 'require_proficiency', 'description', 'is_live']
+
+    def get_is_live(self, obj):
+        return obj.type.is_live
 
 
 class SetAbilitySerializer(BaseModelSerializer):

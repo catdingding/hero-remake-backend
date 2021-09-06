@@ -9,7 +9,7 @@ from team.models import Team, TeamJoinRequest
 from team.serializers import (
     TeamProfileSerializer, FoundTeamSerializer,
     TeamJoinRequestReviewSerializer, LeaveTeamSerializer, TeamJoinRequestSerializer,
-    DismissTeamMemberSerializer, DisbandTeamSerializer
+    TeamJoinRequestCreateSerializer, DismissTeamMemberSerializer, DisbandTeamSerializer
 )
 
 
@@ -30,6 +30,7 @@ class TeamJoinRequestViewSet(BaseGenericViewSet):
     queryset = TeamJoinRequest.objects.all()
     serializer_class = TeamJoinRequestSerializer
     serializer_action_classes = {
+        'create': TeamJoinRequestCreateSerializer,
         'review': TeamJoinRequestReviewSerializer,
     }
 

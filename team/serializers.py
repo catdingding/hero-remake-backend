@@ -1,5 +1,6 @@
+import serpy
 from rest_framework import serializers
-from base.serializers import BaseSerializer, BaseModelSerializer
+from base.serializers import BaseSerializer, BaseModelSerializer, SerpyModelSerializer
 
 from battle.models import Dungeon
 from chara.models import Chara
@@ -10,7 +11,7 @@ from chara.serializers import CharaSimpleSerializer
 from system.utils import push_log, send_private_message_by_system
 
 
-class TeamDungeonRecordSerializer(BaseModelSerializer):
+class TeamDungeonRecordSerializer(SerpyModelSerializer):
     dungeon = DungeonSerializer()
 
     class Meta:
@@ -18,10 +19,10 @@ class TeamDungeonRecordSerializer(BaseModelSerializer):
         fields = ['id', 'dungeon', 'current_floor', 'passed_times']
 
 
-class TeamProfileSerializer(BaseModelSerializer):
+class TeamProfileSerializer(SerpyModelSerializer):
     leader = CharaSimpleSerializer()
     members = CharaSimpleSerializer(many=True)
-    member_count = serializers.IntegerField()
+    member_count = serpy.Field()
 
     dungeon_records = TeamDungeonRecordSerializer(many=True)
 
@@ -51,14 +52,18 @@ class FoundTeamSerializer(BaseModelSerializer):
         return data
 
 
-class TeamJoinRequestSerializer(BaseModelSerializer):
-    chara = CharaSimpleSerializer(read_only=True)
+class TeamJoinRequestSerializer(SerpyModelSerializer):
+    chara = CharaSimpleSerializer()
 
     class Meta:
         model = TeamJoinRequest
-        fields = ['id', 'chara', 'team', 'created_at']
-        read_only_fields = ['id', 'chara', 'created_at']
-        extra_kwargs = {'team': {'write_only': True}}
+        fields = ['id', 'chara', 'created_at']
+
+
+class TeamJoinRequestCreateSerializer(BaseModelSerializer):
+    class Meta:
+        model = TeamJoinRequest
+        fields = ['team']
 
     def create(self, validated_data):
         team = validated_data['team']

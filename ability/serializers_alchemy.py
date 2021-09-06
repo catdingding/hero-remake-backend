@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from base.serializers import BaseSerializer, BaseModelSerializer
+from base.serializers import BaseSerializer, BaseModelSerializer, SerpyModelSerializer
 
 from ability.models import AlchemyOption
 from item.serializers import ItemTypeSerializer
 
 
-class AlchemyOptionSerializer(BaseModelSerializer):
+class AlchemyOptionSerializer(SerpyModelSerializer):
     item_type = ItemTypeSerializer(fields=['name'])
 
     class Meta:

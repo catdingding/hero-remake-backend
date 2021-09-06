@@ -1,20 +1,20 @@
 import random
 
+import serpy
 from rest_framework import serializers
 
 from base.utils import randint
-from base.serializers import BaseSerializer, BaseModelSerializer
+from base.serializers import BaseSerializer, BaseModelSerializer, SerpyModelSerializer
 
 from job.models import Job, Skill, ExerciseReward, JobAttribute
-from chara.models import CharaSkillSetting, CharaAttribute
+from chara.models import CharaSkillSetting, CharaAttribute, CharaSkillSetting
 
-from chara.serializers import CharaSkillSettingSerializer
 from world.serializers import AttributeTypeSerializer
 
 from system.utils import push_log
 
 
-class JobAttributeSerializer(BaseModelSerializer):
+class JobAttributeSerializer(SerpyModelSerializer):
     type = AttributeTypeSerializer()
 
     class Meta:
@@ -22,10 +22,10 @@ class JobAttributeSerializer(BaseModelSerializer):
         fields = ['type', 'require_value', 'require_proficiency']
 
 
-class JobSerializer(BaseModelSerializer):
+class JobSerializer(SerpyModelSerializer):
     attribute_type = AttributeTypeSerializer()
     attributes = JobAttributeSerializer(many=True)
-    is_available = serializers.BooleanField()
+    is_available = serpy.Field()
 
     class Meta:
         model = Job
@@ -90,10 +90,16 @@ class ChangeJobSerializer(BaseSerializer):
         return data
 
 
-class SkillSerializer(BaseModelSerializer):
+class SkillSerializer(SerpyModelSerializer):
     class Meta:
         model = Skill
         fields = ['id', 'name', 'power', 'rate', 'mp_cost']
+
+
+class CharaSkillSettingSerializer(BaseModelSerializer):
+    class Meta:
+        model = CharaSkillSetting
+        fields = ['skill', 'hp_percentage', 'mp_percentage', 'order']
 
 
 class SetSkillSettingSerializer(BaseSerializer):
@@ -154,7 +160,7 @@ class ExerciseSerializer(BaseSerializer):
         return data
 
 
-class ExerciseRewardSerializer(BaseModelSerializer):
+class ExerciseRewardSerializer(SerpyModelSerializer):
     job_attribute_type = AttributeTypeSerializer()
     reward_attribute_type = AttributeTypeSerializer()
 

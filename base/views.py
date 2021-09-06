@@ -162,17 +162,7 @@ class TeamPostViewMixin:
             return Response(result)
 
 
-class SerializerFieldsMixin:
-    serializer_fields = None
-
-    def get_serializer(self, *args, **kwargs):
-        if 'fields' not in kwargs and self.serializer_fields is not None:
-            kwargs['fields'] = self.serializer_fields
-
-        return super().get_serializer(*args, **kwargs)
-
-
-class BaseGenericViewSet(SerializerFieldsMixin, LockObjectMixin, TeamViewMixin, CountryViewMixin, CharaViewMixin, viewsets.GenericViewSet):
+class BaseGenericViewSet(LockObjectMixin, TeamViewMixin, CountryViewMixin, CharaViewMixin, viewsets.GenericViewSet):
     def get_serializer_class(self):
         try:
             return self.serializer_action_classes[self.action]
@@ -186,5 +176,5 @@ class BaseGenericViewSet(SerializerFieldsMixin, LockObjectMixin, TeamViewMixin, 
             return super().get_queryset()
 
 
-class BaseGenericAPIView(SerializerFieldsMixin, LockObjectMixin, TeamViewMixin, CountryViewMixin, CharaViewMixin, generics.GenericAPIView):
+class BaseGenericAPIView(LockObjectMixin, TeamViewMixin, CountryViewMixin, CharaViewMixin, generics.GenericAPIView):
     pass

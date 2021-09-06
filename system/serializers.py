@@ -1,30 +1,31 @@
 from rest_framework import serializers
+import serpy
 
-from base.serializers import BaseModelSerializer
+from base.serializers import BaseModelSerializer, SerpyModelSerializer, DateTimeField
 from country.serializers import CountrySerializer, CountryOfficialSerializer
 from system.models import Log
 
 
-class LogSerializer(BaseModelSerializer):
+class LogSerializer(SerpyModelSerializer):
     class Meta:
         model = Log
         fields = ['category', 'content', 'created_at']
 
 
-class CharaProfileSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    name = serializers.CharField()
-    avatar_version = serializers.IntegerField()
+class CharaProfileSerializer(SerpyModelSerializer):
+    id = serpy.Field()
+    name = serpy.Field()
+    avatar_version = serpy.Field()
     country = CountrySerializer()
     official = CountryOfficialSerializer(fields=['title'])
 
 
-class ChatMessageSerializer(serializers.Serializer):
-    channel = serializers.SerializerMethodField()
-    content = serializers.CharField()
-    type = serializers.SerializerMethodField()
+class ChatMessageSerializer(SerpyModelSerializer):
+    channel = serpy.MethodField()
+    content = serpy.Field()
+    type = serpy.MethodField()
     sender = CharaProfileSerializer()
-    created_at = serializers.DateTimeField()
+    created_at = DateTimeField()
 
     def get_channel(self, obj):
         return self.Meta.channel
@@ -50,7 +51,7 @@ class TeamChatMessageSerializer(ChatMessageSerializer):
 
 class PrivateChatMessageSerializer(ChatMessageSerializer):
     receiver = CharaProfileSerializer()
-    is_system_generated = serializers.BooleanField()
+    is_system_generated = serpy.Field()
 
     class Meta:
         channel = 'private'

@@ -1,6 +1,7 @@
 from django.db.models import Q
+import serpy
 from rest_framework import serializers
-from base.serializers import BaseSerializer, BaseModelSerializer
+from base.serializers import BaseSerializer, BaseModelSerializer, SerpyModelSerializer
 
 from country.serializers import CountrySerializer
 from town.serializers import TownSerializer
@@ -8,19 +9,19 @@ from world.models import Location, ElementType, AttributeType, SlotType
 from base.utils import calculate_distance
 
 
-class AttributeTypeSerializer(BaseModelSerializer):
+class AttributeTypeSerializer(SerpyModelSerializer):
     class Meta:
         model = AttributeType
         fields = ['id', 'name', 'class_name']
 
 
-class SlotTypeSerializer(BaseModelSerializer):
+class SlotTypeSerializer(SerpyModelSerializer):
     class Meta:
         model = SlotType
         fields = ['id', 'name']
 
 
-class ElementTypeSerializer(BaseModelSerializer):
+class ElementTypeSerializer(SerpyModelSerializer):
     class Meta:
         model = ElementType
         fields = ['id', 'name']
@@ -47,9 +48,9 @@ class MapQuerySerializer(BaseSerializer):
     radius = serializers.IntegerField(min_value=1, max_value=5)
 
 
-class LocationSerializer(BaseModelSerializer):
+class LocationSerializer(SerpyModelSerializer):
     element_type = ElementTypeSerializer()
-    battle_map_name = serializers.CharField(source="battle_map.name")
+    battle_map_name = serpy.MethodField()
     country = CountrySerializer()
     town = TownSerializer()
 
@@ -57,3 +58,6 @@ class LocationSerializer(BaseModelSerializer):
         model = Location
         fields = ['id', 'x', 'y', 'element_type',
                   'battle_map', 'battle_map_name', 'country', 'town']
+
+    def get_battle_map_name(self, obj):
+        return obj.battle_map.name

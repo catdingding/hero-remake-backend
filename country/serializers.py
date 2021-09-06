@@ -1,5 +1,9 @@
 from rest_framework import serializers
-from base.serializers import BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin
+import serpy
+from base.serializers import (
+    BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin,
+    SerpyModelSerializer
+)
 
 from country.models import Country, CountryOfficial, CountryJoinRequest, CountrySetting
 from item.models import Item
@@ -9,31 +13,37 @@ from town.models import Town
 from system.utils import push_log, send_private_message_by_system
 
 
-class CountrySerializer(BaseModelSerializer):
+class CountrySerializer(SerpyModelSerializer):
     class Meta:
         model = Country
         fields = ['id', 'name']
 
 
-class CountrySettingSerialzier(BaseModelSerializer):
+class CountrySettingSerialzier(SerpyModelSerializer):
     class Meta:
         model = CountrySetting
         fields = ['introduction']
 
 
-class CountryProfileSerializer(BaseModelSerializer):
-    location_count = serializers.IntegerField()
-    citizen_count = serializers.IntegerField()
+class CountryProfileSerializer(SerpyModelSerializer):
+    location_count = serpy.Field()
+    citizen_count = serpy.Field()
     setting = CountrySettingSerialzier()
 
-    expandable_fields = {
-        'king': ('chara.serializers.CharaProfileSerializer', {'fields': ['id', 'name']}),
-        'locations': ('world.serializers.LocationSerializer', {'fields': ['id', 'x', 'y', 'battle_map_name'], 'many': True})
-    }
+    king = serpy.MethodField()
+    locations = serpy.MethodField()
 
     class Meta:
         model = Country
         fields = ['id', 'name', 'gold', 'item_limit', 'location_count', 'citizen_count', 'setting', 'created_at']
+
+    def get_king(self, obj):
+        from chara.serializers import CharaProfileSerializer
+        return CharaProfileSerializer(obj.king, fields=['id', 'name']).data
+
+    def get_locations(self, obj):
+        from world.serializers import LocationSerializer
+        return LocationSerializer(obj.locations.all(), many=True, fields=['id', 'x', 'y', 'battle_map_name']).data
 
 
 class FoundCountrySerializer(BaseModelSerializer):
@@ -177,7 +187,13 @@ class ChangeKingSerializer(BaseSerializer):
         return chara
 
 
-class CountryOfficialSerializer(BaseModelSerializer):
+class CountryOfficialSerializer(SerpyModelSerializer):
+    class Meta:
+        model = CountryOfficial
+        fields = ['id', 'chara', 'title']
+
+
+class CountryOfficialCreateSerializer(BaseModelSerializer):
     class Meta:
         model = CountryOfficial
         fields = ['id', 'chara', 'title']

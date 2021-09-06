@@ -6,12 +6,12 @@ from rest_framework import serializers
 from battle.models import BattleMap, Dungeon, DungeonFloor, BattleResult
 from chara.models import Chara
 from team.models import TeamDungeonRecord
-from base.serializers import BaseSerializer, BaseModelSerializer
+from base.serializers import BaseSerializer, BaseModelSerializer, SerpyModelSerializer
 from battle.battle_map_processors import BATTLE_MAP_PROCESSORS
 from battle.battle import Battle
 
 
-class BattleMapSerializer(BaseModelSerializer):
+class BattleMapSerializer(SerpyModelSerializer):
     class Meta:
         model = BattleMap
         fields = ['id', 'name']
@@ -68,7 +68,7 @@ class PvPFightSerializer(BaseSerializer):
         }
 
 
-class DungeonSerializer(BaseModelSerializer):
+class DungeonSerializer(SerpyModelSerializer):
     class Meta:
         model = Dungeon
         fields = ['id', 'name', 'description', 'max_floor']
@@ -107,7 +107,7 @@ class DungeonFightSerializer(BaseSerializer):
         return result
 
 
-class BattleResultSerializer(BaseModelSerializer):
+class BattleResultSerializer(SerpyModelSerializer):
     class Meta:
         model = BattleResult
         fields = ['id', 'title', 'content', 'created_at']

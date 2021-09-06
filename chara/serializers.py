@@ -1,8 +1,12 @@
 from django.db.models import F, Prefetch
+import serpy
 from rest_framework import serializers
 from rest_flex_fields import is_included
 from base.utils import randint, format_currency
-from base.serializers import BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin
+from base.serializers import (
+    BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin,
+    SerpyModelSerializer
+)
 
 from world.models import SlotType
 from chara.models import Chara, CharaIntroduction, CharaAttribute, BattleMapTicket, CharaRecord, CharaSlot, CharaSkillSetting
@@ -16,7 +20,7 @@ from world.serializers import SlotTypeSerializer, LocationSerializer, ElementTyp
 from system.utils import push_log, send_private_message_by_system
 
 
-class BattleMapTicketSerialiser(BaseModelSerializer):
+class BattleMapTicketSerialiser(SerpyModelSerializer):
     battle_map = BattleMapSerializer()
 
     class Meta:
@@ -24,7 +28,7 @@ class BattleMapTicketSerialiser(BaseModelSerializer):
         fields = ['battle_map', 'value']
 
 
-class CharaAttributeSerialiser(BaseModelSerializer):
+class CharaAttributeSerialiser(SerpyModelSerializer):
     type = AttributeTypeSerializer()
 
     class Meta:
@@ -32,7 +36,7 @@ class CharaAttributeSerialiser(BaseModelSerializer):
         fields = ['type', 'value', 'limit', 'proficiency']
 
 
-class CharaSlotSerializer(BaseModelSerializer):
+class CharaSlotSerializer(SerpyModelSerializer):
     type = SlotTypeSerializer()
     item = ItemSerializer()
 
@@ -41,31 +45,37 @@ class CharaSlotSerializer(BaseModelSerializer):
         fields = ['type', 'item']
 
 
-class CharaSkillSettingSerializer(BaseModelSerializer):
+class CharaSkillSettingSerializer(SerpyModelSerializer):
     class Meta:
         model = CharaSkillSetting
         fields = ['skill', 'hp_percentage', 'mp_percentage', 'order']
 
 
-class CharaIntroductionSerializer(BaseModelSerializer):
+class CharaIntroductionSerializer(SerpyModelSerializer):
     class Meta:
         model = CharaIntroduction
         fields = ['content']
 
 
-class CharaRecordSerializer(BaseModelSerializer):
+class CharaIntroductionUpdateSerializer(BaseModelSerializer):
+    class Meta:
+        model = CharaIntroduction
+        fields = ['content']
+
+
+class CharaRecordSerializer(SerpyModelSerializer):
     class Meta:
         model = CharaRecord
         exclude = ['id', 'created_at', 'updated_at']
 
 
-class CharaSimpleSerializer(BaseModelSerializer):
+class CharaSimpleSerializer(SerpyModelSerializer):
     class Meta:
         model = Chara
         fields = ['id', 'name']
 
 
-class CharaPublicProfileSerializer(BaseModelSerializer):
+class CharaPublicProfileSerializer(SerpyModelSerializer):
     from job.serializers import JobSerializer
     from team.serializers import TeamProfileSerializer
 
@@ -74,7 +84,7 @@ class CharaPublicProfileSerializer(BaseModelSerializer):
     team = TeamProfileSerializer(fields=['id', 'name'])
 
     job = JobSerializer(fields=['name', 'attribute_type'])
-    level = serializers.IntegerField()
+    level = serpy.Field()
     element_type = ElementTypeSerializer()
 
     main_ability = AbilitySerializer(fields=['id', 'name'])
@@ -119,11 +129,11 @@ class CharaPublicProfileSerializer(BaseModelSerializer):
 
 class CharaProfileSerializer(CharaPublicProfileSerializer):
     location = LocationSerializer()
-    is_king = serializers.SerializerMethodField()
-    is_leader = serializers.SerializerMethodField()
+    is_king = serpy.MethodField()
+    is_leader = serpy.MethodField()
 
-    hp_limit = serializers.IntegerField()
-    mp_limit = serializers.IntegerField()
+    hp_limit = serpy.Field()
+    mp_limit = serpy.Field()
 
     bag_items = ItemSerializer(many=True)
     skill_settings = CharaSkillSettingSerializer(many=True)

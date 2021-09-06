@@ -4,7 +4,7 @@ from django.utils.timezone import localtime
 
 from rest_framework import serializers
 
-from base.serializers import BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin
+from base.serializers import BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin, SerpyModelSerializer
 from item.serializers import ItemTypeSerializer, ItemSerializer
 from chara.serializers import CharaProfileSerializer
 from chara.models import Chara
@@ -14,7 +14,7 @@ from item.models import Item
 from system.utils import push_log
 
 
-class AuctionSerializer(BaseModelSerializer):
+class AuctionSerializer(SerpyModelSerializer):
     item = ItemSerializer()
     seller = CharaProfileSerializer(fields=['id', 'name'])
     bidder = CharaProfileSerializer(fields=['id', 'name'])
@@ -138,7 +138,7 @@ class AuctionReceiveItemSerializer(BaseSerializer):
         return data
 
 
-class SaleSerializer(BaseModelSerializer):
+class SaleSerializer(SerpyModelSerializer):
     item = ItemSerializer()
     seller = CharaProfileSerializer(fields=['id', 'name'])
 
@@ -230,7 +230,7 @@ class SaleReceiveItemSerializer(BaseSerializer):
         return data
 
 
-class PurchaseSerializer(BaseModelSerializer):
+class PurchaseSerializer(SerpyModelSerializer):
     class Meta:
         model = Purchase
         fields = ['id', 'buyer', 'item_type', 'number', 'price', 'due_time']
@@ -311,7 +311,7 @@ class PurchaseReceiveGoldSerializer(BaseSerializer):
         return data
 
 
-class ExchangeOptionRequirementSerializer(BaseModelSerializer):
+class ExchangeOptionRequirementSerializer(SerpyModelSerializer):
     item_type = ItemTypeSerializer(fields=['name', 'description'])
 
     class Meta:
@@ -319,7 +319,7 @@ class ExchangeOptionRequirementSerializer(BaseModelSerializer):
         fields = ['item_type', 'number']
 
 
-class ExchangeOptionSerializer(BaseModelSerializer):
+class ExchangeOptionSerializer(SerpyModelSerializer):
     item_type = ItemTypeSerializer()
     requirements = ExchangeOptionRequirementSerializer(many=True)
 
@@ -342,7 +342,7 @@ class ExchangeSerializer(BaseSerializer):
         return {'display_message': f'換取了{number}個{self.instance.item_type.name}'}
 
 
-class StoreOptionSerializer(BaseModelSerializer):
+class StoreOptionSerializer(SerpyModelSerializer):
     item_type = ItemTypeSerializer()
 
     class Meta:
