@@ -108,6 +108,8 @@ class Equipment(Item):
     ability_2 = models.ForeignKey("ability.Ability", null=True,
                                   related_name="ability_2_items", on_delete=models.PROTECT)
 
+    is_locked = models.BooleanField(default=False)
+
     @property
     def attack(self):
         return self.type.attack + self.attack_add_on

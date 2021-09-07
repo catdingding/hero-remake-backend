@@ -2,7 +2,7 @@ from rest_framework import serializers
 import serpy
 from base.serializers import (
     BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin,
-    SerpyModelSerializer
+    SerpyModelSerializer, LockedEquipmentCheckMixin
 )
 
 from country.models import Country, CountryOfficial, CountryJoinRequest, CountrySetting
@@ -223,7 +223,7 @@ class CountryItemTakeSerializer(BaseSerializer):
         push_log("國庫", f"{self.chara.name}自國庫取出了{item.name}*{item.number}")
 
 
-class CountryItemPutSerializer(TransferPermissionCheckerMixin, BaseSerializer):
+class CountryItemPutSerializer(LockedEquipmentCheckMixin, TransferPermissionCheckerMixin, BaseSerializer):
     item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
     number = serializers.IntegerField(min_value=1)
 
@@ -236,11 +236,6 @@ class CountryItemPutSerializer(TransferPermissionCheckerMixin, BaseSerializer):
         self.country.get_items(items)
 
         push_log("國庫", f"{self.chara.name}向國庫存入了{item.name}*{item.number}")
-
-    def validate_item(self, item):
-        if not item.type.is_transferable:
-            raise serializers.ValidationError("不可存入綁定道具")
-        return item
 
 
 class CountryDonateSerializer(BaseSerializer):

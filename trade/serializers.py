@@ -4,7 +4,10 @@ from django.utils.timezone import localtime
 
 from rest_framework import serializers
 
-from base.serializers import BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin, SerpyModelSerializer
+from base.serializers import (
+    BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin, SerpyModelSerializer,
+    LockedEquipmentCheckMixin
+)
 from item.serializers import ItemTypeSerializer, ItemSerializer
 from chara.serializers import CharaProfileSerializer
 from chara.models import Chara
@@ -24,7 +27,7 @@ class AuctionSerializer(SerpyModelSerializer):
         fields = ['id', 'seller', 'item', 'reserve_price', 'bidder', 'bid_price', 'due_time']
 
 
-class AuctionCreateSerializer(TransferPermissionCheckerMixin, BaseModelSerializer):
+class AuctionCreateSerializer(LockedEquipmentCheckMixin, TransferPermissionCheckerMixin, BaseModelSerializer):
     number = serializers.IntegerField(min_value=1)
     hours = serializers.IntegerField(min_value=1, max_value=24)
 
@@ -147,7 +150,7 @@ class SaleSerializer(SerpyModelSerializer):
         fields = ['id', 'seller', 'item', 'price', 'due_time']
 
 
-class SaleCreateSerializer(TransferPermissionCheckerMixin, BaseModelSerializer):
+class SaleCreateSerializer(LockedEquipmentCheckMixin, TransferPermissionCheckerMixin, BaseModelSerializer):
     number = serializers.IntegerField(min_value=1)
     hours = serializers.IntegerField(min_value=1, max_value=24)
 
@@ -364,7 +367,7 @@ class StoreBuySerializer(BaseSerializer):
         return {'display_message': f'購買了{number}個{self.instance.item_type.name}'}
 
 
-class SellItemSerializer(BaseSerializer):
+class SellItemSerializer(LockedEquipmentCheckMixin, BaseSerializer):
     item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
     number = serializers.IntegerField(min_value=1)
 

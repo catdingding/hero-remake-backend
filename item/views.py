@@ -7,7 +7,7 @@ from item.models import PetType
 from item.serializers import (
     UseItemSerializer, SendItemSerializer, StorageTakeSerializer, StoragePutSerializer,
     SmithUpgradeSerializer, SmithReplaceAbilitySerializer, PetUpgradeSerializer, SmithReplaceElementTypeSerializer,
-    BattleMapTicketToItemSerializer, PetTypeSerializer
+    BattleMapTicketToItemSerializer, PetTypeSerializer, ToggleEquipmentLockSerializer
 )
 
 
@@ -52,6 +52,10 @@ class SmithReplaceElementTypeView(CharaPostViewMixin, BaseGenericAPIView):
 
 class BattleMapTicketToItemView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = BattleMapTicketToItemSerializer
+
+
+class ToggleEquipmentLockView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = ToggleEquipmentLockSerializer
 
 
 class PetTypeView(ListModelMixin, BaseGenericAPIView):

@@ -6,7 +6,7 @@ from rest_framework import serializers
 import serpy
 from base.serializers import (
     BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin,
-    SerpyModelSerializer
+    SerpyModelSerializer, LockedEquipmentCheckMixin
 )
 
 from base.utils import randint
@@ -104,7 +104,7 @@ class UseItemSerializer(BaseSerializer):
         return item
 
 
-class SendItemSerializer(TransferPermissionCheckerMixin, BaseSerializer):
+class SendItemSerializer(LockedEquipmentCheckMixin, TransferPermissionCheckerMixin, BaseSerializer):
     item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
     number = serializers.IntegerField(min_value=1)
     receiver = serializers.PrimaryKeyRelatedField(queryset=Chara.objects.all())
@@ -125,11 +125,6 @@ class SendItemSerializer(TransferPermissionCheckerMixin, BaseSerializer):
         push_log("傳送", f"{sender.name}向{receiver.name}傳送了{item.name}*{item.number}")
         send_private_message_by_system(
             sender.id, receiver.id, f"{sender.name}向{receiver.name}傳送了{item.name}*{item.number}")
-
-    def validate_item(self, item):
-        if not item.type.is_transferable:
-            raise serializers.ValidationError("不可傳送綁定道具")
-        return item
 
     def validate_receiver(self, value):
         if value == self.chara:
@@ -260,7 +255,7 @@ class PetUpgradeSerializer(BaseSerializer):
         return data
 
 
-class SmithReplaceAbilitySerializer(BaseSerializer):
+class SmithReplaceAbilitySerializer(LockedEquipmentCheckMixin, BaseSerializer):
     slot_type = serializers.PrimaryKeyRelatedField(queryset=SlotType.objects.all())
     source_item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
 
@@ -302,6 +297,9 @@ class SmithReplaceAbilitySerializer(BaseSerializer):
         else:
             push_log("製作", f"{self.chara.name}嘗試將「{ability.name}」注入了{equipment.display_name}，但失敗了")
             return {"display_message": "注入失敗"}
+
+    def validate_source_item(self, source_item):
+        return self.validate_item(source_item)
 
     def validate(self, data):
         item = self.chara.slots.get(type=data['slot_type']).item
@@ -373,6 +371,22 @@ class BattleMapTicketToItemSerializer(BaseSerializer):
             raise serializers.ValidationError("地圖剩餘次數不足")
 
         return data
+
+
+class ToggleEquipmentLockSerializer(BaseSerializer):
+    slot_type = serializers.PrimaryKeyRelatedField(queryset=SlotType.objects.all())
+
+    def save(self):
+        slot_type = self.validated_data['slot_type']
+
+        equipment = self.chara.slots.get(type=slot_type).item.equipment
+        equipment.is_locked = not equipment.is_locked
+        equipment.save()
+
+    def validate_slot_type(self, slot_type):
+        if not self.chara.slots.filter(type=slot_type, item__isnull=False).exists():
+            raise serializers.ValidationError("該欄位無裝備")
+        return slot_type
 
 
 class PetTypeSerializer(SerpyModelSerializer):

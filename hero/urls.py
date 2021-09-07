@@ -18,7 +18,7 @@ from job.views import (
 )
 from item.views import (
     UseItemView, SendItemView, StorageTakeView, StoragePutView, SmithUpgradeView, SmithReplaceAbilityView,
-    PetUpgradeView, SmithReplaceElementTypeView, BattleMapTicketToItemView, PetTypeView
+    PetUpgradeView, SmithReplaceElementTypeView, BattleMapTicketToItemView, PetTypeView, ToggleEquipmentLockView
 )
 from country.views import (
     FoundCountryView, LeaveCountryView, ChangeKingView, CountryDismissView,
@@ -79,6 +79,7 @@ urlpatterns = [
     path('chara/item/use/', UseItemView.as_view()),
     path('chara/item/send/', SendItemView.as_view()),
     path('chara/item/sell/', SellItemView.as_view()),
+    path('chara/item/toggle-equipment-lock/', ToggleEquipmentLockView.as_view()),
     path('chara/storage/items/', CharaStorageItemView.as_view()),
     path('chara/storage/take/', StorageTakeView.as_view()),
     path('chara/storage/put/', StoragePutView.as_view()),

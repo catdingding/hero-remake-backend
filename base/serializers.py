@@ -31,6 +31,15 @@ class TransferPermissionCheckerMixin:
         return super().validate(data)
 
 
+class LockedEquipmentCheckMixin:
+    def validate_item(self, item):
+        if not item.type.is_transferable:
+            raise serializers.ValidationError("此為綁定道具")
+        if hasattr(item, 'equipment') and item.equipment.is_locked:
+            raise serializers.ValidationError("此裝備已綁定")
+        return item
+
+
 class BaseSerializer(ContextMixin, FlexFieldsSerializerMixin, serializers.Serializer):
     pass
 
