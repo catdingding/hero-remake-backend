@@ -104,15 +104,6 @@ class BattleChara:
         self.name = source.name
         self.element_type = source.element_type
         self.action_points = 0
-        # attributes
-        for attr in source.attributes.all().select_related('type'):
-            attr_value = attr.value
-            if self.battle.element_type is not None:
-                if self.element_type == self.battle.element_type and self.element_type.id != 'none':
-                    attr_value = int(attr_value * 1.1)
-                elif self.element_type.suppressed_by_id == self.battle.element_type.id:
-                    attr_value = int(attr_value * 0.9)
-            setattr(self, attr.type.en_name, attr_value)
 
         self.skill_settings = list(source.skill_settings.all().order_by('order').select_related('skill'))
 
@@ -139,6 +130,16 @@ class BattleChara:
         # 奧義類型15:增加初始AP
         self.action_points += self.ability_type_power(15)
 
+    def set_attributes(self):
+        for attr in self.source.attributes.all().select_related('type'):
+            attr_value = attr.value
+            if self.battle.element_type is not None:
+                if self.element_type == self.battle.element_type and self.element_type.id != 'none':
+                    attr_value = int(attr_value * (1.1 + self.ability_type_power(19)))
+                elif self.element_type.suppressed_by_id == self.battle.element_type.id:
+                    attr_value = int(attr_value * 0.9)
+            setattr(self, attr.type.en_name, attr_value)
+
     def create_from_chara(self, chara):
         # 裝備
         self.equipments = {}
@@ -150,6 +151,8 @@ class BattleChara:
 
         # 奧義
         self.ability_types = chara.equipped_ability_types
+
+        self.set_attributes()
 
         # 攻防
         # 奧義類型18:魔法劍
@@ -184,6 +187,8 @@ class BattleChara:
             ability.type_id: ability
             for ability in sorted(abilities, key=lambda x: x.power)
         }
+
+        self.set_attributes()
 
         # 奧義類型18:魔法劍
         self.attack = self.str + int(self.int * self.ability_type_power(18))
@@ -559,7 +564,7 @@ class BattleChara:
 
         # 降速
         # 奧義類型16:降速
-        if skill_type == 15 and randint(1, 8) or attacker.ability_type_power(16) >= randint(1, 1000):
+        if skill_type == 15 and randint(1, 8) or attacker.ability_type_power(16) >= randint(1, 100):
             self.speed = max(0, self.speed - 50)
             self.log(f"{self.name}的速度降低了")
 
