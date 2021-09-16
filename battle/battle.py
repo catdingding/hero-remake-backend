@@ -627,13 +627,14 @@ class BattleChara:
             attacker.log(f"[水武特效]吸收了{self.name}的{hp_loss}HP")
         # 風武
         elif attacker.has_equipment_effect(1, 4):
-            attacker.action_points += 100
-            attacker.log(f"[風武特效]{attacker.name}獲得了100AP")
+            ap_add = max(100, self.speed // 10)
+            attacker.action_points += ap_add
+            attacker.log(f"[風武特效]{attacker.name}獲得了{ap_add}AP")
         # 雷武
         elif attacker.has_equipment_effect(1, 6):
             if randint(1, 5) == 1:
                 self.action_points -= 1000
-                self.log(f"[雷武特效]{self.name}被麻痹了，AP減少了1000")
+                self.log(f"[雷武特效]{self.name}被麻痹了，減少了1000AP")
         # 暗武
         elif attacker.has_equipment_effect(1, 8):
             self.reduced_skill_rate = 0.5
@@ -643,23 +644,25 @@ class BattleChara:
             pass
         # 火防
         elif self.has_equipment_effect(2, 2):
-            hp_loss = int(self.hp_max * 0.01)
-            self.hp -= hp_loss
+            hp_loss = int(attacker.hp_max * 0.015)
+            attacker.hp -= hp_loss
             attacker.log(f"[火防特效]{attacker.name}損失了{hp_loss}HP")
         # 水防
         elif self.has_equipment_effect(2, 3):
-            hp_add = int(self.hp_max * 0.01)
+            hp_add = int(self.hp_max * 0.005)
             self.gain_hp(hp_add)
             attacker.weapon_effect_blocked_flag = True
             self.log(f"[水防特效]{self.name}恢復了{hp_add}HP，並封印了對手的武器特效")
         # 風防
         elif self.has_equipment_effect(2, 4):
-            self.action_points += 100
-            self.log(f"[風防特效]{self.name}獲得了100AP")
+            ap_add = max(100, attacker.speed // 10)
+            self.action_points += ap_add
+            self.log(f"[風防特效]{self.name}獲得了{ap_add}AP")
         # 雷防
         elif self.has_equipment_effect(2, 6):
-            attacker.action_points -= 100
-            attacker.log(f"[雷防特效]{attacker.name}的AP減少了100點")
+            ap_loss = max(100, attacker.speed // 10)
+            attacker.action_points -= ap_loss
+            attacker.log(f"[雷防特效]{attacker.name}的AP減少了{ap_loss}點")
 
         if self.hp <= 0:
             self.hp = 0
