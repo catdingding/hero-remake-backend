@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'channels',
     'rest_framework',
     'corsheaders',
+    'cacheops',
+    'django_pickling',
     'system.apps.SystemConfig',
     'base.apps.BaseConfig',
     'battle.apps.BattleConfig',
@@ -189,3 +191,22 @@ CHARA_AVATAR_PATH = os.path.join(os.environ['SFTP_PATH'], 'chara_avatar')
 
 # time
 ACTION_TIME_GRACE = 3
+
+
+# cacheops
+CACHEOPS_REDIS = f"redis://:{os.environ['REDIS_PASS']}@{os.environ['REDIS_HOST']}:{os.environ['REDIS_PORT']}/1"
+CACHEOPS_DEGRADE_ON_FAILURE = True
+CACHEOPS_DEFAULTS = {
+    'timeout': 60 * 60 * 24
+}
+CACHEOPS = {
+    'ability.*': {'ops': 'all'},
+    'battle.*': {'ops': 'all'},
+    'battle.BattleResult': None,
+    'item.*': {'ops': 'all'},
+    'item.Item': None,
+    'item.Equipment': None,
+    'job.*': {'ops': 'all'},
+    'world.*': {'ops': 'all'},
+    'world.Location': None
+}
