@@ -27,6 +27,8 @@ class LearnAbilitySerializer(BaseSerializer):
         if ability.prerequisite is not None:
             if not self.chara.abilities.filter(pk=ability.prerequisite.pk).exists():
                 raise serializers.ValidationError("需先學習前置奧義")
+        if self.chara.abilities.filter(pk=ability.pk).exists():
+            raise serializers.ValidationError("已學習過此奧義")
         return ability
 
 

@@ -200,13 +200,12 @@ CACHEOPS_DEFAULTS = {
     'timeout': 60 * 60 * 24
 }
 CACHEOPS = {
-    'ability.*': {'ops': 'all'},
+    'ability.AbilityType': {'ops': 'all'},
     'battle.*': {'ops': 'all'},
     'battle.BattleResult': None,
     'item.*': {'ops': 'all'},
     'item.Item': None,
     'item.Equipment': None,
-    'job.*': {'ops': 'all'},
     'world.*': {'ops': 'all'},
     'world.Location': None
 }
