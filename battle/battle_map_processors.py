@@ -83,9 +83,10 @@ class BaseBattleMapProcessor():
         CharaAttribute.objects.filter(
             chara=self.chara, type_id=F('chara__job__attribute_type')
         ).update(proficiency=F('proficiency') + proficiency)
-        BattleMapTicket.objects.filter(
-            chara=self.chara, battle_map__in=found_battle_maps
-        ).update(value=F('value') + 1)
+        if found_battle_maps:
+            BattleMapTicket.objects.filter(
+                chara=self.chara, battle_map__in=found_battle_maps
+            ).update(value=F('value') + 1)
 
         self.chara.save()
 

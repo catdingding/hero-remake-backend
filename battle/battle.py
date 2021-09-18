@@ -289,15 +289,14 @@ class BattleChara:
         return type_id in self.ability_types
 
     def ability_type_power(self, type_id):
-        try:
+        if type_id in self.ability_types:
             return self.ability_types[type_id].power
-        except KeyError:
-            return 0
+        return 0
 
     def has_equipment_effect(self, slot_type_id, element_type_id):
         if self.weapon_effect_blocked and slot_type_id == 1:
             return False
-        return hasattr(self, 'equipments') and self.equipments[slot_type_id].element_type_id == element_type_id and self.element_type.id == element_type_id
+        return hasattr(self, 'equipments') and self.equipments[slot_type_id].element_type_id == element_type_id == self.element_type.id
 
     def gain_hp(self, hp_add):
         self.hp = min(self.hp_max, self.hp + hp_add)
