@@ -295,7 +295,7 @@ class SmithReplaceAbilitySerializer(LockedEquipmentCheckMixin, BaseSerializer):
             push_log("製作", f"{self.chara.name}成功的將「{ability.name}」注入了{equipment.display_name}")
             return {"display_message": "注入成功"}
         else:
-            push_log("製作", f"{self.chara.name}嘗試將「{ability.name}」注入了{equipment.display_name}，但失敗了")
+            push_log("製作", f"{self.chara.name}嘗試用{source_item.name}將「{ability.name}」注入了{equipment.display_name}，但失敗了")
             return {"display_message": "注入失敗"}
 
     def validate_source_item(self, source_item):
