@@ -44,6 +44,6 @@ class BattleResultViewSet(ListModelMixin, RetrieveModelMixin, BaseGenericViewSet
     search_fields = ['title']
 
     def list(self, request):
-        queryset = self.filter_queryset(self.get_queryset()).order_by('-created_at')[:200]
+        queryset = self.filter_queryset(self.get_queryset()).defer('content').order_by('-created_at')[:200]
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)

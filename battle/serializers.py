@@ -1,4 +1,4 @@
-import json
+import math
 from django.db.models import F
 
 from rest_framework import serializers
@@ -7,6 +7,7 @@ from battle.models import BattleMap, Dungeon, DungeonFloor, BattleResult
 from chara.models import Chara
 from team.models import TeamDungeonRecord
 from base.serializers import BaseSerializer, BaseModelSerializer, SerpyModelSerializer
+from item.serializers import ItemTypeSerializer
 from battle.battle_map_processors import BATTLE_MAP_PROCESSORS
 from battle.battle import Battle
 
@@ -69,9 +70,11 @@ class PvPFightSerializer(BaseSerializer):
 
 
 class DungeonSerializer(SerpyModelSerializer):
+    ticket_type = ItemTypeSerializer(fields=['name'])
+
     class Meta:
         model = Dungeon
-        fields = ['id', 'name', 'description', 'max_floor']
+        fields = ['id', 'name', 'description', 'is_infinite', 'max_floor', 'ticket_type', 'ticket_cost']
 
 
 class DungeonFightSerializer(BaseSerializer):
@@ -81,18 +84,31 @@ class DungeonFightSerializer(BaseSerializer):
         dungeon = self.validated_data['dungeon']
         team = self.team
         dungeon_record = TeamDungeonRecord.objects.get(dungeon=dungeon, team=team)
-        dungeon_floor = DungeonFloor.objects.get(dungeon=dungeon, floor=dungeon_record.current_floor + 1)
 
-        battle = Battle(attackers=team.members.all(), defenders=dungeon_floor.monsters.all(), battle_type='dungeon')
+        if dungeon_record.status != 'active':
+            raise serializers.ValidationError("地城狀態錯誤")
+
+        floor_number = dungeon_record.current_floor + 1
+        difficulty = 1
+        if dungeon.is_infinite:
+            difficulty = 1.02**dungeon_record.current_floor
+
+        dungeon_floor = DungeonFloor.objects.get(
+            dungeon=dungeon, floor=floor_number % dungeon.max_floor or dungeon.max_floor)
+
+        battle = Battle(attackers=team.members.all(), defenders=[x.monster for x in dungeon_floor.monsters.all()],
+                        battle_type='dungeon', difficulty=difficulty)
         battle.execute()
         win = (battle.winner == 'attacker')
 
         if win:
-            dungeon_record.current_floor += 1
+            dungeon_record.current_floor = floor_number
 
-        if dungeon_record.current_floor == dungeon.max_floor:
-            dungeon_record.current_floor = 0
-            dungeon_record.passed_times += 1
+        if not win or (not dungeon.is_infinite and dungeon_record.current_floor == dungeon.max_floor):
+            dungeon_record.status = 'ended'
+
+            if win or dungeon.is_infinite:
+                dungeon_record.passed_times += 1
 
         result = {
             'winner': battle.winner,
@@ -102,7 +118,7 @@ class DungeonFightSerializer(BaseSerializer):
 
         dungeon_record.save()
 
-        BattleResult.objects.create(title=f"{team.name}-{dungeon.name}-{dungeon_floor.floor}層", content=result)
+        BattleResult.objects.create(title=f"{team.name}-{dungeon.name}-{floor_number}層", content=result)
 
         return result
 

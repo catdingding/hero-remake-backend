@@ -309,7 +309,8 @@ class BattleMapProcessor_4(BaseBattleMapProcessor):
 class BattleMapProcessor_5(BaseBattleMapProcessor):
     id = 5
     map_loot_settings = [
-        {'id': 1020, 'rand': 1000}
+        {'id': 1020, 'rand': 1000},
+        {'id': 1554, 'rand': 1000}
     ]
 
     map_loot_group_settings = [
@@ -328,7 +329,8 @@ class BattleMapProcessor_6(BaseBattleMapProcessor):
         {'id': 6, 'rand': 400}
     ]
     map_loot_settings = [
-        {'id': 1004, 'rand': 2500}
+        {'id': 1004, 'rand': 2500},
+        {'id': 1554, 'rand': 750}
     ]
 
     def get_monsters(self):
@@ -378,6 +380,11 @@ class BattleMapProcessor_7(BaseBattleMapProcessor):
         {'id': 1, 'rand': 10000},
         {'id': 6, 'rand': 400},
         {'id': 8, 'rand': 500}
+    ]
+
+    map_loot_settings = [
+        {'id': 1004, 'rand': 2500},
+        {'id': 1554, 'rand': 500}
     ]
 
 

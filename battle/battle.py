@@ -19,10 +19,11 @@ class EmptyEquipment:
 
 
 class Battle:
-    def __init__(self, attackers, defenders, battle_type, element_type=None):
+    def __init__(self, attackers, defenders, battle_type, element_type=None, difficulty=1):
         assert battle_type in ['pvp', 'pve', 'dungeon']
         self.battle_type = battle_type
         self.element_type = element_type
+        self.difficulty = difficulty
         self.charas = [BattleChara(x, battle=self, team='attacker') for x in attackers] + \
             [BattleChara(x, battle=self, team='defender') for x in defenders]
         self.rename_charas()
@@ -133,6 +134,9 @@ class BattleChara:
     def set_attributes(self):
         for attr in self.source.attributes.all().select_related('type'):
             attr_value = attr.value
+            if isinstance(self.source, Monster):
+                attr_value = int(attr_value * self.battle.difficulty)
+
             if self.battle.element_type is not None:
                 if self.element_type == self.battle.element_type and self.element_type.id != 'none':
                     attr_value = int(attr_value * (1.1 + self.ability_type_power(19)))
@@ -196,8 +200,8 @@ class BattleChara:
         self.magic_defense = self.men // 2
         self.speed = self.agi
 
-        self.hp = self.hp_max = monster.hp
-        self.mp = self.mp_max = monster.mp
+        self.hp = self.hp_max = int(monster.hp * self.battle.difficulty)
+        self.mp = self.mp_max = int(monster.mp * self.battle.difficulty)
 
     @property
     def profile(self):
@@ -397,8 +401,6 @@ class BattleChara:
         # 一般技能
         # 造成 damage
         # 受技能加減成影響
-        elif skill.type_id == 7:
-            damage = skill.power + randint(0, self.int) - defender.magic_defense
         elif skill.type_id == 16:
             damage = skill.power * (randint(0, self.str) + self.int) - defender.magic_defense
         elif skill.type_id == 17:
@@ -409,8 +411,15 @@ class BattleChara:
             damage = self.dex + randint(0, self.dex * skill.power)
         elif skill.type_id == 22:
             damage = self.vit + randint(0, self.dex * skill.power)
-        elif skill.type_id in [1, 10, 11, 12, 13, 14, 15]:
+        elif skill.type_id in [1, 7, 10, 11, 12, 13, 14, 15]:
             damage = skill.power + randint(0, self.int) - defender.magic_defense
+        elif skill.type_id == 26:
+            damage = skill.power * (randint(0, self.int) + defender.defense)
+        elif skill.type_id == 27:
+            damage = skill.power * (randint(0, self.int) + defender.magic_defense)
+        elif skill.type_id == 28:
+            damage = skill.power * (randint(0, self.int) + defender.speed)
+
         # 一般技能結束
 
         if damage is None:

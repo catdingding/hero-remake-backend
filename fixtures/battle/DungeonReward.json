@@ -1,0 +1,1 @@
+[{"model": "battle.dungeonreward", "pk": 1, "fields": {"dungeon": 2, "divisor": 5, "group": 12, "number": 3}}, {"model": "battle.dungeonreward", "pk": 2, "fields": {"dungeon": 2, "divisor": 20, "group": 11, "number": 3}}]

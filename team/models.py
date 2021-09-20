@@ -16,10 +16,14 @@ class TeamJoinRequest(BaseModel):
 
 
 class TeamDungeonRecord(BaseModel):
+    STATUS_CHOICES = [(x, x) for x in ['inactive', 'active', 'ended']]
+
     team = models.ForeignKey("team.Team", related_name="dungeon_records", on_delete=models.CASCADE)
     dungeon = models.ForeignKey("battle.Dungeon", related_name="team_records", on_delete=models.CASCADE)
 
     passed_times = models.PositiveIntegerField(default=0)
+
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='inactive')
     current_floor = models.PositiveIntegerField(default=0)
 
     class Meta:

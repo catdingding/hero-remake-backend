@@ -54,16 +54,33 @@ class Dungeon(BaseModel):
     description = models.TextField(blank=True)
 
     max_floor = models.IntegerField()
+    is_infinite = models.BooleanField(default=False)
+
+    ticket_type = models.ForeignKey("item.ItemType", on_delete=models.PROTECT, null=True)
+    ticket_cost = models.IntegerField(default=0)
+
+    gold_reward_per_floor = models.IntegerField(default=0)
 
 
 class DungeonFloor(BaseModel):
     dungeon = models.ForeignKey("battle.Dungeon", related_name="floors", on_delete=models.CASCADE)
     floor = models.IntegerField()
 
-    monsters = models.ManyToManyField("battle.Monster")
-
     class Meta:
         unique_together = ('dungeon', 'floor')
+
+
+class DungeonFloorMonster(BaseModel):
+    dungeon_floor = models.ForeignKey("battle.DungeonFloor", related_name="monsters", on_delete=models.CASCADE)
+    monster = models.ForeignKey("battle.Monster", on_delete=models.PROTECT)
+
+
+class DungeonReward(BaseModel):
+    dungeon = models.ForeignKey("battle.Dungeon", related_name="rewards", on_delete=models.CASCADE)
+
+    divisor = models.IntegerField()
+    group = models.ForeignKey("item.ItemTypePoolGroup", on_delete=models.CASCADE)
+    number = models.IntegerField(default=1)
 
 
 class BattleResult(BaseModel):

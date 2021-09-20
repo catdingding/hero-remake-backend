@@ -1,1 +1,1 @@
-[{"model": "battle.dungeon", "pk": 1, "fields": {"name": "魔王城-地城版", "description": "就是把魔王城數據搬過來的POC", "max_floor": 3}}]
+[{"model": "battle.dungeon", "pk": 1, "fields": {"name": "魔王城-地城版", "description": "就是把魔王城數據搬過來的POC", "max_floor": 3, "is_infinite": false, "ticket_type": null, "ticket_cost": 0, "gold_reward_per_floor": 0}}, {"model": "battle.dungeon", "pk": 2, "fields": {"name": "無盡地城", "description": "每通過5的倍數層，即會在結算時獲得獎勵，包含地獄草、箱子、入場券等", "max_floor": 5, "is_infinite": true, "ticket_type": 1554, "ticket_cost": 3, "gold_reward_per_floor": 10000000}}]

@@ -28,7 +28,8 @@ from country.views import (
     CountryUpgradeStorageView, SetCountrySettingView
 )
 from team.views import (
-    TeamViewSet, FoundTeamView, LeaveTeamView, TeamJoinRequestViewSet, DismissTeamMemberView, DisbandTeamView
+    TeamViewSet, FoundTeamView, LeaveTeamView, TeamJoinRequestViewSet, DismissTeamMemberView, DisbandTeamView,
+    ChangeTeamDungeonRecordStatusView
 )
 from trade.views import (
     AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView,
@@ -106,6 +107,7 @@ urlpatterns = [
     path('team/leave/', LeaveTeamView.as_view()),
     path('team/dismiss-member/', DismissTeamMemberView.as_view()),
     path('team/disband/', DisbandTeamView.as_view()),
+    path('team/change-dungeon-record-status/', ChangeTeamDungeonRecordStatusView.as_view()),
     path('smith/upgrade/', SmithUpgradeView.as_view()),
     path('smith/replace-ability/', SmithReplaceAbilityView.as_view()),
     path('smith/replace-element-type/', SmithReplaceElementTypeView.as_view()),

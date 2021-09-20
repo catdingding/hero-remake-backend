@@ -9,7 +9,8 @@ from team.models import Team, TeamJoinRequest
 from team.serializers import (
     TeamProfileSerializer, FoundTeamSerializer,
     TeamJoinRequestReviewSerializer, LeaveTeamSerializer, TeamJoinRequestSerializer,
-    TeamJoinRequestCreateSerializer, DismissTeamMemberSerializer, DisbandTeamSerializer
+    TeamJoinRequestCreateSerializer, DismissTeamMemberSerializer, DisbandTeamSerializer,
+    ChangeTeamDungeonRecordStatusSerializer
 )
 
 
@@ -65,4 +66,9 @@ class DismissTeamMemberView(TeamPostViewMixin, BaseGenericAPIView):
 
 class DisbandTeamView(TeamPostViewMixin, BaseGenericAPIView):
     serializer_class = DisbandTeamSerializer
+    role = 'leader'
+
+
+class ChangeTeamDungeonRecordStatusView(TeamPostViewMixin, BaseGenericAPIView):
+    serializer_class = ChangeTeamDungeonRecordStatusSerializer
     role = 'leader'
