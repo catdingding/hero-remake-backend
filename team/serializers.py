@@ -177,11 +177,6 @@ class ChangeTeamDungeonRecordStatusSerializer(BaseSerializer):
                 for i in range(record.current_floor // reward.divisor * reward.number):
                     loots.extend(reward.group.pick())
 
-            self.chara.get_items('bag', loots)
-
-            self.chara.gold += gold
-            self.chara.save()
-
             if not loots and not gold:
                 reward_message = "一些……嗯……寶貴的探索體驗"
             else:
@@ -197,6 +192,11 @@ class ChangeTeamDungeonRecordStatusSerializer(BaseSerializer):
                 if chara != self.chara:
                     send_private_message_by_system(self.team.leader_id, chara.id, message)
 
+            self.chara.get_items('bag', loots)
+
+            self.chara.gold += gold
+            self.chara.save()
+
             record.status = new_status
             record.current_floor = 0
             record.save()
@@ -208,7 +208,7 @@ class ChangeTeamDungeonRecordStatusSerializer(BaseSerializer):
             raise serializers.ValidationError("隊伍錯誤")
         return record
 
-    def validate_data(self, data):
+    def validate(self, data):
         if (data['new_status'] == 'active' and data['record'].status != 'inactive') or \
                 (data['new_status'] == 'inactive' and data['record'].status != 'ended'):
             raise serializers.ValidationError("地城狀態錯誤")
