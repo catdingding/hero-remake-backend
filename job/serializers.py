@@ -7,7 +7,7 @@ from base.utils import randint
 from base.serializers import BaseSerializer, BaseModelSerializer, SerpyModelSerializer
 
 from job.models import Job, Skill, ExerciseReward, JobAttribute
-from chara.models import CharaSkillSetting, CharaAttribute, CharaSkillSetting
+from chara.models import CharaSkillSetting, CharaAttribute
 
 from world.serializers import AttributeTypeSerializer
 
@@ -99,7 +99,8 @@ class SkillSerializer(SerpyModelSerializer):
 class CharaSkillSettingSerializer(BaseModelSerializer):
     class Meta:
         model = CharaSkillSetting
-        fields = ['skill', 'hp_percentage', 'mp_percentage', 'order']
+        fields = ['skill', 'hp_percentage', 'mp_percentage',
+                  'defender_hp_percentage', 'defender_mp_percentage', 'order']
 
 
 class SetSkillSettingSerializer(BaseSerializer):

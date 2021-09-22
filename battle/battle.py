@@ -219,8 +219,8 @@ class BattleChara:
     def take_action(self):
         self.before_action()
 
-        skill = self.get_skill()
         defender = self.pick_alive_enemy_chara()
+        skill = self.get_skill(defender)
 
         if skill is None:
             self.normal_attack(defender)
@@ -236,10 +236,12 @@ class BattleChara:
         # 奧義類型53:天使之翼
         self.action_points += int(self.speed * (1 + self.ability_type_power(53)))
 
-    def get_skill(self):
+    def get_skill(self, defender):
         for skill_setting in self.skill_settings:
             if self.hp / self.hp_max * 100 <= skill_setting.hp_percentage \
-                    and self.mp / self.mp_max * 100 <= skill_setting.mp_percentage:
+                    and self.mp / self.mp_max * 100 <= skill_setting.mp_percentage \
+                    and defender.hp / defender.hp_max * 100 <= skill_setting.defender_hp_percentage \
+                    and defender.mp / defender.mp_max * 100 <= skill_setting.defender_mp_percentage:
                 break
         else:
             return None

@@ -48,7 +48,8 @@ class CharaSlotSerializer(SerpyModelSerializer):
 class CharaSkillSettingSerializer(SerpyModelSerializer):
     class Meta:
         model = CharaSkillSetting
-        fields = ['skill', 'hp_percentage', 'mp_percentage', 'order']
+        fields = ['skill', 'hp_percentage', 'mp_percentage',
+                  'defender_hp_percentage', 'defender_mp_percentage', 'order']
 
 
 class CharaIntroductionSerializer(SerpyModelSerializer):

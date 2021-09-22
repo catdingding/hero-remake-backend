@@ -39,6 +39,9 @@ class MonsterSkillSetting(BaseModel):
     hp_percentage = models.PositiveSmallIntegerField()
     mp_percentage = models.PositiveSmallIntegerField()
 
+    defender_hp_percentage = models.PositiveSmallIntegerField(default=100)
+    defender_mp_percentage = models.PositiveSmallIntegerField(default=100)
+
     order = models.IntegerField()
 
 
