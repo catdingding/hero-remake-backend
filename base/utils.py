@@ -72,7 +72,7 @@ def lose_items(field, items, mode='delete'):
 
         if item.id in exists_item_by_id:
             exists_item = exists_item_by_id[item.id]
-        elif item.type_id in exists_item_by_type:
+        elif not item.id and item.type_id in exists_item_by_type:
             exists_item = exists_item_by_type[item.type_id]
         else:
             raise ValidationError(f"未擁有{item.type.name}")
