@@ -66,7 +66,9 @@ class UseEffect_3(BaseUseEffect):
             attribute_type = choice(AttributeType.objects.all())
 
         chara_attr = self.chara.attributes.get(type=attribute_type)
-        chara_attr.limit = max(chara_attr.limit, min(chara_attr.limit + value, maxima))
+        if maxima < chara_attr.limit + value and self.type.attribute_type is not None:
+            raise ValidationError("超過使用上限")
+        chara_attr.limit = max(chara_attr.limit, chara_attr.limit + value)
         chara_attr.save()
 
         return f"使用了{self.n}個{self.type.name}，{attribute_type.name}上限變為{chara_attr.limit}點。"
