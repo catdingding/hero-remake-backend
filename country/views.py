@@ -16,7 +16,7 @@ from country.serializers import (
     CountryOfficialSerializer, CountryOfficialCreateSerializer, CountryProfileSerializer,
     CountryJoinRequestSerializer, CountryJoinRequestCreateSerializer, CountryJoinRequestReviewSerializer,
     CountryOccupyLocationSerializer, CountryAbandonLocationSerializer, CountryBuildTownSerializer,
-    CountryUpgradeStorageSerializer, CountrySettingSerialzier
+    CountryUpgradeStorageSerializer, CountrySettingUpdateSerialzier
 )
 from item.serializers import ItemSerializer
 
@@ -87,7 +87,7 @@ class ChangeKingView(CountryPostViewMixin, BaseGenericAPIView):
 
 
 class SetCountrySettingView(BaseGenericAPIView):
-    serializer_class = CountrySettingSerialzier
+    serializer_class = CountrySettingUpdateSerialzier
 
     def post(self, request):
         country = self.get_country(role='king', lock=True)

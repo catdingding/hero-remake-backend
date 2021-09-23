@@ -19,6 +19,12 @@ class CountrySerializer(SerpyModelSerializer):
         fields = ['id', 'name']
 
 
+class CountrySettingUpdateSerialzier(BaseModelSerializer):
+    class Meta:
+        model = CountrySetting
+        fields = ['introduction']
+
+
 class CountrySettingSerialzier(SerpyModelSerializer):
     class Meta:
         model = CountrySetting
