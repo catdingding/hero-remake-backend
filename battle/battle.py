@@ -626,12 +626,12 @@ class BattleChara:
 
         # 火武
         if attacker.has_equipment_effect(1, 2):
-            hp_loss = int(self.hp_max * 0.01)
+            hp_loss = int(min(self.hp_max, attacker.hp_max * 15) * 0.01)
             self.hp -= hp_loss
             self.log(f"[火武特效]{self.name}損失了{hp_loss}HP")
         # 水武
         elif attacker.has_equipment_effect(1, 3):
-            hp_loss = int(self.hp_max * 0.005)
+            hp_loss = int(min(self.hp_max, attacker.hp_max * 15) * 0.005)
             self.hp -= hp_loss
             attacker.gain_hp(hp_loss)
             attacker.log(f"[水武特效]吸收了{self.name}的{hp_loss}HP")
@@ -654,7 +654,7 @@ class BattleChara:
             pass
         # 火防
         elif self.has_equipment_effect(2, 2):
-            hp_loss = int(attacker.hp_max * 0.015)
+            hp_loss = int(min(attacker.hp_max, self.hp_max * 15) * 0.015)
             attacker.hp -= hp_loss
             attacker.log(f"[火防特效]{attacker.name}損失了{hp_loss}HP")
         # 水防
