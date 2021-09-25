@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.utils.timezone import localtime
+from django.db.models import F
 
 from rest_framework import serializers
 
@@ -11,7 +12,9 @@ from base.serializers import (
 from item.serializers import ItemTypeSerializer, ItemSerializer
 from chara.serializers import CharaProfileSerializer
 from chara.models import Chara
-from trade.models import Auction, Sale, Purchase, ExchangeOption, ExchangeOptionRequirement, StoreOption
+from trade.models import (
+    Auction, Sale, Purchase, ExchangeOption, ExchangeOptionRequirement, StoreOption, Lottery, LotteryTicket
+)
 from item.models import Item
 
 from system.utils import push_log
@@ -465,4 +468,45 @@ class MemberShopBuyLevelDownSerializer(BaseSerializer):
             raise serializers.ValidationError("每次轉職最多可降低300等")
         if data['number'] * 100 > self.chara.exp:
             raise serializers.ValidationError("最多僅可降低至1級")
+        return data
+
+
+class LotteryTicketSerializer(SerpyModelSerializer):
+    class Meta:
+        model = LotteryTicket
+        fields = ['number']
+
+
+class LotterySerializer(SerpyModelSerializer):
+    tickets = LotteryTicketSerializer(many=True)
+
+    class Meta:
+        model = Lottery
+        fields = ['id', 'name', 'nth', 'price', 'number_min', 'number_max', 'gold', 'chara_ticket_limit', 'tickets']
+
+
+class BuyLotterySerializer(BaseSerializer):
+    lottery = serializers.PrimaryKeyRelatedField(queryset=Lottery.objects.all())
+    number = serializers.IntegerField()
+
+    def save(self):
+        lottery = self.validated_data['lottery']
+
+        self.chara.lose_gold(lottery.price)
+        self.chara.save()
+
+        LotteryTicket.objects.create(
+            lottery=lottery, nth=lottery.nth,
+            chara=self.chara, number=self.validated_data['number']
+        )
+        Lottery.objects.filter(id=lottery.id).update(gold=F('gold') + int(lottery.price * 0.8))
+
+    def validate(self, data):
+        bought_ticket_count = LotteryTicket.objects.filter(
+            lottery=data['lottery'], nth=data['lottery'].nth, chara=self.chara
+        ).count()
+        if bought_ticket_count >= data['lottery'].chara_ticket_limit:
+            raise serializers.ValidationError("超過本期購買數量限制")
+        if not data['lottery'].number_max >= data['number'] >= data['lottery'].number_min:
+            raise serializers.ValidationError("號碼超出範圍")
         return data

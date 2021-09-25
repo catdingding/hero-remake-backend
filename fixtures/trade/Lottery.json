@@ -1,0 +1,1 @@
+[{"model": "trade.lottery", "pk": 1, "fields": {"name": "坑錢彩券", "nth": 1, "price": 100000000, "number_min": 0, "number_max": 999, "chara_ticket_limit": 5, "gold": 0}}]

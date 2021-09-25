@@ -33,7 +33,7 @@ from team.views import (
 )
 from trade.views import (
     AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView,
-    MemberShopViewSet
+    MemberShopViewSet, LotteryView, BuyLotteryView
 )
 from battle.views import BattleMapViewSet, PvPFightView, DungeonFightView, BattleResultViewSet
 from town.views import InnSleepView, ChangeNameView
@@ -121,4 +121,6 @@ urlpatterns = [
     path('town/inn/sleep/', InnSleepView.as_view()),
     path('town/change-name/', ChangeNameView.as_view()),
     path('logs/', LogView.as_view()),
+    path('trade/lotteries/', LotteryView.as_view()),
+    path('trade/lottery/buy/', BuyLotteryView.as_view())
 ] + router.urls

@@ -64,3 +64,21 @@ class StoreOption(BaseModel):
 
     store_type = models.CharField(choices=STORE_TYPE_CHOICES, max_length=10)
     location_element_type = models.ForeignKey("world.ElementType", null=True, on_delete=models.PROTECT)
+
+
+class Lottery(BaseModel):
+    name = models.CharField(max_length=100)
+    nth = models.IntegerField()
+    price = models.BigIntegerField()
+    number_min = models.IntegerField()
+    number_max = models.IntegerField()
+    chara_ticket_limit = models.IntegerField()
+
+    gold = models.BigIntegerField()
+
+
+class LotteryTicket(BaseModel):
+    lottery = models.ForeignKey("trade.Lottery", related_name='tickets', on_delete=models.CASCADE)
+    nth = models.IntegerField()
+    chara = models.ForeignKey("chara.Chara", on_delete=models.CASCADE)
+    number = models.IntegerField()

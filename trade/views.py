@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, Prefetch, OuterRef, Subquery
 from django.utils.timezone import localtime
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -6,7 +6,7 @@ from rest_framework.mixins import ListModelMixin
 
 from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin
 
-from trade.models import Auction, Sale, Purchase, ExchangeOption, StoreOption
+from trade.models import Auction, Sale, Purchase, ExchangeOption, StoreOption, Lottery, LotteryTicket
 from trade.serializers import (
     AuctionSerializer, AuctionCreateSerializer, AuctionBidSerializer,
     AuctionReceiveItemSerializer, AuctionReceiveGoldSerializer,
@@ -15,7 +15,8 @@ from trade.serializers import (
     ExchangeOptionSerializer, ExchangeSerializer,
     StoreOptionSerializer, StoreBuySerializer, SellItemSerializer,
     MemberShopBuyColdDownBonusSerializer, MemberShopBuyAutoHealSerializer, MemberShopBuyQuestBonusSerializer,
-    MemberShopBuyBagItemLimitSerializer, MemberShopBuyLevelDownSerializer
+    MemberShopBuyBagItemLimitSerializer, MemberShopBuyLevelDownSerializer,
+    BuyLotterySerializer, LotterySerializer
 )
 
 
@@ -282,3 +283,26 @@ class MemberShopViewSet(BaseGenericViewSet):
     @action(methods=['post'], detail=False, url_path='buy-level-down')
     def buy_level_down(self, request):
         return self.buy(request)
+
+
+class BuyLotteryView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = BuyLotterySerializer
+    check_in_town = True
+
+
+class LotteryView(ListModelMixin, BaseGenericAPIView):
+    queryset = Lottery.objects.all()
+    serializer_class = LotterySerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.prefetch_related(Prefetch(
+            'tickets',
+            LotteryTicket.objects.filter(
+                nth=Subquery(Lottery.objects.filter(id=OuterRef('lottery')).values('nth')),
+                chara=self.get_chara()
+            )
+        ))
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
