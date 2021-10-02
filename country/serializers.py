@@ -319,6 +319,29 @@ class CountryBuildTownSerializer(BaseSerializer):
         return data
 
 
+class CountryRenameTownSerializer(BaseSerializer):
+    name = serializers.CharField(max_length=10)
+
+    def save(self):
+        self.chara.lose_gold(500000000)
+        self.chara.save()
+
+        orig_name = self.chara.location.town.name
+        Town.objects.filter(location=self.chara.location).update(name=self.validated_data['name'])
+
+        push_log(
+            "城鎮", f"{self.chara.country.name}的{self.chara.name}將({self.chara.location.x},{self.chara.location.y})的{orig_name}改名為{self.validated_data['name']}")
+
+    def validate(self, data):
+        location = self.chara.location
+        if location.country != self.chara.country:
+            raise serializers.ValidationError("僅更名所屬國家領土的城鎮")
+        if not hasattr(location, 'town'):
+            raise serializers.ValidationError("該位置沒有城鎮")
+
+        return data
+
+
 class CountryUpgradeStorageSerializer(BaseSerializer):
     def save(self):
         self.country.lose_gold(self.country.item_limit * 1000000)

@@ -25,7 +25,7 @@ from country.views import (
     CountryItemPutView, CountryItemTakeView, CountryDonateView, CountryItemView,
     CountryViewSet, CountryJoinRequestViewSet, CountryOfficialViewSet,
     CountryOccupyLocationView, CountryAbandonLocationView, CountryBuildTownView,
-    CountryUpgradeStorageView, SetCountrySettingView
+    CountryUpgradeStorageView, SetCountrySettingView, CountryRenameTownView
 )
 from team.views import (
     TeamViewSet, FoundTeamView, LeaveTeamView, TeamJoinRequestViewSet, DismissTeamMemberView, DisbandTeamView,
@@ -105,6 +105,7 @@ urlpatterns = [
     path('country/occupy-location/', CountryOccupyLocationView.as_view()),
     path('country/abandon-location/', CountryAbandonLocationView.as_view()),
     path('country/build-town/', CountryBuildTownView.as_view()),
+    path('country/rename-town/', CountryRenameTownView.as_view()),
     path('country/upgrade-storage/', CountryUpgradeStorageView.as_view()),
     path('team/found/', FoundTeamView.as_view()),
     path('team/leave/', LeaveTeamView.as_view()),
