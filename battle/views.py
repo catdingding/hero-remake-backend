@@ -6,8 +6,11 @@ from rest_framework.filters import SearchFilter
 
 from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin, TeamPostViewMixin
 
-from battle.models import BattleMap, BattleResult
-from battle.serializers import BattleMapFightSerializer, PvPFightSerializer, DungeonFightSerializer, BattleResultSerializer
+from battle.models import BattleMap, BattleResult, WorldBoss
+from battle.serializers import (
+    BattleMapFightSerializer, PvPFightSerializer, DungeonFightSerializer,
+    BattleResultSerializer, WorldBossFightSerializer, WorldBossSerializer
+)
 
 
 class BattleMapViewSet(BaseGenericViewSet):
@@ -33,6 +36,20 @@ class PvPFightView(CharaPostViewMixin, BaseGenericAPIView):
 
 class DungeonFightView(TeamPostViewMixin, BaseGenericAPIView):
     serializer_class = DungeonFightSerializer
+    role = 'leader'
+
+
+class WorldBossView(ListModelMixin, BaseGenericAPIView):
+    queryset = WorldBoss.objects.filter(is_alive=True)
+    serializer_class = WorldBossSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class WorldBossFightView(TeamPostViewMixin, BaseGenericAPIView):
+    serializer_class = WorldBossFightSerializer
+    check_next_action_time = True
     role = 'leader'
 
 

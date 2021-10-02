@@ -27,3 +27,18 @@ class BaseBuffType(BaseModel):
 
     class Meta:
         abstract = True
+
+
+class BaseSkillSetting(BaseModel):
+    skill = models.ForeignKey("job.Skill", on_delete=models.CASCADE)
+
+    hp_percentage = models.PositiveSmallIntegerField()
+    mp_percentage = models.PositiveSmallIntegerField()
+
+    defender_hp_percentage = models.PositiveSmallIntegerField(default=100)
+    defender_mp_percentage = models.PositiveSmallIntegerField(default=100)
+
+    order = models.IntegerField()
+
+    class Meta:
+        abstract = True

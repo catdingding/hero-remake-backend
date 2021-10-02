@@ -35,7 +35,9 @@ from trade.views import (
     AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView,
     MemberShopViewSet, LotteryView, BuyLotteryView
 )
-from battle.views import BattleMapViewSet, PvPFightView, DungeonFightView, BattleResultViewSet
+from battle.views import (
+    BattleMapViewSet, PvPFightView, DungeonFightView, BattleResultViewSet, WorldBossFightView, WorldBossView
+)
 from town.views import InnSleepView, ChangeNameView
 
 router = SimpleRouter()
@@ -90,6 +92,7 @@ urlpatterns = [
     path('chara/battle-map-ticket-to-item/', BattleMapTicketToItemView.as_view()),
     path('battle/pvp-fight/', PvPFightView.as_view()),
     path('battle/dungeon-fight/', DungeonFightView.as_view()),
+    path('battle/world-boss-fight/', WorldBossFightView.as_view()),
     path('country/found/', FoundCountryView.as_view()),
     path('country/leave/', LeaveCountryView.as_view()),
     path('country/change-king/', ChangeKingView.as_view()),
@@ -122,5 +125,6 @@ urlpatterns = [
     path('town/change-name/', ChangeNameView.as_view()),
     path('logs/', LogView.as_view()),
     path('trade/lotteries/', LotteryView.as_view()),
-    path('trade/lottery/buy/', BuyLotteryView.as_view())
+    path('trade/lottery/buy/', BuyLotteryView.as_view()),
+    path('world-bosses/', WorldBossView.as_view()),
 ] + router.urls

@@ -203,6 +203,8 @@ CACHEOPS = {
     'ability.AbilityType': {'ops': 'all'},
     'battle.*': {'ops': 'all'},
     'battle.BattleResult': None,
+    'battle.WorldBossTemplate': None,
+    'battle.WorldBoss': None,
     'item.*': {'ops': 'all'},
     'item.Item': None,
     'item.Equipment': None,

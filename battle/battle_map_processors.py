@@ -5,7 +5,7 @@ from django.db.models import F
 from base.utils import add_class, randint
 from battle.utils import get_event_item_type
 from battle.battle import Battle
-from battle.models import Monster
+from battle.models import Monster, WorldBoss
 from item.models import ItemType, ItemTypePoolGroup, ItemTypePool
 from item.serializers import SimpleItemSerializer
 from chara.models import BattleMapTicket, CharaAttribute
@@ -142,6 +142,9 @@ class BaseBattleMapProcessor():
 
         if self.rand_loot(rand):
             loots.extend(ItemType.objects.get(id=472).make(1))
+
+        if self.rand_loot(200) and WorldBoss.objects.filter(location=self.location, is_alive=True).exists():
+            loots.extend(ItemType.objects.get(id=1555).make(1))
 
         return loots
 

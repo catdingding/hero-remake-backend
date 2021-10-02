@@ -10,7 +10,7 @@ from datetime import timedelta
 import random
 import functools
 
-from base.models import BaseModel, BaseBuffType
+from base.models import BaseModel, BaseBuffType, BaseSkillSetting
 from base.utils import get_items, lose_items, sftp_put_fo
 from ability.models import Ability
 from chara.utils import process_avatar
@@ -211,17 +211,8 @@ class CharaSlot(BaseModel):
         unique_together = ('chara', 'type')
 
 
-class CharaSkillSetting(BaseModel):
+class CharaSkillSetting(BaseSkillSetting):
     chara = models.ForeignKey("chara.Chara", on_delete=models.CASCADE, related_name="skill_settings")
-    skill = models.ForeignKey("job.Skill", on_delete=models.CASCADE)
-
-    hp_percentage = models.PositiveSmallIntegerField()
-    mp_percentage = models.PositiveSmallIntegerField()
-
-    defender_hp_percentage = models.PositiveSmallIntegerField(default=100)
-    defender_mp_percentage = models.PositiveSmallIntegerField(default=100)
-
-    order = models.IntegerField()
 
 
 class CharaBuffType(BaseBuffType):

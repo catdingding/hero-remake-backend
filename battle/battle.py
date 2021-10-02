@@ -2,7 +2,7 @@ from random import choice
 from collections import Counter
 
 from base.utils import randint
-from battle.models import Monster
+from battle.models import Monster, WorldBoss
 from chara.models import Chara
 from item.models import Equipment
 
@@ -20,7 +20,7 @@ class EmptyEquipment:
 
 class Battle:
     def __init__(self, attackers, defenders, battle_type, element_type=None, difficulty=1):
-        assert battle_type in ['pvp', 'pve', 'dungeon']
+        assert battle_type in ['pvp', 'pve', 'dungeon', 'world_boss']
         self.battle_type = battle_type
         self.element_type = element_type
         self.difficulty = difficulty
@@ -110,7 +110,7 @@ class BattleChara:
 
         if isinstance(source, Chara):
             self.create_from_chara(source)
-        elif isinstance(source, Monster):
+        elif isinstance(source, (Monster, WorldBoss)):
             self.create_from_monster(source)
         else:
             raise Exception("illegal source")
@@ -200,8 +200,12 @@ class BattleChara:
         self.magic_defense = self.men // 2
         self.speed = self.agi
 
-        self.hp = self.hp_max = int(monster.hp * self.battle.difficulty)
-        self.mp = self.mp_max = int(monster.mp * self.battle.difficulty)
+        if isinstance(self.source, WorldBoss):
+            for field in ['hp', 'hp_max', 'mp', 'mp_max']:
+                setattr(self, field, getattr(monster, field))
+        else:
+            self.hp = self.hp_max = int(monster.hp * self.battle.difficulty)
+            self.mp = self.mp_max = int(monster.mp * self.battle.difficulty)
 
     @property
     def profile(self):
@@ -528,8 +532,8 @@ class BattleChara:
         # 即死
         # 奧義類型9:即死
         if skill_type == 10 and randint(1, 30) == 1 or attacker.ability_type_power(9) >= randint(1, 1000):
-            if self.battle.battle_type == 'dungeon':
-                self.log(f"因為地城的神祕力量，即死被無效化了")
+            if self.battle.battle_type == 'dungeon' or isinstance(self.source, WorldBoss):
+                self.log(f"因為神祕力量，即死被無效化了")
             # 奧義類型40:免疫即死
             elif self.ability_type_power(40) >= randint(1, 100):
                 self.log(f"不死鳥保護住{self.name}")

@@ -1,0 +1,1 @@
+[{"model": "battle.worldbosstemplate", "pk": 1, "fields": {"name": "神獸1型", "base_attribute": 9000, "base_hp": 2000000, "base_mp": 70000, "difficulty": 1.0}}]

@@ -1,5 +1,5 @@
 from django.db import models
-from base.models import BaseModel
+from base.models import BaseModel, BaseSkillSetting
 
 
 class BattleMap(BaseModel):
@@ -32,17 +32,8 @@ class MonsterAttribute(BaseModel):
         unique_together = ('monster', 'type')
 
 
-class MonsterSkillSetting(BaseModel):
+class MonsterSkillSetting(BaseSkillSetting):
     monster = models.ForeignKey("battle.Monster", on_delete=models.CASCADE, related_name="skill_settings")
-    skill = models.ForeignKey("job.Skill", on_delete=models.CASCADE)
-
-    hp_percentage = models.PositiveSmallIntegerField()
-    mp_percentage = models.PositiveSmallIntegerField()
-
-    defender_hp_percentage = models.PositiveSmallIntegerField(default=100)
-    defender_mp_percentage = models.PositiveSmallIntegerField(default=100)
-
-    order = models.IntegerField()
 
 
 class BattleMapMonster(BaseModel):
@@ -90,3 +81,52 @@ class BattleResult(BaseModel):
     category = models.CharField(max_length=20)
     title = models.CharField(max_length=100)
     content = models.JSONField()
+
+
+# 神獸
+
+class WorldBossTemplate(BaseModel):
+    name = models.CharField(max_length=20, unique=True)
+
+    base_attribute = models.IntegerField()
+    base_hp = models.IntegerField()
+    base_mp = models.IntegerField()
+
+    difficulty = models.FloatField(default=1)
+
+
+class WorldBossNameBase(BaseModel):
+    name = models.CharField(max_length=20)
+    category = models.CharField(max_length=10)
+
+    class Meta:
+        unique_together = ('name', 'category')
+
+
+class WorldBoss(BaseModel):
+    template = models.ForeignKey("battle.WorldBossTemplate", on_delete=models.PROTECT)
+    is_alive = models.BooleanField(default=True)
+    location = models.ForeignKey("world.Location", on_delete=models.PROTECT)
+
+    name = models.CharField(max_length=40)
+    element_type = models.ForeignKey("world.ElementType", on_delete=models.PROTECT)
+
+    hp_max = models.PositiveIntegerField()
+    hp = models.PositiveIntegerField()
+    mp_max = models.PositiveIntegerField()
+    mp = models.PositiveIntegerField()
+
+    abilities = models.ManyToManyField("ability.Ability")
+
+
+class WorldBossAttribute(BaseModel):
+    world_boss = models.ForeignKey("battle.WorldBoss", on_delete=models.CASCADE, related_name="attributes")
+    type = models.ForeignKey("world.AttributeType", on_delete=models.PROTECT)
+    value = models.IntegerField()
+
+    class Meta:
+        unique_together = ('world_boss', 'type')
+
+
+class WorldBossSkillSetting(BaseSkillSetting):
+    world_boss = models.ForeignKey("battle.WorldBoss", on_delete=models.CASCADE, related_name="skill_settings")
