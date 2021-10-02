@@ -29,7 +29,7 @@ from country.views import (
 )
 from team.views import (
     TeamViewSet, FoundTeamView, LeaveTeamView, TeamJoinRequestViewSet, DismissTeamMemberView, DisbandTeamView,
-    ChangeTeamDungeonRecordStatusView
+    ChangeTeamDungeonRecordStatusView, ChangeLeaderView
 )
 from trade.views import (
     AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView,
@@ -110,6 +110,7 @@ urlpatterns = [
     path('team/leave/', LeaveTeamView.as_view()),
     path('team/dismiss-member/', DismissTeamMemberView.as_view()),
     path('team/disband/', DisbandTeamView.as_view()),
+    path('team/change-leader/', ChangeLeaderView.as_view()),
     path('team/change-dungeon-record-status/', ChangeTeamDungeonRecordStatusView.as_view()),
     path('smith/upgrade/', SmithUpgradeView.as_view()),
     path('smith/replace-ability/', SmithReplaceAbilityView.as_view()),

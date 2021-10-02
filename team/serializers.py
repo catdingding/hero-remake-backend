@@ -213,3 +213,20 @@ class ChangeTeamDungeonRecordStatusSerializer(BaseSerializer):
                 (data['new_status'] == 'inactive' and data['record'].status != 'ended'):
             raise serializers.ValidationError("地城狀態錯誤")
         return data
+
+
+class ChangeLeaderSerializer(BaseSerializer):
+    chara = serializers.PrimaryKeyRelatedField(queryset=Chara.objects.all())
+
+    def save(self):
+        chara = self.validated_data['chara']
+
+        self.team.leader = chara
+        self.team.save()
+
+    def validate_chara(self, chara):
+        if chara.team != self.team:
+            raise serializers.ValidationError("不可指派給其他隊伍的角色")
+        if chara == self.chara:
+            raise serializers.ValidationError("……指派給自己？")
+        return chara
