@@ -5,7 +5,7 @@ from base.models import BaseModel
 class Auction(BaseModel):
     seller = models.ForeignKey("chara.Chara", related_name="auction_seller_of", on_delete=models.PROTECT)
 
-    item = models.ForeignKey("item.Item", null=True, on_delete=models.PROTECT)
+    item = models.ForeignKey("item.Item", null=True, on_delete=models.SET_NULL)
     reserve_price = models.BigIntegerField()
 
     bidder = models.ForeignKey("chara.Chara", null=True, related_name="auction_bidder_of", on_delete=models.PROTECT)
@@ -21,7 +21,7 @@ class Auction(BaseModel):
 class Sale(BaseModel):
     seller = models.ForeignKey("chara.Chara", related_name="sale_seller_of", on_delete=models.PROTECT)
 
-    item = models.ForeignKey("item.Item", null=True, on_delete=models.PROTECT)
+    item = models.ForeignKey("item.Item", null=True, on_delete=models.SET_NULL)
     price = models.BigIntegerField()
     deposit = models.BigIntegerField(null=True, default=0)
 
@@ -40,6 +40,7 @@ class Purchase(BaseModel):
     price = models.BigIntegerField()
 
     seller = models.ForeignKey("chara.Chara", null=True, related_name="purchase_seller_of", on_delete=models.PROTECT)
+    item = models.ForeignKey("item.Item", null=True, on_delete=models.SET_NULL)
 
     due_time = models.DateTimeField()
 

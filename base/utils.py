@@ -42,6 +42,8 @@ def get_items(field, limit, items):
         if item.type_id in exists_item_by_type:
             exists_item_by_type[item.type_id].number += item.number
             exists_item_by_type[item.type_id].save()
+            if item.id is not None:
+                item.delete()
         else:
             if item.id is None:
                 item.save()

@@ -11,7 +11,7 @@ from trade.serializers import (
     AuctionSerializer, AuctionCreateSerializer, AuctionBidSerializer,
     AuctionReceiveItemSerializer, AuctionReceiveGoldSerializer,
     SaleSerializer, SaleCreateSerializer, SaleBuySerializer, SaleReceiveItemSerializer,
-    PurchaseSerializer, PurchaseCreateSerializer, PurchaseSellSerializer, PurchaseReceiveGoldSerializer,
+    PurchaseSerializer, PurchaseCreateSerializer, PurchaseSellSerializer, PurchaseReceiveSerializer,
     ExchangeOptionSerializer, ExchangeSerializer,
     StoreOptionSerializer, StoreBuySerializer, SellItemSerializer,
     MemberShopBuyColdDownBonusSerializer, MemberShopBuyAutoHealSerializer, MemberShopBuyQuestBonusSerializer,
@@ -147,7 +147,7 @@ class PurchaseViewSet(BaseGenericViewSet):
     serializer_action_classes = {
         'create': PurchaseCreateSerializer,
         'sell': PurchaseSellSerializer,
-        'receive_gold': PurchaseReceiveGoldSerializer
+        'receive': PurchaseReceiveSerializer
     }
     check_in_town = True
 
@@ -170,7 +170,11 @@ class PurchaseViewSet(BaseGenericViewSet):
     def todo(self, request):
         chara = self.get_chara()
         queryset = self.filter_queryset(self.get_queryset())
-        queryset = queryset.filter(buyer=chara, seller__isnull=True, gold_received=False, due_time__lt=localtime())
+        queryset = queryset.filter(
+            Q(seller__isnull=False, item__isnull=False) |
+            Q(seller__isnull=True, gold_received=False, due_time__lt=localtime()),
+            buyer=chara
+        )
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -183,8 +187,8 @@ class PurchaseViewSet(BaseGenericViewSet):
 
         return Response({'status': 'success'})
 
-    @action(methods=['post'], detail=True, url_path='receive-gold')
-    def receive_gold(self, request, pk):
+    @action(methods=['post'], detail=True, url_path='receive')
+    def receive(self, request, pk):
         chara = self.get_chara(lock=True)
         serializer = self.get_serializer(self.get_object(lock=True), data=request.data)
         serializer.is_valid(raise_exception=True)

@@ -237,12 +237,17 @@ class SaleReceiveItemSerializer(BaseSerializer):
 
 
 class PurchaseSerializer(SerpyModelSerializer):
+    item_type = ItemTypeSerializer(fields=['name', 'description'])
+    buyer = CharaProfileSerializer(fields=['id', 'name'])
+
     class Meta:
         model = Purchase
-        fields = ['id', 'buyer', 'item_type', 'number', 'price', 'due_time']
+        fields = ['id', 'buyer', 'item_type', 'number', 'price', 'item', 'due_time']
 
 
 class PurchaseCreateSerializer(BaseModelSerializer):
+    number = serializers.IntegerField(min_value=1)
+    price = serializers.IntegerField(min_value=1)
     hours = serializers.IntegerField(min_value=1, max_value=24)
 
     class Meta:
@@ -257,63 +262,72 @@ class PurchaseCreateSerializer(BaseModelSerializer):
         self.chara.save()
 
         purchase = Purchase.objects.create(buyer=self.chara, due_time=due_time, **validated_data)
-
+        push_log("收購", f"{self.chara.name}以{purchase.price}金錢的價格收購{purchase.item_type.name}*{purchase.number}")
         return purchase
+
+    def validate_item_type(self, item_type):
+        if item_type.category_id == 1:
+            raise serializers.ValidationError("目前無法收購裝備")
+        return item_type
 
 
 class PurchaseSellSerializer(BaseSerializer):
-    item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
-
     def update(self, purchase, validated_data):
         chara, buyer = Chara.objects.lock_by_pks([self.chara.id, purchase.buyer.id])
 
         chara.gold += purchase.price
         chara.save()
 
-        item = validated_data['item']
-        item.number = purchase.number
-
-        item = chara.lose_items('bag', [item], mode='return')[0]
-        buyer.get_items('bag', [item])
+        item = chara.lose_items('bag', [Item(type_id=purchase.item_type_id, number=purchase.number)], mode='return')[0]
+        item.save()
 
         purchase.seller = chara
-        purchase.gold_received = True
+        purchase.item = item
         purchase.save()
+
+        push_log(
+            "收購", f"{self.chara.name}向{purchase.buyer.name}提交{purchase.item_type.name}*{purchase.number}，獲得了{purchase.price}金錢")
 
         return purchase
 
     def validate(self, data):
-        if data['item'].type != self.instance.item_type:
-            raise serializers.ValidationError("物品類型不符合收購條件")
         if self.instance.seller is not None:
             raise serializers.ValidationError("收購已完成")
         if self.chara == self.instance.buyer:
-            raise serializers.ValidationError("不可販售物品給自己")
+            raise serializers.ValidationError("不可提交物品給自己")
         if localtime() > self.instance.due_time:
             raise serializers.ValidationError("已超過收購時間")
 
         return data
 
 
-class PurchaseReceiveGoldSerializer(BaseSerializer):
+class PurchaseReceiveSerializer(BaseSerializer):
     def update(self, purchase, validated_data):
-        self.chara.gold += purchase.price
-        self.chara.save()
+        if purchase.seller is None and not purchase.gold_received:
+            self.chara.gold += purchase.price
+            self.chara.save()
 
-        purchase.gold_received = True
+            purchase.gold_received = True
+
+        if purchase.seller and purchase.item:
+            self.chara.get_items('bag', [purchase.item])
+            purchase.item = None
+
         purchase.save()
 
         return purchase
 
     def validate(self, data):
-        if self.instance.seller is not None:
-            raise serializers.ValidationError("收購已完成")
-        if self.instance.gold_received:
-            raise serializers.ValidationError("金錢已領取")
-        if localtime() <= self.instance.due_time:
-            raise serializers.ValidationError("尚未結束收購")
+        if self.instance.seller is not None and self.instance.item is None:
+            raise serializers.ValidationError("已領取物品")
+        if self.instance.seller is None:
+            if self.instance.gold_received:
+                raise serializers.ValidationError("已領取金錢")
+            if localtime() <= self.instance.due_time:
+                raise serializers.ValidationError("尚未結束收購")
+
         if self.chara != self.instance.buyer:
-            raise serializers.ValidationError("僅收購者可領取金錢")
+            raise serializers.ValidationError("僅收購者可領取金錢/物品")
         return data
 
 
