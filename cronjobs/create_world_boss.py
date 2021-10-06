@@ -6,7 +6,7 @@ django.setup()
 
 import random
 from datetime import timedelta
-
+from django.utils.timezone import localtime
 from django.db import transaction
 from django.db.models import Q
 from ability.models import Ability
@@ -25,9 +25,13 @@ def generate_name():
 for template in WorldBossTemplate.objects.all():
     prev_instance = WorldBoss.objects.filter(template=template).order_by('-created_at').first()
     if prev_instance and prev_instance.is_alive:
-        continue
-
-    if prev_instance and (prev_instance.updated_at - prev_instance.created_at) < timedelta(hours=6):
+        if (localtime() - prev_instance.created_at) > timedelta(hours=18):
+            WorldBoss.objects.filter(id=prev_instance.id).update(is_alive=False)
+            push_log("神獸", f"{prev_instance.name}消失了……")
+            template.difficulty /= 1.1
+        else:
+            continue
+    elif prev_instance and (prev_instance.updated_at - prev_instance.created_at) < timedelta(hours=6):
         template.difficulty *= 1.1
     elif prev_instance and (prev_instance.updated_at - prev_instance.created_at) > timedelta(hours=12):
         template.difficulty /= 1.1
