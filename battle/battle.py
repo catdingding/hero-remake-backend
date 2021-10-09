@@ -678,11 +678,12 @@ class BattleChara:
             attacker.action_points -= ap_loss
             attacker.log(f"[雷防特效]{attacker.name}的AP減少了{ap_loss}點")
 
-        if self.hp <= 0:
-            self.hp = 0
-            self.log(f"{self.name}倒下了")
+        for chara in [self, attacker]:
+            if chara.hp <= 0:
+                chara.hp = 0
+                chara.log(f"{chara.name}倒下了")
 
-            # 奧義類型11:復活
-            if self.ability_type_power(11) >= randint(1, 100):
-                self.hp = self.hp_max // 2
-                self.log(f"{self.name}復活了")
+                # 奧義類型11:復活
+                if chara.ability_type_power(11) >= randint(1, 100):
+                    chara.hp = chara.hp_max // 2
+                    chara.log(f"{chara.name}復活了")
