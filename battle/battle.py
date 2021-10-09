@@ -32,6 +32,9 @@ class Battle:
         self.logs = []
         self.rounds = 0
 
+        self.actions = 0
+        self.max_actions = len(self.charas) * 2 * self.max_rounds
+
     @property
     def max_rounds(self):
         return 400
@@ -68,9 +71,10 @@ class Battle:
                 self.next_round()
             else:
                 act_chara.take_action()
+                self.actions += 1
                 self.logs[-1]['charas'] = [chara.profile for chara in self.charas]
 
-            if self.winner != 'draw' or self.rounds >= self.max_rounds:
+            if self.winner != 'draw' or self.rounds >= self.max_rounds or self.actions >= self.max_actions:
                 break
 
     @property
@@ -641,7 +645,7 @@ class BattleChara:
             attacker.log(f"[水武特效]吸收了{self.name}的{hp_loss}HP")
         # 風武
         elif attacker.has_equipment_effect(1, 4):
-            ap_add = max(100, self.speed // 10)
+            ap_add = min(max(100, self.speed // 10), 500)
             attacker.action_points += ap_add
             attacker.log(f"[風武特效]{attacker.name}獲得了{ap_add}AP")
         # 雷武
