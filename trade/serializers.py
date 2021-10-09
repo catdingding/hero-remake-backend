@@ -15,7 +15,7 @@ from chara.models import Chara
 from trade.models import (
     Auction, Sale, Purchase, ExchangeOption, ExchangeOptionRequirement, StoreOption, Lottery, LotteryTicket
 )
-from item.models import Item
+from item.models import Item, ItemTypePoolGroup
 
 from system.utils import push_log
 
@@ -483,6 +483,24 @@ class MemberShopBuyLevelDownSerializer(BaseSerializer):
         if data['number'] * 100 > self.chara.exp:
             raise serializers.ValidationError("最多僅可降低至1級")
         return data
+
+
+class MemberShopBuyPetSerializer(BaseSerializer):
+    number = serializers.IntegerField(min_value=1)
+
+    def save(self):
+        number = self.validated_data['number']
+
+        items = []
+        group = ItemTypePoolGroup.objects.get(id=13)
+        for i in range(number):
+            items.extend(group.pick())
+
+        self.chara.get_items('bag', items)
+        self.chara.lose_member_point(25 * number)
+        self.chara.save()
+
+        return {'display_message': f'獲得了{"、".join(x.name for x in items)}'}
 
 
 class LotteryTicketSerializer(SerpyModelSerializer):

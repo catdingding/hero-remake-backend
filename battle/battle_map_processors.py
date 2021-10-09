@@ -156,8 +156,13 @@ class BaseBattleMapProcessor():
         # ItemTypePoolGroup
         for group_setting in self.map_loot_group_settings:
             if self.rand_loot(group_setting['rand']):
-                group = ItemTypePoolGroup.objects.get(id=group_setting['id'])
-                loots.extend(group.pick())
+                if group_setting['id'] == 1 and self.chara.has_equipped_ability_type(36) and randint(1, 10) == 1:
+                    # 寵物卵
+                    pool = ItemTypePool.objects.get(id=8)
+                    loots.extend(pool.pick())
+                else:
+                    group = ItemTypePoolGroup.objects.get(id=group_setting['id'])
+                    loots.extend(group.pick())
 
         # ItemType
         for setting in self.map_loot_settings:
@@ -186,11 +191,6 @@ class BaseBattleMapProcessor():
             if self.chara.has_equipped_ability_type(38) and randint(1, self.chara.equipped_ability_type_power(38)) == 1:
                 group = ItemTypePoolGroup.objects.get(id=6)
                 loots.extend(group.pick())
-
-        if self.chara.has_equipped_ability_type(36) and randint(1, self.chara.equipped_ability_type_power(36)) == 1:
-            pool = ItemTypePool.objects.get(id=8)
-            loots.extend(pool.pick())
-
         return loots
 
     def get_member_point_loots(self):

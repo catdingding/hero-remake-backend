@@ -15,7 +15,7 @@ from trade.serializers import (
     ExchangeOptionSerializer, ExchangeSerializer,
     StoreOptionSerializer, StoreBuySerializer, SellItemSerializer,
     MemberShopBuyColdDownBonusSerializer, MemberShopBuyAutoHealSerializer, MemberShopBuyQuestBonusSerializer,
-    MemberShopBuyBagItemLimitSerializer, MemberShopBuyLevelDownSerializer,
+    MemberShopBuyBagItemLimitSerializer, MemberShopBuyLevelDownSerializer,MemberShopBuyPetSerializer,
     BuyLotterySerializer, LotterySerializer
 )
 
@@ -257,7 +257,8 @@ class MemberShopViewSet(BaseGenericViewSet):
         'buy_quest_bonus': MemberShopBuyQuestBonusSerializer,
         'buy_auto_heal': MemberShopBuyAutoHealSerializer,
         'buy_bag_item_limit': MemberShopBuyBagItemLimitSerializer,
-        'buy_level_down': MemberShopBuyLevelDownSerializer
+        'buy_level_down': MemberShopBuyLevelDownSerializer,
+        'buy_pet': MemberShopBuyPetSerializer
     }
 
     def buy(self, request):
@@ -286,6 +287,10 @@ class MemberShopViewSet(BaseGenericViewSet):
 
     @action(methods=['post'], detail=False, url_path='buy-level-down')
     def buy_level_down(self, request):
+        return self.buy(request)
+
+    @action(methods=['post'], detail=False, url_path='buy-pet')
+    def buy_pet(self, request):
         return self.buy(request)
 
 
