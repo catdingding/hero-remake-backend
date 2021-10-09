@@ -24,6 +24,7 @@ class TeamDungeonRecord(BaseModel):
     passed_times = models.PositiveIntegerField(default=0)
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='inactive')
+    start_floor = models.PositiveIntegerField(default=0)
     current_floor = models.PositiveIntegerField(default=0)
 
     class Meta:

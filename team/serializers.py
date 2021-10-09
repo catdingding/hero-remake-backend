@@ -156,6 +156,8 @@ class ChangeTeamDungeonRecordStatusSerializer(BaseSerializer):
     record = serializers.PrimaryKeyRelatedField(queryset=TeamDungeonRecord.objects.all())
     new_status = serializers.ChoiceField(choices=['inactive', 'active'])
 
+    start_floor = serializers.IntegerField(min_value=1, default=1)
+
     def save(self):
         new_status = self.validated_data['new_status']
         record = self.validated_data['record']
@@ -166,16 +168,20 @@ class ChangeTeamDungeonRecordStatusSerializer(BaseSerializer):
                 self.chara.lose_items(
                     'bag', [Item(type_id=dungeon.ticket_type_id, number=dungeon.ticket_cost)]
                 )
-
+            if not dungeon.is_infinite:
+                self.validated_data['start_floor'] = 1
+            record.start_floor = self.validated_data['start_floor'] - 1
+            record.current_floor = self.validated_data['start_floor'] - 1
             record.status = new_status
             record.save()
         elif new_status == 'inactive':
-            gold = dungeon.gold_reward_per_floor * record.current_floor
-
+            gold = 0
             loots = []
-            for reward in dungeon.rewards.all():
-                for i in range(record.current_floor // reward.divisor * reward.number):
-                    loots.extend(reward.group.pick())
+            if not dungeon.is_infinite or record.current_floor - record.start_floor >= 5:
+                gold += dungeon.gold_reward_per_floor * record.current_floor
+                for reward in dungeon.rewards.all():
+                    for i in range(record.current_floor // reward.divisor * reward.number):
+                        loots.extend(reward.group.pick())
 
             if not loots and not gold:
                 reward_message = "一些……嗯……寶貴的探索體驗"
@@ -198,6 +204,7 @@ class ChangeTeamDungeonRecordStatusSerializer(BaseSerializer):
             self.chara.save()
 
             record.status = new_status
+            record.start_floor = 0
             record.current_floor = 0
             record.save()
 
