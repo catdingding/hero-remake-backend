@@ -190,7 +190,7 @@ class ChangeTeamDungeonRecordStatusSerializer(BaseSerializer):
             push_log("地城", message)
             for chara in self.team.members.all():
                 if chara != self.chara:
-                    send_private_message_by_system(self.team.leader_id, chara.id, message)
+                    send_private_message_by_system(self.team.leader_id, chara.id, f"對{dungeon.name}的探索已結束")
 
             self.chara.get_items('bag', loots)
 
