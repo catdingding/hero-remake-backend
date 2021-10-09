@@ -43,7 +43,9 @@ class UseEffect_2(BaseUseEffect):
     def execute(self):
         value = self.type.power * self.n
         chara_attr = self.chara.attributes.get(type=self.type.attribute_type)
-        chara_attr.proficiency = min(999999, chara_attr.proficiency + value)
+        chara_attr.proficiency += value
+        if chara_attr.proficiency > 999999:
+            raise ValidationError("使用上限為999999")
         chara_attr.save()
 
         return f"使用了{self.n}個{self.type.name}，獲得了{value}點{self.type.attribute_type.class_name}熟練。"

@@ -47,7 +47,7 @@ class ChangeJobSerializer(BaseSerializer):
             chara_attr = chara.attrs[job_attr.type.en_name]
 
             current_bonus = random.randint(0, round(chara_attr.value / 1.5))
-            prof_bonus = round(chara_attr.proficiency ** 0.375)
+            prof_bonus = round(min(999999, chara_attr.proficiency) ** 0.375)
 
             new_attr_value = job_attr.base_value + current_bonus + prof_bonus + total_battle_bonus
             chara_attr.value = min(chara_attr.limit, max(30, new_attr_value))
