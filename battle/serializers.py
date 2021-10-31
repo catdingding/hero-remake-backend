@@ -117,7 +117,7 @@ class DungeonFightSerializer(BaseSerializer):
         result = {
             'winner': battle.winner,
             'logs': battle.logs,
-            'messages': []
+            'messages': [f"{dungeon.name}-{floor_number}層"]
         }
 
         dungeon_record.save()
