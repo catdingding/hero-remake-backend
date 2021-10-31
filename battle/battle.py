@@ -1,4 +1,4 @@
-from random import choice
+from random import choice, choices
 from collections import Counter
 
 from base.utils import randint
@@ -218,11 +218,16 @@ class BattleChara:
         }
 
     @property
+    def hate(self):
+        return 100 + self.ability_type_power(59)
+
+    @property
     def alive_enemy_charas(self):
         return [chara for chara in self.battle.alive_charas if chara.team != self.team]
 
     def pick_alive_enemy_chara(self):
-        return choice(self.alive_enemy_charas)
+        charas = self.alive_enemy_charas
+        return choices(charas, weights=[x.hate for x in charas])[0]
 
     def take_action(self):
         self.before_action()
