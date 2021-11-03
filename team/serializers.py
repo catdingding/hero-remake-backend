@@ -9,7 +9,7 @@ from team.models import Team, TeamJoinRequest, TeamDungeonRecord
 from battle.serializers import DungeonSerializer
 from chara.serializers import CharaSimpleSerializer
 
-from system.utils import push_log, send_private_message_by_system
+from system.utils import push_log, send_private_message_by_system, send_refresh_chara_profile_signal
 
 
 class TeamDungeonRecordSerializer(SerpyModelSerializer):
@@ -98,7 +98,7 @@ class TeamJoinRequestReviewSerializer(BaseSerializer):
             TeamJoinRequest.objects.filter(chara=chara).delete()
 
             push_log("隊伍", f"{chara.name}加入了{self.team.name}")
-
+            send_refresh_chara_profile_signal(chara.id)
             return {'display_message': '入隊申請已通過'}
 
         elif self.validated_data['action'] == 'reject':
@@ -137,6 +137,8 @@ class DismissTeamMemberSerializer(BaseSerializer):
         chara.team = None
         chara.save()
 
+        send_refresh_chara_profile_signal(chara.id)
+
     def validate_chara(self, chara):
         chara = chara.lock()
         if chara.team != self.team:
@@ -148,8 +150,12 @@ class DismissTeamMemberSerializer(BaseSerializer):
 
 class DisbandTeamSerializer(BaseSerializer):
     def save(self):
+        chara_ids = list(Chara.objects.filter(team=self.team).values_list('id', flat=True))
         Chara.objects.filter(team=self.team).update(team=None)
         self.team.delete()
+
+        for chara_id in chara_ids:
+            send_refresh_chara_profile_signal(chara_id)
 
 
 class ChangeTeamDungeonRecordStatusSerializer(BaseSerializer):

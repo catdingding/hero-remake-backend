@@ -101,3 +101,6 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
 
     async def log_message(self, event):
         await self.send_json(event)
+
+    async def refresh_chara_profile(self, event):
+        await self.send_json(event)

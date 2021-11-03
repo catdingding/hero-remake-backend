@@ -10,7 +10,7 @@ from item.models import Item
 from chara.models import Chara
 from town.models import Town
 
-from system.utils import push_log, send_private_message_by_system
+from system.utils import push_log, send_private_message_by_system, send_refresh_chara_profile_signal
 
 
 class CountrySerializer(SerpyModelSerializer):
@@ -128,6 +128,7 @@ class CountryJoinRequestReviewSerializer(BaseSerializer):
 
             CountryJoinRequest.objects.filter(chara=chara).delete()
             push_log("入國", f"{chara.name}加入了{self.country.name}")
+            send_refresh_chara_profile_signal(chara.id)
 
             return {'display_message': '入國申請已通過'}
 
@@ -162,6 +163,8 @@ class CountryDismissSerializer(BaseSerializer):
 
         chara.country = None
         chara.save()
+
+        send_refresh_chara_profile_signal(chara.id)
 
     def validate_chara(self, chara):
         chara = chara.lock()

@@ -36,3 +36,8 @@ def send_private_message_by_system(sender_id, receiver_id, content):
     layer = get_channel_layer()
     for chara_id in [sender_id, receiver_id]:
         async_to_sync(layer.group_send)(f'private_{chara_id}', data)
+
+
+def send_refresh_chara_profile_signal(chara_id):
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)(f'private_{chara_id}', {'type': 'refresh_chara_profile'})
