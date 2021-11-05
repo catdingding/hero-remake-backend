@@ -46,7 +46,10 @@ class ChangeJobSerializer(BaseSerializer):
         for job_attr in job.attributes.all():
             chara_attr = chara.attrs[job_attr.type.en_name]
 
-            current_bonus = random.randint(0, round(chara_attr.value / 1.5))
+            current_bonus = random.randint(
+                round(chara_attr.value * 0.2 * chara.luck_sigmoid),
+                round(chara_attr.value / 1.5)
+            )
             prof_bonus = round(min(999999, chara_attr.proficiency) ** 0.375)
 
             new_attr_value = job_attr.base_value + current_bonus + prof_bonus + total_battle_bonus

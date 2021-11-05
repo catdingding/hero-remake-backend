@@ -5,6 +5,8 @@ from django.conf import settings
 
 from rest_framework.exceptions import ValidationError
 
+import time
+import hashlib
 import os
 from datetime import timedelta
 import random
@@ -53,6 +55,8 @@ class Chara(BaseModel):
     mp_max = models.PositiveIntegerField()
     mp = models.PositiveIntegerField()
 
+    luck_base = models.PositiveIntegerField(default=1000)
+
     bag_items = models.ManyToManyField("item.Item", related_name="bag_item_chara")
     storage_items = models.ManyToManyField("item.Item", related_name="storage_item_chara")
     abilities = models.ManyToManyField("ability.Ability")
@@ -72,6 +76,22 @@ class Chara(BaseModel):
     @property
     def level(self):
         return self.exp // 100 + 1
+
+    @property
+    def luck(self):
+        n = f"{round(time.time()) // 3600}{self.id}"
+        n = int.from_bytes(hashlib.sha256(n.encode("utf-8")).digest(), 'big') % 10
+
+        if n <= 2:
+            return int(self.luck_base * 0.5)
+        elif n >= 7:
+            return int(self.luck_base * 1.5)
+        return self.luck_base
+
+    @property
+    def luck_sigmoid(self):
+        n = self.luck
+        return n / (n + 1000)
 
     @cached_property
     def attrs(self):

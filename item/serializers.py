@@ -290,7 +290,7 @@ class SmithReplaceAbilitySerializer(LockedEquipmentCheckMixin, BaseSerializer):
 
         self.chara.lose_items('bag', [Item(id=source_item.id, number=1)])
 
-        if 50 >= randint(1, 100):
+        if 30 + (40 * self.chara.luck_sigmoid) >= randint(1, 100):
             equipment.save()
             push_log("製作", f"{self.chara.name}成功的將「{ability.name}」注入了{equipment.display_name}")
             return {"display_message": "注入成功"}

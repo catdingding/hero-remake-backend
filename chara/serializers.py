@@ -136,6 +136,8 @@ class CharaProfileSerializer(CharaPublicProfileSerializer):
     hp_limit = serpy.Field()
     mp_limit = serpy.Field()
 
+    luck = serpy.Field()
+
     bag_items = ItemSerializer(many=True)
     skill_settings = CharaSkillSettingSerializer(many=True)
 

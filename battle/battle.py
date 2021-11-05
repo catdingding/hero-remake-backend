@@ -178,6 +178,8 @@ class BattleChara:
             self.hp = self.hp_max
             self.mp = self.mp_max
 
+        self.luck_sigmoid = chara.luck_sigmoid
+
         # 同屬武防提升HP
         equipmen_hp_bonus = 0.1 * \
             (int(self.equipments[1].element_type_id == self.element_type.id) +
@@ -210,6 +212,8 @@ class BattleChara:
         else:
             self.hp = self.hp_max = int(monster.hp * self.battle.difficulty)
             self.mp = self.mp_max = int(monster.mp * self.battle.difficulty)
+
+        self.luck_sigmoid = 0.5
 
     @property
     def profile(self):
@@ -326,7 +330,9 @@ class BattleChara:
     def normal_attack(self, defender):
         self.log(f"{self.name}使出了普通攻擊")
         self.action_points -= 1000
-        damage = randint(0, max(0, self.attack - defender.defense // 2))
+
+        damage_max = max(0, self.attack - defender.defense // 2)
+        damage = randint(int(damage_max * (0.2 + 0.2 * self.luck_sigmoid)), damage_max)
 
         # 奧義類型47:覺醒
         damage += int(damage * self.ability_type_power(47) * self.battle.rounds)
