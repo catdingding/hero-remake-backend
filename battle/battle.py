@@ -120,11 +120,10 @@ class BattleChara:
             raise Exception("illegal source")
 
         self.speed = max(self.speed, 100)
-        # 閃避率
-        self.eva = min(400, self.dex // 3)
         # 暴擊率
         # 奧義類型10:暴擊率提升
-        self.critical = min(250, 20 + self.dex // 3) + self.ability_type_power(10) * 1000
+        self.critical = min(250, 20 + self.dex // 3)
+        self.critical += self.ability_type_power(10) * 1000 * max(1, self.dex / 1000)
 
         self.poison = 0
         self.blocked_ability_count = 0
@@ -475,6 +474,7 @@ class BattleChara:
     def take_damage(self, attacker, damage, skill=None):
         skill_type = skill.type_id if skill is not None else None
         speed_gap = min(400, self.speed - attacker.speed)
+        eva = min(400, (self.dex - attacker.dex // 2) // 3)
 
         speed_gap_check = 1000
         eva_check = 1000
@@ -488,11 +488,11 @@ class BattleChara:
             eva_check *= 10
             attacker.log(f"[星武特效]{attacker.name}的命中率上升")
 
-        # 17,18無視反擊、迴避、躲避、奧義類型8
-        if skill is not None and skill.type_id in [17, 18]:
+        # 17,18,26無視反擊、迴避、躲避、奧義類型8
+        if skill is not None and skill.type_id in [17, 18, 26]:
             pass
         # 奧義類型12:反擊
-        elif self.has_ability_type(12) and randint(1, max(500, 1200 - self.men)) <= 100:
+        elif self.has_ability_type(12) and randint(1, max(500, 1200 - self.men)) <= 100 * max(1, self.men / 1000):
             if attacker.ability_type_power(43) >= randint(1, 100):
                 damage = None
                 self.log(f"{self.name}的反擊發動！但被{attacker.name}回避了")
@@ -503,7 +503,7 @@ class BattleChara:
                 damage = None
                 self.log(f"{self.name}的反擊發動！對{attacker.name}造成了{hp_loss}點傷害")
         # 迴避
-        elif self.eva >= randint(1, eva_check):
+        elif eva >= randint(1, eva_check):
             damage = None
             self.log(f"{self.name}迴避了攻擊")
         # 躲避
