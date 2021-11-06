@@ -125,6 +125,7 @@ class BattleChara:
         self.critical = min(250, 20 + self.dex // 3)
         self.critical += self.ability_type_power(10) * 1000 * max(1, self.dex / 1000)
 
+        self.eva_add = 0
         self.poison = 0
         self.blocked_ability_count = 0
         self.weapon_effect_blocked = False
@@ -474,7 +475,7 @@ class BattleChara:
     def take_damage(self, attacker, damage, skill=None):
         skill_type = skill.type_id if skill is not None else None
         speed_gap = min(400, self.speed - attacker.speed)
-        eva = min(400, (self.dex - attacker.dex // 2) // 3)
+        eva = min(400, (self.dex - attacker.dex // 2) // 3) + self.eva_add
 
         speed_gap_check = 1000
         eva_check = 1000
@@ -574,8 +575,8 @@ class BattleChara:
             self.log(f"{self.name}中毒了")
 
         # 攻擊者迴避提升
-        if skill_type == 13 and randint(1, 3) == 1 and attacker.eva < 1000:
-            attacker.eva += 40
+        if skill_type == 13 and randint(1, 3) == 1 and attacker.eva_add < 600:
+            attacker.eva_add += 40
             attacker.log(f"{attacker.name}的迴避提升了")
 
         # 麻痹
