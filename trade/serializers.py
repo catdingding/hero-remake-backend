@@ -390,6 +390,7 @@ class SellItemSerializer(LockedEquipmentCheckMixin, BaseSerializer):
 
     def save(self):
         item = self.validated_data['item']
+        name = item.name
         number = self.validated_data['number']
         item.number = number
         items = [item]
@@ -399,7 +400,7 @@ class SellItemSerializer(LockedEquipmentCheckMixin, BaseSerializer):
         self.chara.gold += gold
         self.chara.save()
 
-        return {'display_message': f'出售物品，獲得了{gold}金錢'}
+        return {'display_message': f'出售了{name}*{number}，獲得了{gold}金錢'}
 
 
 class MemberShopBuyColdDownBonusSerializer(BaseSerializer):
