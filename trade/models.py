@@ -83,3 +83,14 @@ class LotteryTicket(BaseModel):
     nth = models.IntegerField()
     chara = models.ForeignKey("chara.Chara", on_delete=models.CASCADE)
     number = models.IntegerField()
+
+
+class Parcel(BaseModel):
+
+    sender = models.ForeignKey("chara.Chara", related_name='sent_parcels', on_delete=models.PROTECT)
+    receiver = models.ForeignKey("chara.Chara", related_name='received_parcels', on_delete=models.PROTECT)
+
+    item = models.ForeignKey("item.Item", null=True, on_delete=models.SET_NULL)
+    price = models.IntegerField()
+
+    message = models.CharField(max_length=100, blank=True)

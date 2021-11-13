@@ -13,11 +13,12 @@ from item.serializers import ItemTypeSerializer, ItemSerializer
 from chara.serializers import CharaProfileSerializer
 from chara.models import Chara
 from trade.models import (
-    Auction, Sale, Purchase, ExchangeOption, ExchangeOptionRequirement, StoreOption, Lottery, LotteryTicket
+    Auction, Sale, Purchase, ExchangeOption, ExchangeOptionRequirement, StoreOption, Lottery, LotteryTicket,
+    Parcel
 )
 from item.models import Item, ItemTypePoolGroup
 
-from system.utils import push_log
+from system.utils import push_log, send_private_message_by_system
 
 
 class AuctionSerializer(SerpyModelSerializer):
@@ -543,3 +544,80 @@ class BuyLotterySerializer(BaseSerializer):
         if not data['lottery'].number_max >= data['number'] >= data['lottery'].number_min:
             raise serializers.ValidationError("號碼超出範圍")
         return data
+
+
+class ParcelSerializer(SerpyModelSerializer):
+    sender = CharaProfileSerializer(fields=['id', 'name'])
+    receiver = CharaProfileSerializer(fields=['id', 'name'])
+    item = ItemSerializer()
+
+    class Meta:
+        model = Parcel
+        fields = ['id', 'sender', 'receiver', 'item', 'price', 'message']
+
+
+class ParcelCreateSerializer(BaseModelSerializer):
+    number = serializers.IntegerField(min_value=1)
+
+    class Meta:
+        model = Parcel
+        fields = ['receiver', 'item', 'number', 'price', 'message']
+
+    def create(self, validated_data):
+        item = validated_data.pop('item')
+        item.number = validated_data.pop('number')
+
+        item = self.chara.lose_items('bag', [item], mode='return')[0]
+        item.save()
+
+        parcel = Parcel.objects.create(sender=self.chara, item=item, **validated_data)
+
+        message = (
+            f"{self.chara.name}向{validated_data['receiver'].name}寄送了包含{item.type.name}*{item.number}的包裹"
+            f"，應付金額為{validated_data['price']}"
+        )
+        push_log("包裹", message)
+        send_private_message_by_system(self.chara.id, validated_data['receiver'].id, message)
+
+        return parcel
+
+    def validate(self, data):
+        if Parcel.objects.filter(sender=self.chara).count() >= 10:
+            raise serializers.ValidationError("建立的待領取包裹需<=10")
+        return data
+
+
+class ParcelReceiveSerializer(BaseSerializer):
+    def save(self):
+        item = self.instance.item
+        chara, sender = Chara.objects.lock_by_pks([self.chara.id, self.instance.sender.id])
+        message = f"支付{self.instance.price}金錢，領取了{item.name}*{item.number}"
+
+        chara.lose_gold(self.instance.price)
+        chara.save()
+
+        sender.gold += self.instance.price
+        sender.save()
+
+        chara.get_items('bag', [item])
+
+        self.instance.delete()
+
+        send_private_message_by_system(chara.id, sender.id, message)
+
+        return {'display_message': message}
+
+
+class ParcelCancelSerializer(BaseSerializer):
+    def save(self):
+        item = self.instance.item
+        receiver = self.instance.receiver
+        message = f"收回了{item.name}*{item.number}的包裹"
+
+        self.chara.get_items('bag', [item])
+
+        self.instance.delete()
+
+        send_private_message_by_system(self.chara.id, receiver.id, message)
+
+        return {'display_message': message}

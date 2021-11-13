@@ -34,7 +34,7 @@ from team.views import (
 )
 from trade.views import (
     AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView,
-    MemberShopViewSet, LotteryView, BuyLotteryView
+    MemberShopViewSet, LotteryView, BuyLotteryView, ParcelViewSet
 )
 from battle.views import (
     BattleMapViewSet, PvPFightView, DungeonFightView, BattleResultViewSet, WorldBossFightView, WorldBossView
@@ -48,6 +48,7 @@ router.register(r'trade/auctions', AuctionViewSet)
 router.register(r'trade/sales', SaleViewSet)
 router.register(r'trade/purchases', PurchaseViewSet)
 router.register(r'trade/exchange-options', ExchangeOptionViewSet)
+router.register(r'trade/parcels', ParcelViewSet)
 router.register(r'ability/alchemy-options', AlchemyOptionViewSet)
 router.register(r'trade/store-options', StoreOptionViewSet)
 router.register(r'battle/battle-maps', BattleMapViewSet)

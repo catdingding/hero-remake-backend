@@ -6,7 +6,7 @@ from rest_framework.mixins import ListModelMixin
 
 from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin
 
-from trade.models import Auction, Sale, Purchase, ExchangeOption, StoreOption, Lottery, LotteryTicket
+from trade.models import Auction, Sale, Purchase, ExchangeOption, StoreOption, Lottery, LotteryTicket, Parcel
 from trade.serializers import (
     AuctionSerializer, AuctionCreateSerializer, AuctionBidSerializer,
     AuctionReceiveItemSerializer, AuctionReceiveGoldSerializer,
@@ -15,8 +15,9 @@ from trade.serializers import (
     ExchangeOptionSerializer, ExchangeSerializer,
     StoreOptionSerializer, StoreBuySerializer, SellItemSerializer,
     MemberShopBuyColdDownBonusSerializer, MemberShopBuyAutoHealSerializer, MemberShopBuyQuestBonusSerializer,
-    MemberShopBuyBagItemLimitSerializer, MemberShopBuyLevelDownSerializer,MemberShopBuyPetSerializer,
-    BuyLotterySerializer, LotterySerializer
+    MemberShopBuyBagItemLimitSerializer, MemberShopBuyLevelDownSerializer, MemberShopBuyPetSerializer,
+    BuyLotterySerializer, LotterySerializer,
+    ParcelSerializer, ParcelCreateSerializer, ParcelCancelSerializer, ParcelReceiveSerializer
 )
 
 
@@ -315,3 +316,47 @@ class LotteryView(ListModelMixin, BaseGenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
+
+class ParcelViewSet(BaseGenericViewSet):
+    queryset = Parcel.objects.all()
+    serializer_class = ParcelSerializer
+    serializer_action_classes = {
+        'create': ParcelCreateSerializer,
+        'cancel': ParcelCancelSerializer,
+        'receive': ParcelReceiveSerializer,
+    }
+
+    def create(self, request):
+        chara = self.get_chara(lock=True)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'status': 'success'})
+
+    @action(methods=['get'], detail=False)
+    def todo(self, request):
+        chara = self.get_chara()
+        queryset = self.filter_queryset(self.get_queryset())
+        queryset = queryset.filter(Q(sender=chara) | Q(receiver=chara))
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(methods=['post'], detail=True)
+    def cancel(self, request, pk):
+        chara = self.get_chara()
+        serializer = self.get_serializer(self.get_object(lock=True), data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'status': 'success'})
+
+    @action(methods=['post'], detail=True)
+    def receive(self, request, pk):
+        chara = self.get_chara()
+        serializer = self.get_serializer(self.get_object(lock=True), data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'status': 'success'})
