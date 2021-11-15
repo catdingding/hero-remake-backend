@@ -8,7 +8,8 @@ from item.models import PetType, ItemType
 from item.serializers import (
     UseItemSerializer, SendItemSerializer, StorageTakeSerializer, StoragePutSerializer,
     SmithUpgradeSerializer, SmithReplaceAbilitySerializer, PetUpgradeSerializer, SmithReplaceElementTypeSerializer,
-    BattleMapTicketToItemSerializer, PetTypeSerializer, ToggleEquipmentLockSerializer, ItemTypeSerializer
+    BattleMapTicketToItemSerializer, PetTypeSerializer, ToggleEquipmentLockSerializer, ItemTypeSerializer,
+    SmithEquipmentTransformSerializer
 )
 
 
@@ -38,6 +39,11 @@ class SmithUpgradeView(CharaPostViewMixin, BaseGenericAPIView):
 
 class SmithReplaceAbilityView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SmithReplaceAbilitySerializer
+    check_in_town = True
+
+
+class SmithEquipmentTransformView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = SmithEquipmentTransformSerializer
     check_in_town = True
 
 

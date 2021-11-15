@@ -1,4 +1,4 @@
-from random import choices, random
+from random import choices, random, choice, gauss
 
 import serpy
 from django.db.models import F
@@ -346,6 +346,59 @@ class SmithReplaceElementTypeSerializer(BaseSerializer):
 
         data['equipment'] = equipment
         return data
+
+
+class SmithEquipmentTransformSerializer(LockedEquipmentCheckMixin, BaseSerializer):
+    item_1 = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
+    item_2 = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
+    item_3 = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
+
+    def save(self):
+        items = self.validated_data['items']
+
+        # 自定義裝備
+        item, = ItemType.objects.get(id__in=[1578, 1579, 1580], slot_type=items[0].type.slot_type_id).make(1)
+        equipment = item.equipment
+
+        rare_rate = 20 + sum(1 for x in items if x.equipment.quality == '稀有') * 30
+        equipment.quality = '稀有' if rare_rate >= randint(1, 100) else '普通'
+
+        equipment.element_type_id = choice([x.equipment.element_type_id for x in items])
+
+        equipment.ability_1_id = choice([x.equipment.ability_1_id for x in items])
+        equipment.ability_2_id = choice([x.equipment.ability_2_id for x in items])
+
+        equipment.attack_base = self.compute_equipment_param(items, 'attack')
+        equipment.defense_base = self.compute_equipment_param(items, 'defense')
+        equipment.weight_base = self.compute_equipment_param(items, 'weight')
+
+        equipment.save()
+        self.chara.lose_items('bag', items)
+        self.chara.get_items('bag', [item])
+
+        return {'display_message': f"獲得了{item.name}({equipment.attack_base}/{equipment.defense_base}/{equipment.weight_base})"}
+
+    def compute_equipment_param(self, items, field):
+        average = sum(getattr(x.type, field) for x in items) / len(items)
+        return int(gauss(average, average * 0.25))
+
+    def validate(self, data):
+        items = list(data.values())
+
+        if len({x.type.slot_type_id for x in items}) != 1:
+            raise serializers.ValidationError("裝備部位必須相同")
+
+        if items[0].type.slot_type_id == 4:
+            raise serializers.ValidationError("寵物不可轉換")
+
+        if len({x.type.id for x in items}) != 3:
+            raise serializers.ValidationError("裝備類型不可重複")
+
+        for item in items:
+            if item.type_id in [1578, 1579, 1580]:
+                raise serializers.ValidationError("轉換所生成的裝備，無法再次投入轉換")
+
+        return {'items': items}
 
 
 class BattleMapTicketToItemSerializer(BaseSerializer):

@@ -97,6 +97,10 @@ class Equipment(Item):
 
     element_type = models.ForeignKey("world.ElementType", on_delete=models.PROTECT)
 
+    attack_base = models.IntegerField(default=0)
+    defense_base = models.IntegerField(default=0)
+    weight_base = models.IntegerField(default=0)
+
     attack_add_on = models.IntegerField(default=0)
     defense_add_on = models.IntegerField(default=0)
     weight_add_on = models.IntegerField(default=0)
@@ -112,15 +116,15 @@ class Equipment(Item):
 
     @property
     def attack(self):
-        return self.type.attack + self.attack_add_on
+        return self.type.attack + self.attack_base + self.attack_add_on
 
     @property
     def defense(self):
-        return self.type.defense + self.defense_add_on
+        return self.type.defense + self.defense_base + self.defense_add_on
 
     @property
     def weight(self):
-        return self.type.weight + self.weight_add_on
+        return self.type.weight + self.weight_base + self.weight_add_on
 
     @property
     def upgrade_times_limit(self):
