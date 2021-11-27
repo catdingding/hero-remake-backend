@@ -5,6 +5,8 @@ from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin
 
 from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin
+from base.pagination import BasePagination
+from item.filters import ItemFilter
 
 from trade.models import Auction, Sale, Purchase, ExchangeOption, StoreOption, Lottery, LotteryTicket, Parcel
 from trade.serializers import (
@@ -40,12 +42,10 @@ class AuctionViewSet(BaseGenericViewSet):
 
         return Response({'status': 'success'})
 
-    @action(methods=['get'], detail=False)
+    @action(methods=['get'], detail=False, pagination_class=BasePagination, filterset_class=ItemFilter.set_item_field('item'))
     def active(self, request):
-        queryset = self.filter_queryset(self.get_queryset())
-        queryset = queryset.filter(due_time__gt=localtime())
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        queryset = self.get_queryset().filter(due_time__gt=localtime())
+        return self.list(request, queryset)
 
     @action(methods=['get'], detail=False)
     def todo(self, request):
@@ -108,12 +108,10 @@ class SaleViewSet(BaseGenericViewSet):
 
         return Response({'status': 'success'})
 
-    @action(methods=['get'], detail=False)
+    @action(methods=['get'], detail=False, pagination_class=BasePagination, filterset_class=ItemFilter.set_item_field('item'))
     def active(self, request):
-        queryset = self.filter_queryset(self.get_queryset())
-        queryset = queryset.filter(buyer__isnull=True, due_time__gt=localtime())
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        queryset = self.get_queryset().filter(buyer__isnull=True, due_time__gt=localtime())
+        return self.list(request, queryset)
 
     @action(methods=['get'], detail=False)
     def todo(self, request):

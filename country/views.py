@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, DestroyModelMixin, CreateModelMixin
 from django_filters.rest_framework import DjangoFilterBackend
+from base.pagination import BasePagination
+from item.filters import ItemFilter
 
 from chara.models import Chara
 from country.models import Country, CountryOfficial, CountryJoinRequest
@@ -125,15 +127,15 @@ class CountryOfficialViewSet(CreateModelMixin, ListModelMixin, DestroyModelMixin
 
 class CountryItemView(BaseGenericAPIView):
     serializer_class = ItemSerializer
+    pagination_class = BasePagination
+    filterset_class = ItemFilter
 
     def get(self, request):
         country = self.get_country(role='citizen')
         queryset = country.items.all().select_related(
             'type__slot_type', 'equipment__ability_1', 'equipment__ability_2', 'equipment__element_type'
         )
-        serializer = self.get_serializer(queryset, many=True)
-
-        return Response(serializer.data)
+        return self.list(request, queryset)
 
 
 class CountryItemTakeView(BaseGenericAPIView):
@@ -193,4 +195,3 @@ class CountryRenameTownView(CountryPostViewMixin, BaseGenericAPIView):
 
 class CountryUpgradeStorageView(CountryPostViewMixin, BaseGenericAPIView):
     serializer_class = CountryUpgradeStorageSerializer
-

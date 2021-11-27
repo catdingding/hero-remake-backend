@@ -162,7 +162,24 @@ class TeamPostViewMixin:
             return Response(result)
 
 
-class BaseGenericViewSet(LockObjectMixin, TeamViewMixin, CountryViewMixin, CharaViewMixin, viewsets.GenericViewSet):
+class ListViewMixin:
+    def list(self, request, queryset=None, *args, **kwargs):
+        if queryset is None:
+            queryset = self.get_queryset()
+        queryset = self.filter_queryset(queryset)
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class BaseGenericViewSet(ListViewMixin, LockObjectMixin, TeamViewMixin, CountryViewMixin, CharaViewMixin, viewsets.GenericViewSet):
+    filterset_class = None
+
     def get_serializer_class(self):
         try:
             return self.serializer_action_classes[self.action]
@@ -176,5 +193,5 @@ class BaseGenericViewSet(LockObjectMixin, TeamViewMixin, CountryViewMixin, Chara
             return super().get_queryset()
 
 
-class BaseGenericAPIView(LockObjectMixin, TeamViewMixin, CountryViewMixin, CharaViewMixin, generics.GenericAPIView):
-    pass
+class BaseGenericAPIView(ListViewMixin, LockObjectMixin, TeamViewMixin, CountryViewMixin, CharaViewMixin, generics.GenericAPIView):
+    filterset_class = None
