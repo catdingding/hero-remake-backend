@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     'world.apps.WorldConfig',
     'job.apps.JobConfig',
     'ability.apps.AbilityConfig',
-    'trade.apps.TradeConfig'
+    'trade.apps.TradeConfig',
+    'home.apps.HomeConfig'
 ]
 
 MIDDLEWARE = [

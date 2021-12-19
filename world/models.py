@@ -1,5 +1,5 @@
 from django.db import models
-from base.models import BaseModel, BaseBuffType
+from base.models import BaseModel
 
 
 class ElementType(BaseModel):
@@ -30,14 +30,21 @@ class Location(BaseModel):
         unique_together = ('x', 'y')
 
 
-class LocationBuffType(BaseBuffType):
-    pass
+class LocationBuffEffect(BaseModel):
+    name = models.CharField(max_length=20)
+
+
+class LocationBuffType(BaseModel):
+    name = models.CharField(max_length=20)
+    description = models.CharField(max_length=100)
+
+    effect = models.ForeignKey("world.LocationBuffEffect", on_delete=models.CASCADE)
+    power = models.IntegerField()
 
 
 class LocationBuff(BaseModel):
-    location = models.ForeignKey("world.Location", on_delete=models.CASCADE)
+    location = models.ForeignKey("world.Location", related_name="buffs", on_delete=models.CASCADE)
     type = models.ForeignKey("world.LocationBuffType", on_delete=models.CASCADE)
-    value = models.IntegerField(null=True)
     due_date = models.DateTimeField(null=True)
 
     class Meta:

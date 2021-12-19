@@ -140,6 +140,8 @@ class BattleChara:
             attr_value = attr.value
             if isinstance(self.source, Monster):
                 attr_value = int(attr_value * self.battle.difficulty)
+            if isinstance(self.source, Chara):
+                attr_value = int(attr_value * (1 + self.source.buff_effect_power(attr.type.id) / 100))
 
             if self.battle.element_type is not None:
                 if self.element_type == self.battle.element_type and self.element_type.id != 'none':

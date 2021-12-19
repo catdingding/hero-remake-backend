@@ -21,14 +21,6 @@ class BaseModel(models.Model):
         return type(self).objects.select_for_update().get(pk=self.pk)
 
 
-class BaseBuffType(BaseModel):
-    name = models.CharField(max_length=20, unique=True)
-    is_positive = models.BooleanField()
-
-    class Meta:
-        abstract = True
-
-
 class BaseSkillSetting(BaseModel):
     skill = models.ForeignKey("job.Skill", on_delete=models.CASCADE)
 

@@ -40,6 +40,7 @@ from battle.views import (
     BattleMapViewSet, PvPFightView, DungeonFightView, BattleResultViewSet, WorldBossFightView, WorldBossView
 )
 from town.views import InnSleepView, ChangeNameView
+from home.views import CharaFarmExpandView, CharaFarmPlaceItemView, CharaFarmHarvestView
 
 router = SimpleRouter()
 
@@ -91,6 +92,9 @@ urlpatterns = [
     path('chara/storage/put/', StoragePutView.as_view()),
     path('chara/slot/equip/', SlotEquipView.as_view()),
     path('chara/slot/divest/', SlotDivestView.as_view()),
+    path('chara/farm/expand/', CharaFarmExpandView.as_view()),
+    path('chara/farm/place-item/', CharaFarmPlaceItemView.as_view()),
+    path('chara/farm/harvest/', CharaFarmHarvestView.as_view()),
     path('chara/change-avatar/', ChangeAvatarView.as_view()),
     path('chara/battle-map-ticket-to-item/', BattleMapTicketToItemView.as_view()),
     path('battle/pvp-fight/', PvPFightView.as_view()),

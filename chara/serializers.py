@@ -1,4 +1,5 @@
 from django.db.models import F, Prefetch
+from django.utils.timezone import localtime
 import serpy
 from rest_framework import serializers
 from rest_flex_fields import is_included
@@ -9,7 +10,10 @@ from base.serializers import (
 )
 
 from world.models import SlotType
-from chara.models import Chara, CharaIntroduction, CharaAttribute, BattleMapTicket, CharaRecord, CharaSlot, CharaSkillSetting
+from chara.models import (
+    Chara, CharaIntroduction, CharaAttribute, BattleMapTicket, CharaRecord, CharaSlot, CharaSkillSetting,
+    CharaFarm, CharaBuff, CharaBuffType
+)
 from item.models import Item, ItemTypePoolGroup
 from battle.serializers import BattleMapSerializer
 from item.serializers import SimpleItemSerializer, ItemSerializer
@@ -50,6 +54,28 @@ class CharaSkillSettingSerializer(SerpyModelSerializer):
         model = CharaSkillSetting
         fields = ['skill', 'hp_percentage', 'mp_percentage',
                   'defender_hp_percentage', 'defender_mp_percentage', 'order']
+
+
+class CharaFarmSerializer(SerpyModelSerializer):
+    item = ItemSerializer(fields=['id', 'name'])
+
+    class Meta:
+        model = CharaFarm
+        fields = ['id', 'item', 'due_time']
+
+
+class CharaBuffTypeSerializer(SerpyModelSerializer):
+    class Meta:
+        model = CharaBuffType
+        fields = ['id', 'name', 'description']
+
+
+class CharaBuffSerializer(SerpyModelSerializer):
+    type = CharaBuffTypeSerializer()
+
+    class Meta:
+        model = CharaBuff
+        fields = ['id', 'type', 'due_time']
 
 
 class CharaIntroductionSerializer(SerpyModelSerializer):
@@ -141,6 +167,9 @@ class CharaProfileSerializer(CharaPublicProfileSerializer):
     bag_items = ItemSerializer(many=True)
     skill_settings = CharaSkillSettingSerializer(many=True)
 
+    farms = CharaFarmSerializer(many=True)
+    buffs = CharaBuffSerializer(many=True)
+
     battle_map_tickets = BattleMapTicketSerialiser(many=True)
 
     class Meta:
@@ -172,6 +201,14 @@ class CharaProfileSerializer(CharaPublicProfileSerializer):
             queryset = queryset.prefetch_related(Prefetch('bag_items', Item.objects.select_related(
                 'type__slot_type', 'equipment__ability_1', 'equipment__ability_2', 'equipment__element_type'
             )))
+        if is_included(request, 'farms'):
+            queryset = queryset.prefetch_related(Prefetch('farms', CharaFarm.objects.select_related(
+                'item__type', 'item__equipment'
+            )))
+        if is_included(request, 'buffs'):
+            queryset = queryset.prefetch_related(Prefetch('buffs', CharaBuff.objects.select_related(
+                'type'
+            ).filter(due_time__gt=localtime())))
 
         if is_included(request, 'battle_map_tickets'):
             queryset = queryset.prefetch_related(Prefetch('battle_map_tickets', BattleMapTicket.objects.select_related(

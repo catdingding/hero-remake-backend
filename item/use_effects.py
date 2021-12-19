@@ -2,12 +2,14 @@ from random import choice
 
 from django.db.models import F
 from rest_framework.exceptions import ValidationError
+from django.utils.timezone import localtime
+from datetime import timedelta
 
 from world.models import AttributeType
 from ability.models import Ability
 from battle.models import BattleMap
 from item.models import ItemTypePoolGroup
-from chara.models import BattleMapTicket
+from chara.models import BattleMapTicket, CharaBuff, CharaBuffType
 from base.utils import add_class
 from system.utils import push_log
 
@@ -219,3 +221,27 @@ class UseEffect_12(BaseUseEffect):
         self.chara.save()
 
         return f"使用了{self.n}個{self.type.name}，獲得了{value}點贊助點數"
+
+
+# 角色buff
+@add_class(USE_EFFECT_CLASSES)
+class UseEffect_13(BaseUseEffect):
+    id = 13
+
+    def execute(self):
+        hours = self.type.power * self.n
+
+        buff = CharaBuff.objects.filter(chara=self.chara, type=self.type.use_effect_param).first()
+        if buff is None:
+            buff = CharaBuff(
+                chara=self.chara, type_id=self.type.use_effect_param,
+                due_time=localtime() + timedelta(hours=hours)
+            )
+        else:
+            buff.due_time = max(buff.due_time, localtime()) + timedelta(hours=hours)
+
+        buff.save()
+
+        buff_type = CharaBuffType.objects.get(id=self.type.use_effect_param)
+
+        return f"使用了{self.n}個{self.type.name}，獲得了{hours}小時的{buff_type.name}"

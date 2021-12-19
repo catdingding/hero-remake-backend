@@ -12,7 +12,7 @@ from datetime import timedelta
 import random
 import functools
 
-from base.models import BaseModel, BaseBuffType, BaseSkillSetting
+from base.models import BaseModel, BaseSkillSetting
 from base.utils import get_items, lose_items, sftp_put_fo
 from ability.models import Ability
 from chara.utils import process_avatar
@@ -119,6 +119,22 @@ class Chara(BaseModel):
     def equipped_ability_type_power(self, type_id):
         try:
             return self.equipped_ability_types[type_id].power
+        except KeyError:
+            return 0
+
+    @cached_property
+    def buff_effects(self):
+        return {
+            buff.type.effect_id: buff.type
+            for buff in sorted(
+                self.buffs.filter(due_time__gt=localtime()).select_related('type'),
+                key=lambda x: x.type.power
+            )
+        }
+
+    def buff_effect_power(self, effect_id):
+        try:
+            return self.buff_effects[effect_id].power
         except KeyError:
             return 0
 
@@ -235,18 +251,31 @@ class CharaSkillSetting(BaseSkillSetting):
     chara = models.ForeignKey("chara.Chara", on_delete=models.CASCADE, related_name="skill_settings")
 
 
-class CharaBuffType(BaseBuffType):
-    pass
+class CharaBuffEffect(BaseModel):
+    name = models.CharField(max_length=20)
+
+
+class CharaBuffType(BaseModel):
+    name = models.CharField(max_length=20)
+    description = models.CharField(max_length=100)
+
+    effect = models.ForeignKey("chara.CharaBuffEffect", on_delete=models.CASCADE)
+    power = models.IntegerField()
 
 
 class CharaBuff(BaseModel):
-    chara = models.ForeignKey("chara.Chara", on_delete=models.CASCADE)
+    chara = models.ForeignKey("chara.Chara", related_name="buffs", on_delete=models.CASCADE)
     type = models.ForeignKey("chara.CharaBuffType", on_delete=models.CASCADE)
-    value = models.IntegerField(null=True)
-    due_date = models.DateTimeField(null=True)
+    due_time = models.DateTimeField(null=True)
 
     class Meta:
         unique_together = ('chara', 'type')
+
+
+class CharaFarm(BaseModel):
+    chara = models.ForeignKey("chara.Chara", related_name="farms", on_delete=models.CASCADE)
+    item = models.ForeignKey("item.Item", null=True, on_delete=models.SET_NULL)
+    due_time = models.DateTimeField(null=True)
 
 
 class CharaRecord(BaseModel):

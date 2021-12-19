@@ -48,7 +48,10 @@ class Purchase(BaseModel):
 
 
 class ExchangeOption(BaseModel):
+    STORE_TYPE_CHOICES = [(x, x) for x in ['exchange', 'cooking']]
+
     item_type = models.ForeignKey("item.ItemType", on_delete=models.PROTECT)
+    store_type = models.CharField(choices=STORE_TYPE_CHOICES, max_length=10)
 
 
 class ExchangeOptionRequirement(BaseModel):
