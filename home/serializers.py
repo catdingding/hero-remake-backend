@@ -59,12 +59,13 @@ class CharaFarmHarvestSerializer(BaseSerializer):
             message = f"收穫了{item.name}*{item.number}"
         elif '券' in farm.item.type.name:
             item = None
-            message = f"埋在土裡的{item.name}已經爛掉了……"
+            message = f"埋在土裡的{farm.item.name}已經爛掉了……"
         else:
             item = farm.item
             message = f"原封不動的取回了{item.name}"
 
-        self.chara.get_items('bag', [item])
+        if item is not None:
+            self.chara.get_items('bag', [item])
 
         farm.item = None
         farm.due_time = None
