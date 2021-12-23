@@ -333,21 +333,25 @@ class BattleChara:
         self.log(f"{self.name}使出了普通攻擊")
         self.action_points -= 1000
 
-        damage_max = max(0, self.attack - defender.defense // 2)
-        damage = randint(int(damage_max * (0.2 + 0.2 * self.luck_sigmoid)), damage_max)
+        attack = self.attack
 
         # 奧義類型47:覺醒
-        damage += int(damage * self.ability_type_power(47) * self.battle.rounds)
+        attack += int(attack * self.ability_type_power(47) * self.battle.rounds)
         # 奧義類型50:霸氣
-        damage += int(damage * self.ability_type_power(50) * self.battle.rounds)
+        attack += int(attack * self.ability_type_power(50) * self.battle.rounds)
         # 奧義類型2:神擊
-        damage += int(damage * self.ability_type_power(2))
-        # 奧義類型3:防禦術
-        damage -= int(damage * defender.ability_type_power(3))
+        attack += int(attack * self.ability_type_power(2))
+
         # 星防
         if self.has_equipment_effect(2, 5):
-            damage += int(damage * 0.25)
-            self.log(f"[星防特效]{self.name}造成的普攻傷害上升")
+            attack += int(attack * 0.25)
+            self.log(f"[星防特效]{self.name}造成的普攻攻擊力上升")
+
+        damage_max = max(0, attack - defender.defense // 2)
+        damage = randint(int(damage_max * (0.2 + 0.2 * self.luck_sigmoid)), damage_max)
+
+        # 奧義類型3:防禦術
+        damage -= int(damage * defender.ability_type_power(3))
         # 暗防
         if defender.has_equipment_effect(2, 8):
             damage -= int(damage * 0.4)
