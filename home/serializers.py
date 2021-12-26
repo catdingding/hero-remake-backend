@@ -47,6 +47,24 @@ class CharaFarmPlaceItemSerializer(BaseSerializer):
         return farm
 
 
+class CharaFarmRemoveItemSerializer(BaseSerializer):
+    farm = serializers.PrimaryKeyRelatedField(queryset=CharaFarm.objects.all())
+
+    def save(self):
+        farm = self.validated_data['farm']
+        farm.item.delete()
+        farm.item = None
+        farm.due_time = None
+        farm.save()
+
+    def validate_farm(self, farm):
+        if not farm.item:
+            raise serializers.ValidationError("未放置物品")
+        if farm.chara != self.chara:
+            raise serializers.ValidationError("這不是你的農地")
+        return farm
+
+
 class CharaFarmHarvestSerializer(BaseSerializer):
     farm = serializers.PrimaryKeyRelatedField(queryset=CharaFarm.objects.all())
 
@@ -64,6 +82,8 @@ class CharaFarmHarvestSerializer(BaseSerializer):
             item = farm.item
             message = f"原封不動的取回了{item.name}"
 
+        if farm.item.id != item.id:
+            farm.item.delete()
         if item is not None:
             self.chara.get_items('bag', [item])
 

@@ -1,6 +1,9 @@
 from base.views import BaseGenericAPIView, CharaPostViewMixin, BaseGenericViewSet
 
-from home.serializers import CharaFarmExpandSerializer, CharaFarmPlaceItemSerializer, CharaFarmHarvestSerializer
+from home.serializers import (
+    CharaFarmExpandSerializer, CharaFarmPlaceItemSerializer, CharaFarmRemoveItemSerializer,
+    CharaFarmHarvestSerializer
+)
 
 
 class CharaFarmExpandView(CharaPostViewMixin, BaseGenericAPIView):
@@ -9,6 +12,10 @@ class CharaFarmExpandView(CharaPostViewMixin, BaseGenericAPIView):
 
 class CharaFarmPlaceItemView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = CharaFarmPlaceItemSerializer
+
+
+class CharaFarmRemoveItemView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = CharaFarmRemoveItemSerializer
 
 
 class CharaFarmHarvestView(CharaPostViewMixin, BaseGenericAPIView):
