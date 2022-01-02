@@ -1,4 +1,5 @@
 from random import choice, choices
+from statistics import mean
 from collections import Counter
 
 from base.utils import randint
@@ -44,6 +45,17 @@ class Battle:
         if not any(chara.team == 'attacker' for chara in self.alive_charas):
             return "defender"
         elif not any(chara.team == 'defender' for chara in self.alive_charas):
+            return "attacker"
+        else:
+            return "draw"
+
+    @property
+    def hp_winner(self):
+        attacker_hp_score = mean(chara.hp / chara.hp_max for chara in self.charas if chara.team == 'attacker')
+        defender_hp_score = mean(chara.hp / chara.hp_max for chara in self.charas if chara.team == 'defender')
+        if attacker_hp_score < defender_hp_score:
+            return "defender"
+        elif attacker_hp_score > defender_hp_score:
             return "attacker"
         else:
             return "draw"

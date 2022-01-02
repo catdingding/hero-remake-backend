@@ -178,3 +178,8 @@ class DateTimeField(serpy.Field):
     @staticmethod
     def to_value(value):
         return value.isoformat()[:-6] + 'Z'
+
+
+class IdNameSerializer(SerpyModelSerializer):
+    id = serpy.Field()
+    name = serpy.Field()

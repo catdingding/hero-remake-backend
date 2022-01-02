@@ -1,19 +1,21 @@
 import math
 import random
 from django.db.models import F
+from django.utils.timezone import localtime
 
 from rest_framework import serializers
 
-from battle.models import BattleMap, Dungeon, DungeonFloor, BattleResult, WorldBoss
+from battle.models import BattleMap, Dungeon, DungeonFloor, BattleResult, WorldBoss, Arena
 from chara.models import Chara
 from item.models import Item
+from trade.models import Parcel
 from team.models import TeamDungeonRecord
-from base.serializers import BaseSerializer, SerpyModelSerializer
+from base.serializers import BaseSerializer, SerpyModelSerializer, IdNameSerializer
 from item.serializers import ItemTypeSerializer, ItemSerializer
-from world.serializers import ElementTypeSerializer, LocationSerializer
+from world.serializers import ElementTypeSerializer, LocationSerializer, AttributeTypeSerializer
 from battle.battle_map_processors import BATTLE_MAP_PROCESSORS
 from battle.battle import Battle
-from system.utils import push_log
+from system.utils import push_log, send_private_message_by_system
 
 
 class BattleMapSerializer(SerpyModelSerializer):
@@ -71,6 +73,84 @@ class PvPFightSerializer(BaseSerializer):
             'logs': battle.logs,
             'messages': [f"PvP點數{points if points < 0 else f'+{points}' }"]
         }
+
+
+class ArenaSerializer(SerpyModelSerializer):
+    occupier = IdNameSerializer(fields=['id', 'name'])
+    attribute_type = AttributeTypeSerializer(fields=['id', 'name'])
+
+    class Meta:
+        model = Arena
+        fields = ['id', 'name', 'attribute_type', 'occupier', 'occupied_at', 'occupier_win_count']
+
+
+class ArenaFightSerializer(BaseSerializer):
+    arena = serializers.PrimaryKeyRelatedField(queryset=Arena.objects.all())
+
+    def save(self):
+        arena = self.validated_data['arena']
+        chara, opponent = Chara.objects.lock_by_pks(pks=[self.chara.id, arena.occupier_id])
+
+        # 競技場入場券
+        chara.lose_items('bag', [Item(type_id=1632, number=1)])
+
+        if arena.occupier is None:
+            arena.occupier = self.chara
+            arena.occupied_at = localtime()
+            arena.occupier_win_count = 1
+            arena.save()
+            return {'display_message': f'佔領了無人的{arena.name}'}
+
+        battle = Battle(attackers=[self.chara], defenders=[opponent], battle_type='pvp')
+
+        battle.execute()
+        win = (battle.winner == 'attacker')
+        hp_win = (battle.hp_winner == 'attacker')
+
+        if win or hp_win:
+            # 競技場點數
+            weight = 2 if arena.attribute_type is None else 1
+            chara.get_items('bag', [Item(type_id=1631, number=5 * weight)])
+            opponent_rewards = (localtime() - arena.occupied_at).total_seconds() // 360 * weight
+            if opponent_rewards > 0:
+                Parcel.objects.create(
+                    receiver=opponent, item=Item.objects.create(type_id=1631, number=opponent_rewards),
+                    price=0, message="競技場佔領獎勵"
+                )
+                send_private_message_by_system(chara.id, opponent.id, f"你被{chara.name}從競技場趕了下去，請到包裹區領取獎勵")
+            else:
+                send_private_message_by_system(chara.id, opponent.id, f"你被{chara.name}從競技場趕了下去，因佔領時間太短了一無所獲")
+
+            arena.occupier = self.chara
+            arena.occupied_at = localtime()
+            arena.occupier_win_count = 1
+            message = f"{chara.name}佔領了{arena.name}，獲得了{5*weight}競技場點數"
+            if not win:
+                message = f"但因{chara.name}的剩餘血量比例較高，{message}"
+            push_log("競技場", f"{chara.name}戰勝了{opponent.name}，佔領了{arena.name}")
+        else:
+            arena.occupier_win_count += 1
+            message = f"{opponent.name}守住了{arena.name}"
+            push_log("競技場", f"{chara.name}試圖挑戰{arena.name}，卻被{opponent.name}打到在地上磨擦")
+
+        arena.save()
+
+        result = {
+            'winner': battle.winner,
+            'logs': battle.logs,
+            'messages': [message]
+        }
+
+        BattleResult.objects.create(title=f"{arena.name}-{chara.name}vs{opponent.name}", content=result)
+
+        return result
+
+    def validate_arena(self, arena):
+        if Arena.objects.filter(occupier=self.chara).exists():
+            raise serializers.ValidationError("你已佔領了一個競技場")
+        if arena.attribute_type is not None and arena.attribute_type != self.chara.job.attribute_type:
+            raise serializers.ValidationError("不符合挑戰條件")
+        return arena
 
 
 class DungeonSerializer(SerpyModelSerializer):

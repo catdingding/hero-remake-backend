@@ -590,20 +590,20 @@ class ParcelCreateSerializer(BaseModelSerializer):
 class ParcelReceiveSerializer(BaseSerializer):
     def save(self):
         item = self.instance.item
-        chara, sender = Chara.objects.lock_by_pks([self.chara.id, self.instance.sender.id])
+        chara, sender = Chara.objects.lock_by_pks([self.chara.id, getattr(self.instance.sender, 'id', None)])
         message = f"支付{self.instance.price}金錢，領取了{item.name}*{item.number}"
 
         chara.lose_gold(self.instance.price)
         chara.save()
 
-        sender.gold += self.instance.price
-        sender.save()
-
         chara.get_items('bag', [item])
 
-        self.instance.delete()
+        if sender is not None:
+            sender.gold += self.instance.price
+            sender.save()
+            send_private_message_by_system(chara.id, sender.id, message)
 
-        send_private_message_by_system(chara.id, sender.id, message)
+        self.instance.delete()
 
         return {'display_message': message}
 

@@ -130,3 +130,14 @@ class WorldBossAttribute(BaseModel):
 
 class WorldBossSkillSetting(BaseSkillSetting):
     world_boss = models.ForeignKey("battle.WorldBoss", on_delete=models.CASCADE, related_name="skill_settings")
+
+# 競技場
+
+
+class Arena(BaseModel):
+    name = models.CharField(max_length=20)
+    attribute_type = models.ForeignKey("world.AttributeType", null=True, on_delete=models.PROTECT)
+
+    occupier = models.ForeignKey("chara.Chara", null=True, on_delete=models.SET_NULL)
+    occupied_at = models.DateTimeField(null=True)
+    occupier_win_count = models.IntegerField(default=0)

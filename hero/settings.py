@@ -206,6 +206,7 @@ CACHEOPS = {
     'battle.BattleResult': None,
     'battle.WorldBossTemplate': None,
     'battle.WorldBoss': None,
+    'battle.Arena': None,
     'item.*': {'ops': 'all'},
     'item.Item': None,
     'item.Equipment': None,

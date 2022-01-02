@@ -6,10 +6,11 @@ from rest_framework.filters import SearchFilter
 
 from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin, TeamPostViewMixin
 
-from battle.models import BattleMap, BattleResult, WorldBoss
+from battle.models import BattleMap, BattleResult, WorldBoss, Arena
 from battle.serializers import (
     BattleMapFightSerializer, PvPFightSerializer, DungeonFightSerializer,
-    BattleResultSerializer, WorldBossFightSerializer, WorldBossSerializer
+    BattleResultSerializer, WorldBossFightSerializer, WorldBossSerializer,
+    PvPFightSerializer, ArenaFightSerializer, ArenaSerializer
 )
 
 
@@ -30,7 +31,20 @@ class BattleMapViewSet(BaseGenericViewSet):
 
 class PvPFightView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = PvPFightSerializer
-    check_next_action_time = True
+    LOCK_CHARA = False
+
+
+class ArenaView(ListModelMixin, BaseGenericAPIView):
+    queryset = Arena.objects.filter()
+    serializer_class = ArenaSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class ArenaFightView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = ArenaFightSerializer
+    check_in_town = True
     LOCK_CHARA = False
 
 

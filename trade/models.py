@@ -90,7 +90,7 @@ class LotteryTicket(BaseModel):
 
 class Parcel(BaseModel):
 
-    sender = models.ForeignKey("chara.Chara", related_name='sent_parcels', on_delete=models.PROTECT)
+    sender = models.ForeignKey("chara.Chara", null=True, related_name='sent_parcels', on_delete=models.PROTECT)
     receiver = models.ForeignKey("chara.Chara", related_name='received_parcels', on_delete=models.PROTECT)
 
     item = models.ForeignKey("item.Item", null=True, on_delete=models.SET_NULL)
