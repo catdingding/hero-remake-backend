@@ -241,7 +241,7 @@ class CharaAttribute(BaseModel):
 class CharaSlot(BaseModel):
     chara = models.ForeignKey("chara.Chara", on_delete=models.CASCADE, related_name="slots")
     type = models.ForeignKey("world.SlotType", on_delete=models.CASCADE)
-    item = models.ForeignKey("item.Item", null=True, unique=True, on_delete=models.CASCADE)
+    item = models.ForeignKey("item.Item", null=True, unique=True, on_delete=models.SET_NULL)
 
     class Meta:
         unique_together = ('chara', 'type')
