@@ -62,10 +62,8 @@ def lose_items(field, items, mode='delete'):
     }
     exists_item_by_type = {
         item.type_id: item for item in
-        field.filter(type__in=[x.type_id for x in items if x.type_id is not None])
+        field.filter(type__in=[x.type_id for x in items])
     }
-    for k, v in exists_item_by_type.items():
-        exists_item_by_type[k] = exists_item_by_id.get(v.id, v)
 
     return_items = []
 
