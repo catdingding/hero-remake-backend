@@ -188,7 +188,7 @@ class Chara(BaseModel):
             self.hp_max += random.randint(0, int(attrs['vit'].value / 40 + attrs['men'].value / 80 + 8))
             self.mp_max += random.randint(0, int(attrs['int'].value / 40 + attrs['men'].value / 80 + 2))
             for attr in attrs.values():
-                if attr.value >= attr.limit or (attr.value >= 1200 and attr.type_id != self.job.attribute_type_id):
+                if attr.value >= attr.limit or (attr.value >= 1800 and attr.type_id != self.job.attribute_type_id):
                     continue
 
                 attr.value += random.randint(0, 1)

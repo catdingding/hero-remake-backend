@@ -253,10 +253,17 @@ class BattleChara:
         defender = self.pick_alive_enemy_chara()
         skill = self.get_skill(defender)
 
-        if skill is None:
-            self.normal_attack(defender)
+        # 奧義類型63:全體攻擊
+        if self.has_ability_type(63) and randint(1, 4) == 1 and (skill is None or skill.type_id not in [2, 3, 4, 5, 6, 19]):
+            defenders = self.alive_enemy_charas
         else:
-            self.perform_skill(defender, skill)
+            defenders = [defender]
+
+        for defender in defenders:
+            if skill is None:
+                self.normal_attack(defender)
+            else:
+                self.perform_skill(defender, skill)
 
         self.after_action()
 
@@ -309,9 +316,24 @@ class BattleChara:
             if 20 + self.ability_type_power(42) >= randint(1, 100):
                 self.poison = 0
                 self.log(f"{self.name}成功解掉身上的毒")
+            elif self.poison >= 10:
+                self.poison -= 1
+                self.log(f"{self.name}身上的毒性降低至{self.poison}層")
+
+        # 奧義類型61:受攻擊回血(優先於再生術及群體再生，且無法同時發動)
+        if self.has_ability_type(61):
+            pass
+        # 奧義類型62:群體回血
+        elif self.has_ability_type(62):
+            charas = [chara for chara in self.battle.charas if chara.team == self.team and chara.hp > 0]
+            hp_percentage = self.ability_type_power(62) / len(charas)
+            for chara in charas:
+                hp_add = int(chara.hp_max * hp_percentage)
+                chara.gain_hp(hp_add)
+                chara.log(f"為{chara.name}恢復了{hp_add}HP")
 
         # 奧義類型1:再生
-        if self.has_ability_type(1):
+        elif self.has_ability_type(1):
             hp_add = int(self.hp_max * self.ability_type_power(1))
             self.gain_hp(hp_add)
             self.log(f"{self.name}恢復了{hp_add}點 HP")
@@ -359,7 +381,14 @@ class BattleChara:
             attack += int(attack * 0.25)
             self.log(f"[星防特效]{self.name}造成的普攻攻擊力上升")
 
-        damage_max = max(0, attack - defender.defense // 2)
+        # 奧義類型64:真傷
+        if self.has_ability_type(64) and randint(1, 3) == 1:
+            damage_max = attack
+            hp_loss = int(self.hp_max * 0.01)
+            self.hp -= hp_loss
+            self.log(f"{self.name}損失了{hp_loss}HP，造成真實傷害")
+        else:
+            damage_max = max(0, attack - defender.defense // 2)
         damage = randint(int(damage_max * (0.2 + 0.2 * self.luck_sigmoid)), damage_max)
 
         # 奧義類型3:防禦術
@@ -570,7 +599,13 @@ class BattleChara:
                 self.log(f"因為神祕力量，即死被無效化了")
             # 奧義類型40:免疫即死
             elif self.ability_type_power(40) >= randint(1, 100):
-                self.log(f"不死鳥保護住{self.name}")
+                # 奧義類型60:對即死免疫造成額外傷害
+                if attacker.has_ability_type(60):
+                    hp_loss = int(self.hp_max * 0.3)
+                    self.hp -= hp_loss
+                    self.log(f"不死鳥受到損傷，{self.name}受到了{hp_loss}點傷害")
+                else:
+                    self.log(f"不死鳥保護住{self.name}")
             elif self.has_ability_type(49):
                 if self.ability_type_power(49) >= randint(1, 100):
                     attacker.hp = 0
@@ -589,8 +624,12 @@ class BattleChara:
         # 毒
         # 奧義類型14:毒
         if skill_type == 12 and randint(1, 4) == 1 or attacker.has_ability_type(14) and randint(1, 6) == 1:
-            self.poison = max(1, attacker.ability_type_power(14))
-            self.log(f"{self.name}中毒了")
+            # 奧義類型65:疊毒
+            if attacker.has_ability_type(65):
+                self.poison += max(1, int(attacker.ability_type_power(14)))
+            else:
+                self.poison = max(1, int(attacker.ability_type_power(14)))
+            self.log(f"{self.name}中毒了，當前層數為{self.poison}")
 
         # 攻擊者迴避提升
         if skill_type == 13 and randint(1, 3) == 1 and attacker.eva_add < 600:
@@ -661,6 +700,12 @@ class BattleChara:
                 ability = self.ability_types.pop(choice(list(self.ability_types.keys())))
                 self.blocked_ability_count += 1
                 self.log(f"{self.name}的{ability.name}被封印了")
+
+        # 奧義類型61:受攻擊回血
+        if self.has_ability_type(61):
+            hp_add = int(self.hp_max * self.ability_type_power(61))
+            self.gain_hp(hp_add)
+            self.log(f"{self.name}恢復了{hp_add}HP")
 
         # 火武
         if attacker.has_equipment_effect(1, 2):

@@ -56,7 +56,7 @@ class ChangeJobSerializer(BaseSerializer):
             chara_attr.value = min(chara_attr.limit, max(30, new_attr_value))
 
             if chara_attr.type_id != job.attribute_type_id:
-                chara_attr.value = min(1200, chara_attr.value)
+                chara_attr.value = min(1800, chara_attr.value)
 
         # calculate hp / mp
         chara.hp_max = min(chara.hp_limit, max(30, random.randint(0, round(chara.hp_max / 1.5)) + job.base_hp))
