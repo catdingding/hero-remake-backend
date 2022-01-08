@@ -204,6 +204,8 @@ class UseEffect_11(BaseUseEffect):
         value = self.type.power * self.n
 
         self.chara.storage_item_limit += value
+        if self.chara.storage_item_limit > 10000:
+            raise ValidationError("DB的物品表會太大，求你別再擴了……")
         self.chara.save()
 
         return f"使用了{self.n}個{self.type.name}，倉庫上限變為{self.chara.storage_item_limit}。"
