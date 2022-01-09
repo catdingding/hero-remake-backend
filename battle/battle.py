@@ -1,6 +1,7 @@
 from random import choice, choices
 from statistics import mean
 from collections import Counter
+from django.utils.timezone import localtime
 
 from base.utils import randint
 from battle.models import Monster, WorldBoss
@@ -27,6 +28,7 @@ class Battle:
         self.difficulty = difficulty
         self.charas = [BattleChara(x, battle=self, team='attacker') for x in attackers] + \
             [BattleChara(x, battle=self, team='defender') for x in defenders]
+        self.summon()
         self.rename_charas()
 
         self.executed = False
@@ -59,6 +61,14 @@ class Battle:
             return "attacker"
         else:
             return "draw"
+
+    def summon(self):
+        if self.battle_type in ['pve']:
+            for chara in self.charas:
+                partner = getattr(chara.source, 'partner', None)
+                if partner is not None and partner.due_time >= localtime():
+                    obj = partner.target_chara or partner.target_monster
+                    self.charas.append(BattleChara(obj, battle=self, team=chara.team))
 
     def rename_charas(self):
         total_counter = Counter([x.name for x in self.charas])

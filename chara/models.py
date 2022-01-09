@@ -48,6 +48,9 @@ class Chara(BaseModel):
     live_ability = models.ForeignKey("ability.Ability", null=True,
                                      related_name="live_ability_charas", on_delete=models.PROTECT)
 
+    partner = models.ForeignKey("chara.CharaPartner", null=True,
+                                related_name="selected_partner_of", on_delete=models.SET_NULL)
+
     health = models.IntegerField(default=100)
 
     hp_max = models.PositiveIntegerField()
@@ -245,6 +248,18 @@ class CharaSlot(BaseModel):
 
     class Meta:
         unique_together = ('chara', 'type')
+
+
+class CharaPartner(BaseModel):
+    chara = models.ForeignKey("chara.Chara", on_delete=models.CASCADE, related_name="partners")
+
+    target_monster = models.ForeignKey("battle.Monster", null=True, on_delete=models.CASCADE)
+    target_chara = models.ForeignKey("chara.Chara", null=True, on_delete=models.CASCADE)
+
+    due_time = models.DateTimeField()
+
+    class Meta:
+        unique_together = (('chara', 'target_monster'), ('chara', 'target_chara'))
 
 
 class CharaSkillSetting(BaseSkillSetting):

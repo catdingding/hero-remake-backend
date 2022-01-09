@@ -17,7 +17,7 @@ from item.models import Item
 from chara.serializers import (
     CharaIntroductionSerializer, SendGoldSerializer, SlotEquipSerializer, SlotDivestSerializer, RestSerializer,
     CharaProfileSerializer, CharaPublicProfileSerializer, IncreaseHPMPMaxSerializer, HandInQuestSerializer,
-    CharaAvatarSerializer, CharaIntroductionUpdateSerializer
+    CharaAvatarSerializer, CharaIntroductionUpdateSerializer, PartnerAssignSerializer
 )
 from item.serializers import ItemSerializer
 
@@ -128,6 +128,10 @@ class SlotEquipView(CharaPostViewMixin, BaseGenericAPIView):
 
 class SlotDivestView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SlotDivestSerializer
+
+
+class PartnerAssignView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = PartnerAssignSerializer
 
 
 class RestView(CharaPostViewMixin, BaseGenericAPIView):

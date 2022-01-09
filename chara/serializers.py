@@ -6,16 +6,16 @@ from rest_flex_fields import is_included
 from base.utils import randint, format_currency
 from base.serializers import (
     BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin,
-    SerpyModelSerializer
+    SerpyModelSerializer, IdNameSerializer
 )
 
 from world.models import SlotType
 from chara.models import (
     Chara, CharaIntroduction, CharaAttribute, BattleMapTicket, CharaRecord, CharaSlot, CharaSkillSetting,
-    CharaFarm, CharaBuff, CharaBuffType
+    CharaFarm, CharaBuff, CharaBuffType, CharaPartner
 )
 from item.models import Item, ItemTypePoolGroup
-from battle.serializers import BattleMapSerializer
+from battle.serializers import BattleMapSerializer, MonsterSerializer
 from item.serializers import SimpleItemSerializer, ItemSerializer
 from ability.serializers import AbilitySerializer
 from country.serializers import CountrySerializer, CountryOfficialSerializer
@@ -102,6 +102,15 @@ class CharaSimpleSerializer(SerpyModelSerializer):
         fields = ['id', 'name']
 
 
+class CharaPartnerSerializer(SerpyModelSerializer):
+    target_monster = MonsterSerializer(fields=['id', 'name'])
+    target_chara = IdNameSerializer()
+
+    class Meta:
+        model = CharaPartner
+        fields = ['id', 'target_monster', 'target_chara', 'due_time']
+
+
 class CharaPublicProfileSerializer(SerpyModelSerializer):
     from job.serializers import JobSerializer
     from team.serializers import TeamProfileSerializer
@@ -117,6 +126,8 @@ class CharaPublicProfileSerializer(SerpyModelSerializer):
     main_ability = AbilitySerializer(fields=['id', 'name'])
     job_ability = AbilitySerializer(fields=['id', 'name'])
     live_ability = AbilitySerializer(fields=['id', 'name'])
+
+    partner = CharaPartnerSerializer()
 
     slots = CharaSlotSerializer(many=True)
     attributes = CharaAttributeSerialiser(many=True)
@@ -164,6 +175,7 @@ class CharaProfileSerializer(CharaPublicProfileSerializer):
 
     luck = serpy.Field()
 
+    partners = CharaPartnerSerializer(many=True)
     bag_items = ItemSerializer(many=True)
     skill_settings = CharaSkillSettingSerializer(many=True)
 
@@ -197,6 +209,10 @@ class CharaProfileSerializer(CharaPublicProfileSerializer):
         if is_included(request, 'is_leader'):
             queryset = queryset.select_related('leader_of')
 
+        if is_included(request, 'partners'):
+            queryset = queryset.prefetch_related(Prefetch('partners', CharaPartner.objects.select_related(
+                'target_monster', 'target_chara'
+            ).filter(due_time__gt=localtime())))
         if is_included(request, 'bag_items'):
             queryset = queryset.prefetch_related(Prefetch('bag_items', Item.objects.select_related(
                 'type__slot_type', 'equipment__ability_1', 'equipment__ability_2', 'equipment__element_type'
@@ -285,6 +301,19 @@ class SlotDivestSerializer(BaseSerializer):
 
         if current_slot_item is not None:
             self.chara.get_items('bag', [current_slot_item])
+
+
+class PartnerAssignSerializer(BaseSerializer):
+    partner = serializers.PrimaryKeyRelatedField(queryset=CharaPartner.objects.all())
+
+    def save(self):
+        self.chara.partner = self.validated_data['partner']
+        self.chara.save()
+
+    def validate_partner(self, partner):
+        if partner.chara != self.chara:
+            raise serializers.ValidationError("這不是你的同伴")
+        return partner
 
 
 class RestSerializer(BaseSerializer):

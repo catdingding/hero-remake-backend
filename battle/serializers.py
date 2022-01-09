@@ -5,7 +5,7 @@ from django.utils.timezone import localtime
 
 from rest_framework import serializers
 
-from battle.models import BattleMap, Dungeon, DungeonFloor, BattleResult, WorldBoss, Arena
+from battle.models import BattleMap, Dungeon, DungeonFloor, BattleResult, WorldBoss, Arena, Monster
 from chara.models import Chara
 from item.models import Item
 from trade.models import Parcel
@@ -21,6 +21,12 @@ from system.utils import push_log, send_private_message_by_system
 class BattleMapSerializer(SerpyModelSerializer):
     class Meta:
         model = BattleMap
+        fields = ['id', 'name']
+
+
+class MonsterSerializer(SerpyModelSerializer):
+    class Meta:
+        model = Monster
         fields = ['id', 'name']
 
 

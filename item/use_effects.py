@@ -7,9 +7,9 @@ from datetime import timedelta
 
 from world.models import AttributeType
 from ability.models import Ability
-from battle.models import BattleMap
+from battle.models import BattleMap, Monster
 from item.models import ItemTypePoolGroup
-from chara.models import BattleMapTicket, CharaBuff, CharaBuffType
+from chara.models import BattleMapTicket, CharaBuff, CharaBuffType, CharaPartner, Chara
 from base.utils import add_class
 from system.utils import push_log
 
@@ -247,3 +247,49 @@ class UseEffect_13(BaseUseEffect):
         buff_type = CharaBuffType.objects.get(id=self.type.use_effect_param)
 
         return f"使用了{self.n}個{self.type.name}，獲得了{hours}小時的{buff_type.name}"
+
+
+# 同伴召喚-怪
+@add_class(USE_EFFECT_CLASSES)
+class UseEffect_14(BaseUseEffect):
+    id = 14
+
+    def execute(self):
+        minutes = self.type.power * self.n
+
+        monster = Monster.objects.get(id=self.type.use_effect_param)
+        partner = CharaPartner.objects.filter(chara=self.chara, target_monster=monster).first()
+        if partner is None:
+            partner = CharaPartner(
+                chara=self.chara, target_monster=monster,
+                due_time=localtime() + timedelta(minutes=minutes)
+            )
+        else:
+            partner.due_time = max(partner.due_time, localtime()) + timedelta(minutes=minutes)
+
+        partner.save()
+
+        return f"使用了{self.n}個{self.type.name}，獲得了{minutes}分鐘的{monster.name}同伴"
+
+
+# 同伴召喚-角色
+@add_class(USE_EFFECT_CLASSES)
+class UseEffect_15(BaseUseEffect):
+    id = 15
+
+    def execute(self):
+        minutes = self.type.power * self.n
+
+        chara = Chara.objects.get(id=self.type.use_effect_param)
+        partner = CharaPartner.objects.filter(chara=self.chara, target_chara=chara).first()
+        if partner is None:
+            partner = CharaPartner(
+                chara=self.chara, target_chara=chara,
+                due_time=localtime() + timedelta(minutes=minutes)
+            )
+        else:
+            partner.due_time = max(partner.due_time, localtime()) + timedelta(minutes=minutes)
+
+        partner.save()
+
+        return f"使用了{self.n}個{self.type.name}，獲得了{minutes}分鐘的{chara.name}同伴"
