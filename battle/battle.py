@@ -638,7 +638,7 @@ class BattleChara:
             if attacker.has_ability_type(65):
                 self.poison += max(1, int(attacker.ability_type_power(14)))
             else:
-                self.poison = max(1, int(attacker.ability_type_power(14)))
+                self.poison = max(1, self.poison, int(attacker.ability_type_power(14)))
             self.log(f"{self.name}中毒了，當前層數為{self.poison}")
 
         # 攻擊者迴避提升
@@ -712,7 +712,7 @@ class BattleChara:
                 self.log(f"{self.name}的{ability.name}被封印了")
 
         # 奧義類型61:受攻擊回血
-        if self.has_ability_type(61):
+        if self.hp > 0 and self.has_ability_type(61):
             hp_add = int(self.hp_max * self.ability_type_power(61))
             self.gain_hp(hp_add)
             self.log(f"{self.name}恢復了{hp_add}HP")
