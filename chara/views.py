@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django.utils.timezone import localtime
 from rest_framework import pagination
 from base.views import BaseGenericAPIView, CharaPostViewMixin, BaseGenericViewSet
 from rest_framework.mixins import ListModelMixin
@@ -43,7 +44,7 @@ class CharaProfileView(BaseGenericAPIView):
     def get(self, request):
         chara = self.get_chara()
         serializer = self.get_serializer(chara)
-        return Response(serializer.data)
+        return Response(serializer.data, headers={'Date': str(localtime())})
 
     def get_chara(self):
         chara = super().get_chara()

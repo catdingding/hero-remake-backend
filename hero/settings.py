@@ -93,6 +93,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'Chara-ID',
 ]
+CORS_EXPOSE_HEADERS = ['Date']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
