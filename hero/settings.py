@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'job.apps.JobConfig',
     'ability.apps.AbilityConfig',
     'trade.apps.TradeConfig',
-    'home.apps.HomeConfig'
+    'home.apps.HomeConfig',
+    'npc.apps.NpcConfig',
 ]
 
 MIDDLEWARE = [
