@@ -2,6 +2,13 @@ from django.db import models
 from base.models import BaseModel
 
 
+class ChangeLog(BaseModel):
+    category = models.CharField(max_length=20)
+    content = models.TextField()
+    note = models.TextField()
+    time = models.DateTimeField()
+
+
 class Log(BaseModel):
     category = models.CharField(max_length=20)
     content = models.TextField()

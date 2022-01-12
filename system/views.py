@@ -3,8 +3,19 @@ from rest_framework.response import Response
 from rest_framework.mixins import ListModelMixin
 from rest_framework.filters import SearchFilter
 
-from system.models import Log
-from system.serializers import LogSerializer
+from system.models import Log, ChangeLog
+from system.serializers import LogSerializer, ChangeLogSerializer
+
+
+class ChangeLogView(ListModelMixin, BaseGenericAPIView):
+    serializer_class = ChangeLogSerializer
+    queryset = ChangeLog.objects.all().order_by('-time')
+
+    filter_backends = [SearchFilter]
+    search_fields = ['category', 'content']
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 
 class LogView(ListModelMixin, BaseGenericAPIView):

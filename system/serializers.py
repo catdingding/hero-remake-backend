@@ -3,7 +3,13 @@ import serpy
 
 from base.serializers import BaseModelSerializer, SerpyModelSerializer, DateTimeField
 from country.serializers import CountrySerializer, CountryOfficialSerializer
-from system.models import Log
+from system.models import Log, ChangeLog
+
+
+class ChangeLogSerializer(SerpyModelSerializer):
+    class Meta:
+        model = ChangeLog
+        fields = ['id', 'category', 'content', 'note', 'time']
 
 
 class LogSerializer(SerpyModelSerializer):
