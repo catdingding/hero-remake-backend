@@ -40,8 +40,6 @@ INSTALLED_APPS = [
     'channels',
     'rest_framework',
     'corsheaders',
-    'cacheops',
-    'django_pickling',
     'system.apps.SystemConfig',
     'base.apps.BaseConfig',
     'battle.apps.BattleConfig',
@@ -110,7 +108,8 @@ DATABASES = {
         'PASSWORD': os.environ['DB_PASS'],
         'HOST': os.environ['DB_HOST'],
         'PORT': os.environ['DB_PORT'],
-        'OPTIONS': {'charset': 'utf8mb4'}
+        'OPTIONS': {'charset': 'utf8mb4'},
+        'CONN_MAX_AGE': 60
     }
 }
 
@@ -194,24 +193,3 @@ CHARA_AVATAR_PATH = os.path.join(os.environ['SFTP_PATH'], 'chara_avatar')
 
 # time
 ACTION_TIME_GRACE = 3
-
-
-# cacheops
-CACHEOPS_REDIS = f"redis://:{os.environ['REDIS_PASS']}@{os.environ['REDIS_HOST']}:{os.environ['REDIS_PORT']}/1"
-CACHEOPS_DEGRADE_ON_FAILURE = True
-CACHEOPS_DEFAULTS = {
-    'timeout': 60 * 60 * 24
-}
-CACHEOPS = {
-    'ability.AbilityType': {'ops': 'all'},
-    'battle.*': {'ops': 'all'},
-    'battle.BattleResult': None,
-    'battle.WorldBossTemplate': None,
-    'battle.WorldBoss': None,
-    'battle.Arena': None,
-    'item.*': {'ops': 'all'},
-    'item.Item': None,
-    'item.Equipment': None,
-    'world.*': {'ops': 'all'},
-    'world.Location': None
-}
