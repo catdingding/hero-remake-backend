@@ -1,4 +1,4 @@
-FROM python:3.6-buster
+FROM python:3.9.5-buster
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y musl-dev libffi-dev default-libmysqlclient-dev build-essential nginx supervisor

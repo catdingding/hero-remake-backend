@@ -20,7 +20,7 @@ django-cors-headers==3.4.0
 django-filter==2.3.0
 django-pickling==1.0
 djangorestframework==3.12.4
-djangorestframework-simplejwt==4.4.0
+djangorestframework-simplejwt==4.8.0
 drf-flex-fields==0.9.0
 funcy==1.16
 gunicorn==20.0.4
@@ -29,11 +29,8 @@ hyperlink==21.0.0
 idna==2.10
 incremental==17.5.0
 inflection==0.3.1
-llvmlite==0.33.0
 msgpack==1.0.2
 mysqlclient==1.4.6
-numba==0.50.0
-numpy==1.19.0
 paramiko==2.7.2
 Pillow==8.1.0
 pyasn1==0.4.8
@@ -41,7 +38,7 @@ pyasn1-modules==0.2.8
 pycodestyle==2.6.0
 pycparser==2.20
 PyHamcrest==2.0.2
-PyJWT==1.7.1
+PyJWT==2.3.0
 PyNaCl==1.4.0
 pyOpenSSL==20.0.1
 pytz==2020.1

@@ -1,4 +1,3 @@
-from numba import jit, int32
 import paramiko
 import math
 import random
@@ -7,7 +6,6 @@ from django.conf import settings
 from rest_framework.exceptions import ValidationError
 
 
-@jit(int32(int32, int32), nopython=True)
 def randint(low, high):
     return random.randint(low, high)
 
