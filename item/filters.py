@@ -27,7 +27,10 @@ class ItemFilter(filters.FilterSet):
         )
 
     def filter_is_locked(self, queryset, name, value):
-        condition = Q(**{self.get_field_name('equipment__is_locked'): True})
+        condition = (
+            Q(**{self.get_field_name('equipment__is_locked'): True}) |
+            Q(**{self.get_field_name('type__is_transferable'): False})
+        )
         if not value:
             condition = ~condition
 
