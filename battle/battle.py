@@ -271,8 +271,10 @@ class BattleChara:
 
         for defender in defenders:
             if skill is None:
+                self.action_points -= 1000
                 self.normal_attack(defender)
             else:
+                self.action_points -= skill.action_cost
                 self.perform_skill(defender, skill)
 
         self.after_action()
@@ -375,7 +377,6 @@ class BattleChara:
 
     def normal_attack(self, defender):
         self.log(f"{self.name}使出了普通攻擊")
-        self.action_points -= 1000
 
         attack = self.attack
 
@@ -412,7 +413,6 @@ class BattleChara:
 
     def perform_skill(self, defender, skill):
         self.log(f"{self.name}使出了{skill.name}")
-        self.action_points -= skill.action_cost
         damage = None
 
         # 特殊技能
