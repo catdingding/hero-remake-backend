@@ -153,6 +153,7 @@ class BattleChara:
         self.weapon_effect_blocked = False
         self.weapon_effect_blocked_flag = False
         self.reduced_skill_rate = 0
+        self.vulnerable = 0
 
         # 奧義類型15:增加初始AP
         self.action_points += self.ability_type_power(15)
@@ -594,6 +595,8 @@ class BattleChara:
         if attacker.element_type == self.element_type.suppressed_by:
             damage = int(damage * 1.2)
             attacker.log(f"{self.name}的屬性被剋制了")
+        # 易傷
+        damage += int(damage * self.vulnerable)
 
         damage = max(1, damage)
         self.hp = max(0, self.hp - damage)
@@ -609,11 +612,10 @@ class BattleChara:
                 self.log(f"因為神祕力量，即死被無效化了")
             # 奧義類型40:免疫即死
             elif self.ability_type_power(40) >= randint(1, 100):
-                # 奧義類型60:對即死免疫造成額外傷害
+                # 奧義類型60:對即死免疫造成易傷
                 if attacker.has_ability_type(60):
-                    hp_loss = int(self.hp_max * 0.3)
-                    self.hp -= hp_loss
-                    self.log(f"不死鳥受到損傷，{self.name}受到了{hp_loss}點傷害")
+                    self.vulnerable += 1
+                    self.log(f"不死鳥受到損傷，{self.name}當前易傷層數為{self.vulnerable}")
                 else:
                     self.log(f"不死鳥保護住{self.name}")
             elif self.has_ability_type(49):
