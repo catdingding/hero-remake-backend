@@ -255,11 +255,12 @@ class CharaPartner(BaseModel):
 
     target_monster = models.ForeignKey("battle.Monster", null=True, on_delete=models.CASCADE)
     target_chara = models.ForeignKey("chara.Chara", null=True, on_delete=models.CASCADE)
+    target_npc = models.ForeignKey("npc.NPC", null=True, on_delete=models.CASCADE)
 
     due_time = models.DateTimeField()
 
     class Meta:
-        unique_together = (('chara', 'target_monster'), ('chara', 'target_chara'))
+        unique_together = (('chara', 'target_monster'), ('chara', 'target_chara'), ('chara', 'target_npc'))
 
 
 class CharaSkillSetting(BaseSkillSetting):

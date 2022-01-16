@@ -20,6 +20,30 @@ class NPCInfo(BaseModel):
     description = models.TextField(blank=True)
 
 
+class NPCCharaRelation(BaseModel):
+    npc = models.ForeignKey("npc.NPC", on_delete=models.CASCADE, related_name="chara_relations")
+    chara = models.ForeignKey("chara.Chara", on_delete=models.CASCADE, related_name="npc_relations")
+
+    friendliness = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ('npc', 'chara')
+
+
+class NPCFavorite(BaseModel):
+    npc = models.ForeignKey("npc.NPC", on_delete=models.CASCADE, related_name="favorites")
+    item_type = models.ForeignKey("item.ItemType", on_delete=models.PROTECT)
+
+    friendliness_reward = models.IntegerField()
+
+
+class NPCExchangeOption(BaseModel):
+    npc = models.ForeignKey("npc.NPC", on_delete=models.CASCADE, related_name="exchange_options")
+    item_type = models.ForeignKey("item.ItemType", on_delete=models.PROTECT)
+
+    friendliness_cost = models.IntegerField()
+
+
 class NPCAttribute(BaseModel):
     npc = models.ForeignKey("npc.NPC", on_delete=models.CASCADE, related_name="attributes")
     type = models.ForeignKey("world.AttributeType", on_delete=models.PROTECT)

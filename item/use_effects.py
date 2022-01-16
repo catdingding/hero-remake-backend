@@ -10,6 +10,7 @@ from ability.models import Ability
 from battle.models import BattleMap, Monster
 from item.models import ItemTypePoolGroup
 from chara.models import BattleMapTicket, CharaBuff, CharaBuffType, CharaPartner, Chara
+from npc.models import NPC
 from base.utils import add_class
 from system.utils import push_log
 
@@ -293,3 +294,26 @@ class UseEffect_15(BaseUseEffect):
         partner.save()
 
         return f"使用了{self.n}個{self.type.name}，獲得了{minutes}分鐘的{chara.name}同伴"
+
+
+# 同伴召喚-NPC
+@add_class(USE_EFFECT_CLASSES)
+class UseEffect_16(BaseUseEffect):
+    id = 16
+
+    def execute(self):
+        minutes = self.type.power * self.n
+
+        npc = NPC.objects.get(id=self.type.use_effect_param)
+        partner = CharaPartner.objects.filter(chara=self.chara, target_npc=npc).first()
+        if partner is None:
+            partner = CharaPartner(
+                chara=self.chara, target_npc=npc,
+                due_time=localtime() + timedelta(minutes=minutes)
+            )
+        else:
+            partner.due_time = max(partner.due_time, localtime()) + timedelta(minutes=minutes)
+
+        partner.save()
+
+        return f"使用了{self.n}個{self.type.name}，獲得了{minutes}分鐘的{npc.name}同伴"
