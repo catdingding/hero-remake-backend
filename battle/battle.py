@@ -270,12 +270,15 @@ class BattleChara:
         else:
             defenders = [defender]
 
+        if skill is None:
+            self.action_points -= 1000
+        else:
+            self.action_points -= skill.action_cost
+
         for defender in defenders:
             if skill is None:
-                self.action_points -= 1000
                 self.normal_attack(defender)
             else:
-                self.action_points -= skill.action_cost
                 self.perform_skill(defender, skill)
 
         self.after_action()
