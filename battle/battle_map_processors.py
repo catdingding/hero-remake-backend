@@ -6,7 +6,7 @@ from base.utils import add_class, randint
 from battle.utils import get_event_item_type
 from battle.battle import Battle
 from battle.models import Monster, WorldBoss
-from item.models import ItemType, ItemTypePoolGroup, ItemTypePool
+from item.models import ItemType, ItemTypePoolGroup, ItemTypePool, Item
 from item.serializers import SimpleItemSerializer
 from chara.models import BattleMapTicket, CharaAttribute
 from world.models import AttributeType
@@ -38,6 +38,7 @@ class BaseBattleMapProcessor():
                         battle_type='pve', element_type=self.location.element_type)
         battle.execute()
 
+        self.team_members = [x for x in battle.charas if x.team == 'attacker']
         self.win = (battle.winner == 'attacker')
 
         self.chara.record.total_battle += 1
@@ -55,7 +56,8 @@ class BaseBattleMapProcessor():
             found_battle_maps = self.find_battle_maps()
 
             # 奧義類型29:成長
-            if self.upgrade_attribute_limit_after_win or (self.chara.has_equipped_ability_type(29) and randint(1, 1000) == 1):
+            if self.upgrade_attribute_limit_after_win or \
+                    (self.chara.has_equipped_ability_type(29) and randint(1, 1000) == 1):
                 self.upgrade_attribute()
         else:
             loots = []
@@ -191,6 +193,24 @@ class BaseBattleMapProcessor():
             if self.chara.has_equipped_ability_type(38) and randint(1, self.chara.equipped_ability_type_power(38)) == 1:
                 group = ItemTypePoolGroup.objects.get(id=6)
                 loots.extend(group.pick())
+        # 奧義類型67:養窩
+        for chara in self.team_members:
+            if chara.has_ability_type(67):
+                rand = randint(1, 1000)
+                if rand <= 5:
+                    item = Item(type_id=1013, number=1)  # 超級地獄草
+                elif rand <= 25:
+                    item = Item(type_id=1004, number=1)  # 地獄草
+                elif rand <= 200:
+                    item = Item(type_id=445, number=1000)  # 熟練之書
+                else:
+                    item = None
+
+                if item is not None:
+                    loots.append(item)
+                    self.messages.append(f"{chara.name}發出了養窩的聲音，獲得了{item.name}*{item.number}")
+                else:
+                    self.messages.append(f"{chara.name}發出了養窩的聲音，但是一無所獲")
         return loots
 
     def get_member_point_loots(self):
@@ -480,3 +500,21 @@ class BattleMapProcessor_16(BaseBattleMapProcessor):
 
     def get_gold(self):
         return randint(1, 2000000)
+
+
+# 異界空間
+@ add_class(BATTLE_MAP_PROCESSORS)
+class BattleMapProcessor_17(BaseBattleMapProcessor):
+    id = 17
+
+    def get_monster_number(self):
+        return 2
+
+    def get_map_loots(self):
+        loots = super().get_map_loots()
+
+        if randint(1, 100) == 1:
+            # NPC 友好度道具
+            loots.append(Item(type_id=choice([1636, 1637, 1638]), number=1))
+
+        return loots

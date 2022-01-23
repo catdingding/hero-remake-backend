@@ -101,7 +101,7 @@ class SerpyModelSerializerMeta(serpy.serializer.SerializerMeta):
         return real_cls
 
 
-class SerpyModelSerializer(serpy.Serializer, metaclass=SerpyModelSerializerMeta):
+class SerpyModelSerializer(ContextMixin, serpy.Serializer, metaclass=SerpyModelSerializerMeta):
     def __init__(self, *args, **kwargs):
         self.context = kwargs.pop('context', {})
 

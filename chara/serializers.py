@@ -19,6 +19,7 @@ from battle.serializers import BattleMapSerializer, MonsterSerializer
 from item.serializers import SimpleItemSerializer, ItemSerializer
 from ability.serializers import AbilitySerializer
 from country.serializers import CountrySerializer, CountryOfficialSerializer
+from npc.serializers import NPCSerializer
 
 from world.serializers import SlotTypeSerializer, LocationSerializer, ElementTypeSerializer, AttributeTypeSerializer
 from system.utils import push_log, send_private_message_by_system
@@ -105,6 +106,7 @@ class CharaSimpleSerializer(SerpyModelSerializer):
 class CharaPartnerSerializer(SerpyModelSerializer):
     target_monster = MonsterSerializer(fields=['id', 'name'])
     target_chara = IdNameSerializer()
+    target_npc = NPCSerializer(fields=['id', 'name'])
 
     class Meta:
         model = CharaPartner

@@ -1,0 +1,1 @@
+[{"model": "npc.npcexchangeoption", "pk": 1, "fields": {"npc": 3, "item_type": 1641, "friendliness_cost": 5}}, {"model": "npc.npcexchangeoption", "pk": 2, "fields": {"npc": 2, "item_type": 1640, "friendliness_cost": 5}}, {"model": "npc.npcexchangeoption", "pk": 3, "fields": {"npc": 1, "item_type": 1639, "friendliness_cost": 5}}]

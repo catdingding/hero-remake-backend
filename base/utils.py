@@ -6,8 +6,13 @@ from django.conf import settings
 from rest_framework.exceptions import ValidationError
 
 
+# not real randint but 3x faster
 def randint(low, high):
-    return random.randint(low, high)
+    return low + int(random.random() * (high - low + 1))
+
+
+def sigmoid(n, base):
+    return n / (n + base)
 
 
 def calculate_distance(d1, d2):

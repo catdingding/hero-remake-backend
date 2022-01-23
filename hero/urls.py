@@ -43,6 +43,7 @@ from battle.views import (
 )
 from town.views import InnSleepView, ChangeNameView
 from home.views import CharaFarmExpandView, CharaFarmPlaceItemView, CharaFarmHarvestView, CharaFarmRemoveItemView
+from npc.views import NPCViewSet, NPCFavoriteSubmitView, NPCExchangeOptionExchangeView
 
 router = SimpleRouter()
 
@@ -62,6 +63,7 @@ router.register(r'country/officials', CountryOfficialViewSet)
 router.register(r'teams', TeamViewSet)
 router.register(r'team/join-requests', TeamJoinRequestViewSet)
 router.register(r'trade/member-shop', MemberShopViewSet, basename='member-shop')
+router.register(r'npc/npcs', NPCViewSet)
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -131,6 +133,8 @@ urlpatterns = [
     path('smith/replace-element-type/', SmithReplaceElementTypeView.as_view()),
     path('smith/transform-quipment/', SmithEquipmentTransformView.as_view()),
     path('pet/upgrade/', PetUpgradeView.as_view()),
+    path('npc/submit-favorite/', NPCFavoriteSubmitView.as_view()),
+    path('npc/exchange/', NPCExchangeOptionExchangeView.as_view()),
     path('map/', MapView.as_view()),
     path('world/element-types/', ElementTypeView.as_view()),
     path('user/charas/', UserCharaView.as_view()),

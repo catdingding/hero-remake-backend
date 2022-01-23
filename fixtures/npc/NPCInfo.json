@@ -1,0 +1,1 @@
+[{"model": "npc.npcinfo", "pk": 1, "fields": {"npc": 1, "description": "一隻大怪獸"}}, {"model": "npc.npcinfo", "pk": 2, "fields": {"npc": 2, "description": "不停發出養窩的聲音"}}, {"model": "npc.npcinfo", "pk": 3, "fields": {"npc": 3, "description": "……沒什麼反應，就只是個NPC"}}]
