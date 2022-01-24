@@ -179,7 +179,7 @@ class BattleChara:
 
     def set_attributes(self):
         for attr in self.source.attributes.all().select_related('type'):
-            attr_value = int(attr.value * self.battle.attacker_bonus)
+            attr_value = int(attr.value * self.bonus)
             if isinstance(self.source, Chara):
                 attr_value = int(attr_value * (1 + self.source.buff_effect_power(attr.type.id) / 100))
 
