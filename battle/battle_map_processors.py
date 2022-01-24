@@ -507,6 +507,10 @@ class BattleMapProcessor_16(BaseBattleMapProcessor):
 class BattleMapProcessor_17(BaseBattleMapProcessor):
     id = 17
 
+    map_loot_settings = [
+        {'id': 1554, 'rand': 500}
+    ]
+
     def get_monster_number(self):
         return 2
 
