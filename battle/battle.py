@@ -420,9 +420,9 @@ class BattleChara:
         attack = self.attack
 
         # 奧義類型47:覺醒
-        attack += int(attack * self.ability_type_power(47) * self.battle.rounds)
+        attack += int(attack * self.ability_type_power(47) ** self.battle.rounds)
         # 奧義類型50:霸氣
-        attack += int(attack * self.ability_type_power(50) * self.battle.rounds)
+        attack += int(attack * self.ability_type_power(50) ** self.battle.rounds)
         # 奧義類型2:神擊
         attack += int(attack * self.ability_type_power(2))
 
@@ -433,13 +433,14 @@ class BattleChara:
 
         # 奧義類型64:真傷
         if self.has_ability_type(64) and randint(1, 3) == 1:
-            damage_max = attack
+            damage = attack
             hp_loss = int(self.hp_max * 0.01)
             self.hp -= hp_loss
             self.log(f"{self.name}損失了{hp_loss}HP，造成真實傷害")
+        # 一般
         else:
-            damage_max = max(0, attack - defender.defense // 2)
-        damage = randint(int(damage_max * (0.2 + 0.2 * self.luck_sigmoid)), damage_max)
+            damage_max = (attack * attack) / (attack + defender.defense)
+            damage = randint(int(damage_max * (0.2 + 0.2 * self.luck_sigmoid)), damage_max)
 
         # 奧義類型3:防禦術
         damage -= int(damage * defender.ability_type_power(3))
@@ -519,9 +520,14 @@ class BattleChara:
             defender.equipments[slot_type_id] = EmptyEquipment()
             self.log(f"{defender.name}身上的{equipment.name}被卸下了")
         elif skill.type_id == 30:
-            hp_loss = defender.hp_max // 5
+            hp_loss = int(defender.hp_max * skill.power / 100)
             defender.hp -= hp_loss
             self.log(f"{defender.name}失去了{hp_loss}點 HP")
+        elif skill.type_id == 31:
+            hp_loss = int(defender.hp_max * skill.power / 100)
+            if hp_loss >= defender.hp:
+                defender.hp -= hp_loss
+                self.log(f"{defender.name}失去了{hp_loss}點 HP")
         # 特殊技能結束
 
         # 一般技能
@@ -644,7 +650,7 @@ class BattleChara:
             damage = int(damage * 1.2)
             attacker.log(f"{self.name}的屬性被剋制了")
         # 易傷
-        damage += int(damage * self.vulnerable)
+        damage += int(damage * self.vulnerable * 0.5)
 
         damage = max(1, damage)
         self.hp = max(0, self.hp - damage)
