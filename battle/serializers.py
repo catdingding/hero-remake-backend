@@ -107,7 +107,10 @@ class ArenaFightSerializer(BaseSerializer):
             arena.save()
             return {'display_message': f'佔領了無人的{arena.name}'}
 
-        battle = Battle(attackers=[self.chara], defenders=[opponent], battle_type='pvp')
+        battle = Battle(
+            attackers=[self.chara], defenders=[opponent], battle_type='pvp',
+            defender_bonus=max(0.1, 1 - (0.01 * ((localtime() - arena.occupied_at).total_seconds() // 3600)))
+        )
 
         battle.execute()
         win = (battle.winner == 'attacker')
@@ -187,7 +190,7 @@ class DungeonFightSerializer(BaseSerializer):
             dungeon=dungeon, floor=floor_number % dungeon.max_floor or dungeon.max_floor)
 
         battle = Battle(attackers=team.members.all(), defenders=[x.monster for x in dungeon_floor.monsters.all()],
-                        battle_type='dungeon', difficulty=difficulty)
+                        battle_type='dungeon', defender_bonus=difficulty)
         battle.execute()
         win = (battle.winner == 'attacker')
 

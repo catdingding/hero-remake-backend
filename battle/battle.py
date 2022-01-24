@@ -24,11 +24,12 @@ class EmptyEquipment:
 
 
 class Battle:
-    def __init__(self, attackers, defenders, battle_type, element_type=None, difficulty=1):
+    def __init__(self, attackers, defenders, battle_type, element_type=None, attacker_bonus=1, defender_bonus=1):
         assert battle_type in ['pvp', 'pve', 'dungeon', 'world_boss']
         self.battle_type = battle_type
         self.element_type = element_type
-        self.difficulty = difficulty
+        self.attacker_bonus = attacker_bonus
+        self.defender_bonus = defender_bonus
         self.charas = [BattleChara(x, battle=self, team='attacker') for x in attackers] + \
             [BattleChara(x, battle=self, team='defender') for x in defenders]
         self.summon()
@@ -57,8 +58,8 @@ class Battle:
 
     @property
     def hp_winner(self):
-        attacker_hp_score = mean(chara.hp / chara.hp_max for chara in self.charas if chara.team == 'attacker')
-        defender_hp_score = mean(chara.hp / chara.hp_max for chara in self.charas if chara.team == 'defender')
+        attacker_hp_score = mean(chara.hp / max(1, chara.hp_max) for chara in self.charas if chara.team == 'attacker')
+        defender_hp_score = mean(chara.hp / max(1, chara.hp_max) for chara in self.charas if chara.team == 'defender')
         if attacker_hp_score < defender_hp_score:
             return "defender"
         elif attacker_hp_score > defender_hp_score:
@@ -153,6 +154,8 @@ class BattleChara:
             raise Exception("illegal source")
 
         self.set_attributes()
+        for field in ['hp', 'hp_max', 'mp', 'mp_max']:
+            setattr(self, field, int(getattr(self, field) * self.bonus))
         # 暴擊率
         # 奧義類型10:暴擊率提升
         self.critical = min(250, 20 + self.dex // 3)
@@ -176,9 +179,7 @@ class BattleChara:
 
     def set_attributes(self):
         for attr in self.source.attributes.all().select_related('type'):
-            attr_value = attr.value
-            if isinstance(self.source, Monster):
-                attr_value = int(attr_value * self.battle.difficulty)
+            attr_value = int(attr.value * self.battle.attacker_bonus)
             if isinstance(self.source, Chara):
                 attr_value = int(attr_value * (1 + self.source.buff_effect_power(attr.type.id) / 100))
 
@@ -238,14 +239,19 @@ class BattleChara:
         if isinstance(self.source, WorldBoss):
             for field in ['hp', 'hp_max', 'mp', 'mp_max']:
                 setattr(self, field, getattr(monster, field))
-        elif isinstance(self.source, Monster):
-            self.hp = self.hp_max = int(monster.hp * self.battle.difficulty)
-            self.mp = self.mp_max = int(monster.mp * self.battle.difficulty)
-        elif isinstance(self.source, NPC):
+        elif isinstance(self.source, (Monster, NPC)):
             self.hp = self.hp_max = monster.hp
             self.mp = self.mp_max = monster.mp
 
         self.luck_sigmoid = 0.5
+
+    @property
+    def bonus(self):
+        if self.team == 'attacker':
+            return self.battle.attacker_bonus
+        elif self.team == 'defender':
+            return self.battle.defender_bonus
+        return 1
 
     @property
     def attack(self):
@@ -420,9 +426,9 @@ class BattleChara:
         attack = self.attack
 
         # 奧義類型47:覺醒
-        attack += int(attack * self.ability_type_power(47) ** self.battle.rounds)
+        attack = int(attack * (1 + self.ability_type_power(47)) ** self.battle.rounds)
         # 奧義類型50:霸氣
-        attack += int(attack * self.ability_type_power(50) ** self.battle.rounds)
+        attack = int(attack * (1 + self.ability_type_power(50)) ** self.battle.rounds)
         # 奧義類型2:神擊
         attack += int(attack * self.ability_type_power(2))
 
