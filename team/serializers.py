@@ -46,6 +46,7 @@ class FoundTeamSerializer(BaseModelSerializer):
         TeamJoinRequest.objects.filter(chara=self.chara).delete()
 
         push_log("隊伍", f"{self.chara.name}建立了{team.name}")
+        send_refresh_chara_profile_signal(self.chara.id)
 
     def validate(self, data):
         if self.chara.team is not None:
@@ -119,6 +120,7 @@ class LeaveTeamSerializer(BaseSerializer):
         self.chara.save()
 
         push_log("隊伍", f"{self.chara.name}離開了{team.name}")
+        send_refresh_chara_profile_signal(self.chara.id)
 
     def validate(self, data):
         if self.chara.team is None:
@@ -138,6 +140,7 @@ class DismissTeamMemberSerializer(BaseSerializer):
         chara.save()
 
         send_refresh_chara_profile_signal(chara.id)
+        send_refresh_chara_profile_signal(chara.id)
 
     def validate_chara(self, chara):
         chara = chara.lock()
@@ -152,6 +155,8 @@ class DisbandTeamSerializer(BaseSerializer):
     def save(self):
         chara_ids = list(Chara.objects.filter(team=self.team).values_list('id', flat=True))
         Chara.objects.filter(team=self.team).update(team=None)
+        for chara in self.team.members.all():
+            send_refresh_chara_profile_signal(chara.id)
         self.team.delete()
 
         for chara_id in chara_ids:

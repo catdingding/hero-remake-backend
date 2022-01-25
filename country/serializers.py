@@ -71,6 +71,7 @@ class FoundCountrySerializer(BaseModelSerializer):
         CountryJoinRequest.objects.filter(chara=self.chara).delete()
 
         push_log("建國", f"{self.chara.name}建立了{country.name}")
+        send_refresh_chara_profile_signal(self.chara.id)
 
     def validate(self, data):
         location = self.chara.location.lock()
@@ -146,6 +147,7 @@ class LeaveCountrySerializer(BaseSerializer):
         self.chara.save()
 
         push_log("下野", f"{self.chara.name}離開了{country.name}")
+        send_refresh_chara_profile_signal(self.chara.id)
 
     def validate(self, data):
         if self.chara.country is None:
