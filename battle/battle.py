@@ -281,7 +281,9 @@ class BattleChara:
             'hp_max': self.hp_max,
             'hp': self.hp,
             'mp_max': self.mp_max,
-            'mp': self.mp
+            'mp': self.mp,
+            'attack': self.attack,
+            'defense': self.defense
         }
 
     @property
