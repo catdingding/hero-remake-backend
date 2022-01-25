@@ -8,6 +8,7 @@ class ItemFilter(filters.FilterSet):
     slot_type = filters.NumberFilter(method='filter_common_field')
     is_locked = filters.BooleanFilter(method='filter_is_locked')
     name_like = filters.CharFilter(method='filter_name_like')
+    ordering = filters.ChoiceFilter(choices=[('name', 'name')], method='order_by')
 
     def get_field_name(self, name):
         if self.Meta.item_field is None:
@@ -41,6 +42,11 @@ class ItemFilter(filters.FilterSet):
             Q(**{self.get_field_name('type__name') + '__contains': value}) |
             Q(**{self.get_field_name('equipment__custom_name') + '__contains': value})
         )
+
+    def order_by(self, queryset, name, value):
+        if value == 'name':
+            queryset = queryset.order_by(self.get_field_name('type__name'))
+        return queryset
 
     class Meta:
         item_field = None
