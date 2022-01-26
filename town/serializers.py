@@ -1,8 +1,12 @@
 from django.db.models import Sum
 from rest_framework import serializers
+from django.utils.timezone import localtime
+from datetime import timedelta
 
 from base.serializers import BaseSerializer, BaseModelSerializer, SerpyModelSerializer
 from town.models import Town
+from item.models import Item
+from chara.models import Chara, CharaPartner
 
 from system.utils import push_log
 
@@ -77,3 +81,45 @@ class ChangeNameSerializer(BaseSerializer):
             if '稀有' in data['name'] or '優良' in data['name']:
                 raise serializers.ValidationError("名稱中不可帶有「稀有」或是「優良」")
         return data
+
+
+class AltarSubmitSerializer(BaseSerializer):
+    item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
+    number = serializers.IntegerField(min_value=1)
+    chara = serializers.PrimaryKeyRelatedField(queryset=Chara.objects.all())
+
+    reward_settings = {
+        1556: 100,
+        1557: 25,
+        1558: 1,
+        1559: 50
+    }
+
+    def save(self):
+        item = self.validated_data['item']
+        number = self.validated_data['number']
+        chara = self.validated_data['chara']
+
+        self.chara.lose_items('bag', [Item(id=item.id, number=number)])
+
+        if chara == self.chara:
+            return {'display_message': f'檢測召喚對象……{chara.name}已出現，判定為已召喚成功'}
+
+        minutes = self.reward_settings[item.type_id] * 5
+        partner = CharaPartner.objects.filter(chara=self.chara, target_chara=chara).first()
+        if partner is None:
+            partner = CharaPartner(
+                chara=self.chara, target_chara=chara,
+                due_time=localtime() + timedelta(minutes=minutes)
+            )
+        else:
+            partner.due_time = max(partner.due_time, localtime()) + timedelta(minutes=minutes)
+
+        partner.save()
+
+        return {'display_message': f"透過莫名其妙的獻祭，你成功召喚了{chara.name}的分身({minutes}分鐘)"}
+
+    def validate_item(self, item):
+        if item.type_id not in self.reward_settings:
+            raise serializers.ValidationError("……祭壇毫無反應")
+        return item

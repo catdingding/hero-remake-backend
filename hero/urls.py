@@ -41,7 +41,7 @@ from battle.views import (
     BattleMapViewSet, PvPFightView, DungeonFightView, BattleResultViewSet, WorldBossFightView, WorldBossView,
     ArenaFightView, ArenaView
 )
-from town.views import InnSleepView, ChangeNameView
+from town.views import InnSleepView, ChangeNameView, AltarSubmitView
 from home.views import CharaFarmExpandView, CharaFarmPlaceItemView, CharaFarmHarvestView, CharaFarmRemoveItemView
 from npc.views import NPCViewSet, NPCFavoriteSubmitView, NPCExchangeOptionExchangeView
 
@@ -144,6 +144,7 @@ urlpatterns = [
     path('item/item-types/', ItemTypeView.as_view()),
     path('town/inn/sleep/', InnSleepView.as_view()),
     path('town/change-name/', ChangeNameView.as_view()),
+    path('town/altar/submit/', AltarSubmitView.as_view()),
     path('change-logs/', ChangeLogView.as_view()),
     path('logs/', LogView.as_view()),
     path('trade/lotteries/', LotteryView.as_view()),

@@ -68,7 +68,7 @@ class Battle:
             return "draw"
 
     def summon(self):
-        for chara in self.charas:
+        for chara in self.charas[:]:
             partner = getattr(chara.source, 'partner', None)
             if partner is not None and partner.due_time >= localtime():
                 if self.battle_type == 'pve' or (self.battle_type == 'dungeon' and partner.target_npc):
