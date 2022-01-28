@@ -81,6 +81,22 @@ class PvPFightSerializer(BaseSerializer):
         }
 
 
+class MirrorFightSerializer(BaseSerializer):
+    def save(self):
+        battle = Battle(attackers=[self.chara], defenders=[self.chara], battle_type='mirror')
+
+        battle.execute()
+
+        self.chara.set_next_action_time()
+        self.chara.save()
+
+        return {
+            'winner': battle.winner,
+            'logs': battle.logs,
+            'messages': []
+        }
+
+
 class ArenaSerializer(SerpyModelSerializer):
     occupier = IdNameSerializer(fields=['id', 'name'])
     attribute_type = AttributeTypeSerializer(fields=['id', 'name'])

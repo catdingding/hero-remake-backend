@@ -39,7 +39,7 @@ from trade.views import (
 )
 from battle.views import (
     BattleMapViewSet, PvPFightView, DungeonFightView, BattleResultViewSet, WorldBossFightView, WorldBossView,
-    ArenaFightView, ArenaView
+    ArenaFightView, ArenaView, MirrorFightView
 )
 from town.views import InnSleepView, ChangeNameView, AltarSubmitView
 from home.views import CharaFarmExpandView, CharaFarmPlaceItemView, CharaFarmHarvestView, CharaFarmRemoveItemView
@@ -104,6 +104,7 @@ urlpatterns = [
     path('chara/change-avatar/', ChangeAvatarView.as_view()),
     path('chara/battle-map-ticket-to-item/', BattleMapTicketToItemView.as_view()),
     path('battle/pvp-fight/', PvPFightView.as_view()),
+    path('battle/mirror-fight/', MirrorFightView.as_view()),
     path('battle/arenas/', ArenaView.as_view()),
     path('battle/arena-fight/', ArenaFightView.as_view()),
     path('battle/dungeon-fight/', DungeonFightView.as_view()),

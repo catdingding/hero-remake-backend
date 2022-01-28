@@ -25,7 +25,7 @@ class EmptyEquipment:
 
 class Battle:
     def __init__(self, attackers, defenders, battle_type, element_type=None, attacker_bonus=1, defender_bonus=1):
-        assert battle_type in ['pvp', 'pve', 'dungeon', 'world_boss']
+        assert battle_type in ['pvp', 'pve', 'dungeon', 'world_boss', 'mirror']
         self.battle_type = battle_type
         self.element_type = element_type
         self.attacker_bonus = attacker_bonus
@@ -71,7 +71,7 @@ class Battle:
         for chara in self.charas[:]:
             partner = getattr(chara.source, 'partner', None)
             if partner is not None and partner.due_time >= localtime():
-                if self.battle_type == 'pve' or (self.battle_type == 'dungeon' and partner.target_npc):
+                if self.battle_type in ['pve', 'mirror'] or (self.battle_type == 'dungeon' and partner.target_npc):
                     obj = partner.target_chara or partner.target_monster or partner.target_npc
                     self.charas.append(BattleChara(obj, battle=self, team=chara.team))
 
@@ -82,7 +82,7 @@ class Battle:
         for chara in self.charas:
             if total_counter[chara.name] != 1:
                 current_counter[chara.name] += 1
-                chara.name = f"{chara.name}{current_counter[chara.name]}"
+                chara.name = f"{chara.name}-{current_counter[chara.name]}"
 
     def execute(self):
         assert not self.executed

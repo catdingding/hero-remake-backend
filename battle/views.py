@@ -10,7 +10,7 @@ from battle.models import BattleMap, BattleResult, WorldBoss, Arena
 from battle.serializers import (
     BattleMapFightSerializer, PvPFightSerializer, DungeonFightSerializer,
     BattleResultSerializer, WorldBossFightSerializer, WorldBossSerializer,
-    PvPFightSerializer, ArenaFightSerializer, ArenaSerializer
+    PvPFightSerializer, MirrorFightSerializer, ArenaFightSerializer, ArenaSerializer
 )
 
 
@@ -32,6 +32,10 @@ class BattleMapViewSet(BaseGenericViewSet):
 class PvPFightView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = PvPFightSerializer
     LOCK_CHARA = False
+
+
+class MirrorFightView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = MirrorFightSerializer
 
 
 class ArenaView(ListModelMixin, BaseGenericAPIView):
