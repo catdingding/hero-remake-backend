@@ -202,7 +202,7 @@ class BaseBattleMapProcessor():
                 elif rand <= 25:
                     item = Item(type_id=1004, number=1)  # 地獄草
                 elif rand <= 200:
-                    item = Item(type_id=445, number=1000)  # 熟練之書
+                    item = Item(type_id=445, number=1)  # 熟練之書
                 else:
                     item = None
 
