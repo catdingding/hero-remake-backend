@@ -112,7 +112,7 @@ class CountryOfficialViewSet(CreateModelMixin, ListModelMixin, DestroyModelMixin
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        if self.action == 'delete':
+        if self.action == 'destroy':
             queryset = queryset.filter(country=self.get_country(role='king'))
         return queryset
 
