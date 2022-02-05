@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'trade.apps.TradeConfig',
     'home.apps.HomeConfig',
     'npc.apps.NpcConfig',
+    'ugc.apps.UgcConfig',
 ]
 
 MIDDLEWARE = [

@@ -7,6 +7,7 @@ from base.utils import randint, sigmoid
 from battle.models import Monster, WorldBoss
 from chara.models import Chara
 from npc.models import NPC
+from ugc.models import UGCMonster
 from item.models import Equipment
 
 
@@ -25,7 +26,7 @@ class EmptyEquipment:
 
 class Battle:
     def __init__(self, attackers, defenders, battle_type, element_type=None, attacker_bonus=1, defender_bonus=1):
-        assert battle_type in ['pvp', 'pve', 'dungeon', 'world_boss', 'mirror']
+        assert battle_type in ['pvp', 'pve', 'dungeon', 'world_boss', 'mirror', 'ugc_dungeon']
         self.battle_type = battle_type
         self.element_type = element_type
         self.attacker_bonus = attacker_bonus
@@ -71,7 +72,7 @@ class Battle:
         for chara in self.charas[:]:
             partner = getattr(chara.source, 'partner', None)
             if partner is not None and partner.due_time >= localtime():
-                if self.battle_type in ['pve', 'mirror'] or (self.battle_type == 'dungeon' and partner.target_npc):
+                if self.battle_type in ['pve', 'mirror', 'ugc_dungeon'] or (self.battle_type == 'dungeon' and partner.target_npc):
                     obj = partner.target_chara or partner.target_monster or partner.target_npc
                     self.charas.append(BattleChara(obj, battle=self, team=chara.team))
 
@@ -148,7 +149,7 @@ class BattleChara:
 
         if isinstance(source, Chara):
             self.create_from_chara(source)
-        elif isinstance(source, (Monster, WorldBoss, NPC)):
+        elif isinstance(source, (Monster, WorldBoss, NPC, UGCMonster)):
             self.create_from_monster(source)
         else:
             raise Exception("illegal source")
@@ -239,7 +240,7 @@ class BattleChara:
         if isinstance(self.source, WorldBoss):
             for field in ['hp', 'hp_max', 'mp', 'mp_max']:
                 setattr(self, field, getattr(monster, field))
-        elif isinstance(self.source, (Monster, NPC)):
+        elif isinstance(self.source, (Monster, NPC, UGCMonster)):
             self.hp = self.hp_max = monster.hp
             self.mp = self.mp_max = monster.mp
 

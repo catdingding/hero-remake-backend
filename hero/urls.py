@@ -1,4 +1,5 @@
 from django.urls import path
+from django.conf.urls import include
 from rest_framework.routers import SimpleRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -15,7 +16,8 @@ from ability.views import (
     AbilityView
 )
 from job.views import (
-    SetSkillView, AvailableSkillView, AvailableJobView, ChangeJobView, ExerciseView, ExerciseRewardView
+    SetSkillView, AvailableSkillView, AvailableJobView, ChangeJobView, ExerciseView, ExerciseRewardView,
+    SkillView
 )
 from item.views import (
     UseItemView, SendItemView, StorageTakeView, StoragePutView, SmithUpgradeView, SmithReplaceAbilityView,
@@ -140,6 +142,7 @@ urlpatterns = [
     path('world/element-types/', ElementTypeView.as_view()),
     path('user/charas/', UserCharaView.as_view()),
     path('exercise-rewards/', ExerciseRewardView.as_view()),
+    path('skills/', SkillView.as_view()),
     path('abilities/', AbilityView.as_view()),
     path('item/pet-types/', PetTypeView.as_view()),
     path('item/item-types/', ItemTypeView.as_view()),
@@ -151,4 +154,5 @@ urlpatterns = [
     path('trade/lotteries/', LotteryView.as_view()),
     path('trade/lottery/buy/', BuyLotteryView.as_view()),
     path('world-bosses/', WorldBossView.as_view()),
+    path('ugc/', include('ugc.urls')),
 ] + router.urls

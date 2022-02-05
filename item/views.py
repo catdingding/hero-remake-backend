@@ -19,7 +19,7 @@ class UseItemView(CharaPostViewMixin, BaseGenericAPIView):
 
 class SendItemView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SendItemSerializer
-    LOCK_CHARA = False
+    lock_chara = False
 
 
 class StorageTakeView(CharaPostViewMixin, BaseGenericAPIView):

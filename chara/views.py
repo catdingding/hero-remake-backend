@@ -120,7 +120,7 @@ class CharaIntroductionView(BaseGenericAPIView):
 
 class SendGoldView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = SendGoldSerializer
-    LOCK_CHARA = False
+    lock_chara = False
 
 
 class SlotEquipView(CharaPostViewMixin, BaseGenericAPIView):

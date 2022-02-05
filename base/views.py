@@ -111,12 +111,18 @@ class LockObjectMixin:
         return obj
 
 
-class CharaPostViewMixin:
-    LOCK_CHARA = True
+class CharaProcessPayloadViewMixin:
+    lock_chara = True
 
-    def post(self, request):
-        chara = self.get_chara(lock=self.LOCK_CHARA)
-        serializer = self.get_serializer(data=request.data)
+    with_instance = False
+    lock_instance = False
+
+    def process_payload(self, request):
+        chara = self.get_chara(lock=self.lock_chara)
+        if self.with_instance:
+            serializer = self.get_serializer(self.get_object(lock=self.lock_instance), data=request.data)
+        else:
+            serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = serializer.save()
 
@@ -124,6 +130,11 @@ class CharaPostViewMixin:
             return Response({'status': 'success'})
         else:
             return Response(result)
+
+
+class CharaPostViewMixin(CharaProcessPayloadViewMixin):
+    def post(self, request):
+        return self.process_payload(request)
 
 
 class CountryPostViewMixin:

@@ -49,6 +49,14 @@ class AvailableSkillView(BaseGenericAPIView):
         return Response(serializer.data)
 
 
+class SkillView(ListModelMixin, BaseGenericAPIView):
+    queryset = Skill.objects.all()
+    serializer_class = SkillSerializer
+
+    def get(self, request):
+        return self.list(request)
+
+
 class ExerciseView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = ExerciseSerializer
 

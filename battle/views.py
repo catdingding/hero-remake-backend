@@ -31,7 +31,7 @@ class BattleMapViewSet(BaseGenericViewSet):
 
 class PvPFightView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = PvPFightSerializer
-    LOCK_CHARA = False
+    lock_chara = False
 
 
 class MirrorFightView(CharaPostViewMixin, BaseGenericAPIView):
@@ -49,7 +49,7 @@ class ArenaView(ListModelMixin, BaseGenericAPIView):
 class ArenaFightView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = ArenaFightSerializer
     check_in_town = True
-    LOCK_CHARA = False
+    lock_chara = False
 
 
 class DungeonFightView(TeamPostViewMixin, BaseGenericAPIView):
