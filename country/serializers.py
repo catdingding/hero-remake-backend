@@ -257,7 +257,7 @@ class CountryDonateSerializer(BaseSerializer):
     def save(self):
         gold = self.validated_data['gold']
 
-        self.chara.gold -= gold
+        self.chara.lose_gold(gold)
         self.country.gold += gold
 
         self.chara.save()
@@ -276,7 +276,10 @@ class CountryDonateSerializer(BaseSerializer):
 class CountryOccupyLocationSerializer(BaseSerializer):
     def save(self):
         cost = 2 ** self.country.locations.count()
-        self.chara.lose_gold(1000000000 * cost)
+
+        self.country.lose_gold(1000000000 * cost)
+        self.country.save()
+
         self.chara.lose_items('bag', [Item(type_id=472, number=50 * cost)])
         self.chara.save()
 
@@ -310,7 +313,8 @@ class CountryBuildTownSerializer(BaseSerializer):
     name = serializers.CharField(max_length=10)
 
     def save(self):
-        self.chara.lose_gold(1000000000)
+        self.country.lose_gold(1000000000)
+        self.country.save()
         self.chara.lose_items('bag', [Item(type_id=472, number=50)])
         self.chara.save()
 
@@ -332,8 +336,8 @@ class CountryRenameTownSerializer(BaseSerializer):
     name = serializers.CharField(max_length=10)
 
     def save(self):
-        self.chara.lose_gold(500000000)
-        self.chara.save()
+        self.country.lose_gold(500000000)
+        self.country.save()
 
         orig_name = self.chara.location.town.name
         Town.objects.filter(location=self.chara.location).update(name=self.validated_data['name'])
