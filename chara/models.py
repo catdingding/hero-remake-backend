@@ -294,14 +294,14 @@ class CharaAchievementCategory(BaseModel):
 
 class CharaAchievementType(BaseModel):
     category = models.ForeignKey("chara.CharaAchievementCategory", on_delete=models.CASCADE)
-    requirement = models.IntegerField()
+    requirement = models.BigIntegerField()
     name = models.CharField(max_length=30, unique=True)
 
 
 class CharaAchievementCounter(BaseModel):
     chara = models.ForeignKey("chara.Chara", related_name="achievement_counters", on_delete=models.CASCADE)
     category = models.ForeignKey("chara.CharaAchievementCategory", on_delete=models.CASCADE)
-    value = models.IntegerField(default=0)
+    value = models.BigIntegerField(default=0)
 
     class Meta:
         unique_together = ('chara', 'category')
