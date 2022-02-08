@@ -8,8 +8,8 @@ autopep8==1.5.3
 bcrypt==3.2.0
 certifi==2020.6.20
 cffi==1.14.5
-channels==3.0.3
-channels-redis==3.2.0
+channels==3.0.4
+channels-redis==3.3.1
 chardet==3.0.4
 constantly==15.1.0
 cryptography==3.3.1

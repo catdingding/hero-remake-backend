@@ -9,7 +9,7 @@ from user.views import RegistrationView, ChangePasswordView
 from chara.views import (
     CharaProfileView, CharaIntroductionView, SendGoldView, SlotEquipView, SlotDivestView, RestView, UserCharaView,
     CharaStorageItemView, CharaViewSet, IncreaseHPMPMaxView, HandInQuestView, ChangeAvatarView, CharaBagItemView,
-    PartnerAssignView
+    PartnerAssignView, CharaAchievementTypeView
 )
 from ability.views import (
     LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView, AlchemyOptionViewSet,
@@ -105,6 +105,7 @@ urlpatterns = [
     path('chara/farm/harvest/', CharaFarmHarvestView.as_view()),
     path('chara/change-avatar/', ChangeAvatarView.as_view()),
     path('chara/battle-map-ticket-to-item/', BattleMapTicketToItemView.as_view()),
+    path('chara/achievement-types/', CharaAchievementTypeView.as_view()),
     path('battle/pvp-fight/', PvPFightView.as_view()),
     path('battle/mirror-fight/', MirrorFightView.as_view()),
     path('battle/arenas/', ArenaView.as_view()),

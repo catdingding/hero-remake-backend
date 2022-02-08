@@ -10,6 +10,7 @@ from item.models import Item
 from chara.models import Chara
 from town.models import Town
 
+from chara.achievement import update_achievement_counter
 from system.utils import push_log, send_private_message_by_system, send_refresh_chara_profile_signal
 
 
@@ -130,7 +131,8 @@ class CountryJoinRequestReviewSerializer(BaseSerializer):
             CountryJoinRequest.objects.filter(chara=chara).delete()
             push_log("入國", f"{chara.name}加入了{self.country.name}")
             send_refresh_chara_profile_signal(chara.id)
-
+            # 入國次數次數
+            update_achievement_counter(chara.id, 4, 1, 'increase')
             return {'display_message': '入國申請已通過'}
 
         elif self.validated_data['action'] == 'reject':
@@ -262,6 +264,8 @@ class CountryDonateSerializer(BaseSerializer):
         self.country.save()
 
         push_log("國庫", f"{self.chara.name}向國庫捐贈了{gold}金錢")
+        # 國家資金捐獻數量
+        update_achievement_counter(self.chara.id, 11, gold, 'increase')
 
     def validate_gold(self, gold):
         if gold > self.chara.gold:

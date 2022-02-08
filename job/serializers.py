@@ -11,6 +11,7 @@ from chara.models import CharaSkillSetting, CharaAttribute
 
 from world.serializers import AttributeTypeSerializer
 
+from chara.achievement import update_achievement_counter
 from system.utils import push_log
 
 
@@ -43,6 +44,7 @@ class ChangeJobSerializer(BaseSerializer):
         total_battle_bonus = min(200, chara.record.total_battle // 2000)
 
         # calculate attributes
+        inherit_ratio_list = []
         for job_attr in job.attributes.all():
             chara_attr = chara.attrs[job_attr.type.en_name]
 
@@ -50,6 +52,7 @@ class ChangeJobSerializer(BaseSerializer):
                 round(chara_attr.value * (0.2 * chara.luck_sigmoid + chara.buff_effect_power(7) / 100)),
                 round(chara_attr.value / 1.5)
             )
+            inherit_ratio_list.append(current_bonus / round(chara_attr.value / 1.5) * 100)
             prof_bonus = round(min(999999, chara_attr.proficiency) ** 0.375)
 
             new_attr_value = job_attr.base_value + current_bonus + prof_bonus + total_battle_bonus
@@ -76,6 +79,14 @@ class ChangeJobSerializer(BaseSerializer):
 
         chara.record.level_down_count = 0
         chara.record.save()
+
+        # 轉職次數
+        update_achievement_counter(chara.id, 1, 1, 'increase')
+        # 轉職為N階
+        update_achievement_counter(chara.id, 2, job.rank, 'set')
+        # 最高轉職繼承率
+        average_inherit_ratio = round(sum(inherit_ratio_list) / len(inherit_ratio_list))
+        update_achievement_counter(chara.id, 3, average_inherit_ratio, 'set')
 
     def validate_job(self, job):
         for job_attr in job.attributes.all():

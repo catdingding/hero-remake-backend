@@ -12,6 +12,7 @@ from item.models import ItemTypePoolGroup
 from chara.models import BattleMapTicket, CharaBuff, CharaBuffType, CharaPartner, Chara
 from npc.models import NPC
 from base.utils import add_class
+from chara.achievement import update_achievement_counter
 from system.utils import push_log
 
 USE_EFFECT_CLASSES = {}
@@ -104,6 +105,8 @@ class UseEffect_5(BaseUseEffect):
         self.chara.get_items('bag', items)
         items_name = "、".join(item.name for item in items)
         push_log("寶箱", f"{self.chara.name}使用了{self.n}個{self.type.name}，獲得了{items_name}。")
+        # 開寶箱次數
+        update_achievement_counter(self.chara.id, 7, self.n, 'increase')
         return f"使用了{self.n}個{self.type.name}，獲得了{items_name}。"
 
 

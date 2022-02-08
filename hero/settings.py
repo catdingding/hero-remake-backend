@@ -173,7 +173,7 @@ ASGI_APPLICATION = "hero.asgi.application"
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "BACKEND": "channels_redis.pubsub.RedisPubSubChannelLayer",
         "CONFIG": {
             "hosts": [f"redis://:{os.environ['REDIS_PASS']}@{os.environ['REDIS_HOST']}:{os.environ['REDIS_PORT']}/0"],
             "symmetric_encryption_keys": [SECRET_KEY],

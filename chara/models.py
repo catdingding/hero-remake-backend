@@ -288,6 +288,33 @@ class CharaBuff(BaseModel):
         unique_together = ('chara', 'type')
 
 
+class CharaAchievementCategory(BaseModel):
+    name = models.CharField(max_length=20, unique=True)
+
+
+class CharaAchievementType(BaseModel):
+    category = models.ForeignKey("chara.CharaAchievementCategory", on_delete=models.CASCADE)
+    requirement = models.IntegerField()
+    name = models.CharField(max_length=30, unique=True)
+
+
+class CharaAchievementCounter(BaseModel):
+    chara = models.ForeignKey("chara.Chara", related_name="achievement_counters", on_delete=models.CASCADE)
+    category = models.ForeignKey("chara.CharaAchievementCategory", on_delete=models.CASCADE)
+    value = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ('chara', 'category')
+
+
+class CharaAchievement(BaseModel):
+    chara = models.ForeignKey("chara.Chara", related_name="achievements", on_delete=models.CASCADE)
+    type = models.ForeignKey("chara.CharaAchievementType", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('chara', 'type')
+
+
 class CharaFarm(BaseModel):
     chara = models.ForeignKey("chara.Chara", related_name="farms", on_delete=models.CASCADE)
     item = models.ForeignKey("item.Item", null=True, on_delete=models.SET_NULL)

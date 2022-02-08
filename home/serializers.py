@@ -10,6 +10,8 @@ from home.models import FarmingReward
 from chara.models import CharaFarm
 from item.models import Item
 
+from chara.achievement import update_achievement_counter
+
 
 class CharaFarmExpandSerializer(BaseSerializer):
     def save(self):
@@ -82,7 +84,7 @@ class CharaFarmHarvestSerializer(BaseSerializer):
             item = farm.item
             message = f"原封不動的取回了{item.name}"
 
-        if farm.item.id != item.id:
+        if item is None or farm.item.id != item.id:
             farm.item.delete()
         if item is not None:
             self.chara.get_items('bag', [item])
@@ -90,6 +92,9 @@ class CharaFarmHarvestSerializer(BaseSerializer):
         farm.item = None
         farm.due_time = None
         farm.save()
+
+        # 農場收穫次數
+        update_achievement_counter(self.chara.id, 10, 1, 'increase')
 
         return {'display_message': message}
 

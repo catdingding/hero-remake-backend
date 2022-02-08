@@ -15,6 +15,8 @@ from item.serializers import ItemTypeSerializer, ItemSerializer
 from world.serializers import ElementTypeSerializer, LocationSerializer, AttributeTypeSerializer
 from battle.battle_map_processors import BATTLE_MAP_PROCESSORS
 from battle.battle import Battle
+
+from chara.achievement import update_achievement_counter
 from system.utils import push_log, send_private_message_by_system
 
 
@@ -307,7 +309,8 @@ class WorldBossFightSerializer(BaseSerializer):
         push_log("神獸", f"{team.name}向{world_boss.name}發起了挑戰，造成了{damage}傷害({damage_ratio*100:.2f}%)")
         if win:
             push_log("神獸", f"{world_boss.name}被{team.name}擊敗了")
-
+        # 發起神獸戰次數
+        update_achievement_counter(self.chara.id, 5, 1, 'increase')
         return result
 
     def validate_world_boss(self, world_boss):

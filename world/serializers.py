@@ -7,6 +7,7 @@ from country.serializers import CountrySerializer
 from town.serializers import TownSerializer
 from world.models import Location, ElementType, AttributeType, SlotType
 from base.utils import calculate_distance
+from chara.achievement import update_achievement_counter
 
 
 class AttributeTypeSerializer(SerpyModelSerializer):
@@ -40,6 +41,9 @@ class MoveSerializer(BaseSerializer):
         self.chara.location = location
         self.chara.set_next_action_time(cost)
         self.chara.save()
+
+        # 地圖移動次數
+        update_achievement_counter(self.chara.id, 6, 1, 'increase')
 
 
 class MapQuerySerializer(BaseSerializer):

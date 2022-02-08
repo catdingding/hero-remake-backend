@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.utils.timezone import localtime
-from rest_framework import pagination
+from django.db.models import Exists, OuterRef
 from base.views import BaseGenericAPIView, CharaPostViewMixin, BaseGenericViewSet
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
@@ -13,18 +13,17 @@ from rest_framework.decorators import action
 from base.pagination import BasePagination
 from item.filters import ItemFilter
 
-from .models import Chara, CharaSlot, CharaAttribute, BattleMapTicket
-from item.models import Item
+from .models import Chara, CharaAchievementType, CharaAchievement
 from chara.serializers import (
-    CharaIntroductionSerializer, SendGoldSerializer, SlotEquipSerializer, SlotDivestSerializer, RestSerializer,
+    SendGoldSerializer, SlotEquipSerializer, SlotDivestSerializer, RestSerializer,
     CharaProfileSerializer, CharaPublicProfileSerializer, IncreaseHPMPMaxSerializer, HandInQuestSerializer,
-    CharaAvatarSerializer, CharaIntroductionUpdateSerializer, PartnerAssignSerializer
+    CharaAvatarSerializer, CharaIntroductionUpdateSerializer, PartnerAssignSerializer,
+    CharaAchievementTypeSerializer
 )
 from item.serializers import ItemSerializer
 
+
 # charas belong to user
-
-
 class UserCharaView(ListModelMixin, BaseGenericAPIView):
     serializer_class = CharaProfileSerializer
 
@@ -149,3 +148,19 @@ class HandInQuestView(CharaPostViewMixin, BaseGenericAPIView):
 
 class ChangeAvatarView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = CharaAvatarSerializer
+
+
+class CharaAchievementTypeView(ListModelMixin, BaseGenericAPIView):
+    queryset = CharaAchievementType.objects.all()
+    serializer_class = CharaAchievementTypeSerializer
+    pagination_class = BasePagination
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.annotate(
+            obtained=Exists(CharaAchievement.objects.filter(type=OuterRef('id'), chara=self.get_chara()))
+        ).order_by('-obtained', 'id')
+        return queryset
+
+    def get(self, request):
+        return self.list(request)

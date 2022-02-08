@@ -12,7 +12,7 @@ from base.serializers import (
 from world.models import SlotType
 from chara.models import (
     Chara, CharaIntroduction, CharaAttribute, BattleMapTicket, CharaRecord, CharaSlot, CharaSkillSetting,
-    CharaFarm, CharaBuff, CharaBuffType, CharaPartner
+    CharaFarm, CharaBuff, CharaBuffType, CharaPartner, CharaAchievementType
 )
 from item.models import Item, ItemTypePoolGroup
 from battle.serializers import BattleMapSerializer, MonsterSerializer
@@ -396,3 +396,11 @@ class CharaAvatarSerializer(BaseSerializer):
         self.chara.save()
 
         self.chara.set_avatar(self.validated_data['avatar'])
+
+
+class CharaAchievementTypeSerializer(SerpyModelSerializer):
+    obtained = serpy.Field()
+
+    class Meta:
+        model = CharaAchievementType
+        fields = ['name', 'obtained']
