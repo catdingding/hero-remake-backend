@@ -44,13 +44,13 @@ class AvailableSkillView(BaseGenericAPIView):
         chara = self.get_chara()
         skills = Skill.objects.filter(
             Q(is_general=True) | Q(attribute_type=chara.job.attribute_type, rank__lte=chara.job.rank)
-        )
+        ).select_related('type')
         serializer = self.get_serializer(skills, many=True)
         return Response(serializer.data)
 
 
 class SkillView(ListModelMixin, BaseGenericAPIView):
-    queryset = Skill.objects.all()
+    queryset = Skill.objects.all().select_related('type')
     serializer_class = SkillSerializer
 
     def get(self, request):

@@ -6,7 +6,7 @@ from rest_framework import serializers
 from base.utils import randint
 from base.serializers import BaseSerializer, BaseModelSerializer, SerpyModelSerializer
 
-from job.models import Job, Skill, ExerciseReward, JobAttribute
+from job.models import Job, SkillType, Skill, ExerciseReward, JobAttribute
 from chara.models import CharaSkillSetting, CharaAttribute
 
 from world.serializers import AttributeTypeSerializer
@@ -104,10 +104,18 @@ class ChangeJobSerializer(BaseSerializer):
         return data
 
 
+class SkillTypeSerializer(SerpyModelSerializer):
+    class Meta:
+        model = SkillType
+        fields = ['description']
+
+
 class SkillSerializer(SerpyModelSerializer):
+    type = SkillTypeSerializer()
+
     class Meta:
         model = Skill
-        fields = ['id', 'name', 'power', 'rate', 'mp_cost']
+        fields = ['id', 'type', 'name', 'power', 'rate', 'mp_cost', 'action_cost']
 
 
 class CharaSkillSettingSerializer(BaseModelSerializer):
