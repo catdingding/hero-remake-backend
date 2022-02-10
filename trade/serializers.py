@@ -18,6 +18,7 @@ from trade.models import (
 )
 from item.models import Item, ItemTypePoolGroup
 
+from chara.achievement import update_achievement_counter
 from system.utils import push_log, send_private_message_by_system
 
 
@@ -534,6 +535,9 @@ class BuyLotterySerializer(BaseSerializer):
             chara=self.chara, number=self.validated_data['number']
         )
         Lottery.objects.filter(id=lottery.id).update(gold=F('gold') + int(lottery.price * 0.8))
+
+        # 彩券購買次數
+        update_achievement_counter(self.chara.id, 15, 1, 'increase')
 
     def validate(self, data):
         bought_ticket_count = LotteryTicket.objects.filter(

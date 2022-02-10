@@ -48,8 +48,10 @@ class Chara(BaseModel):
     live_ability = models.ForeignKey("ability.Ability", null=True,
                                      related_name="live_ability_charas", on_delete=models.PROTECT)
 
-    partner = models.ForeignKey("chara.CharaPartner", null=True,
-                                related_name="selected_partner_of", on_delete=models.SET_NULL)
+    partner = models.OneToOneField("chara.CharaPartner", null=True,
+                                   related_name="selected_partner_of", on_delete=models.SET_NULL)
+    title = models.OneToOneField("chara.CharaTitle", null=True,
+                                 related_name="selected_title_of", on_delete=models.SET_NULL)
 
     health = models.IntegerField(default=100)
 
@@ -294,6 +296,7 @@ class CharaAchievementCategory(BaseModel):
 
 class CharaAchievementType(BaseModel):
     category = models.ForeignKey("chara.CharaAchievementCategory", on_delete=models.CASCADE)
+    title_type = models.ForeignKey("chara.CharaTitleType", null=True, on_delete=models.SET_NULL)
     requirement = models.BigIntegerField()
     name = models.CharField(max_length=30, unique=True)
 
@@ -310,6 +313,18 @@ class CharaAchievementCounter(BaseModel):
 class CharaAchievement(BaseModel):
     chara = models.ForeignKey("chara.Chara", related_name="achievements", on_delete=models.CASCADE)
     type = models.ForeignKey("chara.CharaAchievementType", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('chara', 'type')
+
+
+class CharaTitleType(BaseModel):
+    name = models.CharField(max_length=20, unique=True)
+
+
+class CharaTitle(BaseModel):
+    chara = models.ForeignKey("chara.Chara", related_name="titles", on_delete=models.CASCADE)
+    type = models.ForeignKey("chara.CharaTitleType", on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('chara', 'type')

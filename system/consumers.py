@@ -70,19 +70,27 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
             message['is_init'] = True
             await self.send_json(message)
 
+    def select_chara_field(self, chara_field, queryset):
+        return queryset.select_related(
+            f'{chara_field}__country', f'{chara_field}__official', f'{chara_field}__title__type'
+        )
+
     @database_sync_to_async
     def get_public_chat_messages(self):
         queryset = PublicChatMessage.objects.order_by('-created_at')[:10]
+        queryset = self.select_chara_field('sender', queryset)
         return PublicChatMessageSerializer(queryset, many=True).data[::-1]
 
     @database_sync_to_async
     def get_country_chat_messages(self):
         queryset = CountryChatMessage.objects.filter(country=self.scope['country_id']).order_by('-created_at')[:10]
+        queryset = self.select_chara_field('sender', queryset)
         return CountryChatMessageSerializer(queryset, many=True).data[::-1]
 
     @database_sync_to_async
     def get_team_chat_messages(self):
         queryset = TeamChatMessage.objects.filter(team=self.scope['team_id']).order_by('-created_at')[:10]
+        queryset = self.select_chara_field('sender', queryset)
         return TeamChatMessageSerializer(queryset, many=True).data[::-1]
 
     @database_sync_to_async
@@ -90,6 +98,8 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
         queryset = PrivateChatMessage.objects.filter(
             Q(sender=self.scope['chara_id']) | Q(receiver=self.scope['chara_id'])
         ).order_by('-created_at')[:10]
+        queryset = self.select_chara_field('sender', queryset)
+        queryset = self.select_chara_field('receiver', queryset)
         return PrivateChatMessageSerializer(queryset, many=True).data[::-1]
 
     @classmethod

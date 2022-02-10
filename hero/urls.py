@@ -9,7 +9,7 @@ from user.views import RegistrationView, ChangePasswordView
 from chara.views import (
     CharaProfileView, CharaIntroductionView, SendGoldView, SlotEquipView, SlotDivestView, RestView, UserCharaView,
     CharaStorageItemView, CharaViewSet, IncreaseHPMPMaxView, HandInQuestView, ChangeAvatarView, CharaBagItemView,
-    PartnerAssignView, CharaAchievementTypeView
+    PartnerAssignView, CharaAchievementTypeView, CharaTitleSetView
 )
 from ability.views import (
     LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView, AlchemyOptionViewSet,
@@ -99,6 +99,7 @@ urlpatterns = [
     path('chara/slot/equip/', SlotEquipView.as_view()),
     path('chara/slot/divest/', SlotDivestView.as_view()),
     path('chara/partner/assign/', PartnerAssignView.as_view()),
+    path('chara/title/set/', CharaTitleSetView.as_view()),
     path('chara/farm/expand/', CharaFarmExpandView.as_view()),
     path('chara/farm/place-item/', CharaFarmPlaceItemView.as_view()),
     path('chara/farm/remove-item/', CharaFarmRemoveItemView.as_view()),

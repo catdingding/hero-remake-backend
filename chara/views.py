@@ -18,7 +18,7 @@ from chara.serializers import (
     SendGoldSerializer, SlotEquipSerializer, SlotDivestSerializer, RestSerializer,
     CharaProfileSerializer, CharaPublicProfileSerializer, IncreaseHPMPMaxSerializer, HandInQuestSerializer,
     CharaAvatarSerializer, CharaIntroductionUpdateSerializer, PartnerAssignSerializer,
-    CharaAchievementTypeSerializer
+    CharaAchievementTypeSerializer, CharaTitleSetSerializer
 )
 from item.serializers import ItemSerializer
 
@@ -151,7 +151,7 @@ class ChangeAvatarView(CharaPostViewMixin, BaseGenericAPIView):
 
 
 class CharaAchievementTypeView(ListModelMixin, BaseGenericAPIView):
-    queryset = CharaAchievementType.objects.all()
+    queryset = CharaAchievementType.objects.all().select_related('title_type')
     serializer_class = CharaAchievementTypeSerializer
     pagination_class = BasePagination
 
@@ -164,3 +164,7 @@ class CharaAchievementTypeView(ListModelMixin, BaseGenericAPIView):
 
     def get(self, request):
         return self.list(request)
+
+
+class CharaTitleSetView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = CharaTitleSetSerializer

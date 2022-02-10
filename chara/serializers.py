@@ -12,7 +12,7 @@ from base.serializers import (
 from world.models import SlotType
 from chara.models import (
     Chara, CharaIntroduction, CharaAttribute, BattleMapTicket, CharaRecord, CharaSlot, CharaSkillSetting,
-    CharaFarm, CharaBuff, CharaBuffType, CharaPartner, CharaAchievementType
+    CharaFarm, CharaBuff, CharaBuffType, CharaPartner, CharaAchievementType, CharaTitle, CharaTitleType
 )
 from item.models import Item, ItemTypePoolGroup
 from battle.serializers import BattleMapSerializer, MonsterSerializer
@@ -22,6 +22,7 @@ from country.serializers import CountrySerializer, CountryOfficialSerializer
 from npc.serializers import NPCSerializer
 
 from world.serializers import SlotTypeSerializer, LocationSerializer, ElementTypeSerializer, AttributeTypeSerializer
+from chara.achievement import update_achievement_counter
 from system.utils import push_log, send_private_message_by_system
 
 
@@ -113,6 +114,20 @@ class CharaPartnerSerializer(SerpyModelSerializer):
         fields = ['id', 'target_monster', 'target_chara', 'due_time']
 
 
+class CharaTitleTypeSerializer(SerpyModelSerializer):
+    class Meta:
+        model = CharaTitleType
+        fields = ['name']
+
+
+class CharaTitleSerializer(SerpyModelSerializer):
+    type = CharaTitleTypeSerializer()
+
+    class Meta:
+        model = CharaTitle
+        fields = ['id', 'type']
+
+
 class CharaPublicProfileSerializer(SerpyModelSerializer):
     from job.serializers import JobSerializer
     from team.serializers import TeamProfileSerializer
@@ -130,6 +145,7 @@ class CharaPublicProfileSerializer(SerpyModelSerializer):
     live_ability = AbilitySerializer(fields=['id', 'name'])
 
     partner = CharaPartnerSerializer()
+    title = CharaTitleSerializer()
 
     slots = CharaSlotSerializer(many=True)
     attributes = CharaAttributeSerialiser(many=True)
@@ -164,6 +180,9 @@ class CharaPublicProfileSerializer(SerpyModelSerializer):
                 'type'
             )))
 
+        if is_included(request, 'title'):
+            queryset = queryset.select_related('title__type')
+
         return queryset
 
 
@@ -178,6 +197,7 @@ class CharaProfileSerializer(CharaPublicProfileSerializer):
     luck = serpy.Field()
 
     partners = CharaPartnerSerializer(many=True)
+    titles = CharaTitleSerializer(many=True)
     bag_items = ItemSerializer(many=True)
     skill_settings = CharaSkillSettingSerializer(many=True)
 
@@ -215,6 +235,8 @@ class CharaProfileSerializer(CharaPublicProfileSerializer):
             queryset = queryset.prefetch_related(Prefetch('partners', CharaPartner.objects.select_related(
                 'target_monster', 'target_chara'
             ).filter(due_time__gt=localtime())))
+        if is_included(request, 'titles'):
+            queryset = queryset.prefetch_related('titles__type')
         if is_included(request, 'bag_items'):
             queryset = queryset.prefetch_related(Prefetch('bag_items', Item.objects.select_related(
                 'type__slot_type', 'equipment__ability_1', 'equipment__ability_2', 'equipment__element_type'
@@ -306,14 +328,14 @@ class SlotDivestSerializer(BaseSerializer):
 
 
 class PartnerAssignSerializer(BaseSerializer):
-    partner = serializers.PrimaryKeyRelatedField(queryset=CharaPartner.objects.all())
+    partner = serializers.PrimaryKeyRelatedField(queryset=CharaPartner.objects.all(), allow_null=True)
 
     def save(self):
         self.chara.partner = self.validated_data['partner']
         self.chara.save()
 
     def validate_partner(self, partner):
-        if partner.chara != self.chara:
+        if partner is not None and partner.chara != self.chara:
             raise serializers.ValidationError("這不是你的同伴")
         return partner
 
@@ -375,6 +397,9 @@ class HandInQuestSerializer(BaseSerializer):
         self.chara.proficiency += proficiency
         self.chara.save()
 
+        # 達成任務次數
+        update_achievement_counter(self.chara.id, 19, 1, 'increase')
+
         return {"display_message": f"獲得了{gold}金錢、{proficiency}熟練、{'、'.join(f'{x.type.name}*{x.number}' for x in items)}"}
 
     def validate(self, data):
@@ -399,8 +424,22 @@ class CharaAvatarSerializer(BaseSerializer):
 
 
 class CharaAchievementTypeSerializer(SerpyModelSerializer):
+    title_type = CharaTitleTypeSerializer(fields=['id', 'name'])
     obtained = serpy.Field()
 
     class Meta:
         model = CharaAchievementType
-        fields = ['name', 'obtained']
+        fields = ['name', 'title_type', 'obtained']
+
+
+class CharaTitleSetSerializer(BaseSerializer):
+    title = serializers.PrimaryKeyRelatedField(queryset=CharaTitle.objects.all(), allow_null=True)
+
+    def save(self):
+        self.chara.title = self.validated_data['title']
+        self.chara.save()
+
+    def validate_title(self, title):
+        if title is not None and title.chara != self.chara:
+            raise serializers.ValidationError("這不是你的稱號")
+        return title

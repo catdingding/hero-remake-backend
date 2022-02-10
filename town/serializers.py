@@ -8,6 +8,7 @@ from town.models import Town
 from item.models import Item
 from chara.models import Chara, CharaPartner
 
+from chara.achievement import update_achievement_counter
 from system.utils import push_log
 
 
@@ -64,6 +65,9 @@ class ChangeNameSerializer(BaseSerializer):
         self.chara.save()
 
         push_log("改名", message)
+        if kind in ['weapon', 'armor', 'jewelry', 'pet']:
+            # 裝備改名次數
+            update_achievement_counter(self.chara.id, 14, 1, 'increase')
         return {'display_message': message}
 
     def validate_kind(self, kind):

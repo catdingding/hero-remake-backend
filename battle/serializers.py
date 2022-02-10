@@ -155,6 +155,7 @@ class ArenaFightSerializer(BaseSerializer):
             if not win:
                 message = f"但因{chara.name}的剩餘血量比例較高，{message}"
             push_log("競技場", f"{chara.name}戰勝了{opponent.name}，佔領了{arena.name}")
+            update_achievement_counter(self.chara.id, 17, 1, 'increase')
         else:
             arena.occupier_win_count += 1
             message = f"{opponent.name}守住了{arena.name}"

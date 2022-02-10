@@ -2,6 +2,7 @@ from rest_framework import serializers
 import serpy
 
 from base.serializers import BaseModelSerializer, SerpyModelSerializer, DateTimeField
+from chara.serializers import CharaTitleSerializer
 from country.serializers import CountrySerializer, CountryOfficialSerializer
 from system.models import Log, ChangeLog
 
@@ -24,6 +25,7 @@ class CharaProfileSerializer(SerpyModelSerializer):
     avatar_version = serpy.Field()
     country = CountrySerializer()
     official = CountryOfficialSerializer(fields=['title'])
+    title = CharaTitleSerializer(fields=['type'])
 
 
 class ChatMessageSerializer(SerpyModelSerializer):

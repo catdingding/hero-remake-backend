@@ -7,9 +7,12 @@ from system.models import Log, PrivateChatMessage
 
 
 def get_chara_profile_sync(chara_id):
-    profile = Chara.objects.values('id', 'avatar_version', 'name', 'country__name', 'official__title').get(id=chara_id)
+    profile = Chara.objects.values(
+        'id', 'avatar_version', 'name', 'country__name', 'official__title', 'title__type__name'
+    ).get(id=chara_id)
     profile['country'] = {'name': profile.pop('country__name')} if profile['country__name'] else None
     profile['official'] = {'title': profile.pop('official__title')} if profile['official__title'] else None
+    profile['title'] = {'type': {'name': profile.pop('title__type__name')}} if profile['title__type__name'] else None
     return profile
 
 
