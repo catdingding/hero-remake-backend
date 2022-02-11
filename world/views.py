@@ -27,7 +27,7 @@ class MapView(BaseGenericAPIView):
         x = max(bounds['x_min'] + radius, min(x, bounds['x_max'] - radius))
         y = max(bounds['y_min'] + radius, min(y, bounds['y_max'] - radius))
         locations = Location.objects.filter(x__gte=x - radius, x__lte=x + radius, y__gte=y - radius, y__lte=y + radius)
-        locations = locations.order_by('-y', 'x').select_related('battle_map', 'town')
+        locations = locations.order_by('-y', 'x').select_related('element_type', 'battle_map', 'town', 'country')
 
         serializer = self.get_serializer(locations, many=True)
         return Response(serializer.data)

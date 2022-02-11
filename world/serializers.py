@@ -49,7 +49,7 @@ class MoveSerializer(BaseSerializer):
 class MapQuerySerializer(BaseSerializer):
     x = serializers.IntegerField()
     y = serializers.IntegerField()
-    radius = serializers.IntegerField(min_value=1, max_value=5)
+    radius = serializers.IntegerField(min_value=1)
 
 
 class LocationSerializer(SerpyModelSerializer):
