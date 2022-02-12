@@ -422,6 +422,9 @@ class CharaAvatarSerializer(BaseSerializer):
 
         self.chara.set_avatar(self.validated_data['avatar'])
 
+        # 換頭貼次數
+        update_achievement_counter(self.chara.id, 22, 1, 'increase')
+
 
 class CharaAchievementTypeSerializer(SerpyModelSerializer):
     title_type = CharaTitleTypeSerializer(fields=['id', 'name'])

@@ -250,6 +250,9 @@ class UseEffect_13(BaseUseEffect):
 
         buff_type = CharaBuffType.objects.get(id=self.type.use_effect_param)
 
+        # 使用buff道具次數
+        update_achievement_counter(self.chara.id, 26, 1, 'increase')
+
         return f"使用了{self.n}個{self.type.name}，獲得了{hours}小時的{buff_type.name}"
 
 
@@ -318,5 +321,8 @@ class UseEffect_16(BaseUseEffect):
             partner.due_time = max(partner.due_time, localtime()) + timedelta(minutes=minutes)
 
         partner.save()
+
+        # 召喚NPC時數
+        update_achievement_counter(self.chara.id, 25, minutes, 'increase')
 
         return f"使用了{self.n}個{self.type.name}，獲得了{minutes}分鐘的{npc.name}同伴"

@@ -185,6 +185,9 @@ class SmithUpgradeSerializer(BaseSerializer):
 
         equipment.save()
 
+        # 強化裝備次數
+        update_achievement_counter(self.chara.id, 23, times, 'increase')
+
     def validate_slot_type(self, value):
         if value.id == 4:
             raise serializers.ValidationError("寵物無法於工房強化")
@@ -338,6 +341,9 @@ class SmithReplaceElementTypeSerializer(BaseSerializer):
         equipment.element_type = self.validated_data['new_element_type']
 
         equipment.save()
+
+        # 裝備屬性轉換次數
+        update_achievement_counter(self.chara.id, 24, 1, 'increase')
 
     def validate_slot_type(self, value):
         if value.id == 4:
