@@ -169,6 +169,8 @@ class BattleChara:
 
         self.eva_add = 0
         self.poison = 0
+        self.bleed = 0
+        self.buff_count = 0
         self.blocked_ability_count = 0
         self.weapon_effect_blocked = False
         self.weapon_effect_blocked_flag = False
@@ -373,7 +375,7 @@ class BattleChara:
             self.hp -= hp_loss
             self.log(f"{self.name}因中毒失去了{hp_loss}點 HP")
 
-            if 20 + self.ability_type_power(42) >= randint(1, 100):
+            if 20 + self.ability_type_power(42) > randint(1, 100):
                 self.poison = 0
                 self.log(f"{self.name}成功解掉身上的毒")
             elif self.poison >= 10:
@@ -389,14 +391,18 @@ class BattleChara:
             hp_percentage = self.ability_type_power(62) / len(charas)
             for chara in charas:
                 hp_add = int(chara.hp_max * hp_percentage)
-                chara.gain_hp(hp_add)
                 chara.log(f"為{chara.name}恢復了{hp_add}HP")
+                chara.gain_hp(hp_add)
 
         # 奧義類型1:再生
         elif self.has_ability_type(1):
             hp_add = int(self.hp_max * self.ability_type_power(1))
-            self.gain_hp(hp_add)
             self.log(f"{self.name}恢復了{hp_add}點 HP")
+            self.gain_hp(hp_add)
+
+        if self.bleed > 0 and 15 > randint(1, 100):
+            self.bleed = 0
+            self.log(f"{self.name}的流血停止了")
 
     def after_action(self):
         self.weapon_effect_blocked = self.weapon_effect_blocked_flag
@@ -418,7 +424,10 @@ class BattleChara:
         return self.equipments[slot_type_id].element_type_id == element_type_id == self.element_type.id
 
     def gain_hp(self, hp_add):
-        self.hp = min(self.hp_max, self.hp + hp_add)
+        if self.bleed > 0:
+            self.log(f"但{self.name}正在流血，無法恢復HP")
+        else:
+            self.hp = min(self.hp_max, self.hp + hp_add)
 
     def gain_mp(self, mp_add):
         self.mp = min(self.mp_max, self.mp + mp_add)
@@ -469,31 +478,34 @@ class BattleChara:
         # 不受技能加減成影響
         if skill.type_id == 2:
             hp_add = skill.power + randint(0, self.men // 2)
-            self.hp = min(self.hp_max, self.hp + hp_add)
             self.log(f"{self.name}的 HP 恢復了{hp_add}點")
+            self.gain_hp(hp_add)
         elif skill.type_id == 3:
             hp_add = self.hp_max // 10
             mp_add = self.mp_max // 10
-            self.hp = min(self.hp_max, self.hp + hp_add)
-            self.mp = min(self.mp_max, self.mp + mp_add)
             self.log(f"{self.name}的 HP 恢復了{hp_add}點， MP 恢復了{mp_add}點")
+            self.gain_hp(hp_add)
+            self.gain_mp(mp_add)
         elif skill.type_id == 4:
-            attack_add = int(self.men * skill.power / 100)
+            attack_add = int(self.men * skill.power / 100 * 0.9**max(0, self.buff_count - 10))
             self.attack_add_on += attack_add
+            self.buff_count += 1
             self.log(f"{self.name}的攻擊力上升了{attack_add}點")
         elif skill.type_id == 5:
-            defense_add = int(self.men * skill.power / 100)
+            defense_add = int(self.men * skill.power / 100 * 0.9**max(0, self.buff_count - 10))
             self.defense_add_on += defense_add
+            self.buff_count += 1
             self.log(f"{self.name}的防禦力上升了{defense_add}點")
         elif skill.type_id == 6:
-            magic_defense_add = int(self.men * skill.power / 100)
+            magic_defense_add = int(self.men * skill.power / 100 * 0.9**max(0, self.buff_count - 10))
             self.magic_defense_add_on += magic_defense_add
+            self.buff_count += 1
             self.log(f"{self.name}的魔法防禦力上升了{magic_defense_add}點")
         elif skill.type_id == 8:
             mp_draw = min(800, defender.mp, defender.mp_max // 5)
-            defender.mp -= mp_draw
-            self.mp = min(self.mp_max, self.mp + mp_draw)
             self.log(f"{defender.name}被吸取了{mp_draw}點 MP")
+            defender.mp -= mp_draw
+            self.gain_mp(mp_draw)
         elif skill.type_id == 9:
             hp_loss = min(defender.hp - 1, int(defender.hp / skill.power))
             defender.hp -= hp_loss
@@ -501,9 +513,9 @@ class BattleChara:
         elif skill.type_id == 19:
             hp_loss = self.hp // 10
             mp_add = self.hp_max // 10
-            self.hp -= hp_loss
-            self.mp = min(self.mp_max, self.mp + mp_add)
             self.log(f"{self.name}失去{hp_loss}點 HP，獲得 {mp_add} 點MP")
+            self.hp -= hp_loss
+            self.gain_mp(mp_add)
         elif skill.type_id == 21:
             hp_loss = min(defender.hp - 1, randint(0, self.mp))
             defender.hp -= hp_loss
@@ -511,14 +523,14 @@ class BattleChara:
             self.log(f"{defender.name}失去了{hp_loss}點 HP")
         elif skill.type_id == 23:
             hp_loss = min(defender.hp - 1, randint(0, self.men) + self.agi)
-            self.hp = min(self.hp_max, self.hp + hp_loss)
-            defender.hp -= hp_loss
             self.log(f"{defender.name}被吸取了{hp_loss}點 HP")
+            self.gain_hp(hp_loss)
+            defender.hp -= hp_loss
         elif skill.type_id == 24:
             mp_loss = min(defender.mp, randint(0, self.men) + self.agi)
-            self.mp = min(self.mp_max, self.mp + mp_loss)
-            defender.mp -= mp_loss
             self.log(f"{defender.name}被吸取了{mp_loss}點 MP")
+            self.gain_mp(mp_loss)
+            defender.mp -= mp_loss
         elif skill.type_id == 25:
             mp_loss = min(defender.mp, self.int // 2 + randint(0, self.men * 2))
             defender.mp -= mp_loss
@@ -552,7 +564,7 @@ class BattleChara:
             damage = self.dex + randint(0, self.dex * skill.power)
         elif skill.type_id == 22:
             damage = self.vit + randint(0, self.dex * skill.power)
-        elif skill.type_id in [1, 7, 10, 11, 12, 13, 14, 15]:
+        elif skill.type_id in [1, 7, 10, 11, 12, 13, 14, 15, 32]:
             damage = skill.power + randint(0, self.int) - defender.magic_defense
         elif skill.type_id == 26:
             damage = skill.power * (randint(0, self.int) + defender.defense)
@@ -597,12 +609,12 @@ class BattleChara:
         speed_gap = min(400, self.speed - attacker.speed)
         eva = min(400, (self.dex - attacker.dex // 2) // 3) + self.eva_add
 
-        speed_gap_check = 1000
-        eva_check = 1000
+        speed_gap_check = 2000
+        eva_check = 2000
         # 奧義類型56:命中祝福
         if attacker.has_ability_type(56):
-            speed_gap_check = 2000
-            eva_check = 2000
+            speed_gap_check *= 2
+            eva_check *= 2
         # 星武
         if attacker.has_equipment_effect(1, 5):
             speed_gap_check *= 10
@@ -721,21 +733,26 @@ class BattleChara:
         # 奧義類型28:吸血
         if skill_type == 7 or attacker.has_ability_type(28) and randint(1, 4) == 1:
             hp_add = damage // 2
-            attacker.hp = min(attacker.hp_max, attacker.hp + hp_add)
             self.log(f"{self.name}被吸取了{hp_add}點 HP")
+            attacker.gain_hp(hp_add)
 
         # 降速
         # 奧義類型16:降速
-        if skill_type == 15 and randint(1, 8) or attacker.ability_type_power(16) >= randint(1, 100):
+        if skill_type == 15 and randint(1, 8) == 1 or attacker.ability_type_power(16) >= randint(1, 100):
             self.speed_add_on -= 50
             self.log(f"{self.name}的速度降低了")
+
+        # 流血
+        if skill_type == 32 and randint(1, 3):
+            self.bleed = 1
+            self.log(f"{self.name}開始流血了")
 
         # 奧義類型27:嗜魔
         if attacker.has_ability_type(27) and randint(1, 3) == 1:
             mp_loss = min(self.mp, randint(0, 150))
+            self.log(f"{self.name}的MP被奪走了{mp_loss}")
             self.mp -= mp_loss
-            attacker.mp = min(attacker.mp_max, attacker.mp + mp_loss)
-            self.log(f"{self.name}的MP被奪走了")
+            attacker.gain_mp(mp_loss)
 
         # 奧義類型45:束縛
         if attacker.has_ability_type(45):
@@ -756,11 +773,11 @@ class BattleChara:
                           randint(1, attacker.agi + attacker.dex))
             mp_loss = min(self.mp, int((attacker.mp_max - attacker.mp) / attacker.ability_type_power(55)) +
                           randint(1, attacker.agi + attacker.dex))
+            attacker.log(f"[吸血鬼之吻]吸收了{self.name}的{hp_loss}HP與{mp_loss}MP")
             self.hp -= hp_loss
             self.mp -= mp_loss
             attacker.gain_hp(hp_loss)
             attacker.gain_mp(mp_loss)
-            attacker.log(f"[吸血鬼之吻]吸收了{self.name}的{hp_loss}HP與{mp_loss}MP")
 
         # 奧義類型66:複製裝備
         if attacker.has_ability_type(66) and randint(1, 20) == 1:
@@ -788,8 +805,8 @@ class BattleChara:
         # 奧義類型61:受攻擊回血
         if self.hp > 0 and self.has_ability_type(61):
             hp_add = int(self.hp_max * self.ability_type_power(61))
-            self.gain_hp(hp_add)
             self.log(f"{self.name}恢復了{hp_add}HP")
+            self.gain_hp(hp_add)
 
         # 火武
         if attacker.has_equipment_effect(1, 2):
@@ -799,9 +816,9 @@ class BattleChara:
         # 水武
         elif attacker.has_equipment_effect(1, 3):
             hp_loss = int(min(self.hp_max, attacker.hp_max * 15) * 0.005)
+            attacker.log(f"[水武特效]吸收了{self.name}的{hp_loss}HP")
             self.hp -= hp_loss
             attacker.gain_hp(hp_loss)
-            attacker.log(f"[水武特效]吸收了{self.name}的{hp_loss}HP")
         # 風武
         elif attacker.has_equipment_effect(1, 4):
             ap_add = min(max(100, self.speed // 10), 500)
@@ -827,9 +844,9 @@ class BattleChara:
         # 水防
         elif self.has_equipment_effect(2, 3):
             hp_add = int(self.hp_max * 0.005)
+            self.log(f"[水防特效]{self.name}恢復了{hp_add}HP，並封印了對手的武器特效")
             self.gain_hp(hp_add)
             attacker.weapon_effect_blocked_flag = True
-            self.log(f"[水防特效]{self.name}恢復了{hp_add}HP，並封印了對手的武器特效")
         # 風防
         elif self.has_equipment_effect(2, 4):
             ap_add = max(100, attacker.speed // 10)
