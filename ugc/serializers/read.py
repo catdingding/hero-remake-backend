@@ -27,7 +27,7 @@ class UGCMonsterSkillSettingSerializer(SerpyModelSerializer):
     class Meta:
         model = UGCMonsterSkillSetting
         fields = ['skill', 'hp_percentage', 'mp_percentage',
-                  'defender_hp_percentage', 'defender_mp_percentage', 'order']
+                  'defender_hp_percentage', 'defender_mp_percentage', 'times_limit', 'order']
 
 
 class UGCMonsterSerializer(SerpyModelSerializer):

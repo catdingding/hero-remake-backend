@@ -30,6 +30,8 @@ class BaseSkillSetting(BaseModel):
     defender_hp_percentage = models.PositiveSmallIntegerField(default=100)
     defender_mp_percentage = models.PositiveSmallIntegerField(default=100)
 
+    times_limit = models.PositiveIntegerField(default=0)
+
     order = models.IntegerField()
 
     class Meta:

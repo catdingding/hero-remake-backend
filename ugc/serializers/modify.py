@@ -11,7 +11,7 @@ class UGCMonsterSkillSettingSerializer(BaseModelSerializer):
     class Meta:
         model = UGCMonsterSkillSetting
         fields = ['skill', 'hp_percentage', 'mp_percentage',
-                  'defender_hp_percentage', 'defender_mp_percentage']
+                  'defender_hp_percentage', 'defender_mp_percentage', 'times_limit']
 
 
 class UGCMonsterAttributeSerializer(BaseModelSerializer):

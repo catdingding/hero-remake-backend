@@ -141,6 +141,7 @@ class BattleChara:
         self.team = team
 
         self.source = source
+        self.skill_counter = Counter()
         self.name = source.name
         self.element_type = source.element_type
         self.action_points = 0
@@ -341,7 +342,8 @@ class BattleChara:
             if self.hp / self.hp_max * 100 <= skill_setting.hp_percentage \
                     and self.mp / self.mp_max * 100 <= skill_setting.mp_percentage \
                     and defender.hp / defender.hp_max * 100 <= skill_setting.defender_hp_percentage \
-                    and defender.mp / defender.mp_max * 100 <= skill_setting.defender_mp_percentage:
+                    and defender.mp / defender.mp_max * 100 <= skill_setting.defender_mp_percentage \
+                    and (skill_setting.times_limit == 0 or self.skill_counter[skill_setting.skill.id] < skill_setting.times_limit):
                 break
         else:
             return None
@@ -364,6 +366,7 @@ class BattleChara:
 
         if self.mp >= mp_cost and rate >= randint(1, 100):
             self.mp -= mp_cost
+            self.skill_counter[skill.id] += 1
             return skill
         else:
             return None
