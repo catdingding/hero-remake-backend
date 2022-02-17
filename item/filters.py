@@ -3,6 +3,7 @@ from django.db.models import Q
 
 
 class ItemFilter(filters.FilterSet):
+    id = filters.NumberFilter(method='filter_id')
     category = filters.NumberFilter(method='filter_common_field')
     element_type = filters.NumberFilter(method='filter_element_type')
     slot_type = filters.NumberFilter(method='filter_common_field')
@@ -17,6 +18,9 @@ class ItemFilter(filters.FilterSet):
 
     def filter_common_field(self, queryset, name, value):
         return queryset.filter(**{self.get_field_name(f"type__{name}"): value})
+
+    def filter_id(self, queryset, name, value):
+        return queryset.filter(**{self.get_field_name('id'): value})
 
     def filter_element_type(self, queryset, name, value):
         return queryset.filter(
