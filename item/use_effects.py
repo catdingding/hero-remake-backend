@@ -97,13 +97,11 @@ class UseEffect_5(BaseUseEffect):
     id = 5
 
     def execute(self):
-        items = []
         group = ItemTypePoolGroup.objects.get(id=self.type.use_effect_param)
-        for i in range(self.n):
-            items.extend(group.pick())
+        items = group.pick(self.n)
 
         self.chara.get_items('bag', items)
-        items_name = "、".join(item.name for item in items)
+        items_name = '、'.join(f'{x.name}*{x.number}' for x in items)
         push_log("寶箱", f"{self.chara.name}使用了{self.n}個{self.type.name}，獲得了{items_name}。")
         # 開寶箱次數
         update_achievement_counter(self.chara.id, 7, self.n, 'increase')

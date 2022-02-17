@@ -191,8 +191,7 @@ class ChangeTeamDungeonRecordStatusSerializer(BaseSerializer):
             if not dungeon.is_infinite or record.current_floor - record.start_floor >= 5:
                 gold += dungeon.gold_reward_per_floor * record.current_floor
                 for reward in dungeon.rewards.all():
-                    for i in range(record.current_floor // reward.divisor * reward.number):
-                        loots.extend(reward.group.pick())
+                    loots.extend(reward.group.pick(record.current_floor // reward.divisor * reward.number))
 
             if not loots and not gold:
                 reward_message = "一些……嗯……寶貴的探索體驗"

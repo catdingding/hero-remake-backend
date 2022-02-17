@@ -1,4 +1,5 @@
 from random import choices
+from collections import Counter
 
 from django.db import models
 from base.models import BaseModel
@@ -144,10 +145,17 @@ class Equipment(Item):
 class ItemTypePoolGroup(BaseModel):
     name = models.CharField(max_length=20, unique=True)
 
-    def pick(self):
+    def pick(self, n=1):
+        assert n >= 1
         members = self.members.all()
-        picked_member = choices(members, weights=[m.weight for m in members])[0]
-        return picked_member.pool.pick()
+        picked_members = choices(members, weights=[m.weight for m in members], k=n)
+        picked_pools = [x.pool_id for x in picked_members]
+
+        items = []
+        for pool_id, count in Counter(picked_pools).items():
+            items.extend(ItemTypePool.objects.get(id=pool_id).pick(count))
+
+        return items
 
 
 class ItemTypePoolGroupMember(BaseModel):
@@ -160,10 +168,17 @@ class ItemTypePoolGroupMember(BaseModel):
 class ItemTypePool(BaseModel):
     name = models.CharField(max_length=20, unique=True)
 
-    def pick(self):
+    def pick(self, n=1):
+        assert n >= 1
         members = self.members.all()
-        picked_member = choices(members, weights=[m.weight for m in members])[0]
-        return picked_member.item_type.make(picked_member.number)
+        picked_members = choices(members, weights=[m.weight for m in members], k=n)
+        picked_item_types = [x.item_type_id for x in picked_members]
+
+        items = []
+        for item_type_id, count in Counter(picked_item_types).items():
+            items.extend(ItemType.objects.get(id=item_type_id).make(count))
+
+        return items
 
 
 class ItemTypePoolMember(BaseModel):
