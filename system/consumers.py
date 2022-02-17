@@ -27,21 +27,23 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
             await self.channel_layer.group_discard(group, self.channel_name)
 
     async def receive_json(self, data):
-        data['content'] = data['content'][:100]
-        await self.save_message(data)
+        if data['type'] == 'ping':
+            await self.send_json({'type': 'pong'})
+        elif data['type'] == 'chat_message':
+            data['content'] = data['content'][:100]
+            await self.save_message(data)
 
-        channel = data['channel']
-        receiver = data.pop('receiver', None)
+            channel = data['channel']
+            receiver = data.pop('receiver', None)
 
-        data['type'] = 'chat_message'
-        data['sender'] = await get_chara_profile(self.scope['chara_id'])
-        data['created_at'] = datetime.now().isoformat() + 'Z'
-        if receiver is not None:
-            data['receiver'] = await get_chara_profile(receiver)
+            data['sender'] = await get_chara_profile(self.scope['chara_id'])
+            data['created_at'] = datetime.now().isoformat() + 'Z'
+            if receiver is not None:
+                data['receiver'] = await get_chara_profile(receiver)
 
-        if channel == 'private' and receiver != self.scope['chara_id']:
-            await self.channel_layer.group_send(f'private_{receiver}', data)
-        await self.channel_layer.group_send(self.scope['group_mapping'][channel], data)
+            if channel == 'private' and receiver != self.scope['chara_id']:
+                await self.channel_layer.group_send(f'private_{receiver}', data)
+            await self.channel_layer.group_send(self.scope['group_mapping'][channel], data)
 
     @database_sync_to_async
     def save_message(self, data):
