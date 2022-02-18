@@ -44,10 +44,10 @@ class ItemType(BaseModel):
     def make(self, number):
         # equipment
         if self.category_id == 1:
-            quality = choices(['普通', '優良', '稀有'], weights=[20, 2, 1])[0]
             return [
                 Equipment.objects.create(
-                    type=self, number=1, quality=quality, element_type=self.element_type, custom_name=self.name,
+                    type=self, number=1, quality=choices(['普通', '優良', '稀有'], weights=[20, 2, 1])[0],
+                    element_type=self.element_type, custom_name=self.name,
                     ability_1_id=self.ability_1_id, ability_2_id=self.ability_2_id
                 ).item_ptr
                 for i in range(number)
