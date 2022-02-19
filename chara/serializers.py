@@ -12,7 +12,8 @@ from base.serializers import (
 from world.models import SlotType
 from chara.models import (
     Chara, CharaIntroduction, CharaAttribute, BattleMapTicket, CharaRecord, CharaSlot, CharaSkillSetting,
-    CharaFarm, CharaBuff, CharaBuffType, CharaPartner, CharaAchievementType, CharaTitle, CharaTitleType
+    CharaFarm, CharaBuff, CharaBuffType, CharaPartner, CharaAchievementType, CharaTitle, CharaTitleType,
+    CharaConfig
 )
 from item.models import Item, ItemTypePoolGroup
 from battle.serializers import BattleMapSerializer, MonsterSerializer
@@ -90,6 +91,18 @@ class CharaIntroductionUpdateSerializer(BaseModelSerializer):
     class Meta:
         model = CharaIntroduction
         fields = ['content']
+
+
+class CharaConfigSerializer(SerpyModelSerializer):
+    class Meta:
+        model = CharaConfig
+        exclude = ['id', 'chara', 'created_at', 'updated_at']
+
+
+class CharaConfigUpdateSerializer(BaseModelSerializer):
+    class Meta:
+        model = CharaConfig
+        exclude = ['id', 'chara', 'created_at', 'updated_at']
 
 
 class CharaRecordSerializer(SerpyModelSerializer):
@@ -200,6 +213,7 @@ class CharaProfileSerializer(CharaPublicProfileSerializer):
     titles = CharaTitleSerializer(many=True)
     bag_items = ItemSerializer(many=True)
     skill_settings = CharaSkillSettingSerializer(many=True)
+    config = CharaConfigSerializer()
 
     farms = CharaFarmSerializer(many=True)
     buffs = CharaBuffSerializer(many=True)
@@ -256,6 +270,8 @@ class CharaProfileSerializer(CharaPublicProfileSerializer):
             )))
         if is_included(request, 'skill_settings'):
             queryset = queryset.prefetch_related('skill_settings')
+        if is_included(request, 'config'):
+            queryset = queryset.select_related('config')
 
         return queryset
 

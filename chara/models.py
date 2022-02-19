@@ -160,6 +160,7 @@ class Chara(BaseModel):
         ])
         CharaSlot.objects.bulk_create([CharaSlot(chara=self, type=slot_type) for slot_type in SlotType.objects.all()])
         CharaIntroduction.objects.create(chara=self)
+        CharaConfig.objects.create(chara=self)
         CharaRecord.objects.create(chara=self)
         BattleMapTicket.objects.bulk_create([
             BattleMapTicket(chara=self, battle_map=battle_map)
@@ -352,6 +353,11 @@ class CharaRecord(BaseModel):
 class CharaIntroduction(BaseModel):
     chara = models.OneToOneField("chara.Chara", on_delete=models.CASCADE, related_name="introduction")
     content = models.TextField(blank=True)
+
+
+class CharaConfig(BaseModel):
+    chara = models.OneToOneField("chara.Chara", on_delete=models.CASCADE, related_name="config")
+    background = models.CharField(max_length=255, blank=True)
 
 
 class BattleMapTicket(BaseModel):

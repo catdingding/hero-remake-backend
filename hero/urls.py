@@ -9,7 +9,7 @@ from user.views import RegistrationView, ChangePasswordView
 from chara.views import (
     CharaProfileView, CharaIntroductionView, SendGoldView, SlotEquipView, SlotDivestView, RestView, UserCharaView,
     CharaStorageItemView, CharaViewSet, IncreaseHPMPMaxView, HandInQuestView, ChangeAvatarView, CharaBagItemView,
-    PartnerAssignView, CharaAchievementTypeView, CharaTitleSetView
+    PartnerAssignView, CharaAchievementTypeView, CharaTitleSetView, CharaConfigView
 )
 from ability.views import (
     LearnAbilityView, AvailableToLearnAbilityView, SetAbilityView, AvailableToSetAbilityView, AlchemyOptionViewSet,
@@ -74,6 +74,7 @@ urlpatterns = [
     path('user/change-password/', ChangePasswordView.as_view()),
     path('chara/profile/', CharaProfileView.as_view()),
     path('chara/introduction/', CharaIntroductionView.as_view()),
+    path('chara/config/', CharaConfigView.as_view()),
     path('chara/rest/', RestView.as_view()),
     path('chara/move/', MoveView.as_view()),
     path('chara/send-gold/', SendGoldView.as_view()),
