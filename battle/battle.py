@@ -168,6 +168,7 @@ class BattleChara:
         self.magic_defense_add_on = 0
         self.speed_add_on = 0
 
+        self.effects = Counter()
         self.eva_add = 0
         self.poison = 0
         self.bleed = 0
@@ -338,6 +339,10 @@ class BattleChara:
         self.action_points += int(self.speed * (1 + self.ability_type_power(53)))
 
     def get_skill(self, defender):
+        if self.effects['silence'] > 0:
+            self.log(f"{self.name}處於沉默狀態，無法發動技能")
+            return None
+
         for skill_setting in self.skill_settings:
             if self.hp / self.hp_max * 100 <= skill_setting.hp_percentage \
                     and self.mp / self.mp_max * 100 <= skill_setting.mp_percentage \
@@ -403,15 +408,20 @@ class BattleChara:
             self.log(f"{self.name}恢復了{hp_add}點 HP")
             self.gain_hp(hp_add)
 
-        if self.bleed > 0 and 15 > randint(1, 100):
-            self.bleed = 0
-            self.log(f"{self.name}的流血停止了")
-
     def after_action(self):
         self.weapon_effect_blocked = self.weapon_effect_blocked_flag
         self.weapon_effect_blocked_flag = False
 
         self.reduced_skill_rate = 0
+
+        if self.bleed > 0 and 15 > randint(1, 100):
+            self.bleed = 0
+            self.log(f"{self.name}的流血停止了")
+
+        if self.effects['silence'] > 0:
+            self.effects['silence'] -= 1
+            if self.effects['silence'] == 0:
+                self.log(f"{self.name}從沉默狀態中恢復了")
 
     def has_ability_type(self, type_id):
         return type_id in self.ability_types
@@ -552,6 +562,11 @@ class BattleChara:
             if hp_loss >= defender.hp:
                 defender.hp -= hp_loss
                 self.log(f"{defender.name}失去了{hp_loss}點 HP")
+        elif skill.type_id == 35:
+            mp_add = int(self.mp_max * skill.power / 100)
+            self.log(f"{self.name}恢復了{mp_add}MP")
+            self.gain_mp(mp_add)
+
         # 特殊技能結束
 
         # 一般技能
@@ -567,7 +582,7 @@ class BattleChara:
             damage = self.dex + randint(0, self.dex * skill.power)
         elif skill.type_id == 22:
             damage = self.vit + randint(0, self.dex * skill.power)
-        elif skill.type_id in [1, 7, 10, 11, 12, 13, 14, 15, 32]:
+        elif skill.type_id in [1, 7, 10, 11, 12, 13, 14, 15, 32, 33, 34]:
             damage = skill.power + randint(0, self.int) - defender.magic_defense
         elif skill.type_id == 26:
             damage = skill.power * (randint(0, self.int) + defender.defense)
@@ -625,7 +640,7 @@ class BattleChara:
             attacker.log(f"[星武特效]{attacker.name}的命中率上升")
 
         # 17,18,26無視反擊、迴避、躲避、奧義類型8
-        if skill is not None and skill.type_id in [17, 18, 26]:
+        if skill_type in [17, 18, 26]:
             pass
         # 奧義類型12:反擊
         elif self.has_ability_type(12) and \
@@ -659,8 +674,8 @@ class BattleChara:
         # 暴擊處理
         # 奧義類型58:詛咒
         # 奧義類型44:安撫
-        if attacker.critical * (1 - self.ability_type_power(58)) >= randint(1, 1000) and not self.has_ability_type(44):
-            damage = int(damage * 1.5)
+        if skill_type == 33 or attacker.critical * (1 - self.ability_type_power(58)) >= randint(1, 1000) and not self.has_ability_type(44):
+            damage += int(damage * max(0.5, sigmoid(attacker.dex, self.dex)))
             # 奧義類型23:暴擊傷害提升
             damage += int(damage * attacker.ability_type_power(23))
             self.log(f"暴擊！")
@@ -749,6 +764,11 @@ class BattleChara:
         if skill_type == 32 and randint(1, 3):
             self.bleed = 1
             self.log(f"{self.name}開始流血了")
+
+        # 沉默
+        if skill_type == 34:
+            self.effects['silence'] = 2
+            self.log(f"{self.name}被沉默了")
 
         # 奧義類型27:嗜魔
         if attacker.has_ability_type(27) and randint(1, 3) == 1:
