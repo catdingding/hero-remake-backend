@@ -445,10 +445,11 @@ class CharaAvatarSerializer(BaseSerializer):
 class CharaAchievementTypeSerializer(SerpyModelSerializer):
     title_type = CharaTitleTypeSerializer(fields=['id', 'name'])
     obtained = serpy.Field()
+    counter_value = serpy.Field()
 
     class Meta:
         model = CharaAchievementType
-        fields = ['name', 'title_type', 'obtained']
+        fields = ['name', 'title_type', 'requirement', 'obtained', 'counter_value']
 
 
 class CharaTitleSetSerializer(BaseSerializer):

@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.utils.timezone import localtime
-from django.db.models import Exists, OuterRef
+from django.db.models import Exists, OuterRef, Subquery
 from base.views import BaseGenericAPIView, CharaPostViewMixin, BaseGenericViewSet
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
@@ -13,7 +13,7 @@ from rest_framework.decorators import action
 from base.pagination import BasePagination
 from item.filters import ItemFilter
 
-from .models import Chara, CharaAchievementType, CharaAchievement
+from .models import Chara, CharaAchievementType, CharaAchievement, CharaAchievementCounter
 from chara.serializers import (
     SendGoldSerializer, SlotEquipSerializer, SlotDivestSerializer, RestSerializer,
     CharaProfileSerializer, CharaPublicProfileSerializer, IncreaseHPMPMaxSerializer, HandInQuestSerializer,
@@ -170,7 +170,12 @@ class CharaAchievementTypeView(ListModelMixin, BaseGenericAPIView):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.annotate(
-            obtained=Exists(CharaAchievement.objects.filter(type=OuterRef('id'), chara=self.get_chara()))
+            obtained=Exists(CharaAchievement.objects.filter(type=OuterRef('id'), chara=self.get_chara())),
+            counter_value=Subquery(
+                CharaAchievementCounter.objects.filter(
+                    category=OuterRef('category'), chara=self.get_chara()
+                ).values('value')[:1]
+            )
         ).order_by('-obtained', 'id')
         return queryset
 

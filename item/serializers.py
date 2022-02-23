@@ -239,6 +239,8 @@ class PetUpgradeSerializer(BaseSerializer):
                 equipment.custom_name = target_item_type.name
 
             push_log("進化", f"{self.chara.name}的{orig_name}進化為{target_item_type.name}")
+            # 寵物進化次數
+            update_achievement_counter(self.chara.id, 29, 1, 'increase')
 
         equipment.save()
 
@@ -299,6 +301,8 @@ class SmithReplaceAbilitySerializer(LockedEquipmentCheckMixin, BaseSerializer):
             push_log("製作", f"{self.chara.name}成功的將「{ability.name}」注入了{equipment.display_name}")
             # 注入成功次數
             update_achievement_counter(self.chara.id, 8, 1, 'increase')
+            # 連續注入成功次數
+            update_achievement_counter(self.chara.id, 28, 1, 'increase')
             # 連續注入失敗次數
             update_achievement_counter(self.chara.id, 12, 0, 'set')
             return {"display_message": "注入成功"}
@@ -308,6 +312,8 @@ class SmithReplaceAbilitySerializer(LockedEquipmentCheckMixin, BaseSerializer):
             update_achievement_counter(self.chara.id, 9, 1, 'increase')
             # 連續注入失敗次數
             update_achievement_counter(self.chara.id, 12, 1, 'increase')
+            # 連續注入成功次數
+            update_achievement_counter(self.chara.id, 28, 0, 'set')
             return {"display_message": "注入失敗"}
 
     def validate_source_item(self, source_item):
