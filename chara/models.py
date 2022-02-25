@@ -356,8 +356,14 @@ class CharaIntroduction(BaseModel):
 
 
 class CharaConfig(BaseModel):
+    THEME_CHOICES = [
+        ('light', 'light'),
+        ('dark', 'dark'),
+    ]
+
     chara = models.OneToOneField("chara.Chara", on_delete=models.CASCADE, related_name="config")
     background = models.CharField(max_length=255, blank=True)
+    theme = models.CharField(max_length=10, default='light', choices=THEME_CHOICES)
 
 
 class BattleMapTicket(BaseModel):
