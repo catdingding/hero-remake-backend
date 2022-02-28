@@ -445,6 +445,11 @@ class BattleChara:
     def gain_mp(self, mp_add):
         self.mp = min(self.mp_max, self.mp + mp_add)
 
+    def lose_hp_max(self, value):
+        self.hp_max = max(1, self.hp_max - value)
+        if self.hp > self.hp_max:
+            self.hp = self.hp_max
+
     def normal_attack(self, defender):
         self.log(f"{self.name}使出了普通攻擊")
 
@@ -667,6 +672,15 @@ class BattleChara:
             damage = None
             self.log(f"{self.name}擋住了攻擊")
 
+        # 奧義類型54:亡命鎖鏈
+        if attacker.has_ability_type(54):
+            hp_loss = int(attacker.hp_max * attacker.ability_type_power(54))
+            attacker.hp = max(0, attacker.hp - hp_loss)
+            self.hp = max(0, self.hp - hp_loss * 2)
+            self.lose_hp_max(hp_loss)
+            attacker.log(f"[亡命鎖鏈]{attacker.name}自身扣血{hp_loss}")
+            self.log(f"[亡命鎖鏈]{self.name}損失{hp_loss*2}HP，並被減少了{hp_loss}HP上限")
+
         # 未受到攻擊，不進入傷害與特效處理
         if damage is None:
             return
@@ -782,14 +796,6 @@ class BattleChara:
             self.action_points -= attacker.ability_type_power(45)
             self.log(f"[束縛]{self.name}的AP減少了")
 
-        # 奧義類型54:亡命鎖鏈
-        if attacker.has_ability_type(54):
-            hp_loss = int(attacker.hp_max * attacker.ability_type_power(54))
-            attacker.hp = max(0, attacker.hp - hp_loss)
-            self.hp = max(0, self.hp - hp_loss * 2)
-            attacker.log(f"[亡命鎖鏈]{attacker.name}自身扣血{hp_loss}")
-            self.log(f"[亡命鎖鏈]{self.name}扣血{hp_loss*2}")
-
         # 奧義類型55:吸血鬼之吻
         if attacker.has_ability_type(55) and randint(1, 7) == 1:
             hp_loss = min(self.hp, int((attacker.hp_max - attacker.hp) / attacker.ability_type_power(55)) +
@@ -818,7 +824,7 @@ class BattleChara:
                     + attacker.ability_type_power(57):
                 pass
             # 奧義類型41:封印防護
-            elif not attacker.has_ability_type(52) and self.ability_type_power(41) >= randint(1, 100):
+            elif self.ability_type_power(41) / (1 + int(attacker.has_ability_type(52))) >= randint(1, 100):
                 self.log(f"封印{self.name}的奧義失敗")
             elif len(self.ability_types) > 0:
                 ability = self.ability_types.pop(choice(list(self.ability_types.keys())))
