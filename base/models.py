@@ -31,6 +31,7 @@ class BaseSkillSetting(BaseModel):
     defender_mp_percentage = models.PositiveSmallIntegerField(default=100)
 
     times_limit = models.PositiveIntegerField(default=0)
+    probability = models.PositiveSmallIntegerField(default=100)
 
     order = models.IntegerField()
 

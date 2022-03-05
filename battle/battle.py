@@ -348,7 +348,8 @@ class BattleChara:
                     and self.mp / self.mp_max * 100 <= skill_setting.mp_percentage \
                     and defender.hp / defender.hp_max * 100 <= skill_setting.defender_hp_percentage \
                     and defender.mp / defender.mp_max * 100 <= skill_setting.defender_mp_percentage \
-                    and (skill_setting.times_limit == 0 or self.skill_counter[skill_setting.skill.id] < skill_setting.times_limit):
+                    and (skill_setting.times_limit == 0 or self.skill_counter[skill_setting.skill.id] < skill_setting.times_limit) \
+                    and skill_setting.probability >= randint(1, 100):
                 break
         else:
             return None

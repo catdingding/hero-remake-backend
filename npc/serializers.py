@@ -24,7 +24,8 @@ class NPCSkillSettingSerializer(SerpyModelSerializer):
     class Meta:
         model = NPCSkillSetting
         fields = ['skill', 'hp_percentage', 'mp_percentage',
-                  'defender_hp_percentage', 'defender_mp_percentage', 'times_limit', 'order']
+                  'defender_hp_percentage', 'defender_mp_percentage', 
+                  'times_limit', 'probability', 'order']
 
 
 class NPCCharaRelationSerializer(SerpyModelSerializer):
