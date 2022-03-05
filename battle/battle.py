@@ -645,8 +645,8 @@ class BattleChara:
             eva_check *= 10
             attacker.log(f"[星武特效]{attacker.name}的命中率上升")
 
-        # 17,18,26無視反擊、迴避、躲避、奧義類型8
-        if skill_type in [17, 18, 26]:
+        # 無視反擊、迴避、躲避、奧義類型8
+        if skill_type in [17, 18, 26, 34]:
             pass
         # 奧義類型12:反擊
         elif self.has_ability_type(12) and \
