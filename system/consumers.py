@@ -5,9 +5,10 @@ from django.db.models import Q
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from channels.db import database_sync_to_async
 
-from system.models import PublicChatMessage, CountryChatMessage, TeamChatMessage, PrivateChatMessage
+from system.models import PublicChatMessage, CountryChatMessage, TeamChatMessage, PrivateChatMessage, SystemChatMessage
 from system.serializers import (
-    PublicChatMessageSerializer, CountryChatMessageSerializer, TeamChatMessageSerializer, PrivateChatMessageSerializer
+    PublicChatMessageSerializer, CountryChatMessageSerializer, TeamChatMessageSerializer,
+    PrivateChatMessageSerializer, SystemChatMessageSerializer
 )
 from system.utils import get_chara_profile
 
@@ -65,7 +66,8 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
     async def load_messages(self):
         messages = (
             await self.get_public_chat_messages() + await self.get_country_chat_messages() +
-            await self.get_team_chat_messages() + await self.get_private_chat_messages()
+            await self.get_team_chat_messages() + await self.get_private_chat_messages() +
+            await self.get_system_chat_messages()
         )
         messages.sort(key=lambda x: x['created_at'])
         for message in messages:
@@ -103,6 +105,12 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
         queryset = self.select_chara_field('sender', queryset)
         queryset = self.select_chara_field('receiver', queryset)
         return PrivateChatMessageSerializer(queryset, many=True).data[::-1]
+
+    @database_sync_to_async
+    def get_system_chat_messages(self):
+        queryset = SystemChatMessage.objects.order_by('-created_at')[:10]
+        queryset = queryset.select_related('avatar')
+        return SystemChatMessageSerializer(queryset, many=True).data[::-1]
 
     @classmethod
     async def encode_json(cls, content):

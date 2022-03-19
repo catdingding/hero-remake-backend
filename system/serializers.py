@@ -2,6 +2,7 @@ from rest_framework import serializers
 import serpy
 
 from base.serializers import BaseModelSerializer, SerpyModelSerializer, DateTimeField
+from asset.serializers import ImageSerializer
 from chara.serializers import CharaTitleSerializer
 from country.serializers import CountrySerializer, CountryOfficialSerializer
 from system.models import Log, ChangeLog
@@ -63,3 +64,18 @@ class PrivateChatMessageSerializer(ChatMessageSerializer):
 
     class Meta:
         channel = 'private'
+
+
+class SystemChatMessageSerializer(SerpyModelSerializer):
+    channel = serpy.MethodField()
+    content = serpy.Field()
+    type = serpy.MethodField()
+    sender_name = serpy.Field()
+    avatar = ImageSerializer(fields=['path'])
+    created_at = DateTimeField()
+
+    def get_channel(self, obj):
+        return "system"
+
+    def get_type(self, obj):
+        return "chat_message"

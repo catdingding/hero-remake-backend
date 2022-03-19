@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'npc.apps.NpcConfig',
     'ugc.apps.UgcConfig',
+    'asset.apps.AssetConfig',
 ]
 
 MIDDLEWARE = [

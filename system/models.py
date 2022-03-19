@@ -37,3 +37,9 @@ class PrivateChatMessage(BaseModel):
     content = models.CharField(max_length=400)
 
     is_system_generated = models.BooleanField(default=False)
+
+
+class SystemChatMessage(BaseModel):
+    sender_name = models.CharField(max_length=20)
+    avatar = models.ForeignKey("asset.Image", on_delete=models.PROTECT)
+    content = models.CharField(max_length=400)

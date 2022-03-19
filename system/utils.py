@@ -2,8 +2,9 @@ from channels.layers import get_channel_layer
 from channels.db import database_sync_to_async
 from asgiref.sync import async_to_sync
 
+from asset.models import Image
 from chara.models import Chara
-from system.models import Log, PrivateChatMessage
+from system.models import Log, PrivateChatMessage, SystemChatMessage
 
 
 def get_chara_profile_sync(chara_id):
@@ -39,6 +40,18 @@ def send_private_message_by_system(sender_id, receiver_id, content):
     layer = get_channel_layer()
     for chara_id in [sender_id, receiver_id]:
         async_to_sync(layer.group_send)(f'private_{chara_id}', data)
+
+
+def send_system_message(sender_name, avatar_id, content):
+    message = SystemChatMessage.objects.create(sender_name=sender_name, avatar_id=avatar_id, content=content)
+    data = {
+        'type': 'chat_message', 'channel': 'system', 'sender_name': sender_name,
+        'content': content, 'created_at': message.created_at.isoformat()
+    }
+    data['avatar'] = {'path': Image.objects.get(id=avatar_id).path}
+
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)(f'public', data)
 
 
 def send_refresh_chara_profile_signal(chara_id):
