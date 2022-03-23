@@ -146,7 +146,10 @@ class ItemTypePoolGroup(BaseModel):
     name = models.CharField(max_length=20, unique=True)
 
     def pick(self, n=1):
-        assert n >= 1
+        assert n >= 0
+        if n == 0:
+            return []
+
         members = self.members.all()
         picked_members = choices(members, weights=[m.weight for m in members], k=n)
         picked_pools = [x.pool_id for x in picked_members]
@@ -169,7 +172,10 @@ class ItemTypePool(BaseModel):
     name = models.CharField(max_length=20, unique=True)
 
     def pick(self, n=1):
-        assert n >= 1
+        assert n >= 0
+        if n == 0:
+            return []
+            
         members = self.members.all()
         picked_members = choices(members, weights=[m.weight for m in members], k=n)
         picked_item_types = [x.item_type_id for x in picked_members]
