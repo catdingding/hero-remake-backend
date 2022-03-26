@@ -5,12 +5,13 @@ from rest_framework.decorators import action
 
 from npc.models import NPC
 from npc.serializers import (
-    NPCSerializer, NPCProfileSerializer, NPCFavoriteSubmitSerializer, NPCExchangeOptionExchangeSerializer
+    NPCSerializer, NPCProfileSerializer, NPCFavoriteSubmitSerializer, NPCExchangeOptionExchangeSerializer,
+    NPCFightSerializer
 )
 
 
 class NPCViewSet(ListModelMixin, BaseGenericViewSet):
-    queryset = NPC.objects.all()
+    queryset = NPC.objects.all().order_by('-is_admin')
     serializer_class = NPCSerializer
 
     @action(methods=['get'], detail=True, serializer_class=NPCProfileSerializer)
@@ -23,6 +24,13 @@ class NPCViewSet(ListModelMixin, BaseGenericViewSet):
         ).get(id=pk)
         serializer = self.get_serializer(npc)
         return Response(serializer.data)
+
+    @action(methods=['post'], detail=True, serializer_class=NPCFightSerializer)
+    def fight(self, request, pk):
+        self.get_chara()
+        serializer = self.get_serializer(self.get_object())
+        result = serializer.save()
+        return Response(result)
 
 
 class NPCFavoriteSubmitView(CharaPostViewMixin, BaseGenericAPIView):

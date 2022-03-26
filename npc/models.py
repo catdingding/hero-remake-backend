@@ -11,7 +11,8 @@ class NPC(BaseModel):
 
     abilities = models.ManyToManyField("ability.Ability")
 
-    has_image = models.BooleanField()
+    avatar = models.ForeignKey("asset.Image", null=True, on_delete=models.PROTECT)
+    is_admin = models.BooleanField(default=False)
 
 
 class NPCInfo(BaseModel):

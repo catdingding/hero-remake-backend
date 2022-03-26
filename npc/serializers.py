@@ -2,8 +2,10 @@ from rest_framework import serializers
 import serpy
 from base.serializers import BaseSerializer, BaseModelSerializer, SerpyModelSerializer
 
+from battle.battle import Battle
 from npc.models import NPC, NPCAttribute, NPCSkillSetting, NPCFavorite, NPCExchangeOption, NPCInfo, NPCCharaRelation
 from item.models import Item
+from asset.serializers import ImageSerializer
 from world.serializers import AttributeTypeSerializer, ElementTypeSerializer
 from ability.serializers import AbilitySerializer
 from job.serializers import SkillSerializer
@@ -24,7 +26,7 @@ class NPCSkillSettingSerializer(SerpyModelSerializer):
     class Meta:
         model = NPCSkillSetting
         fields = ['skill', 'hp_percentage', 'mp_percentage',
-                  'defender_hp_percentage', 'defender_mp_percentage', 
+                  'defender_hp_percentage', 'defender_mp_percentage',
                   'times_limit', 'probability', 'order']
 
 
@@ -57,12 +59,16 @@ class NPCInfoSerializer(SerpyModelSerializer):
 
 
 class NPCSerializer(SerpyModelSerializer):
+    avatar = ImageSerializer()
+
     class Meta:
         model = NPC
-        fields = ['id', 'name', 'has_image']
+        fields = ['id', 'name', 'avatar', 'is_admin']
 
 
 class NPCProfileSerializer(SerpyModelSerializer):
+    avatar = ImageSerializer()
+
     element_type = ElementTypeSerializer(fields=['name'])
     abilities = AbilitySerializer(fields=['name'], many=True)
 
@@ -77,7 +83,7 @@ class NPCProfileSerializer(SerpyModelSerializer):
     class Meta:
         model = NPC
         fields = [
-            'id', 'name', 'element_type', 'hp', 'mp', 'abilities', 'has_image',
+            'id', 'name', 'element_type', 'hp', 'mp', 'abilities', 'avatar', 'is_admin',
             'attributes', 'skill_settings', 'favorites', 'exchange_options', 'chara_relation', 'info'
         ]
 
@@ -115,3 +121,19 @@ class NPCExchangeOptionExchangeSerializer(BaseSerializer):
         relation.save()
 
         self.chara.get_items('bag', [Item(type_id=option.item_type_id, number=number)])
+
+
+class NPCFightSerializer(BaseSerializer):
+    def save(self):
+        battle = Battle(attackers=[self.chara], defenders=[self.instance], battle_type='pvp')
+
+        battle.execute()
+
+        self.chara.set_next_action_time()
+        self.chara.save()
+
+        return {
+            'winner': battle.winner,
+            'logs': battle.logs,
+            'messages': []
+        }

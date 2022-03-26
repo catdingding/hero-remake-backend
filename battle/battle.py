@@ -88,11 +88,11 @@ class Battle:
     def execute(self):
         assert not self.executed
         self.executed = True
-        index = 0
+
+        self.before_execute()
 
         while True:
-            self.logs.append({'actions': [], 'index': index})
-            index += 1
+            self.logs.append({'actions': []})
 
             act_chara = self.get_act_chara()
             if act_chara is None:
@@ -104,6 +104,22 @@ class Battle:
 
             if self.winner != 'draw' or self.rounds >= self.max_rounds or self.actions >= self.max_actions:
                 break
+
+    def before_execute(self):
+        self.logs.append({'actions': [{'team': None, 'chara': None, 'message': '戰鬥開始'}]})
+
+        for chara in self.alive_charas:
+            if chara.has_ability_type(68):
+                if chara.is_admin:
+                    chara.log(f"{chara.name}使用了管理員權限")
+                    for enemy in chara.alive_enemy_charas:
+                        enemy.hp = 0
+                        enemy.log(f"{enemy.name}的HP歸零了")
+                else:
+                    chara.hp = 0
+                    chara.log(f"檢測到{chara.name}進行違規操作，HP已歸零")
+
+        self.logs[-1]['charas'] = [chara.profile for chara in self.charas]
 
     @property
     def alive_charas(self):
@@ -144,6 +160,7 @@ class BattleChara:
         self.skill_counter = Counter()
         self.name = source.name
         self.element_type = source.element_type
+        self.is_admin = getattr(source, 'is_admin', False)
         self.action_points = 0
 
         self.skill_settings = list(source.skill_settings.all().order_by('order').select_related('skill'))
