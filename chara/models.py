@@ -1,3 +1,4 @@
+from faulthandler import is_enabled
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.timezone import localtime
@@ -364,6 +365,8 @@ class CharaConfig(BaseModel):
     chara = models.OneToOneField("chara.Chara", on_delete=models.CASCADE, related_name="config")
     background = models.CharField(max_length=255, blank=True)
     theme = models.CharField(max_length=10, default='light', choices=THEME_CHOICES)
+
+    default_autofight_status = models.BooleanField(default=False)
 
 
 class BattleMapTicket(BaseModel):
