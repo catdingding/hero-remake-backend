@@ -33,7 +33,7 @@ from country.views import (
 )
 from team.views import (
     TeamViewSet, FoundTeamView, LeaveTeamView, TeamJoinRequestViewSet, DismissTeamMemberView, DisbandTeamView,
-    ChangeTeamDungeonRecordStatusView, ChangeLeaderView
+    TeamDungeonViewSet, ChangeLeaderView
 )
 from trade.views import (
     AuctionViewSet, SaleViewSet, PurchaseViewSet, ExchangeOptionViewSet, StoreOptionViewSet, SellItemView,
@@ -64,6 +64,7 @@ router.register(r'country/join-requests', CountryJoinRequestViewSet)
 router.register(r'country/officials', CountryOfficialViewSet)
 router.register(r'teams', TeamViewSet)
 router.register(r'team/join-requests', TeamJoinRequestViewSet)
+router.register(r'team/dungeons', TeamDungeonViewSet)
 router.register(r'trade/member-shop', MemberShopViewSet, basename='member-shop')
 router.register(r'npc/npcs', NPCViewSet)
 
@@ -133,7 +134,6 @@ urlpatterns = [
     path('team/dismiss-member/', DismissTeamMemberView.as_view()),
     path('team/disband/', DisbandTeamView.as_view()),
     path('team/change-leader/', ChangeLeaderView.as_view()),
-    path('team/change-dungeon-record-status/', ChangeTeamDungeonRecordStatusView.as_view()),
     path('smith/upgrade/', SmithUpgradeView.as_view()),
     path('smith/replace-ability/', SmithReplaceAbilityView.as_view()),
     path('smith/replace-element-type/', SmithReplaceElementTypeView.as_view()),

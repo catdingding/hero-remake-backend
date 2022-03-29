@@ -1,16 +1,20 @@
-from django.db.models import Count
+from django.db.models import Count, Prefetch
 
-from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin, TeamPostViewMixin
+from base.views import (
+    BaseGenericAPIView, BaseGenericViewSet, CharaPostViewMixin, TeamPostViewMixin, TeamProcessPayloadViewMixin
+)
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, DestroyModelMixin, CreateModelMixin
 
-from team.models import Team, TeamJoinRequest
+from battle.models import Dungeon
+from team.models import Team, TeamJoinRequest, TeamDungeonRecord
 from team.serializers import (
     TeamProfileSerializer, FoundTeamSerializer,
     TeamJoinRequestReviewSerializer, LeaveTeamSerializer, TeamJoinRequestSerializer,
     TeamJoinRequestCreateSerializer, DismissTeamMemberSerializer, DisbandTeamSerializer,
-    ChangeTeamDungeonRecordStatusSerializer, ChangeLeaderSerializer
+    ChangeLeaderSerializer, TeamDungeonSerializer,
+    TeamDungeonStartSerializer, TeamDungeonRecoverSerializer, TeamDungeonTerminateSerializer
 )
 
 
@@ -69,9 +73,34 @@ class DisbandTeamView(TeamPostViewMixin, BaseGenericAPIView):
     role = 'leader'
 
 
-class ChangeTeamDungeonRecordStatusView(TeamPostViewMixin, BaseGenericAPIView):
-    serializer_class = ChangeTeamDungeonRecordStatusSerializer
-    role = 'leader'
+class TeamDungeonViewSet(TeamProcessPayloadViewMixin, ListModelMixin, BaseGenericViewSet):
+    queryset = Dungeon.objects.all()
+    serializer_class = TeamDungeonSerializer
+    serializer_action_classes = {
+        'start': TeamDungeonStartSerializer,
+        'recover': TeamDungeonRecoverSerializer,
+        'terminate': TeamDungeonTerminateSerializer
+    }
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.action in ['list']:
+            queryset = queryset.prefetch_related(
+                Prefetch('team_records', TeamDungeonRecord.objects.filter(team=self.get_team('member')))
+            )
+        return queryset
+
+    @action(methods=['POST'], detail=True, with_instance=True)
+    def start(self, request, pk):
+        return self.process_payload(request)
+
+    @action(methods=['POST'], detail=True, with_instance=True)
+    def recover(self, request, pk):
+        return self.process_payload(request)
+
+    @action(methods=['POST'], detail=True, with_instance=True)
+    def terminate(self, request, pk):
+        return self.process_payload(request)
 
 
 class ChangeLeaderView(TeamPostViewMixin, BaseGenericAPIView):

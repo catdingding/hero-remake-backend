@@ -12,12 +12,20 @@ from chara.serializers import CharaSimpleSerializer
 from system.utils import push_log, send_private_message_by_system, send_refresh_chara_profile_signal
 
 
-class TeamDungeonRecordSerializer(SerpyModelSerializer):
-    dungeon = DungeonSerializer()
+class TeamDungeonSerializer(DungeonSerializer):
+    record = serpy.MethodField()
 
+    def get_record(self, dungeon):
+        records = dungeon.team_records.all()
+        if len(records) == 0:
+            return None
+        return TeamDungeonRecordSerializer(records[0]).data
+
+
+class TeamDungeonRecordSerializer(SerpyModelSerializer):
     class Meta:
         model = TeamDungeonRecord
-        fields = ['id', 'dungeon', 'status', 'current_floor', 'passed_times']
+        fields = ['status', 'current_floor', 'passed_times']
 
 
 class TeamProfileSerializer(SerpyModelSerializer):
@@ -25,11 +33,9 @@ class TeamProfileSerializer(SerpyModelSerializer):
     members = CharaSimpleSerializer(many=True)
     member_count = serpy.Field()
 
-    dungeon_records = TeamDungeonRecordSerializer(many=True)
-
     class Meta:
         model = Team
-        fields = ['id', 'name', 'leader', 'members', 'member_count', 'dungeon_records']
+        fields = ['id', 'name', 'leader', 'members', 'member_count']
 
 
 class FoundTeamSerializer(BaseModelSerializer):
@@ -163,73 +169,84 @@ class DisbandTeamSerializer(BaseSerializer):
             send_refresh_chara_profile_signal(chara_id)
 
 
-class ChangeTeamDungeonRecordStatusSerializer(BaseSerializer):
-    record = serializers.PrimaryKeyRelatedField(queryset=TeamDungeonRecord.objects.all())
-    new_status = serializers.ChoiceField(choices=['inactive', 'active'])
-
+class TeamDungeonStartSerializer(BaseSerializer):
     start_floor = serializers.IntegerField(min_value=1, default=1)
 
     def save(self):
-        new_status = self.validated_data['new_status']
-        record = self.validated_data['record']
-        dungeon = record.dungeon
-
-        if new_status == 'active':
-            if dungeon.ticket_type_id:
-                self.chara.lose_items(
-                    'bag', [Item(type_id=dungeon.ticket_type_id, number=dungeon.ticket_cost)]
-                )
-            if not dungeon.is_infinite:
-                self.validated_data['start_floor'] = 1
-            record.start_floor = self.validated_data['start_floor'] - 1
-            record.current_floor = self.validated_data['start_floor'] - 1
-            record.status = new_status
-            record.save()
-        elif new_status == 'inactive':
-            gold = 0
-            loots = []
-            if not dungeon.is_infinite or record.current_floor - record.start_floor >= 5:
-                gold += dungeon.gold_reward_per_floor * record.current_floor
-                for reward in dungeon.rewards.all():
-                    loots.extend(reward.group.pick(record.current_floor // reward.divisor * reward.number))
-
-            if not loots and not gold:
-                reward_message = "一些……嗯……寶貴的探索體驗"
-            else:
-                reward_message = f"{gold}金錢" + ('與' + '、'.join(f'{x.name}*{x.number}' for x in loots)) if loots else ""
-
-            if not dungeon.is_infinite and record.current_floor == dungeon.max_floor:
-                message = f"{self.team.name}探索{dungeon.name}成功，在地城深處獲得了{reward_message}"
-            else:
-                message = f"{self.team.name}在探索{dungeon.name}第{record.current_floor}層時被迫撤退，途中獲得了{reward_message}"
-
-            push_log("地城", message)
-            for chara in self.team.members.all():
-                if chara != self.chara:
-                    send_private_message_by_system(self.team.leader_id, chara.id, f"對{dungeon.name}的探索已結束")
-
-            self.chara.get_items('bag', loots)
-
-            self.chara.gold += gold
-            self.chara.save()
-
-            record.status = new_status
-            record.start_floor = 0
-            record.current_floor = 0
-            record.save()
-
-            return {'display_message': f"獲得了{reward_message}"}
-
-    def validate_record(self, record):
-        if record.team != self.team:
-            raise serializers.ValidationError("隊伍錯誤")
-        return record
-
-    def validate(self, data):
-        if (data['new_status'] == 'active' and data['record'].status != 'inactive') or \
-                (data['new_status'] == 'inactive' and data['record'].status != 'ended'):
+        new_status = 'active'
+        dungeon = self.instance
+        record, _ = TeamDungeonRecord.objects.get_or_create(team=self.team, dungeon=dungeon)
+        if record.status != 'inactive':
             raise serializers.ValidationError("地城狀態錯誤")
-        return data
+
+        if dungeon.ticket_type_id:
+            self.chara.lose_items(
+                'bag', [Item(type_id=dungeon.ticket_type_id, number=dungeon.ticket_cost)]
+            )
+        if not dungeon.is_infinite:
+            self.validated_data['start_floor'] = 1
+        record.start_floor = self.validated_data['start_floor'] - 1
+        record.current_floor = self.validated_data['start_floor'] - 1
+        record.status = new_status
+        record.save()
+
+
+class TeamDungeonTerminateSerializer(BaseSerializer):
+    def save(self):
+        dungeon = self.instance
+        record, _ = TeamDungeonRecord.objects.get_or_create(team=self.team, dungeon=dungeon)
+        if record.status != 'ended':
+            raise serializers.ValidationError("地城狀態錯誤")
+
+        gold = 0
+        loots = []
+        if not dungeon.is_infinite or record.current_floor - record.start_floor >= 5:
+            gold += dungeon.gold_reward_per_floor * record.current_floor
+            for reward in dungeon.rewards.all():
+                loots.extend(reward.group.pick(record.current_floor // reward.divisor * reward.number))
+
+        if not loots and not gold:
+            reward_message = "一些……嗯……寶貴的探索體驗"
+        else:
+            reward_message = f"{gold}金錢" + ('與' + '、'.join(f'{x.name}*{x.number}' for x in loots)) if loots else ""
+
+        if not dungeon.is_infinite and record.current_floor == dungeon.max_floor:
+            message = f"{self.team.name}探索{dungeon.name}成功，在地城深處獲得了{reward_message}"
+        else:
+            message = f"{self.team.name}在探索{dungeon.name}第{record.current_floor}層時被迫撤退，途中獲得了{reward_message}"
+
+        push_log("地城", message)
+        for chara in self.team.members.all():
+            if chara != self.chara:
+                send_private_message_by_system(self.team.leader_id, chara.id, f"對{dungeon.name}的探索已結束")
+
+        self.chara.get_items('bag', loots)
+
+        self.chara.gold += gold
+        self.chara.save()
+
+        record.status = 'inactive'
+        record.start_floor = 0
+        record.current_floor = 0
+        record.save()
+
+        return {'display_message': f"獲得了{reward_message}"}
+
+
+class TeamDungeonRecoverSerializer(BaseSerializer):
+    def save(self):
+        dungeon = self.instance
+        record, _ = TeamDungeonRecord.objects.get_or_create(team=self.team, dungeon=dungeon)
+        if record.status != 'ended':
+            raise serializers.ValidationError("地城狀態錯誤")
+        if not record.dungeon.is_infinite and record.current_floor == record.dungeon.max_floor:
+            raise serializers.ValidationError("地城已完成")
+
+        self.chara.lose_member_point(25)
+        self.chara.save()
+
+        record.status = 'active'
+        record.save()
 
 
 class ChangeLeaderSerializer(BaseSerializer):

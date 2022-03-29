@@ -155,15 +155,21 @@ class CountryPostViewMixin:
             return Response(result)
 
 
-class TeamPostViewMixin:
+class TeamProcessPayloadViewMixin:
     lock_chara = True
     lock_team = True
     role = 'leader'
 
-    def post(self, request):
+    with_instance = False
+    lock_instance = False
+
+    def process_payload(self, request):
         chara = self.get_chara(lock=self.lock_chara)
         team = self.get_team(role=self.role, lock=self.lock_team)
-        serializer = self.get_serializer(data=request.data)
+        if self.with_instance:
+            serializer = self.get_serializer(self.get_object(lock=self.lock_instance), data=request.data)
+        else:
+            serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         result = serializer.save()
 
@@ -171,6 +177,11 @@ class TeamPostViewMixin:
             return Response({'status': 'success'})
         else:
             return Response(result)
+
+
+class TeamPostViewMixin(TeamProcessPayloadViewMixin):
+    def post(self, request):
+        return self.process_payload(request)
 
 
 class ListViewMixin:
