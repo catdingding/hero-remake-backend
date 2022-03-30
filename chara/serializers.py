@@ -1,19 +1,20 @@
 from django.db.models import F, Prefetch
 from django.utils.timezone import localtime
+from datetime import timedelta
 import serpy
 from rest_framework import serializers
 from rest_flex_fields import is_included
 from base.utils import randint, format_currency
 from base.serializers import (
     BaseSerializer, BaseModelSerializer, TransferPermissionCheckerMixin,
-    SerpyModelSerializer, IdNameSerializer
+    SerpyModelSerializer, IdNameSerializer, DateTimeField
 )
 
 from world.models import SlotType
 from chara.models import (
     Chara, CharaIntroduction, CharaAttribute, BattleMapTicket, CharaRecord, CharaSlot, CharaSkillSetting,
     CharaFarm, CharaBuff, CharaBuffType, CharaPartner, CharaAchievementType, CharaTitle, CharaTitleType,
-    CharaConfig
+    CharaConfig, CharaCustomTitle
 )
 from item.models import Item, ItemTypePoolGroup
 from battle.serializers import BattleMapSerializer, MonsterSerializer
@@ -56,7 +57,7 @@ class CharaSkillSettingSerializer(SerpyModelSerializer):
     class Meta:
         model = CharaSkillSetting
         fields = ['skill', 'hp_percentage', 'mp_percentage',
-                  'defender_hp_percentage', 'defender_mp_percentage', 
+                  'defender_hp_percentage', 'defender_mp_percentage',
                   'times_limit', 'probability', 'order']
 
 
@@ -142,6 +143,31 @@ class CharaTitleSerializer(SerpyModelSerializer):
         fields = ['id', 'type']
 
 
+class CharaCustomTitleSerializer(SerpyModelSerializer):
+    due_time = DateTimeField()
+    class Meta:
+        model = CharaCustomTitle
+        fields = ['name', 'color', 'due_time']
+
+
+class CharaCustomTitleUpdateSerializer(BaseModelSerializer):
+    class Meta:
+        model = CharaCustomTitle
+        fields = ['name', 'color']
+
+
+class CharaCustomTitleExpandSerializer(BaseSerializer):
+    days = serializers.IntegerField(min_value=1)
+
+    def save(self):
+        days = self.validated_data["days"]
+        self.chara.lose_member_point(days * 20)
+        self.chara.save()
+
+        self.chara.custom_title.due_time = max(self.chara.custom_title.due_time, localtime()) + timedelta(days=days)
+        self.chara.custom_title.save()
+
+
 class CharaPublicProfileSerializer(SerpyModelSerializer):
     from job.serializers import JobSerializer
     from team.serializers import TeamProfileSerializer
@@ -160,6 +186,7 @@ class CharaPublicProfileSerializer(SerpyModelSerializer):
 
     partner = CharaPartnerSerializer()
     title = CharaTitleSerializer()
+    custom_title = CharaCustomTitleSerializer()
 
     slots = CharaSlotSerializer(many=True)
     attributes = CharaAttributeSerialiser(many=True)
@@ -177,7 +204,10 @@ class CharaPublicProfileSerializer(SerpyModelSerializer):
 
     @classmethod
     def process_queryset(cls, request, queryset):
-        for field in ['country', 'official', 'team', 'element_type', 'job', 'main_ability', 'job_ability', 'live_ability', 'record', 'introduction']:
+        for field in [
+            'country', 'official', 'team', 'element_type', 'job', 'main_ability', 'job_ability', 'live_ability',
+            'record', 'introduction', 'custom_title'
+        ]:
             if is_included(request, field):
                 queryset = queryset.select_related(field)
 
@@ -186,7 +216,8 @@ class CharaPublicProfileSerializer(SerpyModelSerializer):
 
         if is_included(request, 'slots'):
             queryset = queryset.prefetch_related(Prefetch('slots', CharaSlot.objects.select_related(
-                'type', 'item__type__slot_type', 'item__equipment__ability_1', 'item__equipment__ability_2', 'item__equipment__element_type'
+                'type', 'item__type__slot_type', 'item__equipment__ability_1',
+                'item__equipment__ability_2', 'item__equipment__element_type'
             )))
 
         if is_included(request, 'attributes'):

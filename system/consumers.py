@@ -76,7 +76,8 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
 
     def select_chara_field(self, chara_field, queryset):
         return queryset.select_related(
-            f'{chara_field}__country', f'{chara_field}__official', f'{chara_field}__title__type'
+            f'{chara_field}__country', f'{chara_field}__official',
+            f'{chara_field}__title__type', f'{chara_field}__custom_title',
         )
 
     @database_sync_to_async

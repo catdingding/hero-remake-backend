@@ -18,7 +18,8 @@ from chara.serializers import (
     SendGoldSerializer, SlotEquipSerializer, SlotDivestSerializer, RestSerializer,
     CharaProfileSerializer, CharaPublicProfileSerializer, IncreaseHPMPMaxSerializer, HandInQuestSerializer,
     CharaAvatarSerializer, CharaIntroductionUpdateSerializer, PartnerAssignSerializer,
-    CharaAchievementTypeSerializer, CharaTitleSetSerializer, CharaConfigUpdateSerializer
+    CharaAchievementTypeSerializer, CharaTitleSetSerializer, CharaConfigUpdateSerializer,
+    CharaCustomTitleUpdateSerializer, CharaCustomTitleExpandSerializer
 )
 from item.serializers import ItemSerializer
 
@@ -185,3 +186,19 @@ class CharaAchievementTypeView(ListModelMixin, BaseGenericAPIView):
 
 class CharaTitleSetView(CharaPostViewMixin, BaseGenericAPIView):
     serializer_class = CharaTitleSetSerializer
+
+
+class CharaCustomTitleView(BaseGenericAPIView):
+    serializer_class = CharaCustomTitleUpdateSerializer
+
+    def put(self, request):
+        chara = self.get_chara(lock=True)
+        serializer = self.get_serializer(chara.custom_title, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'status': 'success'})
+
+
+class CharaCustomTitleExpandView(CharaPostViewMixin, BaseGenericAPIView):
+    serializer_class = CharaCustomTitleExpandSerializer

@@ -162,6 +162,7 @@ class Chara(BaseModel):
         CharaSlot.objects.bulk_create([CharaSlot(chara=self, type=slot_type) for slot_type in SlotType.objects.all()])
         CharaIntroduction.objects.create(chara=self)
         CharaConfig.objects.create(chara=self)
+        CharaCustomTitle.objects.create(chara=self)
         CharaRecord.objects.create(chara=self)
         BattleMapTicket.objects.bulk_create([
             BattleMapTicket(chara=self, battle_map=battle_map)
@@ -330,6 +331,14 @@ class CharaTitle(BaseModel):
 
     class Meta:
         unique_together = ('chara', 'type')
+
+
+class CharaCustomTitle(BaseModel):
+    chara = models.OneToOneField("chara.Chara", on_delete=models.CASCADE, related_name="custom_title")
+    name = models.CharField(max_length=20, blank=True)
+    color = models.CharField(max_length=20, blank=True)
+
+    due_time = models.DateTimeField(default=localtime)
 
 
 class CharaFarm(BaseModel):

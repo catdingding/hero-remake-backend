@@ -9,11 +9,14 @@ from system.models import Log, PrivateChatMessage, SystemChatMessage
 
 def get_chara_profile_sync(chara_id):
     profile = Chara.objects.values(
-        'id', 'avatar_version', 'name', 'country__name', 'official__title', 'title__type__name'
+        'id', 'avatar_version', 'name', 'country__name', 'official__title', 'title__type__name',
+        'custom_title__name', 'custom_title__color', 'custom_title__due_time'
     ).get(id=chara_id)
     profile['country'] = {'name': profile.pop('country__name')} if profile['country__name'] else None
     profile['official'] = {'title': profile.pop('official__title')} if profile['official__title'] else None
     profile['title'] = {'type': {'name': profile.pop('title__type__name')}} if profile['title__type__name'] else None
+    profile['custom_title'] = {x: profile.pop(f'custom_title__{x}') for x in ['name', 'color', 'due_time']}
+    profile['custom_title']['due_time'] = profile['custom_title']['due_time'].isoformat()
     return profile
 
 
