@@ -104,7 +104,7 @@ class UseEffect_5(BaseUseEffect):
         items_name = '、'.join(f'{x.name}*{x.number}' for x in items)
         push_log("寶箱", f"{self.chara.name}使用了{self.n}個{self.type.name}，獲得了{items_name}。")
         # 開寶箱次數
-        update_achievement_counter(self.chara.id, 7, self.n, 'increase')
+        update_achievement_counter(self.chara, 7, self.n, 'increase')
         return f"使用了{self.n}個{self.type.name}，獲得了{items_name}。"
 
 
@@ -249,7 +249,7 @@ class UseEffect_13(BaseUseEffect):
         buff_type = CharaBuffType.objects.get(id=self.type.use_effect_param)
 
         # 使用buff道具次數
-        update_achievement_counter(self.chara.id, 26, 1, 'increase')
+        update_achievement_counter(self.chara, 26, 1, 'increase')
 
         return f"使用了{self.n}個{self.type.name}，獲得了{hours}小時的{buff_type.name}"
 
@@ -321,6 +321,6 @@ class UseEffect_16(BaseUseEffect):
         partner.save()
 
         # 召喚NPC時數
-        update_achievement_counter(self.chara.id, 25, minutes, 'increase')
+        update_achievement_counter(self.chara, 25, minutes, 'increase')
 
         return f"使用了{self.n}個{self.type.name}，獲得了{minutes}分鐘的{npc.name}同伴"

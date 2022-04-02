@@ -537,7 +537,7 @@ class BuyLotterySerializer(BaseSerializer):
         Lottery.objects.filter(id=lottery.id).update(gold=F('gold') + int(lottery.price * 0.8))
 
         # 彩券購買次數
-        update_achievement_counter(self.chara.id, 15, 1, 'increase')
+        update_achievement_counter(self.chara, 15, 1, 'increase')
 
     def validate(self, data):
         bought_ticket_count = LotteryTicket.objects.filter(

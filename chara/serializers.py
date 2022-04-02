@@ -145,6 +145,7 @@ class CharaTitleSerializer(SerpyModelSerializer):
 
 class CharaCustomTitleSerializer(SerpyModelSerializer):
     due_time = DateTimeField()
+
     class Meta:
         model = CharaCustomTitle
         fields = ['name', 'color', 'due_time']
@@ -446,7 +447,7 @@ class HandInQuestSerializer(BaseSerializer):
         self.chara.save()
 
         # 達成任務次數
-        update_achievement_counter(self.chara.id, 19, 1, 'increase')
+        update_achievement_counter(self.chara, 19, 1, 'increase')
 
         return {"display_message": f"獲得了{gold}金錢、{proficiency}熟練、{'、'.join(f'{x.type.name}*{x.number}' for x in items)}"}
 
@@ -471,7 +472,7 @@ class CharaAvatarSerializer(BaseSerializer):
         self.chara.set_avatar(self.validated_data['avatar'])
 
         # 換頭貼次數
-        update_achievement_counter(self.chara.id, 22, 1, 'increase')
+        update_achievement_counter(self.chara, 22, 1, 'increase')
 
 
 class CharaAchievementTypeSerializer(SerpyModelSerializer):

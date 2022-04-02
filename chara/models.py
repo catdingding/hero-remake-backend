@@ -302,6 +302,7 @@ class CharaAchievementType(BaseModel):
     title_type = models.ForeignKey("chara.CharaTitleType", null=True, on_delete=models.SET_NULL)
     requirement = models.BigIntegerField()
     name = models.CharField(max_length=30, unique=True)
+    need_announce = models.BooleanField(default=False)
 
 
 class CharaAchievementCounter(BaseModel):

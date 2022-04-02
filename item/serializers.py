@@ -186,7 +186,7 @@ class SmithUpgradeSerializer(BaseSerializer):
         equipment.save()
 
         # 強化裝備次數
-        update_achievement_counter(self.chara.id, 23, times, 'increase')
+        update_achievement_counter(self.chara, 23, times, 'increase')
 
     def validate_slot_type(self, value):
         if value.id == 4:
@@ -240,7 +240,7 @@ class PetUpgradeSerializer(BaseSerializer):
 
             push_log("進化", f"{self.chara.name}的{orig_name}進化為{target_item_type.name}")
             # 寵物進化次數
-            update_achievement_counter(self.chara.id, 29, 1, 'increase')
+            update_achievement_counter(self.chara, 29, 1, 'increase')
 
         equipment.save()
 
@@ -300,20 +300,20 @@ class SmithReplaceAbilitySerializer(LockedEquipmentCheckMixin, BaseSerializer):
             equipment.save()
             push_log("製作", f"{self.chara.name}成功的將「{ability.name}」注入了{equipment.display_name}")
             # 注入成功次數
-            update_achievement_counter(self.chara.id, 8, 1, 'increase')
+            update_achievement_counter(self.chara, 8, 1, 'increase')
             # 連續注入成功次數
-            update_achievement_counter(self.chara.id, 28, 1, 'increase')
+            update_achievement_counter(self.chara, 28, 1, 'increase')
             # 連續注入失敗次數
-            update_achievement_counter(self.chara.id, 12, 0, 'set')
+            update_achievement_counter(self.chara, 12, 0, 'set')
             return {"display_message": "注入成功"}
         else:
             push_log("製作", f"{self.chara.name}嘗試用{source_item.name}將「{ability.name}」注入了{equipment.display_name}，但失敗了")
             # 注入失敗次數
-            update_achievement_counter(self.chara.id, 9, 1, 'increase')
+            update_achievement_counter(self.chara, 9, 1, 'increase')
             # 連續注入失敗次數
-            update_achievement_counter(self.chara.id, 12, 1, 'increase')
+            update_achievement_counter(self.chara, 12, 1, 'increase')
             # 連續注入成功次數
-            update_achievement_counter(self.chara.id, 28, 0, 'set')
+            update_achievement_counter(self.chara, 28, 0, 'set')
             return {"display_message": "注入失敗"}
 
     def validate_source_item(self, source_item):
@@ -349,7 +349,7 @@ class SmithReplaceElementTypeSerializer(BaseSerializer):
         equipment.save()
 
         # 裝備屬性轉換次數
-        update_achievement_counter(self.chara.id, 24, 1, 'increase')
+        update_achievement_counter(self.chara, 24, 1, 'increase')
 
     def validate_slot_type(self, value):
         if value.id == 4:
@@ -398,7 +398,7 @@ class SmithEquipmentTransformSerializer(LockedEquipmentCheckMixin, BaseSerialize
         self.chara.get_items('bag', [item])
 
         # 轉換裝備次數
-        update_achievement_counter(self.chara.id, 13, 1, 'increase')
+        update_achievement_counter(self.chara, 13, 1, 'increase')
 
         return {'display_message': f"獲得了{item.name}({equipment.attack_base}/{equipment.defense_base}/{equipment.weight_base})"}
 
@@ -442,7 +442,7 @@ class BattleMapTicketToItemSerializer(BaseSerializer):
         else:
             push_log("製作", f"{self.chara.name}製作地圖時不小心打翻了墨水，損毀了{number}個{item_type.name}")
             # 地圖製作累計失敗張數
-            update_achievement_counter(self.chara.id, 16, number, 'increase')
+            update_achievement_counter(self.chara, 16, number, 'increase')
             return {'display_message': "不小心打翻了墨水，所有的地圖都被損毀了"}
 
     def validate(self, data):

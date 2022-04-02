@@ -56,7 +56,7 @@ class ChangeNameSerializer(BaseSerializer):
             message = f"{orig_name}改名為{name}"
 
             # 角色改名次數
-            update_achievement_counter(self.chara.id, 20, 1, 'increase')
+            update_achievement_counter(self.chara, 20, 1, 'increase')
         elif kind in ['weapon', 'armor', 'jewelry', 'pet']:
             equipment = self.chara.slots.get(type__en_name=kind).item.equipment
             orig_name = equipment.custom_name
@@ -65,7 +65,7 @@ class ChangeNameSerializer(BaseSerializer):
             message = f"{self.chara.name}的{orig_name}改名為{name}"
 
             # 裝備改名次數
-            update_achievement_counter(self.chara.id, 14, 1, 'increase')
+            update_achievement_counter(self.chara, 14, 1, 'increase')
 
         self.chara.lose_gold(100000000)
         self.chara.save()

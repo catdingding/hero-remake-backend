@@ -81,12 +81,12 @@ class ChangeJobSerializer(BaseSerializer):
         chara.record.save()
 
         # 轉職次數
-        update_achievement_counter(chara.id, 1, 1, 'increase')
+        update_achievement_counter(chara, 1, 1, 'increase')
         # 轉職為N階
-        update_achievement_counter(chara.id, 2, job.rank, 'set')
+        update_achievement_counter(chara, 2, job.rank, 'set')
         # 最高轉職繼承率
         average_inherit_ratio = round(sum(inherit_ratio_list) / len(inherit_ratio_list))
-        update_achievement_counter(chara.id, 3, average_inherit_ratio, 'set')
+        update_achievement_counter(chara, 3, average_inherit_ratio, 'set')
 
     def validate_job(self, job):
         for job_attr in job.attributes.all():
@@ -122,7 +122,7 @@ class CharaSkillSettingSerializer(BaseModelSerializer):
     class Meta:
         model = CharaSkillSetting
         fields = ['skill', 'hp_percentage', 'mp_percentage',
-                  'defender_hp_percentage', 'defender_mp_percentage', 
+                  'defender_hp_percentage', 'defender_mp_percentage',
                   'times_limit', 'probability', 'order']
 
 

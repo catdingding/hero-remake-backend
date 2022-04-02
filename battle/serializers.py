@@ -155,7 +155,7 @@ class ArenaFightSerializer(BaseSerializer):
             if not win:
                 message = f"但因{chara.name}的剩餘血量比例較高，{message}"
             push_log("競技場", f"{chara.name}戰勝了{opponent.name}，佔領了{arena.name}")
-            update_achievement_counter(self.chara.id, 17, 1, 'increase')
+            update_achievement_counter(self.chara, 17, 1, 'increase')
         else:
             arena.occupier_win_count += 1
             message = f"{opponent.name}守住了{arena.name}"
@@ -311,7 +311,7 @@ class WorldBossFightSerializer(BaseSerializer):
         if win:
             push_log("神獸", f"{world_boss.name}被{team.name}擊敗了")
         # 發起神獸戰次數
-        update_achievement_counter(self.chara.id, 5, 1, 'increase')
+        update_achievement_counter(self.chara, 5, 1, 'increase')
         return result
 
     def validate_world_boss(self, world_boss):

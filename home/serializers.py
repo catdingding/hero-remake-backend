@@ -94,7 +94,7 @@ class CharaFarmHarvestSerializer(BaseSerializer):
         farm.save()
 
         # 農場收穫次數
-        update_achievement_counter(self.chara.id, 10, 1, 'increase')
+        update_achievement_counter(self.chara, 10, 1, 'increase')
 
         return {'display_message': message}
 

@@ -132,7 +132,7 @@ class CountryJoinRequestReviewSerializer(BaseSerializer):
             push_log("入國", f"{chara.name}加入了{self.country.name}")
             send_refresh_chara_profile_signal(chara.id)
             # 入國次數次數
-            update_achievement_counter(chara.id, 4, 1, 'increase')
+            update_achievement_counter(chara, 4, 1, 'increase')
             return {'display_message': '入國申請已通過'}
 
         elif self.validated_data['action'] == 'reject':
@@ -265,7 +265,7 @@ class CountryDonateSerializer(BaseSerializer):
 
         push_log("國庫", f"{self.chara.name}向國庫捐贈了{gold}金錢")
         # 國家資金捐獻數量
-        update_achievement_counter(self.chara.id, 11, gold, 'increase')
+        update_achievement_counter(self.chara, 11, gold, 'increase')
 
     def validate_gold(self, gold):
         if gold > self.chara.gold:

@@ -43,7 +43,7 @@ class MoveSerializer(BaseSerializer):
         self.chara.save()
 
         # 地圖移動次數
-        update_achievement_counter(self.chara.id, 6, 1, 'increase')
+        update_achievement_counter(self.chara, 6, 1, 'increase')
 
 
 class MapQuerySerializer(BaseSerializer):
