@@ -57,6 +57,7 @@ class LocationSerializer(SerpyModelSerializer):
     battle_map_name = serpy.MethodField()
     country = CountrySerializer()
     town = TownSerializer()
+    has_world_boss = serpy.Field()
 
     class Meta:
         model = Location

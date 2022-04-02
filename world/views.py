@@ -1,5 +1,5 @@
 
-from django.db.models import Max, Min
+from django.db.models import Max, Min, Exists, OuterRef
 from base.views import BaseGenericAPIView, BaseGenericViewSet, CharaViewMixin, CharaPostViewMixin
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
@@ -7,6 +7,7 @@ from rest_framework.permissions import AllowAny
 
 from world.serializers import MoveSerializer, LocationSerializer, MapQuerySerializer, ElementTypeSerializer
 from world.models import Location, ElementType
+from battle.models import WorldBoss
 
 
 class MoveView(CharaPostViewMixin, BaseGenericAPIView):
@@ -28,6 +29,9 @@ class MapView(BaseGenericAPIView):
         y = max(bounds['y_min'] + radius, min(y, bounds['y_max'] - radius))
         locations = Location.objects.filter(x__gte=x - radius, x__lte=x + radius, y__gte=y - radius, y__lte=y + radius)
         locations = locations.order_by('-y', 'x').select_related('element_type', 'battle_map', 'town', 'country')
+        locations = locations.annotate(
+            has_world_boss=Exists(WorldBoss.objects.filter(is_alive=True, location=OuterRef('id')))
+        )
 
         serializer = self.get_serializer(locations, many=True)
         return Response(serializer.data)
