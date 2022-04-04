@@ -56,7 +56,7 @@ class CharaViewSet(ListModelMixin, BaseGenericViewSet):
     serializer_class = CharaPublicProfileSerializer
 
     filter_backends = [OrderingFilter, SearchFilter, DjangoFilterBackend]
-    ordering_fields = ['pvp_points']
+    ordering_fields = ['pvp_points', 'gold', 'proficiency', 'record__total_battle', 'hp_max', 'mp_max']
     search_fields = ['name']
     filterset_fields = ['id', 'country', 'team']
 
