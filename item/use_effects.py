@@ -213,7 +213,7 @@ class UseEffect_11(BaseUseEffect):
         return f"使用了{self.n}個{self.type.name}，倉庫上限變為{self.chara.storage_item_limit}。"
 
 
-# 贊助點數
+# 贊助點數(付費)
 @add_class(USE_EFFECT_CLASSES)
 class UseEffect_12(BaseUseEffect):
     id = 12
@@ -221,7 +221,7 @@ class UseEffect_12(BaseUseEffect):
     def execute(self):
         value = self.type.power * self.n
 
-        self.chara.member_point += value
+        self.chara.member_point_paid += value
         self.chara.save()
 
         return f"使用了{self.n}個{self.type.name}，獲得了{value}點贊助點數"
@@ -324,3 +324,17 @@ class UseEffect_16(BaseUseEffect):
         update_achievement_counter(self.chara, 25, minutes, 'increase')
 
         return f"使用了{self.n}個{self.type.name}，獲得了{minutes}分鐘的{npc.name}同伴"
+
+
+# 贊助點數(綁定)
+@add_class(USE_EFFECT_CLASSES)
+class UseEffect_17(BaseUseEffect):
+    id = 17
+
+    def execute(self):
+        value = self.type.power * self.n
+
+        self.chara.member_point_free += value
+        self.chara.save()
+
+        return f"使用了{self.n}個{self.type.name}，獲得了{value}點綁定贊助點數"

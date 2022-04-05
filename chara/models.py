@@ -71,7 +71,8 @@ class Chara(BaseModel):
     storage_item_limit = models.IntegerField(default=15)
 
     # member
-    member_point = models.PositiveIntegerField(default=0)
+    member_point_paid = models.PositiveIntegerField(default=0)
+    member_point_free = models.PositiveIntegerField(default=0)
 
     has_cold_down_bonus = models.BooleanField(default=False)
     has_quest_bonus = models.BooleanField(default=False)
@@ -229,10 +230,14 @@ class Chara(BaseModel):
             raise ValidationError("熟練不足")
         self.proficiency -= number
 
-    def lose_member_point(self, number):
-        if self.member_point < number:
+    def lose_member_point(self, cost, need_paid=False):
+        if not need_paid:
+            pay_with_free = min(cost, self.member_point_free)
+            self.member_point_free -= pay_with_free
+            cost -= pay_with_free
+        if self.member_point_paid < cost:
             raise ValidationError("點數不足")
-        self.member_point -= number
+        self.member_point_paid -= cost
 
 
 class CharaAttribute(BaseModel):

@@ -200,7 +200,7 @@ class CharaPublicProfileSerializer(SerpyModelSerializer):
         exclude = [
             'user', 'created_at', 'updated_at', 'abilities', 'storage_items',
             'location', 'bag_items', 'gold', 'proficiency', 'next_action_time', 'health',
-            'member_point', 'has_cold_down_bonus', 'has_quest_bonus', 'has_auto_heal'
+            'member_point_paid', 'member_point_free', 'has_cold_down_bonus', 'has_quest_bonus', 'has_auto_heal'
         ]
 
     @classmethod
