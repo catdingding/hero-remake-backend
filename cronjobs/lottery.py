@@ -10,7 +10,7 @@ from chara.models import Chara
 from trade.models import Lottery
 
 from chara.achievement import update_achievement_counter
-from system.utils import push_log
+from system.utils import push_log, send_system_message
 
 
 for lottery in Lottery.objects.all():
@@ -29,4 +29,6 @@ for lottery in Lottery.objects.all():
         message = "無人中獎……"
 
     Lottery.objects.filter(id=lottery.id).update(nth=F('nth') + 1, gold=gold)
-    push_log("彩券", f"第{lottery.nth}期{lottery.name}開獎結果為{number}號：{message}")
+    message = f"第{lottery.nth}期{lottery.name}開獎結果為{number}號：{message}"
+    push_log("彩券", message)
+    send_system_message("系統醬", 5, message)
