@@ -1,4 +1,4 @@
-from random import choice, choices
+from random import choice, choices, random
 from statistics import mean
 from collections import Counter
 from django.utils.timezone import localtime
@@ -24,6 +24,40 @@ class EmptyEquipment:
     element_type_id = None
 
 
+class BattleParams:
+    battle_effect_type_mapping = {
+        1: '',
+        2: '',
+        3: '',
+        4: '',
+        5: '',
+        6: '',
+        7: '',
+        8: '',
+    }
+
+    def __init__(self):
+        self.params = {
+            'normal_attack_damage_ratio': {'value': 1, 'min': 0.5, 'max': 2},
+            'skill_attack_damage_ratio': {'value': 1, 'min': 0.5, 'max': 2},
+            'skill_activation_rate_ratio': {'value': 1, 'min': 0.5, 'max': 2},
+            'skill_mp_cost_ratio': {'value': 1, 'min': 0.5, 'max': 2},
+            'normal_attack_damage_lower_bound': {'value': 0.2, 'min': 0, 'max': 0.6},
+            'critical_rate_upper_bound': {'value': 0.25, 'min': 0, 'max': 0.6},
+            'critical_damage_add_on': {'value': 0.5, 'min': 0, 'max': 2},
+            'max_rounds': {'value': 400, 'min': 200, 'max': 600},
+        }
+
+    def __getitem__(self, key):
+        return self.params[key]['value']
+
+    def apply_battle_effect(self, battle_effect):
+        self.update_param(self.battle_effect_param_mapping[battle_effect.type_id], battle_effect.value)
+
+    def update_param(self, key, n):
+        self.params[key]['value'] = min(self.params[key]['max'], max(self.params[key]['min'], self[key] + n))
+
+
 class Battle:
     def __init__(self, attackers, defenders, battle_type, element_type=None, attacker_bonus=1, defender_bonus=1):
         assert battle_type in ['pvp', 'pve', 'dungeon', 'world_boss', 'mirror', 'ugc_dungeon']
@@ -35,17 +69,14 @@ class Battle:
             [BattleChara(x, battle=self, team='defender') for x in defenders]
         self.summon()
         self.rename_charas()
+        self.params = BattleParams()
 
         self.executed = False
         self.logs = []
         self.rounds = 0
 
         self.actions = 0
-        self.max_actions = (len(attackers) + len(defenders)) * 2 * self.max_rounds
-
-    @property
-    def max_rounds(self):
-        return 400
+        self.max_actions = (len(attackers) + len(defenders)) * 2 * self.params['max_rounds']
 
     @property
     def winner(self):
@@ -102,7 +133,7 @@ class Battle:
                 self.actions += 1
                 self.logs[-1]['charas'] = [chara.profile for chara in self.charas]
 
-            if self.winner != 'draw' or self.rounds >= self.max_rounds or self.actions >= self.max_actions:
+            if self.winner != 'draw' or self.rounds >= self.params['max_rounds'] or self.actions >= self.max_actions:
                 break
 
     def before_execute(self):
@@ -175,10 +206,6 @@ class BattleChara:
         self.set_attributes()
         for field in ['hp', 'hp_max', 'mp', 'mp_max']:
             setattr(self, field, int(getattr(self, field) * self.bonus))
-        # 暴擊率
-        # 奧義類型10:暴擊率提升
-        self.critical = min(250, 20 + self.dex // 3)
-        self.critical += self.ability_type_power(10) * 1000 * max(1, self.dex / 1000)
 
         self.attack_add_on = 0
         self.defense_add_on = 0
@@ -295,6 +322,13 @@ class BattleChara:
         return max(100, speed)
 
     @property
+    def critical(self):
+        # 奧義類型10:暴擊率提升
+        critical = min(self.battle.params['critical_rate_upper_bound'], 0.02 + self.dex / 3000)
+        critical += self.ability_type_power(10) * max(1, self.dex / 1000)
+        return critical
+
+    @property
     def profile(self):
         return {
             'team': self.team,
@@ -372,8 +406,8 @@ class BattleChara:
             return None
 
         skill = skill_setting.skill
-        rate = skill.rate
-        mp_cost = skill.mp_cost
+        rate = int(skill.rate * self.battle.params['skill_activation_rate_ratio'])
+        mp_cost = int(skill.mp_cost * self.battle.params['skill_mp_cost_ratio'])
         # 奧義類型6:魔力之術
         if self.has_ability_type(6):
             mp_cost -= int(mp_cost * self.ability_type_power(6))
@@ -493,8 +527,11 @@ class BattleChara:
             self.log(f"{self.name}損失了{hp_loss}HP，造成真實傷害")
         # 一般
         else:
-            damage_max = (attack * attack) / (attack + defender.defense)
-            damage = randint(int(damage_max * (0.2 + 0.2 * self.luck_sigmoid)), damage_max)
+            damage_max = int((attack * attack) / (attack + defender.defense))
+            damage_min = int(
+                damage_max * (self.battle.params['normal_attack_damage_lower_bound'] + 0.2 * self.luck_sigmoid)
+            )
+            damage = randint(damage_min, damage_max)
 
         # 奧義類型3:防禦術
         damage -= int(damage * defender.ability_type_power(3))
@@ -503,6 +540,7 @@ class BattleChara:
             damage -= int(damage * 0.4)
             defender.log(f"[暗防特效]{defender.name}受到的普攻傷害減低")
 
+        damage = int(damage * self.battle.params['normal_attack_damage_ratio'])
         defender.take_damage(self, damage)
 
     def perform_skill(self, defender, skill):
@@ -643,6 +681,7 @@ class BattleChara:
             damage -= int(damage * 0.64)
             defender.log(f"[光防特效]{defender.name}受到的技能傷害減少")
 
+        damage = int(damage * self.battle.params['skill_attack_damage_ratio'])
         defender.take_damage(self, damage, skill)
 
     def take_damage(self, attacker, damage, skill=None):
@@ -706,8 +745,10 @@ class BattleChara:
         # 暴擊處理
         # 奧義類型58:詛咒
         # 奧義類型44:安撫
-        if skill_type == 33 or attacker.critical * (1 - self.ability_type_power(58)) >= randint(1, 1000) and not self.has_ability_type(44):
-            damage += int(damage * max(0.5, sigmoid(attacker.dex, self.dex)))
+        if skill_type == 33 or attacker.critical * (1 - self.ability_type_power(58)) >= random() and not self.has_ability_type(44):
+            damage += int(
+                damage * self.battle.params['critical_damage_add_on'] * max(1, sigmoid(attacker.dex, self.dex) * 2)
+            )
             # 奧義類型23:暴擊傷害提升
             damage += int(damage * attacker.ability_type_power(23))
             self.log(f"暴擊！")
