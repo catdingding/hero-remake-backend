@@ -180,7 +180,10 @@ class Chara(BaseModel):
             cost = 15
         else:
             cost = 20
-        self.next_action_time = max(self.next_action_time, localtime()) + timedelta(seconds=n * cost)
+        self.next_action_time = max(
+            self.next_action_time,
+            localtime() - timedelta(seconds=600)
+        ) + timedelta(seconds=n * cost)
 
     def gain_exp(self, exp):
         orig_level = self.level
