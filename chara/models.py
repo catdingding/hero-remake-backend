@@ -385,6 +385,7 @@ class CharaConfig(BaseModel):
     theme = models.CharField(max_length=10, default='light', choices=THEME_CHOICES)
 
     default_autofight_status = models.BooleanField(default=False)
+    use_image_background = models.BooleanField(default=True)
 
 
 class BattleMapTicket(BaseModel):
