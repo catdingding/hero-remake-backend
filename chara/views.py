@@ -88,7 +88,8 @@ class CharaStorageItemView(BaseGenericAPIView):
     def get(self, request):
         chara = self.get_chara()
         queryset = chara.storage_items.all().select_related(
-            'type__slot_type', 'equipment__ability_1', 'equipment__ability_2', 'equipment__element_type'
+            'type__slot_type', 'equipment__ability_1', 'equipment__ability_2',
+            'equipment__element_type', 'equipment__battle_effect'
         )
         return self.list(request, queryset)
 

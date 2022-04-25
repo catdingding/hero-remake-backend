@@ -26,14 +26,14 @@ class EmptyEquipment:
 
 class BattleParams:
     battle_effect_type_mapping = {
-        1: '',
-        2: '',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: '',
+        1: 'normal_attack_damage_ratio',
+        2: 'skill_attack_damage_ratio',
+        3: 'skill_activation_rate_ratio',
+        4: 'skill_mp_cost_ratio',
+        5: 'normal_attack_damage_lower_bound',
+        6: 'critical_rate_upper_bound',
+        7: 'critical_damage_add_on',
+        8: 'max_rounds',
     }
 
     def __init__(self):
@@ -52,7 +52,7 @@ class BattleParams:
         return self.params[key]['value']
 
     def apply_battle_effect(self, battle_effect):
-        self.update_param(self.battle_effect_param_mapping[battle_effect.type_id], battle_effect.value)
+        self.update_param(self.battle_effect_type_mapping[battle_effect.type_id], battle_effect.value)
 
     def update_param(self, key, n):
         self.params[key]['value'] = min(self.params[key]['max'], max(self.params[key]['min'], self[key] + n))
@@ -65,11 +65,16 @@ class Battle:
         self.element_type = element_type
         self.attacker_bonus = attacker_bonus
         self.defender_bonus = defender_bonus
+        self.effects = []
+
         self.charas = [BattleChara(x, battle=self, team='attacker') for x in attackers] + \
             [BattleChara(x, battle=self, team='defender') for x in defenders]
         self.summon()
         self.rename_charas()
+
         self.params = BattleParams()
+        for effect in self.effects:
+            self.params.apply_battle_effect(effect)
 
         self.executed = False
         self.logs = []
@@ -149,6 +154,24 @@ class Battle:
                 else:
                     chara.hp = 0
                     chara.log(f"檢測到{chara.name}進行違規操作，HP已歸零")
+
+        for effect in self.effects:
+            self.logs[-1]['actions'].append(
+                {'team': None, 'chara': None, 'message': f'戰場效果：{effect.name}'}
+            )
+        for name, field in [
+            ['普攻傷害倍率', 'normal_attack_damage_ratio'],
+            ['技能傷害倍率', 'skill_attack_damage_ratio'],
+            ['技能發動倍率', 'skill_activation_rate_ratio'],
+            ['技能耗魔倍率', 'skill_mp_cost_ratio'],
+            ['普攻傷害下限', 'normal_attack_damage_lower_bound'],
+            ['暴擊率上限', 'critical_rate_upper_bound'],
+            ['暴擊傷害加成', 'critical_damage_add_on'],
+            ['回合數上限', 'max_rounds'],
+        ]:
+            self.logs[-1]['actions'].append(
+                {'team': None, 'chara': None, 'message': f'{name}：{round(self.params[field],2):g}'}
+            )
 
         self.logs[-1]['charas'] = [chara.profile for chara in self.charas]
 
@@ -242,9 +265,12 @@ class BattleChara:
     def create_from_chara(self, chara):
         # 裝備
         self.equipments = {}
-        for slot in chara.slots.all().select_related('item__equipment', 'item__type'):
+        for slot in chara.slots.all().select_related('item__equipment__battle_effect', 'item__type'):
             if slot.item:
                 self.equipments[slot.type_id] = slot.item.equipment
+                battle_effect = slot.item.equipment.battle_effect
+                if battle_effect:
+                    self.battle.effects.append(battle_effect)
             else:
                 self.equipments[slot.type_id] = EmptyEquipment()
 

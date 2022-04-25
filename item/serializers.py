@@ -12,6 +12,7 @@ from base.serializers import (
 from base.utils import randint
 from ability.serializers import AbilitySerializer
 from battle.models import BattleMap
+from battle.serializers.battle_effect import BattleEffectSerializer
 from world.serializers import SlotTypeSerializer, ElementTypeSerializer
 from world.models import SlotType, ElementType
 from item.models import Item, ItemType, Equipment, PetType
@@ -51,6 +52,8 @@ class EquipmentSerializer(SerpyModelSerializer):
 
     ability_1 = AbilitySerializer(fields=['name'])
     ability_2 = AbilitySerializer(fields=['name'])
+
+    battle_effect = BattleEffectSerializer()
 
     class Meta:
         model = Equipment

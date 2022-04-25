@@ -286,7 +286,8 @@ class CharaProfileSerializer(CharaPublicProfileSerializer):
             queryset = queryset.prefetch_related('titles__type')
         if is_included(request, 'bag_items'):
             queryset = queryset.prefetch_related(Prefetch('bag_items', Item.objects.select_related(
-                'type__slot_type', 'equipment__ability_1', 'equipment__ability_2', 'equipment__element_type'
+                'type__slot_type', 'equipment__ability_1', 'equipment__ability_2',
+                'equipment__element_type', 'equipment__battle_effect'
             )))
         if is_included(request, 'farms'):
             queryset = queryset.prefetch_related(Prefetch('farms', CharaFarm.objects.select_related(

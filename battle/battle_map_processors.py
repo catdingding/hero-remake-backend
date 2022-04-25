@@ -1,11 +1,11 @@
-from random import choice, choices
+from random import choice, choices, random
 
 from django.db.models import F
 
 from base.utils import add_class, randint
 from battle.utils import get_event_item_type
 from battle.battle import Battle
-from battle.models import Monster, WorldBoss
+from battle.models import Monster, WorldBoss, BattleEffect
 from item.models import ItemType, ItemTypePoolGroup, ItemTypePool, Item
 from item.serializers import SimpleItemSerializer
 from chara.models import BattleMapTicket, CharaAttribute
@@ -18,6 +18,7 @@ BATTLE_MAP_PROCESSORS = {}
 
 class BaseBattleMapProcessor():
     upgrade_attribute_limit_after_win = False
+    equipment_with_battle_effect_prob = 0.05
     # ItemTypePoolGroup
     map_loot_group_settings = [
         {'id': 1, 'rand': 10000}
@@ -59,6 +60,9 @@ class BaseBattleMapProcessor():
             if self.upgrade_attribute_limit_after_win or \
                     (self.chara.has_equipped_ability_type(29) and randint(1, 1000) == 1):
                 self.upgrade_attribute()
+
+            if self.equipment_with_battle_effect_prob >= random():
+                self.set_loots_battle_effect(loots)
         else:
             loots = []
             exp = 0
@@ -288,6 +292,16 @@ class BaseBattleMapProcessor():
 
         self.messages.append(f"{attribute_type.name}上限提升了1點")
 
+    def set_loots_battle_effect(self, loots):
+        if not loots:
+            return
+
+        battle_effects = BattleEffect.objects.all()
+        for loot in loots:
+            if loot.type.category_id == 1 and loot.type.slot_type_id != 4:
+                loot.equipment.battle_effect = choice(battle_effects)
+                loot.equipment.save()
+
 
 # 草原
 @ add_class(BATTLE_MAP_PROCESSORS)
@@ -507,6 +521,7 @@ class BattleMapProcessor_16(BaseBattleMapProcessor):
 class BattleMapProcessor_17(BaseBattleMapProcessor):
     id = 17
 
+    equipment_with_battle_effect_prob = 1
     map_loot_settings = [
         {'id': 1554, 'rand': 500}
     ]

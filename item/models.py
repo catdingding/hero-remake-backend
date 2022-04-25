@@ -113,6 +113,8 @@ class Equipment(Item):
     ability_2 = models.ForeignKey("ability.Ability", null=True,
                                   related_name="ability_2_items", on_delete=models.PROTECT)
 
+    battle_effect = models.ForeignKey("battle.BattleEffect", null=True, on_delete=models.PROTECT)
+
     is_locked = models.BooleanField(default=False)
 
     @property
@@ -175,7 +177,7 @@ class ItemTypePool(BaseModel):
         assert n >= 0
         if n == 0:
             return []
-            
+
         members = self.members.all()
         picked_members = choices(members, weights=[m.weight for m in members], k=n)
         picked_item_types = [x.item_type_id for x in picked_members]
