@@ -9,6 +9,7 @@ class ItemFilter(filters.FilterSet):
     slot_type = filters.NumberFilter(method='filter_common_field')
     is_locked = filters.BooleanFilter(method='filter_is_locked')
     name_like = filters.CharFilter(method='filter_name_like')
+    has_battle_effect = filters.BooleanFilter(method='filter_has_battle_effect')
     ordering = filters.ChoiceFilter(choices=[('name', 'name')], method='order_by')
 
     def get_field_name(self, name):
@@ -46,6 +47,13 @@ class ItemFilter(filters.FilterSet):
             Q(**{self.get_field_name('type__name') + '__contains': value}) |
             Q(**{self.get_field_name('equipment__custom_name') + '__contains': value})
         )
+
+    def filter_has_battle_effect(self, queryset, name, value):
+        condition = Q(**{self.get_field_name('equipment__battle_effect__isnull'): False})
+        if not value:
+            condition = ~condition
+
+        return queryset.filter(condition)
 
     def order_by(self, queryset, name, value):
         if value == 'name':
