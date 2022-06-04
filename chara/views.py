@@ -19,7 +19,7 @@ from chara.serializers import (
     CharaProfileSerializer, CharaPublicProfileSerializer, IncreaseHPMPMaxSerializer, HandInQuestSerializer,
     CharaAvatarSerializer, CharaIntroductionUpdateSerializer, PartnerAssignSerializer,
     CharaAchievementTypeSerializer, CharaTitleSetSerializer, CharaConfigUpdateSerializer,
-    CharaCustomTitleUpdateSerializer, CharaCustomTitleExpandSerializer
+    CharaCustomTitleUpdateSerializer, CharaCustomTitleExpandSerializer, CharaHomeUpdateSerializer
 )
 from item.serializers import ItemSerializer
 
@@ -125,6 +125,19 @@ class CharaConfigView(BaseGenericAPIView):
     def put(self, request):
         chara = self.get_chara(lock=True)
         serializer = self.get_serializer(chara.config, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'status': 'success'})
+
+
+class CharaHomeView(BaseGenericAPIView):
+    serializer_class = CharaHomeUpdateSerializer
+    with_instance = True
+
+    def put(self, request):
+        chara = self.get_chara(lock=True)
+        serializer = self.get_serializer(chara.home, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 

@@ -164,6 +164,7 @@ class Chara(BaseModel):
         CharaIntroduction.objects.create(chara=self)
         CharaConfig.objects.create(chara=self)
         CharaCustomTitle.objects.create(chara=self)
+        CharaHome.objects.create(chara=self, chars=[''] * 900)
         CharaRecord.objects.create(chara=self)
         BattleMapTicket.objects.bulk_create([
             BattleMapTicket(chara=self, battle_map=battle_map)
@@ -354,6 +355,11 @@ class CharaFarm(BaseModel):
     chara = models.ForeignKey("chara.Chara", related_name="farms", on_delete=models.CASCADE)
     item = models.ForeignKey("item.Item", null=True, on_delete=models.SET_NULL)
     due_time = models.DateTimeField(null=True)
+
+
+class CharaHome(BaseModel):
+    chara = models.OneToOneField("chara.Chara", on_delete=models.CASCADE, related_name="home")
+    chars = models.JSONField()
 
 
 class CharaRecord(BaseModel):

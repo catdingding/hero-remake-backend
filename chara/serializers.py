@@ -14,7 +14,7 @@ from world.models import SlotType
 from chara.models import (
     Chara, CharaIntroduction, CharaAttribute, BattleMapTicket, CharaRecord, CharaSlot, CharaSkillSetting,
     CharaFarm, CharaBuff, CharaBuffType, CharaPartner, CharaAchievementType, CharaTitle, CharaTitleType,
-    CharaConfig, CharaCustomTitle
+    CharaConfig, CharaCustomTitle, CharaHome
 )
 from item.models import Item, ItemTypePoolGroup
 from battle.serializers import BattleMapSerializer, MonsterSerializer
@@ -67,6 +67,18 @@ class CharaFarmSerializer(SerpyModelSerializer):
     class Meta:
         model = CharaFarm
         fields = ['id', 'item', 'due_time']
+
+
+class CharaHomeSerializer(SerpyModelSerializer):
+    class Meta:
+        model = CharaHome
+        fields = ['chars']
+
+
+class CharaHomeUpdateSerializer(BaseModelSerializer):
+    class Meta:
+        model = CharaHome
+        exclude = ['id', 'chara', 'created_at', 'updated_at']
 
 
 class CharaBuffTypeSerializer(SerpyModelSerializer):
@@ -194,6 +206,7 @@ class CharaPublicProfileSerializer(SerpyModelSerializer):
 
     introduction = CharaIntroductionSerializer()
     record = CharaRecordSerializer()
+    home = CharaHomeSerializer()
 
     class Meta:
         model = Chara
@@ -207,7 +220,7 @@ class CharaPublicProfileSerializer(SerpyModelSerializer):
     def process_queryset(cls, request, queryset):
         for field in [
             'country', 'official', 'team', 'element_type', 'job', 'main_ability', 'job_ability', 'live_ability',
-            'record', 'introduction', 'custom_title'
+            'record', 'introduction', 'custom_title', 'home'
         ]:
             if is_included(request, field):
                 queryset = queryset.select_related(field)
