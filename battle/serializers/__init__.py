@@ -9,7 +9,7 @@ from battle.models import BattleMap, Dungeon, DungeonFloor, BattleResult, WorldB
 from chara.models import Chara
 from item.models import Item
 from trade.models import Parcel
-from team.models import TeamDungeonRecord
+from team.models import TeamDungeonRecord, Team
 from base.serializers import BaseSerializer, SerpyModelSerializer, IdNameSerializer
 from item.serializers import ItemTypeSerializer, ItemSerializer
 from world.serializers import ElementTypeSerializer, LocationSerializer, AttributeTypeSerializer
@@ -76,11 +76,20 @@ class PvPFightSerializer(BaseSerializer):
         opponent.pvp_points -= points
         opponent.save()
 
-        return {
+        result = {
             'winner': battle.winner,
             'logs': battle.logs,
             'messages': [f"PvP點數{points if points < 0 else f'+{points}' }"]
         }
+
+        BattleResult.objects.create(title=f"{chara.name}vs{opponent.name}", content=result)
+
+        return result
+
+    def validate_opponent(self, opponent):
+        if opponent.id == self.chara.id:
+            raise serializers.ValidationError("不可與自己PvP")
+        return opponent
 
 
 class MirrorFightSerializer(BaseSerializer):
@@ -97,6 +106,33 @@ class MirrorFightSerializer(BaseSerializer):
             'logs': battle.logs,
             'messages': []
         }
+
+
+class PvPTeamFightSerializer(BaseSerializer):
+    opponent = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all())
+
+    def save(self):
+        opponent = self.validated_data['opponent']
+        battle = Battle(
+            attackers=self.team.members.all(),
+            defenders=opponent.members.all(),
+            battle_type='pvp'
+        )
+
+        battle.execute()
+
+        self.chara.set_next_action_time()
+        self.chara.save()
+
+        result = {
+            'winner': battle.winner,
+            'logs': battle.logs,
+            'messages': []
+        }
+
+        BattleResult.objects.create(title=f"{self.team.name}vs{opponent.name}", content=result)
+
+        return result
 
 
 class ArenaSerializer(SerpyModelSerializer):
