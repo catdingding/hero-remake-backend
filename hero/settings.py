@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'npc.apps.NpcConfig',
     'ugc.apps.UgcConfig',
     'asset.apps.AssetConfig',
+    'adventure.apps.AdventureConfig',
 ]
 
 MIDDLEWARE = [
