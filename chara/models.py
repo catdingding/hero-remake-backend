@@ -176,15 +176,19 @@ class Chara(BaseModel):
         sftp_put_fo(fo, os.path.join(settings.CHARA_AVATAR_PATH, f"{self.id}.jpg"))
         Chara.objects.filter(id=self.id).update(avatar_version=models.F('avatar_version') + 1)
 
-    def set_next_action_time(self, n=1):
+    @property
+    def basic_time_cost(self):
         if self.has_cold_down_bonus:
             cost = 15
         else:
             cost = 20
+        return cost
+
+    def set_next_action_time(self, n=1):
         self.next_action_time = max(
             self.next_action_time,
-            localtime() - timedelta(seconds=600)
-        ) + timedelta(seconds=n * cost)
+            localtime() - timedelta(hours=24)
+        ) + timedelta(seconds=n * self.basic_time_cost)
 
     def gain_exp(self, exp):
         orig_level = self.level

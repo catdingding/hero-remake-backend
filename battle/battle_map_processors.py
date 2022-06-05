@@ -32,7 +32,7 @@ class BaseBattleMapProcessor():
         self.battle_map = battle_map
         self.messages = []
 
-    def execute(self):
+    def execute(self, n=1):
         self.monsters = self.get_monsters()
 
         battle = Battle(attackers=[self.chara], defenders=self.monsters,
@@ -42,23 +42,23 @@ class BaseBattleMapProcessor():
         self.team_members = [x for x in battle.charas if x.team == 'attacker']
         self.win = (battle.winner == 'attacker')
 
-        self.chara.record.total_battle += 1
-        self.chara.record.today_battle += 1
+        self.chara.record.total_battle += n
+        self.chara.record.today_battle += n
 
         if self.win:
-            self.chara.record.world_monster_quest_counter += len(self.monsters)
+            self.chara.record.world_monster_quest_counter += len(self.monsters) * n
             if self.chara.country_id is not None and self.chara.country_id == self.location.country_id:
-                self.chara.record.country_monster_quest_counter += len(self.monsters)
+                self.chara.record.country_monster_quest_counter += len(self.monsters) * n
 
-            loots = self.get_loots()
-            gold = self.get_gold()
-            exp = self.get_exp()
-            proficiency = self.get_proficiency()
+            loots = [x for i in range(n) for x in self.get_loots()]
+            gold = self.get_gold() * n
+            exp = self.get_exp() * n
+            proficiency = self.get_proficiency() * n
             found_battle_maps = self.find_battle_maps()
 
             # 奧義類型29:成長
             if self.upgrade_attribute_limit_after_win or \
-                    (self.chara.has_equipped_ability_type(29) and randint(1, 1000) == 1):
+                    (self.chara.has_equipped_ability_type(29) and randint(1, 1000) <= n):
                 self.upgrade_attribute()
 
             if self.equipment_with_battle_effect_prob >= random():
@@ -92,7 +92,7 @@ class BaseBattleMapProcessor():
         if found_battle_maps:
             BattleMapTicket.objects.filter(
                 chara=self.chara, battle_map__in=found_battle_maps
-            ).update(value=F('value') + 1)
+            ).update(value=F('value') + n)
 
         self.chara.save()
 
@@ -390,8 +390,8 @@ class BattleMapProcessor_6(BaseBattleMapProcessor):
 
         return loots
 
-    def execute(self):
-        result = super().execute()
+    def execute(self, n):
+        result = super().execute(n)
 
         if self.win:
             for monster in self.monsters:
@@ -400,10 +400,10 @@ class BattleMapProcessor_6(BaseBattleMapProcessor):
                     attribute_type = choice(AttributeType.objects.all())
 
                     chara_attr = self.chara.attributes.get(type=attribute_type)
-                    chara_attr.limit += 1
+                    chara_attr.limit += n
                     chara_attr.save()
 
-                    result['messages'].append(f"{attribute_type.name}上限提升了1點")
+                    result['messages'].append(f"{attribute_type.name}上限提升了{n}點")
 
         return result
 

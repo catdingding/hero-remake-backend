@@ -43,13 +43,18 @@ class BattleMapFightSerializer(BaseSerializer):
             if affected_rows == 0:
                 raise serializers.ValidationError("無法進入該地圖")
 
+            n = 1
+        else:
+            n = max(0, int((localtime() - self.chara.next_action_time).total_seconds()) // self.chara.basic_time_cost)
+            n = min(100, n + 1)
+
         processor_class = BATTLE_MAP_PROCESSORS[battle_map.id]
         processor = processor_class(chara, battle_map)
 
-        chara.set_next_action_time()
+        chara.set_next_action_time(n)
         chara.save()
 
-        return processor.execute()
+        return processor.execute(n)
 
 
 class PvPFightSerializer(BaseSerializer):

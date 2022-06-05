@@ -111,7 +111,7 @@ DATABASES = {
         'HOST': os.environ['DB_HOST'],
         'PORT': os.environ['DB_PORT'],
         'OPTIONS': {'charset': 'utf8mb4'},
-        'CONN_MAX_AGE': 60
+        'CONN_MAX_AGE': 0
     }
 }
 
