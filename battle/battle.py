@@ -59,13 +59,22 @@ class BattleParams:
 
 
 class Battle:
-    def __init__(self, attackers, defenders, battle_type, element_type=None, attacker_bonus=1, defender_bonus=1):
-        assert battle_type in ['pvp', 'pve', 'dungeon', 'world_boss', 'mirror', 'ugc_dungeon']
+    def __init__(
+        self, attackers, defenders, battle_type,
+        element_type=None, attacker_bonus=1, defender_bonus=1, context=None
+    ):
+        assert battle_type in ['pvp', 'pve', 'dungeon', 'world_boss', 'mirror', 'ugc_dungeon', 'adventure']
         self.battle_type = battle_type
         self.element_type = element_type
         self.attacker_bonus = attacker_bonus
         self.defender_bonus = defender_bonus
         self.effects = []
+
+        if context is None:
+            self.context = {}
+        else:
+            isinstance(context, dict)
+            self.context = context
 
         self.charas = [BattleChara(x, battle=self, team='attacker') for x in attackers] + \
             [BattleChara(x, battle=self, team='defender') for x in defenders]
@@ -276,6 +285,15 @@ class BattleChara:
 
         # 奧義
         self.ability_types = chara.equipped_ability_types
+
+        # 冒險模式
+        if self.battle.battle_type == 'adventure':
+            for slot in self.equipments.keys():
+                self.equipments[slot] = EmptyEquipment()
+            self.ability_types = {
+                ability.type_id: ability
+                for ability in sorted(self.battle.context['adventure_abilities'], key=lambda x: x.power)
+            }
 
         # hp, mp
         for field in ['hp', 'hp_max', 'mp', 'mp_max']:

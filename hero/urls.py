@@ -163,4 +163,5 @@ urlpatterns = [
     path('trade/lottery/buy/', BuyLotteryView.as_view()),
     path('world-bosses/', WorldBossView.as_view()),
     path('ugc/', include('ugc.urls')),
+    path('adventure/', include('adventure.urls')),
 ] + router.urls
