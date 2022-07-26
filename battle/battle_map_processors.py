@@ -33,6 +33,7 @@ class BaseBattleMapProcessor():
         self.messages = []
 
     def execute(self, n=1):
+        self.n = n
         self.monsters = self.get_monsters()
 
         battle = Battle(attackers=[self.chara], defenders=self.monsters,
@@ -54,7 +55,8 @@ class BaseBattleMapProcessor():
             gold = self.get_gold() * n
             exp = self.get_exp() * n
             proficiency = self.get_proficiency() * n
-            found_battle_maps = self.find_battle_maps()
+            found_random_battle_maps = self.find_random_battle_maps()
+            found_fixed_battle_maps = self.find_fixed_battle_maps()
 
             # 奧義類型29:成長
             if self.upgrade_attribute_limit_after_win or \
@@ -68,7 +70,8 @@ class BaseBattleMapProcessor():
             exp = 0
             gold = 0
             proficiency = 0
-            found_battle_maps = []
+            found_random_battle_maps = []
+            found_fixed_battle_maps = []
 
         battle_chara = battle.find_chara_by_source(self.chara)
 
@@ -89,10 +92,14 @@ class BaseBattleMapProcessor():
         CharaAttribute.objects.filter(
             chara=self.chara, type_id=F('chara__job__attribute_type')
         ).update(proficiency=F('proficiency') + proficiency)
-        if found_battle_maps:
+        if found_random_battle_maps:
             BattleMapTicket.objects.filter(
-                chara=self.chara, battle_map__in=found_battle_maps
+                chara=self.chara, battle_map__in=found_random_battle_maps
             ).update(value=F('value') + n)
+        if found_fixed_battle_maps:
+            BattleMapTicket.objects.filter(
+                chara=self.chara, battle_map__in=found_fixed_battle_maps
+            ).update(value=F('value') + 1)
 
         self.chara.save()
 
@@ -250,7 +257,7 @@ class BaseBattleMapProcessor():
         exp *= int(1 + self.chara.equipped_ability_type_power(22) * 2)
         return exp
 
-    def find_battle_maps(self):
+    def find_random_battle_maps(self):
         battle_maps = []
         """ 隨機地圖 """
         # 財寶洞窟
@@ -269,16 +276,20 @@ class BaseBattleMapProcessor():
         if randint(1, 1000) == 1:
             battle_maps.append(16)
 
+        return battle_maps
+
+    def find_fixed_battle_maps(self):
+        battle_maps = []
         """ 戰數地圖 """
-        if self.chara.record.total_battle % 100 == 0:
+        if self.chara.record.total_battle // 100 > (self.chara.record.total_battle-self.n) // 100:
             battle_maps.append(13)
-        if self.chara.record.total_battle % 300 == 0:
+        if self.chara.record.total_battle // 300 > (self.chara.record.total_battle-self.n) // 300:
             battle_maps.append(14)
-        if self.chara.record.total_battle % 600 == 0:
+        if self.chara.record.total_battle // 600 > (self.chara.record.total_battle-self.n) // 600:
             battle_maps.append(15)
-        if self.chara.record.total_battle % 3000 == 0:
+        if self.chara.record.total_battle // 3000 > (self.chara.record.total_battle-self.n) // 3000:
             battle_maps.append(11)
-        if self.chara.record.total_battle % 10000 == 0:
+        if self.chara.record.total_battle // 10000 > (self.chara.record.total_battle-self.n) // 10000:
             battle_maps.append(12)
 
         return battle_maps
