@@ -459,8 +459,8 @@ class BattleMapProcessor_9(BaseBattleMapProcessor):
 class BattleMapProcessor_10(BaseBattleMapProcessor):
     id = 10
 
-    def find_battle_maps(self):
-        battle_maps = super().find_battle_maps()
+    def find_random_battle_maps(self):
+        battle_maps = super().find_random_battle_maps()
         # 星空下的夜
         # 奧義類型30:天運
         rand = 12 - self.chara.equipped_ability_type_power(30)
