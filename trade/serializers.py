@@ -247,7 +247,7 @@ class PurchaseSerializer(SerpyModelSerializer):
         fields = ['id', 'buyer', 'item_type', 'number', 'price', 'item', 'due_time']
 
 
-class PurchaseCreateSerializer(BaseModelSerializer):
+class PurchaseCreateSerializer(BaseModelSerializer, TransferPermissionCheckerMixin):
     number = serializers.IntegerField(min_value=1)
     price = serializers.IntegerField(min_value=1)
     hours = serializers.IntegerField(min_value=1, max_value=24)
@@ -560,7 +560,7 @@ class ParcelSerializer(SerpyModelSerializer):
         fields = ['id', 'sender', 'receiver', 'item', 'price', 'message']
 
 
-class ParcelCreateSerializer(BaseModelSerializer):
+class ParcelCreateSerializer(BaseModelSerializer, TransferPermissionCheckerMixin):
     number = serializers.IntegerField(min_value=1)
 
     class Meta:
