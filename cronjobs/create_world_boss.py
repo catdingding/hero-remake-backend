@@ -36,6 +36,9 @@ for template in WorldBossTemplate.objects.all():
     elif prev_instance and (prev_instance.updated_at - prev_instance.created_at) > timedelta(hours=12):
         template.difficulty /= 1.1
 
+    if template.difficulty < 0.1:
+        template.difficulty = 0.1
+
     with transaction.atomic():
         name = generate_name()
         element_type = random.choice(ElementType.objects.all())
