@@ -404,8 +404,11 @@ class BattleChara:
         defender = self.pick_alive_enemy_chara()
         skill = self.get_skill(defender)
 
+        # 混亂
+        if self.effects['confusion'] > 0:
+            defenders = [self]
         # 奧義類型63:全體攻擊
-        if self.has_ability_type(63) and randint(1, 4) == 1 and \
+        elif self.has_ability_type(63) and randint(1, 4) == 1 and \
                 (skill is None or skill.type_id not in [2, 3, 4, 5, 6, 19]):
             defenders = self.alive_enemy_charas
         else:
@@ -514,10 +517,16 @@ class BattleChara:
             self.bleed = 0
             self.log(f"{self.name}的流血停止了")
 
-        if self.effects['silence'] > 0:
-            self.effects['silence'] -= 1
-            if self.effects['silence'] == 0:
-                self.log(f"{self.name}從沉默狀態中恢復了")
+
+        for key, name in [
+            ('silence', '沉默'), 
+            ('vulnerability', '脆弱'), 
+            ('confusion', '混亂'),
+        ]:
+            if self.effects[key] > 0:
+                self.effects[key] -= 1
+                if self.effects[key] == 0:
+                    self.log(f"{self.name}從{name}狀態中恢復了")
 
     def has_ability_type(self, type_id):
         return type_id in self.ability_types
@@ -687,7 +696,7 @@ class BattleChara:
             damage = self.dex + randint(0, self.dex * skill.power)
         elif skill.type_id == 22:
             damage = self.vit + randint(0, self.dex * skill.power)
-        elif skill.type_id in [1, 7, 10, 11, 12, 13, 14, 15, 32, 33, 34]:
+        elif skill.type_id in [1, 7, 10, 11, 12, 13, 14, 15, 32, 33, 34, 36, 37]:
             damage = skill.power + randint(0, self.int) - defender.magic_defense
         elif skill.type_id == 26:
             damage = skill.power * (randint(0, self.int) + defender.defense)
@@ -789,7 +798,8 @@ class BattleChara:
         # 暴擊處理
         # 奧義類型58:詛咒
         # 奧義類型44:安撫
-        if skill_type == 33 or attacker.critical * (1 - self.ability_type_power(58)) >= random() and not self.has_ability_type(44):
+        # 脆弱
+        if skill_type == 33 or attacker.critical * (1 - self.ability_type_power(58)) >= random() / (1 + self.effects['vulnerability']) and not self.has_ability_type(44):
             damage += int(
                 damage * self.battle.params['critical_damage_add_on'] * max(1, sigmoid(attacker.dex, self.dex) * 2)
             )
@@ -884,8 +894,19 @@ class BattleChara:
 
         # 沉默
         if skill_type == 34:
-            self.effects['silence'] = 2
+            self.effects['silence'] = 3
             self.log(f"{self.name}被沉默了")
+
+        # 脆弱
+        if skill_type == 36:
+            self.effects['vulnerability'] = 2
+            self.log(f"{self.name}變得脆弱了")
+
+        # 混亂
+        if skill_type == 37:
+            self.effects['confusion'] = 1
+            self.log(f"{self.name}變得混亂了")
+        
 
         # 奧義類型27:嗜魔
         if attacker.has_ability_type(27) and randint(1, 3) == 1:
