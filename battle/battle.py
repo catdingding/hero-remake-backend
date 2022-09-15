@@ -564,9 +564,9 @@ class BattleChara:
             self.log(f"[星防特效]{self.name}造成的普攻攻擊力上升")
 
         # 奧義類型64:真傷
-        if self.has_ability_type(64) and randint(1, 3) == 1:
+        if self.has_ability_type(64) and randint(1, 2) == 1:
             damage = attack
-            hp_loss = int(self.hp_max * 0.01)
+            hp_loss = int(self.hp * 0.01)
             self.hp -= hp_loss
             self.log(f"{self.name}損失了{hp_loss}HP，造成真實傷害")
         # 一般
