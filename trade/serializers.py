@@ -590,6 +590,11 @@ class ParcelCreateSerializer(BaseModelSerializer, TransferPermissionCheckerMixin
             raise serializers.ValidationError("建立的待領取包裹需<=10")
         return data
 
+    def validate_receiver(self, value):
+        if value == self.chara:
+            raise serializers.ValidationError("不可傳送給自己")
+        return value
+
 
 class ParcelReceiveSerializer(BaseSerializer):
     def save(self):
