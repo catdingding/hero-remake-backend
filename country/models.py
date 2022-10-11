@@ -22,7 +22,7 @@ class Country(BaseModel):
 
     def lose_gold(self, number):
         if self.gold < number:
-            raise ValidationError("金錢不足")
+            raise ValidationError("國庫金錢不足")
         self.gold -= number
 
 
