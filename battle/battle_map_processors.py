@@ -88,7 +88,6 @@ class BaseBattleMapProcessor():
         self.chara.gold += gold
         self.chara.proficiency += proficiency
         self.chara.gain_exp(exp)
-        self.chara.get_items('bag', loots)
         CharaAttribute.objects.filter(
             chara=self.chara, type_id=F('chara__job__attribute_type')
         ).update(proficiency=F('proficiency') + proficiency)
@@ -110,6 +109,9 @@ class BaseBattleMapProcessor():
             if log_loots:
                 log_loots = '、'.join(f'{x.name}*{x.number}' for x in log_loots)
                 push_log("打寶", f"{self.chara.name}於{self.battle_map.name}獲得了{log_loots}")
+
+            self.chara.get_items('bag', loots)
+
         if battle.winner == 'defender':
             push_log("陣亡", f"{self.chara.name}於{self.battle_map.name}被{'與'.join(x.name for x in self.monsters)}打到在地上磨擦")
 
