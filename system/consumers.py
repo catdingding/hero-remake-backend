@@ -3,14 +3,15 @@ from datetime import datetime
 
 from django.db.models import Q
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
-from channels.db import database_sync_to_async
+from channels.db import database_sync_to_async, SyncToAsync
 
 from system.models import PublicChatMessage, CountryChatMessage, TeamChatMessage, PrivateChatMessage, SystemChatMessage
 from system.serializers import (
     PublicChatMessageSerializer, CountryChatMessageSerializer, TeamChatMessageSerializer,
     PrivateChatMessageSerializer, SystemChatMessageSerializer
 )
-from system.utils import get_chara_profile
+from system.utils import get_chara_profile, send_system_message
+from system.chat_utils import system_chan_reply
 
 
 class MessageConsumer(AsyncJsonWebsocketConsumer):
@@ -45,6 +46,9 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
             if channel == 'private' and receiver != self.scope['chara_id']:
                 await self.channel_layer.group_send(f'private_{receiver}', data)
             await self.channel_layer.group_send(self.scope['group_mapping'][channel], data)
+
+            if channel == 'public' and data['content'][:4] == '@系統醬':
+                await SyncToAsync(send_system_message)("系統醬", 1, await system_chan_reply(data['content'][4:]))
 
     @database_sync_to_async
     def save_message(self, data):
