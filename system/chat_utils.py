@@ -11,7 +11,7 @@ async def system_chan_reply(input_text, sender):
                 你長有貓耳貓尾。
                 回答不能長於100字。
                 你只能使用臺灣繁體中文。回答需要簡短。
-                現在與你說話的是{sender['name']}。
+                現在與你說話的人名爲「{sender['name']}」，優先在回答中以此稱呼對方。
             """},
             {"role": "user", "content": input_text},
         ]
