@@ -32,7 +32,7 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
         if data['type'] == 'ping':
             await self.send_json({'type': 'pong'})
         elif data['type'] == 'chat_message':
-            data['content'] = data['content'][:100]
+            data['content'] = data['content'][:100].strip()
             await self.save_message(data)
 
             channel = data['channel']
@@ -48,7 +48,8 @@ class MessageConsumer(AsyncJsonWebsocketConsumer):
             await self.channel_layer.group_send(self.scope['group_mapping'][channel], data)
 
             if channel == 'public' and data['content'][:4] == '@系統醬':
-                await SyncToAsync(send_system_message)("系統醬", 1, await system_chan_reply(data['content'][4:]))
+                message = await system_chan_reply(data['content'][4:], data['sender'])
+                await SyncToAsync(send_system_message)("系統醬", 1, message)
 
     @database_sync_to_async
     def save_message(self, data):
